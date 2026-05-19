@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { CITIES } from '@/core/data/cities';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
+import { useApp } from '@/app/providers/AppProvider';
 
 function ImpactMap({ t }) {
   const m = t.impactMap;
+  const { isDark } = useApp();
   const cities = CITIES || [];
 
   const [layers, setLayers] = useState({
@@ -48,7 +50,8 @@ function ImpactMap({ t }) {
 
   // Nearest pilot — fake, picks closest by hash of locale
   const nearest = useMemo(() => {
-    const lang_country = (navigator.language || "en-US").split("-")[1] || "DE";
+    const navLang = typeof navigator !== "undefined" ? navigator.language : "en-US";
+    const lang_country = (navLang || "en-US").split("-")[1] || "DE";
     return cities.find((c) => c.country === lang_country) || cities.find((c) => c.country === "TR") || cities[0];
   }, [cities]);
 
@@ -101,7 +104,7 @@ function ImpactMap({ t }) {
                 selected={selected}
                 timeYear={timeYear}
                 showTerminator={showTerminator}
-                theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
+                theme={isDark ? "dark" : "light"}
               />
 
               {/* Hover tooltip — follows the city in screen-space */}

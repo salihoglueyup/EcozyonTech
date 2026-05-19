@@ -13,32 +13,34 @@
       rel="stylesheet"
     />
 
+    <!-- Default head; the prerender step replaces this per route. -->
     <title>Ecozyon Tech — AI ile sürdürülebilirlik</title>
     <meta
       name="description"
       content="Ecozyon Tech, giyilebilir teknolojiler ve akıllı AI ile bireysel ve kurumsal sürdürülebilirliği ölçülebilir, pratik alışkanlıklara dönüştürür."
     />
-
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Ecozyon Tech" />
-    <meta property="og:title" content="Ecozyon Tech — AI ile sürdürülebilirlik" />
-    <meta
-      property="og:description"
-      content="Giyilebilir teknolojiler ve akıllı AI ile ölçülebilir sürdürülebilirlik."
-    />
-    <meta property="og:url" content="https://ecozyon.tech/" />
+    <!--ssr-head-->
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ecozyon Tech — AI ile sürdürülebilirlik" />
-    <meta
-      name="twitter:description"
-      content="Giyilebilir teknolojiler ve akıllı AI ile ölçülebilir sürdürülebilirlik."
-    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Ecozyon Tech",
+        "url": "https://ecozyon.tech",
+        "email": "hello@ecozyon.tech",
+        "description": "AI + sustainability + wearables.",
+        "sameAs": [
+          "https://www.linkedin.com",
+          "https://x.com",
+          "https://github.com"
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--ssr-outlet--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

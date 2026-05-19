@@ -53,7 +53,13 @@
       "Bash(git commit -q -m 'chore: CI + CLAUDE.md + lint cleanup \\(20->12 warnings, 0 errors\\) *)",
       "Bash(git commit -q -m 'feat: serverless backend for contact + newsletter *)",
       "Bash(git commit -q -m 'feat: wire contact + newsletter forms to the API *)",
-      "Bash(git commit -q -m 'feat: Pricing, Blog \\(+post\\), Careers, Legal pages \\(bilingual\\) *)"
+      "Bash(git commit -q -m 'feat: Pricing, Blog \\(+post\\), Careers, Legal pages \\(bilingual\\) *)",
+      "Bash(node scripts/prerender.mjs)",
+      "Bash(grep -o '<div id=\"root\">.\\\\{0,40\\\\}' dist/about/index.html)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\){const es=f.messages.filter\\(m=>m.severity===2\\);if\\(es.length\\){console.log\\(f.filePath.replace\\(/.*Tech./,''\\)\\);for\\(const m of es\\)console.log\\('  L'+m.line+':'+m.column+' '+m.ruleId+' — '+m.message.split\\('\\\\n'\\)[0]\\)}}}\\)\")",
+      "Bash(grep -o '<title>[^<]*</title>' dist/__TRACKED_VAR__.html)",
+      "Bash(grep -o 'rel=\"canonical\" href=\"[^\"]*\"' dist/__TRACKED_VAR__.html)",
+      "Bash(git commit -q -m 'feat: SEO + static prerender \\(SSR build + per-route HTML\\) *)"
     ]
   }
 }

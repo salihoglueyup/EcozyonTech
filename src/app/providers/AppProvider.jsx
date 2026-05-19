@@ -43,7 +43,19 @@ function loadPrefs() {
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-  const [prefs, setPrefs] = useState(loadPrefs);
+  // Start from DEFAULTS so server-prerendered HTML and the client's first
+  // render match (no hydration mismatch). Saved prefs are applied right
+  // after mount.
+  const [prefs, setPrefs] = useState(DEFAULTS);
+
+  useEffect(() => {
+    // Intentional one-time post-hydration sync: applying persisted prefs
+    // here (not in the initializer) is what keeps server HTML and the
+    // client's first render identical. Single set, not a cascade.
+    const saved = loadPrefs();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (saved !== DEFAULTS) setPrefs(saved);
+  }, []);
 
   const setTweak = useCallback((keyOrEdits, val) => {
     const edits =

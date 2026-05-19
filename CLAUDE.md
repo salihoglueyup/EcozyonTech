@@ -68,19 +68,36 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   single-setup effect on purpose (adding deps would rebuild the globe every
   render). Do not add the flagged deps.
 
-## Prerender decision (Phase 0 spike — important for SEO work)
+## Prerender / SEO (implemented — Phase 4)
 
-`vite-react-ssg` is **incompatible** (needs react-router ^6 + Vite ^2–7; we
-run rr7 + Vite 8). Chosen approach for SEO/prerender: **custom prerender via
-`react-dom/server` + react-router `StaticRouter`** as a post-build Node step
-(Vite SSR build) + `hydrateRoot`.
+`vite-react-ssg` was incompatible (rr6 + Vite ≤7). Built a **custom
+prerender**: `npm run build` = client build → SSR build of
+`src/entry-server.jsx` → `node scripts/prerender.mjs`.
 
-SSR hazards to guard before prerender (only one component):
-`src/features/impact-map/index.jsx` uses `navigator.language` (in a useMemo)
-and `document.documentElement` (in render) — guard both with
-`typeof window !== 'undefined'`. Everything else is already SSR-safe
-(effects/handlers, DEV-only, or lazy 3D → fallback). `AppProvider.loadPrefs()`
-is already guarded.
+- `entry-server.jsx` uses React 19 `prerenderToNodeStream` + `StaticRouter`,
+  which **resolves all Suspense** (lazy pages + globes) so emitted HTML is
+  complete and indexable. Effects (Three.js, scroll) only run on the
+  hydrated client.
+- `App.jsx` (client) = `BrowserRouter > AppShell`; `entry-server` =
+  `StaticRouter > AppShell`. `AppShell` = providers + routes (router-agnostic).
+- `main.jsx`: `hydrateRoot` if `#root` has children (prod), else `createRoot`
+  (dev).
+- Hydration safety: `AppProvider` starts from `DEFAULTS`, then applies saved
+  prefs in a one-time mount effect (eslint-disabled `set-state-in-effect` on
+  that line, intentional) so server HTML == client first render.
+- SSR-guarded `src/features/impact-map`: `navigator` guarded; theme now from
+  `useApp()` not `document`.
+- `scripts/prerender.mjs` writes `dist/<route>/index.html` for every route +
+  each blog slug, injects per-route `<title>/description/canonical/og`, and
+  emits `sitemap.xml` + `robots.txt`. JSON-LD Organization is static in
+  `index.html`.
+
+Caveat: `npm run preview` (vite) does SPA fallback and serves root
+`index.html` for clean URLs — it does NOT reflect the per-route prerender.
+Verify prerender by inspecting `dist/<route>/index.html` directly, or with a
+filesystem-routing static server (`npx serve dist`). Vercel serves the
+per-route files correctly (filesystem before the SPA rewrite in vercel.json).
+`dist-server/` is the SSR build output (git-ignored, eslint-ignored).
 
 ## Roadmap (in progress)
 
