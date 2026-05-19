@@ -1,0 +1,676 @@
+import { Footer } from './sections-d';
+
+// Ecozyon Tech — sections A: Navbar, Hero, Metrics
+import { EcoGlobe } from './globe';
+import { HeroParticles, HeroDataGrid } from './hero-variants';
+import React, { useState, useEffect, useRef } from 'react';
+
+// ── Shared bits ────────────────────────────────────────────────────────────
+function Tag({ children, color = "emerald" }) {
+  const map = {
+    emerald: "bg-emerald-50/90 text-emerald-700 ring-emerald-600/15",
+    cyan: "bg-cyan-50/90 text-cyan-700 ring-cyan-600/15",
+    slate: "bg-white/80 text-slate-700 ring-slate-900/10",
+  };
+  return (
+    <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-medium ring-1 backdrop-blur ${map[color]}`}>
+      <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${color === "cyan" ? "bg-cyan-500" : color === "slate" ? "bg-slate-500" : "bg-emerald-500"}`}>
+        <span className={`absolute inset-0 rounded-full animate-ping ${color === "cyan" ? "bg-cyan-500" : color === "slate" ? "bg-slate-500" : "bg-emerald-500"} opacity-60`} />
+      </span>
+      {children}
+    </span>
+  );
+}
+
+function GlowOrb({ className, color, size = 480 }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute rounded-full blur-3xl ${className || ""}`}
+      style={{
+        width: size,
+        height: size,
+        background: `radial-gradient(circle at center, ${color} 0%, transparent 70%)`,
+      }}
+    />
+  );
+}
+
+// ── Logo (placeholder wordmark + mark) ─────────────────────────────────────
+function EcoLogo({ accent = "emerald" }) {
+  const c = accent === "cyan" ? "#0EA5E9" : "#10B981";
+  return (
+    <a href="#top" className="flex items-center gap-2.5 group">
+      <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-[10px] bg-slate-900 text-white shadow-sm overflow-hidden">
+        <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden="true">
+          <defs>
+            <linearGradient id="ec-lg" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="#0EA5E9" />
+              <stop offset="1" stopColor={c} />
+            </linearGradient>
+          </defs>
+          <circle cx="16" cy="16" r="11" fill="none" stroke="url(#ec-lg)" strokeWidth="1.5" />
+          <path d="M8 16 Q16 8 24 16 T8 16" fill="none" stroke="url(#ec-lg)" strokeWidth="1.5" />
+          <circle cx="22" cy="11" r="1.6" fill="#10B981" />
+        </svg>
+      </span>
+      <span className="font-display text-[15px] tracking-tight text-slate-900">
+        Ecozyon<span className="text-slate-400 font-normal"> Tech</span>
+      </span>
+    </a>
+  );
+}
+
+// ── Navbar ─────────────────────────────────────────────────────────────────
+function Navbar({ t, lang, setLang, primary, theme, setTheme }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close mobile menu when route hash changes
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const close = () => setMobileOpen(false);
+    window.addEventListener("hashchange", close);
+    return () => window.removeEventListener("hashchange", close);
+  }, [mobileOpen]);
+
+  const items = [
+    { id: "impact", label: t.nav.impactMap },
+    { id: "how", label: t.nav.howItWorks },
+    { id: "usecases", label: t.nav.useCases },
+    { id: "ecosystem", label: t.nav.technology },
+    { id: "dashboard", label: t.nav.impact },
+    { id: "about", label: t.nav.about },
+  ];
+
+  return (
+    <>
+      <header className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
+        <div
+          className={`pointer-events-auto flex items-center gap-2 rounded-full pl-3 sm:pl-4 pr-2 py-2 transition-all duration-300 border border-white/60 ${
+            scrolled
+              ? "bg-white/70 backdrop-blur-xl shadow-[0_8px_28px_-12px_rgba(15,23,42,.18)]"
+              : "bg-white/40 backdrop-blur-md"
+          }`}
+        >
+          <EcoLogo accent={primary} />
+          <nav className="hidden lg:flex items-center mx-3 gap-1">
+            {items.map((it) => (
+              <a
+                key={it.id}
+                href={`#${it.id}`}
+                className="px-3 py-1.5 rounded-full text-[13px] text-slate-700 hover:text-slate-900 hover:bg-slate-900/[.04] transition"
+              >
+                {it.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-1.5 pl-2 sm:border-l sm:border-slate-900/10">
+            <ThemeToggle theme={theme} setTheme={setTheme} />
+            <LangSwitch lang={lang} setLang={setLang} />
+            <a
+              href="#dashboard"
+              className="hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
+              style={{
+                backgroundImage: "linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)",
+              }}
+            >
+              {t.nav.cta}
+              <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-full text-slate-700 hover:bg-slate-900/[.04]"
+              aria-label="Open menu"
+            >
+              <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h14M3 10h14M3 14h14" strokeLinecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] lg:hidden">
+          <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute right-3 top-3 left-3 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 shadow-2xl p-5 animate-[fadeUp_.25s_ease]">
+            <div className="flex items-center justify-between mb-4">
+              <EcoLogo />
+              <button onClick={() => setMobileOpen(false)} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.04]">
+                <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round"/></svg>
+              </button>
+            </div>
+            <nav className="flex flex-col">
+              {items.map((it) => (
+                <a key={it.id} href={`#${it.id}`} onClick={() => setMobileOpen(false)} className="py-3 border-b border-slate-900/[.05] last:border-0 text-[15px] text-slate-800 flex items-center justify-between">
+                  {it.label}
+                  <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
+                </a>
+              ))}
+            </nav>
+            <a
+              href="#dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
+              style={{ backgroundImage: "linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)" }}
+            >
+              {t.nav.cta}
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function ThemeToggle({ theme, setTheme }) {
+  const dark = theme === "dark";
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(dark ? "light" : "dark")}
+      className="relative inline-flex items-center justify-center h-7 w-7 rounded-full text-slate-700 hover:bg-slate-900/[.04] transition"
+      aria-label="Toggle theme"
+      title={dark ? "Light mode" : "Dark mode"}
+    >
+      <svg viewBox="0 0 20 20" className={`h-3.5 w-3.5 transition-all ${dark ? "opacity-0 scale-50 absolute" : "opacity-100 scale-100"}`} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <circle cx="10" cy="10" r="3.5" />
+        <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.6 4.6l1.4 1.4M14 14l1.4 1.4M4.6 15.4l1.4-1.4M14 6l1.4-1.4" strokeLinecap="round" />
+      </svg>
+      <svg viewBox="0 0 20 20" className={`h-3.5 w-3.5 transition-all ${dark ? "opacity-100 scale-100" : "opacity-0 scale-50 absolute"}`} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M16 12.5A7 7 0 1 1 7.5 4a5.5 5.5 0 0 0 8.5 8.5Z" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+function LangSwitch({ lang, setLang }) {
+  return (
+    <div className="relative inline-flex items-center rounded-full bg-slate-900/[.05] p-[3px] text-[11px] font-semibold text-slate-600">
+      <button
+        onClick={() => setLang("tr")}
+        className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === "tr" ? "text-slate-900" : ""}`}
+      >TR</button>
+      <button
+        onClick={() => setLang("en")}
+        className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === "en" ? "text-slate-900" : ""}`}
+      >EN</button>
+      <span
+        className="absolute top-[3px] bottom-[3px] w-[34px] rounded-full bg-white shadow-sm transition-all"
+        style={{ left: lang === "tr" ? 3 : 37 }}
+      />
+    </div>
+  );
+}
+
+// ── Hero ───────────────────────────────────────────────────────────────────
+function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents, theme }) {
+  const [liveIdx, setLiveIdx] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => setLiveIdx((i) => (i + 1) % t.hero.liveItems.length), 4200);
+    return () => clearInterval(id);
+  }, [t.hero.liveItems.length]);
+
+  return (
+    <section id="top" className="relative pt-32 pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
+      {/* Background atmosphere */}
+      <div className="absolute inset-0 -z-10">
+        <GlowOrb className="-top-32 -left-24" color={`rgba(14,165,233,${0.18 * glowIntensity})`} size={620} />
+        <GlowOrb className="top-40 -right-40" color={`rgba(16,185,129,${0.18 * glowIntensity})`} size={680} />
+        <GlowOrb className="bottom-0 left-1/3" color={`rgba(37,99,235,${0.10 * glowIntensity})`} size={420} />
+        <div
+          className="absolute inset-0 opacity-[.35]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(15,23,42,.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,.05) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+          }}
+        />
+      </div>
+
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 items-center">
+          {/* LEFT: copy */}
+          <div className="relative">
+            <Tag color="emerald">{t.hero.tag}</Tag>
+
+            <h1 className="mt-6 font-display text-[clamp(2.4rem,5.4vw,4.4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900">
+              <span className="block">{t.hero.title1}</span>
+              <span className="block">
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}
+                >
+                  {t.hero.title2}
+                </span>
+              </span>
+              <span className="block text-slate-900/90">{t.hero.title3}</span>
+            </h1>
+
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.65] text-slate-600">
+              {t.hero.sub}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="#tech"
+                className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white shadow-[0_10px_30px_-12px_rgba(14,165,233,.6)] hover:scale-[1.02] active:scale-[0.99] transition"
+                style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)" }}
+              >
+                {t.hero.primary}
+                <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+              </a>
+              <button onClick={() => setVideoOpen(true)} className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-slate-800 bg-white/70 backdrop-blur-md border border-white/70 ring-1 ring-slate-900/[.06] hover:bg-white transition">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white">
+                  <svg className="h-2.5 w-2.5 translate-x-[.5px]" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0v8l7-4z" /></svg>
+                </span>
+                {t.hero.secondary}
+              </button>
+            </div>
+
+            {/* Live AI suggestion */}
+            <div className="mt-10 max-w-md rounded-2xl border border-white/70 bg-white/60 backdrop-blur-xl p-3.5 pr-4 ring-1 ring-slate-900/[.04] shadow-[0_18px_60px_-30px_rgba(15,23,42,.25)]">
+              <div className="flex items-center gap-3">
+                <div className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-inner">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" strokeLinecap="round" /></svg>
+                  <span className="absolute -bottom-0.5 -right-0.5 inline-flex h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white animate-pulse" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{t.hero.live}</div>
+                    <div className="text-[10px] text-emerald-700 font-mono">●  LIVE</div>
+                  </div>
+                  <div key={liveIdx} className="mt-1 text-[13px] text-slate-800 leading-snug animate-[fadeUp_.5s_ease]">
+                    {t.hero.liveItems[liveIdx]}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-2 flex items-center gap-1">
+                {t.hero.liveItems.map((_, i) => (
+                  <span key={i} className={`h-[3px] flex-1 rounded-full transition-all ${i === liveIdx ? "bg-emerald-500" : "bg-slate-900/10"}`} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT: 3D globe */}
+          <div className="relative">
+            <div className="relative aspect-square w-full max-w-[560px] mx-auto lg:ml-auto lg:mr-0 min-h-[280px]">
+              {/* Halo behind */}
+              <div className="absolute inset-6 rounded-full blur-3xl opacity-60"
+                style={{ background: "conic-gradient(from 90deg, rgba(14,165,233,.25), rgba(16,185,129,.22), rgba(14,165,233,.25))" }} />
+              <div className="absolute inset-0">
+                {heroStyle === "particles" && <HeroParticles cyan={accents?.cyan} emerald={accents?.emerald} dark={theme === "dark"} />}
+                {heroStyle === "grid" && <HeroDataGrid cyan={accents?.cyan} emerald={accents?.emerald} />}
+                {(heroStyle === "globe" || !heroStyle) && <EcoGlobe cyan={accents?.cyan} emerald={accents?.emerald} />}
+              </div>
+
+              {/* Floating annotation chips */}
+              <FloatChip className="top-[14%] right-[6%]" delay="0s" color="cyan">
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold">AI node</div>
+                <div className="text-[12px] text-slate-800">İstanbul · 0.4W</div>
+              </FloatChip>
+              <FloatChip className="bottom-[18%] left-[2%]" delay=".8s" color="emerald">
+                <div className="text-[10px] uppercase tracking-[.12em] text-emerald-700 font-semibold">CO₂ saved</div>
+                <div className="text-[12px] text-slate-800">+38 kg / hr</div>
+              </FloatChip>
+              <FloatChip className="bottom-[6%] right-[10%]" delay="1.6s" color="slate">
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold">Wearables</div>
+                <div className="text-[12px] text-slate-800">8,431 online</div>
+              </FloatChip>
+            </div>
+          </div>
+        </div>
+
+        {/* Real partner strip */}
+        <div className="mt-16 lg:mt-24 relative">
+          <div className="text-[11px] uppercase tracking-[.18em] text-slate-500 font-semibold mb-4 text-center">
+            {t.hero.partnersTag || (lang === "tr" ? "Pilot ortakları & destek" : "Pilot partners & backers")}
+          </div>
+          <div className="relative overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
+            <div className="flex items-center gap-10 lg:gap-14 animate-[marquee_42s_linear_infinite] whitespace-nowrap py-2">
+              {(t.hero.partners || []).concat(t.hero.partners || []).map((p, i) => (
+                <PartnerLogo key={i} name={p} idx={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Video modal */}
+      {videoOpen && <VideoModal t={t} lang={lang} onClose={() => setVideoOpen(false)} />}
+    </section>
+  );
+}
+
+function FloatChip({ className, delay, color, children }) {
+  const ring = color === "cyan" ? "ring-cyan-500/20" : color === "emerald" ? "ring-emerald-500/20" : "ring-slate-900/10";
+  return (
+    <div
+      className={`absolute ${className} rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl px-3 py-2 ring-1 ${ring} shadow-[0_10px_30px_-15px_rgba(15,23,42,.3)] animate-[float_6s_ease-in-out_infinite]`}
+      style={{ animationDelay: delay }}
+    >
+      {children}
+    </div>
+  );
+}
+
+// ── Metrics ────────────────────────────────────────────────────────────────
+function Metrics({ t }) {
+  return (
+    <section id="metrics" className="relative py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+          <div>
+            <Tag color="cyan">// 01 · Impact</Tag>
+            <h2 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 max-w-xl">
+              {t.metrics.title}
+            </h2>
+          </div>
+          <p className="max-w-md text-[14.5px] text-slate-600 leading-relaxed">{t.metrics.sub}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          {t.metrics.items.map((m, i) => <MetricCard key={i} m={m} idx={i} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MetricCard({ m, idx }) {
+  const [seen, setSeen] = useState(false);
+  const ref = useRef();
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const accentColors = ["#0EA5E9", "#10B981", "#10B981", "#7C3AED"];
+  const accent = accentColors[idx % accentColors.length];
+
+  return (
+    <div
+      ref={ref}
+      className="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/60 backdrop-blur-xl p-6 ring-1 ring-slate-900/[.04] hover:ring-cyan-500/30 transition"
+      style={{ transitionDelay: `${idx * 60}ms` }}
+    >
+      <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition" style={{ background: `radial-gradient(circle, ${accent}60, transparent)` }} />
+
+      <div className="flex items-start justify-between">
+        <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold flex items-center gap-1.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
+          0{idx + 1}
+        </div>
+        {m.trend && <MetricSparkline data={m.trend} color={accent} />}
+      </div>
+
+      <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
+        {m.value}<span style={{ color: accent }}>{m.suffix}</span>
+      </div>
+      <div className="mt-2 text-[14px] text-slate-800 font-medium">{m.label}</div>
+      <div className="mt-1 text-[12px] text-slate-500 leading-snug">{m.note}</div>
+
+      {(m.delta || m.compare) && (
+        <div className="mt-4 pt-3 border-t border-slate-900/[.05] flex items-center justify-between text-[11px] gap-2">
+          {m.delta && (
+            <span className="inline-flex items-center gap-1 font-mono" style={{ color: accent }}>
+              <svg className="h-2.5 w-2.5" viewBox="0 0 10 10" fill="currentColor"><path d="M5 2l4 5H1z" /></svg>
+              {m.delta}
+            </span>
+          )}
+          {m.compare && (
+            <span className="text-slate-500 font-mono text-right">{m.compare}</span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MetricSparkline({ data, color }) {
+  const max = Math.max(...data), min = Math.min(...data);
+  const W = 64, H = 22;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * W;
+    const y = H - ((v - min) / Math.max(max - min, 0.0001)) * H;
+    return `${x},${y}`;
+  }).join(" ");
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="h-6 w-16 flex-none">
+      <defs>
+        <linearGradient id={`ms-${color.replace('#','')}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor={color} stopOpacity=".3" />
+          <stop offset="1" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polyline points={`0,${H} ${pts} ${W},${H}`} fill={`url(#ms-${color.replace('#','')})`} />
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={W} cy={H - ((data[data.length - 1] - min) / Math.max(max - min, 0.0001)) * H} r="1.6" fill={color} />
+    </svg>
+  );
+}
+
+export {  Navbar, Hero, Metrics, Tag, GlowOrb, EcoLogo  };
+
+// ── PartnerLogo (mini lockup with placeholder mark + name) ─────────────────
+function PartnerLogo({ name, idx }) {
+  const shapes = ["circle", "square", "tri", "ring", "wave"];
+  const colors = ["#0EA5E9", "#10B981", "#7C3AED", "#F59E0B", "#0F172A", "#E11D48"];
+  const sh = shapes[idx % shapes.length];
+  const c = colors[idx % colors.length];
+  return (
+    <div className="flex items-center gap-2.5 text-slate-500 hover:text-slate-800 transition opacity-90 hover:opacity-100">
+      <svg viewBox="0 0 28 28" className="h-5 w-5 flex-none" fill="none">
+        {sh === "circle" && <><circle cx="14" cy="14" r="9" fill={c} opacity=".18" /><circle cx="14" cy="14" r="5.5" fill={c} /></>}
+        {sh === "square" && <><rect x="6" y="6" width="16" height="16" rx="4" fill={c} opacity=".18" /><rect x="9" y="9" width="10" height="10" rx="2" fill={c} /></>}
+        {sh === "tri" && <><path d="M14 4 L24 22 L4 22 Z" fill={c} opacity=".18" /><path d="M14 9 L20 21 L8 21 Z" fill={c} /></>}
+        {sh === "ring" && <><circle cx="14" cy="14" r="9" fill="none" stroke={c} strokeWidth="2.4" /><circle cx="14" cy="14" r="3" fill={c} /></>}
+        {sh === "wave" && <><path d="M4 14 Q9 6 14 14 T24 14" stroke={c} strokeWidth="2.4" fill="none" strokeLinecap="round" /><circle cx="24" cy="14" r="2.4" fill={c} /></>}
+      </svg>
+      <span className="text-[14.5px] font-display tracking-tight">{name}</span>
+    </div>
+  );
+}
+
+// ── VideoModal (placeholder for vision film) ───────────────────────────────
+function VideoModal({ t, lang, onClose }) {
+  const [progress, setProgress] = useState(0);
+  const [playing, setPlaying] = useState(true);
+
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => setProgress((p) => (p >= 100 ? 0 : p + (100 / 60 / 10))), 100);
+    return () => clearInterval(id);
+  }, [playing]);
+
+  // Three scenes that cross-fade as the timeline advances
+  const scene = progress < 33 ? 0 : progress < 66 ? 1 : 2;
+  const sceneLabels = lang === "tr"
+    ? ["Cihazı kur", "AI öğrenir", "Eyleme dök"]
+    : ["Pair device", "AI learns", "Take action"];
+
+  return (
+    <div className="fixed inset-0 z-[80] grid place-items-center p-4 lg:p-8">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose} />
+      <div
+        className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between p-5 pb-3 border-b border-slate-900/[.06]">
+          <div>
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700">{lang === "tr" ? "Tanıtım" : "Intro"}</div>
+            <h3 className="mt-1 font-display text-[22px] tracking-tight text-slate-900">{t.hero.videoTitle}</h3>
+            <p className="text-[12.5px] text-slate-500 mt-0.5">{t.hero.videoSub}</p>
+          </div>
+          <button onClick={onClose} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.05]">
+            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round"/></svg>
+          </button>
+        </div>
+
+        {/* Video stage */}
+        <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 aspect-video overflow-hidden">
+          {/* Background ambient */}
+          <div className="absolute inset-0 opacity-50" style={{
+            background: "radial-gradient(circle at 20% 30%, rgba(14,165,233,.35), transparent 40%), radial-gradient(circle at 80% 70%, rgba(16,185,129,.3), transparent 40%)"
+          }} />
+          {/* Grid */}
+          <div className="absolute inset-0 opacity-[.15]" style={{
+            backgroundImage: "linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }} />
+
+          {/* Scene 0 - Pair device */}
+          <SceneFade visible={scene === 0}>
+            <div className="grid place-items-center h-full text-white px-8">
+              <div className="text-center">
+                <svg viewBox="0 0 240 100" className="w-full max-w-xs mx-auto">
+                  <rect x="10" y="40" width="50" height="32" rx="8" fill="#0EA5E9" opacity=".2" />
+                  <rect x="10" y="40" width="50" height="32" rx="8" fill="none" stroke="#0EA5E9" strokeWidth="1.4" />
+                  <rect x="180" y="20" width="50" height="64" rx="10" fill="#10B981" opacity=".2" />
+                  <rect x="180" y="20" width="50" height="64" rx="10" fill="none" stroke="#10B981" strokeWidth="1.4" />
+                  {[80, 110, 140, 170].map((x, i) => (
+                    <circle key={i} cx={x} cy="56" r="3" fill="#0EA5E9">
+                      <animate attributeName="opacity" values="0;1;0" dur="1.4s" begin={`${i * 0.2}s`} repeatCount="indefinite" />
+                    </circle>
+                  ))}
+                  <path d="M195 50 l4 4 8-8" stroke="#10B981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[0]}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "2 dakikada eşleştirme" : "Pair in 2 minutes"}</div>
+              </div>
+            </div>
+          </SceneFade>
+
+          {/* Scene 1 - AI learns */}
+          <SceneFade visible={scene === 1}>
+            <div className="grid place-items-center h-full text-white px-8">
+              <div className="text-center">
+                <svg viewBox="0 0 260 100" className="w-full max-w-sm mx-auto">
+                  {[0, 1, 2, 3].map((layer) =>
+                    [0, 1, 2, 3, 4].map((n) => (
+                      <circle
+                        key={`${layer}-${n}`}
+                        cx={40 + layer * 60} cy={15 + n * 18}
+                        r="3.5"
+                        fill={layer === 0 || layer === 3 ? "#0EA5E9" : "#10B981"}
+                      >
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur={`${1.4 + Math.random()}s`} repeatCount="indefinite" />
+                      </circle>
+                    ))
+                  )}
+                  {[0, 1, 2].flatMap((l) =>
+                    [0, 1, 2, 3, 4].flatMap((a) =>
+                      [0, 1, 2, 3, 4].map((b) => (
+                        <line
+                          key={`l-${l}-${a}-${b}`}
+                          x1={40 + l * 60} y1={15 + a * 18}
+                          x2={40 + (l + 1) * 60} y2={15 + b * 18}
+                          stroke="#0EA5E9" strokeOpacity={0.06} strokeWidth="0.8"
+                        />
+                      ))
+                    )
+                  )}
+                </svg>
+                <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[1]}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "İlk hafta sonunda kişisel baseline" : "Your baseline in week one"}</div>
+              </div>
+            </div>
+          </SceneFade>
+
+          {/* Scene 2 - Take action */}
+          <SceneFade visible={scene === 2}>
+            <div className="grid place-items-center h-full text-white px-8">
+              <div className="text-center max-w-md">
+                <div className="rounded-2xl border border-white/20 bg-slate-800/60 backdrop-blur-md p-5 text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-500 text-white">
+                      <svg viewBox="0 0 20 20" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.6 4.6l2.1 2.1M13.3 13.3l2.1 2.1M4.6 15.4l2.1-2.1M13.3 6.7l2.1-2.1" strokeLinecap="round" /></svg>
+                    </span>
+                    <span className="text-[10.5px] uppercase tracking-[.14em] text-emerald-300 font-semibold">AI tip</span>
+                  </div>
+                  <div className="mt-2 text-[14px] text-white">{lang === "tr" ? "Bugün bisikletle gidersen 1.4 kg CO₂ tasarrufu." : "Bike to work today → save 1.4 kg CO₂."}</div>
+                  <div className="mt-3 flex items-center gap-2">
+                    <button className="rounded-full bg-white text-slate-900 text-[11px] font-semibold px-3 py-1.5">✓ Apply</button>
+                    <span className="text-[11px] text-slate-300">{lang === "tr" ? "Anında uygulanır" : "Applied instantly"}</span>
+                  </div>
+                </div>
+                <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[2]}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "Topluluk + AI + sen" : "Community + AI + you"}</div>
+              </div>
+            </div>
+          </SceneFade>
+
+          {/* Center play/pause control */}
+          <button
+            onClick={() => setPlaying(!playing)}
+            className="absolute bottom-4 left-4 h-10 w-10 rounded-full bg-white/90 text-slate-900 grid place-items-center shadow-lg hover:scale-105 transition"
+            aria-label={playing ? "Pause" : "Play"}
+          >
+            {playing ? (
+              <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor"><rect x="4" y="3" width="3" height="10" /><rect x="9" y="3" width="3" height="10" /></svg>
+            ) : (
+              <svg viewBox="0 0 16 16" className="h-4 w-4 translate-x-[1px]" fill="currentColor"><path d="M4 3v10l9-5z" /></svg>
+            )}
+          </button>
+
+          {/* Timestamp */}
+          <div className="absolute bottom-5 left-16 text-white/80 text-[11px] font-mono">
+            00:{String(Math.floor(progress * 0.6)).padStart(2, "0")} / 01:00
+          </div>
+
+          {/* Progress bar */}
+          <div className="absolute bottom-0 inset-x-0 h-1 bg-white/10">
+            <div className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+
+        {/* Footer scene chips */}
+        <div className="flex items-center justify-between p-4 gap-3">
+          <div className="flex items-center gap-2">
+            {sceneLabels.map((lab, i) => (
+              <button
+                key={i}
+                onClick={() => setProgress(i * 33 + 5)}
+                className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-[11.5px] font-medium border transition ${scene === i ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-900/[.08] hover:bg-slate-50"}`}
+              >
+                <span className="font-mono text-[10px]">0{i + 1}</span>
+                {lab}
+              </button>
+            ))}
+          </div>
+          <button onClick={onClose} className="text-[12px] text-slate-500 hover:text-slate-900">{t.hero.videoClose} <span className="text-[10px] font-mono ml-1">ESC</span></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SceneFade({ visible, children }) {
+  return (
+    <div className={`absolute inset-0 transition-opacity duration-700 ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+      {children}
+    </div>
+  );
+}
