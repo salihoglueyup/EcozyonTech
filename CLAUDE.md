@@ -99,6 +99,54 @@ filesystem-routing static server (`npx serve dist`). Vercel serves the
 per-route files correctly (filesystem before the SPA rewrite in vercel.json).
 `dist-server/` is the SSR build output (git-ignored, eslint-ignored).
 
+## WorldGlobe engine (src/shared/3d/WorldGlobe.jsx) — enhancement reference
+
+Imperative Three.js. `WorldGlobe(props)` (React) → `makeWorldGlobe(container,
+opts)` → `{ dispose, update, flyTo }`.
+
+**Two separate globes exist on purpose** (decided to keep separate):
+- `EcoGlobe` — abstract hero decoration, Home only. **Do not touch** during
+  WorldGlobe work.
+- `WorldGlobe` — the geographic data globe. **Reused in two places**, so
+  every change must preserve both:
+  - `/impact` (ImpactMap): full — all layers, side panel, hover tooltip,
+    time scrubber, fly-to on select.
+  - `/services` (dashboard): `compact={true}`, layers `{active,partners,arcs}`,
+    no onHover/onSelect. Must stay light.
+
+**Opts/props contract:** `layers {active,partners,arcs,heat,solar}`,
+`onHover(city,pos)`, `onSelect(city)`, `selected`, `timeYear (2024–2026)`,
+`showTerminator`, `compact`, `theme ('light'|'dark')`.
+
+**Lifecycle:** setup effect deps `[props.theme, props.compact]` → scene fully
+rebuilt on theme/compact change (rare, OK). `update()` pushes
+layers/selected/timeYear/showTerminator without rebuild. `flyTo()` on
+`selected.name` change. `propsRef` keeps latest callbacks for the rAF loop.
+
+**Scene graph (root group):** inner sphere · land-mask dot field
+(`N = compact ? 4500 : 8200`, oceans skipped via `ECO_GEO.isLand`) · backside
+glow sphere · terminator line + night hemisphere · cityGroup (core+halo per
+city) · heatGroup · solarGroup · arcGroup (HQ "İstanbul" → top-12 cities
+>200 users, lines + traveling packets).
+
+**Enhancement seams (for E1–E4):**
+- E1 perf: rAF is **unconditional** (no offscreen/hidden pause). pixelRatio
+  capped at 2; N already compact-aware. **No geometry/material dispose** —
+  only `renderer.dispose()` → GPU leak on theme/compact change & unmount.
+  Auto-rotate `auto.rot=0.0008` (set 0 for prefers-reduced-motion).
+- E2 visual: glow is flat backside sphere; terminator is a static tilted
+  ring (real sun orientation intentionally skipped); colors are hardcoded
+  hex (0x0EA5E9/0x10B981/0xF59E0B) — wire to accents/theme.
+- E3 interaction: pointer-drag rotate (x clamped ±1.2), raycast hover/click
+  on cityGroup, `flyTo` exists; **no zoom, no keyboard**; window-level
+  pointermove/up listeners.
+- E4 data: arc HQ hardcoded "İstanbul"; marker size already scales with
+  users/co2.
+
+All E1–E4 changes: new opt flags **default off** or behavior-preserving;
+verify `/services` compact + `/impact` both unaffected; keep deterministic
+for prerender/tests.
+
 ## Roadmap (in progress)
 
 All phases complete: P1 testing/CI/ErrorBoundary/404 · P2 serverless backend +
