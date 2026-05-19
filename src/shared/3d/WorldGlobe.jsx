@@ -28,6 +28,10 @@ import React, { useEffect, useRef } from 'react';
       showTerminator: !!opts.showTerminator,
       compact: !!opts.compact,
       theme: opts.theme || "light",
+      // Accent-driven structural color (semantic city/heat/solar colors stay
+      // fixed). Defaults preserve the original look when not provided.
+      cyan: opts.cyan || "#0EA5E9",
+      emerald: opts.emerald || "#10B981",
     };
 
     const w = () => container.clientWidth;
@@ -62,7 +66,7 @@ import React, { useEffect, useRef } from 'react';
 
     // ── Inner sphere (gives the globe a subtle body) ────────────────────────
     const innerMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(state.theme === "dark" ? 0x0b1220 : 0x0EA5E9),
+      color: new THREE.Color(state.theme === "dark" ? 0x0b1220 : state.cyan),
       transparent: true,
       opacity: state.theme === "dark" ? 0.5 : 0.04,
     });
@@ -76,6 +80,8 @@ import React, { useEffect, useRef } from 'react';
 
     const N = Math.round((state.compact ? 4500 : 8200) * (lowPower ? 0.55 : 1));
     const tmpColor = new THREE.Color();
+    const accentA = new THREE.Color(state.cyan);
+    const accentB = new THREE.Color(state.emerald);
     for (let i = 0; i < N; i++) {
       // Fibonacci sphere distribution → (lat, lon)
       const k = i + 0.5;
@@ -93,9 +99,9 @@ import React, { useEffect, useRef } from 'react';
 
       dotPositions.push(x, y, z);
 
-      // Slight color variation across landmasses
-      const hue = 0.55 + Math.random() * 0.12; // cyan→teal range
-      tmpColor.setHSL(hue, 0.55, state.theme === "dark" ? 0.55 : 0.45);
+      // Landmass tint = accent palette ramp (cyan→emerald), theme-adjusted.
+      tmpColor.copy(accentA).lerp(accentB, Math.random());
+      tmpColor.multiplyScalar(state.theme === "dark" ? 1.15 : 0.9);
       dotColors.push(tmpColor.r, tmpColor.g, tmpColor.b);
     }
 
@@ -116,14 +122,25 @@ import React, { useEffect, useRef } from 'react';
     const dots = new THREE.Points(dotGeo, dotMat);
     root.add(dots);
 
-    // ── Outer glow ring ─────────────────────────────────────────────────────
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0x0EA5E9),
+    // ── Atmosphere (Fresnel rim glow) ───────────────────────────────────────
+    const glowMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uColor: { value: new THREE.Color(state.cyan) },
+        uOpacity: { value: state.theme === "dark" ? 0.9 : 0.5 },
+      },
+      vertexShader:
+        "varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal);" +
+        " gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
+      fragmentShader:
+        "uniform vec3 uColor; uniform float uOpacity; varying vec3 vN;" +
+        " void main(){ float f = pow(1.0 - abs(vN.z), 3.0);" +
+        " gl_FragColor = vec4(uColor, f * uOpacity); }",
       transparent: true,
-      opacity: 0.06,
       side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
-    const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.08, 48, 48), glowMat);
+    const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.14, 48, 48), glowMat);
     root.add(glow);
 
     // ── Day/night terminator (great circle ring) ────────────────────────────
@@ -189,7 +206,7 @@ import React, { useEffect, useRef } from 'react';
       cityGroup.add(core);
 
       // Halo (pulsing)
-      const haloMat = new THREE.MeshBasicMaterial({ color: coreColor, transparent: true, opacity: 0.25, depthWrite: false });
+      const haloMat = new THREE.MeshBasicMaterial({ color: coreColor, transparent: true, opacity: 0.25, depthWrite: false, blending: THREE.AdditiveBlending });
       const halo = new THREE.Mesh(new THREE.SphereGeometry(coreSize * 2.2, 12, 12), haloMat);
       halo.position.set(x, y, z);
       cityGroup.add(halo);
@@ -532,9 +549,11 @@ import React, { useEffect, useRef } from 'react';
         showTerminator: propsRef.current.showTerminator,
         compact: propsRef.current.compact,
         theme: propsRef.current.theme,
+        cyan: propsRef.current.cyan,
+        emerald: propsRef.current.emerald,
       });
       return () => apiRef.current && apiRef.current.dispose && apiRef.current.dispose();
-    }, [props.theme, props.compact]);
+    }, [props.theme, props.compact, props.cyan, props.emerald]);
 
     // Push live updates without recreating scene
     useEffect(() => {

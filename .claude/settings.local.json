@@ -63,7 +63,9 @@
       "Bash(git commit -q -m 'feat: a11y pass + docs \\(Phase 5, enhancement roadmap complete\\) *)",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('lint errors:',e,'warnings:',w\\)}\\)\")",
       "Bash(git commit -q -m 'docs\\(3d\\): WorldGlobe enhancement reference \\(E0, no behavior change\\) *)",
-      "Bash(git commit -q -m 'perf\\(3d\\): WorldGlobe LOD + offscreen pause + dispose audit \\(E1\\) *)"
+      "Bash(git commit -q -m 'perf\\(3d\\): WorldGlobe LOD + offscreen pause + dispose audit \\(E1\\) *)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('LINT errors:',e,'warnings:',w\\)}\\)\")",
+      "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe visual fidelity — atmosphere + accents \\(E2\\) *7)"
     ]
   }
 }

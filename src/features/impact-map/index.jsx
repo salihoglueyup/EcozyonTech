@@ -8,7 +8,7 @@ import { useApp } from '@/app/providers/AppProvider';
 
 function ImpactMap({ t }) {
   const m = t.impactMap;
-  const { isDark } = useApp();
+  const { isDark, accents } = useApp();
   const cities = CITIES || [];
 
   const [layers, setLayers] = useState({
@@ -105,6 +105,8 @@ function ImpactMap({ t }) {
                 timeYear={timeYear}
                 showTerminator={showTerminator}
                 theme={isDark ? "dark" : "light"}
+                cyan={accents.cyan}
+                emerald={accents.emerald}
               />
 
               {/* Hover tooltip — follows the city in screen-space */}
