@@ -84,7 +84,8 @@
       "Bash(git commit -q -m 'feat\\(3d\\): G2 country borders layer *)",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\)for\\(const m of f.messages\\)if\\(m.severity===1 && \\(f.filePath.includes\\('WorldGlobe'\\)||f.filePath.includes\\('impact-map'\\)\\)\\)console.log\\(f.filePath.replace\\(/.*Tech./,''\\)+'  L'+m.line+' '+m.ruleId+' — '+m.message.split\\('\\\\n'\\)[0]\\)}\\)\")",
       "Bash(git commit -q -m 'feat\\(3d\\): G3 capitals layer \\(dim dots + hover label\\) *)",
-      "Bash(git commit -q -m 'feat\\(3d\\): G4 i18n capital label + compact balance + docs *)"
+      "Bash(git commit -q -m 'feat\\(3d\\): G4 i18n capital label + compact balance + docs *)",
+      "Bash(git commit -q -m 'docs\\(3d\\): G5 close — README real-geography note + final verify *)"
     ]
   }
 }
