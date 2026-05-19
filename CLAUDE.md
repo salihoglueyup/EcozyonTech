@@ -116,36 +116,46 @@ opts)` → `{ dispose, update, flyTo }`.
 
 **Opts/props contract:** `layers {active,partners,arcs,heat,solar}`,
 `onHover(city,pos)`, `onSelect(city)`, `selected`, `timeYear (2024–2026)`,
-`showTerminator`, `compact`, `theme ('light'|'dark')`.
+`showTerminator`, `compact`, `theme ('light'|'dark')`, `cyan`, `emerald`
+(accent hex; default `#0EA5E9`/`#10B981` — only `/impact` passes them,
+dashboard keeps defaults so its look is unchanged).
 
-**Lifecycle:** setup effect deps `[props.theme, props.compact]` → scene fully
-rebuilt on theme/compact change (rare, OK). `update()` pushes
+**Lifecycle:** setup effect deps `[props.theme, props.compact, props.cyan,
+props.emerald]` → scene fully rebuilt on those (rare, OK). `update()` pushes
 layers/selected/timeYear/showTerminator without rebuild. `flyTo()` on
 `selected.name` change. `propsRef` keeps latest callbacks for the rAF loop.
 
 **Scene graph (root group):** inner sphere · land-mask dot field
-(`N = compact ? 4500 : 8200`, oceans skipped via `ECO_GEO.isLand`) · backside
-glow sphere · terminator line + night hemisphere · cityGroup (core+halo per
-city) · heatGroup · solarGroup · arcGroup (HQ "İstanbul" → top-12 cities
->200 users, lines + traveling packets).
+(`N = (compact?4500:8200) * (lowPower?0.55:1)`, oceans skipped via
+`ECO_GEO.isLand`) · Fresnel atmosphere shell · terminator line + night
+hemisphere · cityGroup (core+halo per city) · heatGroup · solarGroup ·
+arcGroup (HQ "İstanbul" → top cities by users, lines + traveling packets).
 
-**Enhancement seams (for E1–E4):**
-- E1 perf: rAF is **unconditional** (no offscreen/hidden pause). pixelRatio
-  capped at 2; N already compact-aware. **No geometry/material dispose** —
-  only `renderer.dispose()` → GPU leak on theme/compact change & unmount.
-  Auto-rotate `auto.rot=0.0008` (set 0 for prefers-reduced-motion).
-- E2 visual: glow is flat backside sphere; terminator is a static tilted
-  ring (real sun orientation intentionally skipped); colors are hardcoded
-  hex (0x0EA5E9/0x10B981/0xF59E0B) — wire to accents/theme.
-- E3 interaction: pointer-drag rotate (x clamped ±1.2), raycast hover/click
-  on cityGroup, `flyTo` exists; **no zoom, no keyboard**; window-level
-  pointermove/up listeners.
-- E4 data: arc HQ hardcoded "İstanbul"; marker size already scales with
-  users/co2.
+**Implemented enhancements (E1–E4 — done):**
+- E1 perf: rAF **pauses** offscreen (IntersectionObserver) + tab-hidden
+  (visibilitychange), resumes via `resume()`. `reduceMotion`/`motion`
+  multiplier zeroes auto-rotate + pulses + arc/terminator motion under
+  prefers-reduced-motion. `lowPower` tier (deviceMemory≤4 or min dim <420):
+  ~55% points, pixelRatio cap 1.5, AA off. `dispose()` traverses scene and
+  frees all geometries/materials + detaches IO/visibility listeners.
+- E2 visual: atmosphere is a **Fresnel ShaderMaterial** rim (BackSide,
+  additive); city halos use additive blending. Structural color
+  (inner sphere, landmass dot ramp `accentA→accentB`, atmosphere) is
+  accent-driven via `cyan`/`emerald`; semantic city/heat/solar colors stay
+  fixed. Setup effect deps now include `props.cyan/emerald`.
+- E3 interaction: wheel + 2-pointer pinch zoom (clamped, lerped), disabled
+  on compact so it never hijacks page scroll; `wheel` is `passive:false`
+  with preventDefault. Keyboard: container `tabIndex/role=application/
+  aria-label`, arrows rotate, +/- zoom. `flyTo` on select unchanged.
+- E4 data: 59 cities (was ~43); arcs sorted by users (deterministic),
+  16 routes (10 compact). ImpactMap stats + live CO₂ counter scale from
+  the dataset automatically.
 
-All E1–E4 changes: new opt flags **default off** or behavior-preserving;
-verify `/services` compact + `/impact` both unaffected; keep deterministic
-for prerender/tests.
+Invariants for future 3D work: keep `/services` compact light + scroll-safe
+and `/impact` behavior intact; keep deterministic for prerender/tests; new
+visual/interaction features should stay opt-gated or behavior-preserving.
+Parked (Q1 = keep globes separate): porting the AI node/arc motif to
+`EcoGlobe` / a WorldGlobe "showcase" mode.
 
 ## Roadmap (in progress)
 

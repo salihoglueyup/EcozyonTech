@@ -68,7 +68,8 @@
       "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe visual fidelity — atmosphere + accents \\(E2\\) *7)",
       "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe interaction — zoom + keyboard + pinch \\(E3\\) *)",
       "Bash(node -e \"const m=require\\('node:fs'\\).readFileSync\\('src/core/data/cities.js','utf8'\\);const n=\\(m.match\\(/{ name:/g\\)||[]\\).length;console.log\\('city count:',n\\)\")",
-      "Bash(git commit -q -m 'feat\\(3d\\): enrich city dataset + arcs \\(E4\\) *)"
+      "Bash(git commit -q -m 'feat\\(3d\\): enrich city dataset + arcs \\(E4\\) *)",
+      "Bash(git commit -q -m 'docs\\(3d\\): close E5 — CLAUDE.md reflects implemented E1-E4 *)"
     ]
   }
 }
