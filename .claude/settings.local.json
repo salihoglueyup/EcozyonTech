@@ -27,7 +27,19 @@
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('errors:',e,'warnings:',w\\)}\\)\")",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\)for\\(const m of f.messages\\)if\\(m.ruleId==='no-unused-vars'\\)console.log\\(f.filePath.replace\\(/.*Tech./,''\\)+'  L'+m.line+':'+m.column+'  '+m.message.split\\('.'\\)[0]\\)}\\)\")",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('ESLint -> errors:',e,'warnings:',w\\)}\\)\")",
-      "Bash(git commit -q -m 'fix: 0 ESLint errors, restore intended animations & typography *)"
+      "Bash(git commit -q -m 'fix: 0 ESLint errors, restore intended animations & typography *)",
+      "Bash(ls public *)",
+      "Bash(ls public/robots.txt public/sitemap.xml)",
+      "Bash(ls .github)",
+      "Bash(ls vitest.config.*)",
+      "Bash(grep -rl \"ErrorBoundary\\\\|componentDidCatch\" src)",
+      "Bash(node -e \"require.resolve\\('react-dom/server'\\);console.log\\('react-dom/server OK', require\\('react/package.json'\\).version\\)\")",
+      "Bash(npm view *)",
+      "Bash(grep -vE \"useEffect|addEventListener|onClick|onScroll|=>|//|loadPrefs\")",
+      "Bash(timeout 240 npm install -D vitest@^3 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event)",
+      "Bash(npx vitest *)",
+      "Bash(grep -iE \"src[\\\\\\\\/]\")",
+      "Bash(git commit -q -m 'test: Vitest + RTL infrastructure with baseline suite *)"
     ]
   }
 }

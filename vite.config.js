@@ -27,4 +27,13 @@ export default defineConfig({
       },
     },
   },
+  // Match production's automatic JSX runtime in the Vitest transform so
+  // files that don't import React (primitives, layouts, pages) work in tests.
+  esbuild: { jsx: 'automatic' },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.js',
+    css: false,
+  },
 })
