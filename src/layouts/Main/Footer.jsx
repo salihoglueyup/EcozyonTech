@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
 import { NAV_ITEMS } from '@/core/config/site';
@@ -43,10 +44,7 @@ export default function Footer() {
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">
               {lang === 'tr' ? 'Bültene abone ol' : 'Subscribe to newsletter'}
             </div>
-            <form className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-900/[.08] p-1 pl-3.5 max-w-xs" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="you@company.com" className="flex-1 bg-transparent outline-none text-[12.5px] text-slate-800 placeholder:text-slate-400" />
-              <button type="submit" className="rounded-full bg-slate-900 text-white text-[11.5px] font-medium px-3 py-1.5 hover:bg-slate-800">→</button>
-            </form>
+            <NewsletterForm lang={lang} />
             <div className="mt-4 text-[11.5px] text-slate-500 leading-relaxed">
               {lang === 'tr' ? 'Ürün güncellemeleri ve sürdürülebilirlik analizleri. Spam yok.' : 'Product updates and sustainability briefings. No spam.'}
             </div>
@@ -58,5 +56,77 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function NewsletterForm({ lang }) {
+  const [email, setEmail] = useState('');
+  const [hp, setHp] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company_website: hp }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <p role="status" className="text-[12.5px] text-emerald-700 py-2">
+        {lang === 'tr' ? '✓ Abone oldun, teşekkürler!' : '✓ Subscribed, thank you!'}
+      </p>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-900/[.08] p-1 pl-3.5 max-w-xs"
+    >
+      <label className="sr-only" htmlFor="footer-newsletter-email">
+        {lang === 'tr' ? 'E-posta' : 'Email'}
+      </label>
+      <input
+        id="footer-newsletter-email"
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@company.com"
+        className="flex-1 bg-transparent outline-none text-[12.5px] text-slate-800 placeholder:text-slate-400"
+      />
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={hp}
+        onChange={(e) => setHp(e.target.value)}
+        className="hidden"
+      />
+      <button
+        type="submit"
+        disabled={status === 'sending'}
+        className="rounded-full bg-slate-900 text-white text-[11.5px] font-medium px-3 py-1.5 hover:bg-slate-800 disabled:opacity-50"
+      >
+        {status === 'sending' ? '…' : status === 'error' ? '!' : '→'}
+      </button>
+    </form>
   );
 }

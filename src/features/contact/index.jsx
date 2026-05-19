@@ -9,16 +9,34 @@ export function Contact({ t, lang }) {
   const [message, setMessage] = useState("");
   const [purpose, setPurpose] = useState(t.contact.purposes[0]);
   const [purposeOpen, setPurposeOpen] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
 
   const validEmail = /^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(email);
-  const canSubmit = name && company && validEmail;
+  const canSubmit = name && company && validEmail && status !== "sending";
+  const sending = status === "sending";
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (!canSubmit) return;
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
+    if (!name || !company || !validEmail || sending) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, company, email, message, purpose, company_website: honeypot }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus("success");
+        setName(""); setCompany(""); setEmail(""); setMessage("");
+        setTimeout(() => setStatus("idle"), 6000);
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -55,6 +73,20 @@ export function Contact({ t, lang }) {
               <span>{t.contact.amac}</span>
             </div>
 
+            {/* Honeypot — hidden from humans, catches bots */}
+            <div aria-hidden="true" className="absolute left-[-9999px] top-[-9999px]">
+              <label>
+                Company website
+                <input
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </label>
+            </div>
+
             {/* Email + message fields */}
             <div className="mt-7 grid grid-cols-1 md:grid-cols-2 gap-3">
               <FieldGroup label={t.contact.emailLabel} required>
@@ -89,10 +121,33 @@ export function Contact({ t, lang }) {
                 className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white shadow-[0_10px_30px_-12px_rgba(14,165,233,.6)] transition ${!canSubmit ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.02] active:scale-[0.99]"}`}
                 style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)" }}
               >
-                {sent ? t.contact.sent : t.contact.submit}
-                {!sent && <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>}
+                {sending
+                  ? (lang === "tr" ? "Gönderiliyor…" : "Sending…")
+                  : status === "success"
+                    ? t.contact.sent
+                    : t.contact.submit}
+                {!sending && status !== "success" && (
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                )}
               </button>
             </div>
+
+            <p
+              role="status"
+              aria-live="polite"
+              className={`mt-3 text-[12.5px] min-h-[1.1em] ${
+                status === "error" ? "text-rose-600" : "text-emerald-700"
+              }`}
+            >
+              {status === "success" &&
+                (lang === "tr"
+                  ? "Teşekkürler! Mesajın alındı, 24 saat içinde döneceğiz."
+                  : "Thanks! Your message was received — we'll reply within 24 hours.")}
+              {status === "error" &&
+                (lang === "tr"
+                  ? "Gönderilemedi. Lütfen alanları kontrol edip tekrar dene."
+                  : "Couldn't send. Please check the fields and try again.")}
+            </p>
           </form>
 
           {/* RIGHT: what happens next timeline */}
