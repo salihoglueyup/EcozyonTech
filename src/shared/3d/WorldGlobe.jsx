@@ -15,6 +15,7 @@ import * as THREE from 'three';
 import { CITIES } from '@/core/data/cities';
 import { isLand, latLonToXYZ } from '@/core/data/geo';
 import BORDERS from '@/core/data/borders.json';
+import CAPITALS from '@/core/data/capitals.json';
 import React, { useEffect, useRef } from 'react';
 
   function makeWorldGlobe(container, opts) {
@@ -211,6 +212,27 @@ import React, { useEffect, useRef } from 'react';
     const cityGroup = new THREE.Group();
     root.add(cityGroup);
 
+    // ── World capitals (dim, secondary to product cities) ───────────────────
+    const capitalGroup = new THREE.Group();
+    root.add(capitalGroup);
+    {
+      const capGeo = new THREE.SphereGeometry(state.compact ? 0.012 : 0.016, 8, 8);
+      const capMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(state.theme === "dark" ? 0x94a3b8 : 0x64748b),
+        transparent: true,
+        opacity: state.compact ? 0.4 : 0.6,
+      });
+      for (const cap of CAPITALS.list) {
+        const [cx, cy, cz] = latLonToXYZ(cap.lat, cap.lon, R * 1.008);
+        const dot = new THREE.Mesh(capGeo, capMat);
+        dot.position.set(cx, cy, cz);
+        dot.userData.kind = "capital";
+        dot.userData.capital = cap;
+        capitalGroup.add(dot);
+      }
+    }
+    capitalGroup.visible = state.capitals;
+
     // Heat halo layer
     const heatGroup = new THREE.Group();
     root.add(heatGroup);
@@ -387,7 +409,7 @@ import React, { useEffect, useRef } from 'react';
       if (e && pointers.has(e.pointerId)) pointers.delete(e.pointerId);
       pinchPrev = 0;
       drag.active = false;
-      hoveredCity = null;
+      hoverKey = null;
       state.onHover(null);
     }
     function onClick(e) {
@@ -415,7 +437,6 @@ import React, { useEffect, useRef } from 'react';
     // Raycaster for hover/click
     const raycaster = new THREE.Raycaster();
     raycaster.params.Points = { threshold: 0.04 };
-    let hoveredCity = null;
 
     function getMouseNDC(e) {
       const r = container.getBoundingClientRect();
@@ -425,6 +446,8 @@ import React, { useEffect, useRef } from 'react';
       );
     }
 
+    // Click selection stays product-city only — capitals are not selectable
+    // so the impact story (where Ecozyon operates) stays primary.
     function pickCity(e) {
       const ndc = getMouseNDC(e);
       raycaster.setFromCamera(ndc, camera);
@@ -435,29 +458,41 @@ import React, { useEffect, useRef } from 'react';
       return null;
     }
 
+    let hoverKey = null;
     function handleHover(e) {
       const r = container.getBoundingClientRect();
       if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
-        if (hoveredCity) { hoveredCity = null; state.onHover(null, null); }
+        if (hoverKey) { hoverKey = null; state.onHover(null, null); }
         return;
       }
-      const c = pickCity(e);
-      if (c !== hoveredCity) {
-        hoveredCity = c;
-        let pos = null;
-        if (c) {
-          // Compute screen-space position of the city marker for tooltip placement
-          const node = cityNodes.find((n) => n.city.name === c.name);
-          if (node) {
-            const v = node.core.getWorldPosition(new THREE.Vector3()).project(camera);
-            pos = {
-              x: (v.x + 1) / 2 * r.width,
-              y: (1 - (v.y + 1) / 2) * r.height,
-            };
-          }
+      const ndc = getMouseNDC(e);
+      raycaster.setFromCamera(ndc, camera);
+
+      // Product cities take priority; capitals only when visible.
+      let obj = null, payload = null;
+      const cHits = raycaster.intersectObjects(cityGroup.children, false);
+      for (const hit of cHits) {
+        if (hit.object.userData?.kind === "city") { obj = hit.object; payload = hit.object.userData.city; break; }
+      }
+      if (!payload && state.capitals && capitalGroup.visible) {
+        const kHits = raycaster.intersectObjects(capitalGroup.children, false);
+        if (kHits.length && kHits[0].object.userData?.kind === "capital") {
+          obj = kHits[0].object;
+          const cap = obj.userData.capital;
+          payload = { name: cap.n, country: cap.c, capital: true };
         }
-        state.onHover(c, pos);
-        container.style.cursor = c ? "pointer" : (drag.active ? "grabbing" : "grab");
+      }
+
+      const key = payload ? (payload.capital ? "cap:" : "city:") + payload.name : null;
+      if (key !== hoverKey) {
+        hoverKey = key;
+        let pos = null;
+        if (obj) {
+          const v = obj.getWorldPosition(new THREE.Vector3()).project(camera);
+          pos = { x: (v.x + 1) / 2 * r.width, y: (1 - (v.y + 1) / 2) * r.height };
+        }
+        state.onHover(payload, pos);
+        container.style.cursor = payload ? "pointer" : (drag.active ? "grabbing" : "grab");
       }
     }
 
@@ -551,6 +586,7 @@ import React, { useEffect, useRef } from 'react';
 
       // Arcs animation
       borderGroup.visible = !!state.borders;
+      capitalGroup.visible = !!state.capitals;
       arcGroup.visible = !!state.layers.arcs;
       if (arcGroup.visible) {
         arcCurves.forEach((a) => {

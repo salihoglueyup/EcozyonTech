@@ -226,16 +226,19 @@ function HoverCard({ city, pos, m }) {
     <div className="absolute z-20 max-w-[220px] pointer-events-none" style={style}>
       <div className="rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-white/60 ring-1 ring-slate-900/[.06] px-3.5 py-3 shadow-[0_18px_50px_-20px_rgba(15,23,42,.35)]">
         <div className="flex items-center gap-2 mb-1">
-          <span className={`h-1.5 w-1.5 rounded-full ${city.partner ? "bg-cyan-500" : "bg-emerald-500"}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${city.capital ? "bg-slate-400" : city.partner ? "bg-cyan-500" : "bg-emerald-500"}`} />
           <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{city.country}</span>
-          {city.partner && <span className="text-[9.5px] font-mono text-cyan-700 ml-auto">PARTNER</span>}
+          {city.capital && <span className="text-[9.5px] font-mono text-slate-500 ml-auto">{m.details.capital || "CAPITAL"}</span>}
+          {!city.capital && city.partner && <span className="text-[9.5px] font-mono text-cyan-700 ml-auto">PARTNER</span>}
         </div>
         <div className="font-display text-[16px] tracking-tight text-slate-900 leading-tight">{city.name}</div>
-        <div className="mt-2 space-y-1 text-[11px] text-slate-600">
-          <div className="flex justify-between gap-3"><span>{m.details.users}</span><span className="font-mono text-slate-900">{city.users.toLocaleString()}</span></div>
-          <div className="flex justify-between gap-3"><span>{m.details.co2}</span><span className="font-mono text-emerald-700">{city.co2} kg</span></div>
-          <div className="flex justify-between gap-3"><span>{m.details.solar}</span><span className="font-mono text-amber-600">{city.solar}%</span></div>
-        </div>
+        {!city.capital && (
+          <div className="mt-2 space-y-1 text-[11px] text-slate-600">
+            <div className="flex justify-between gap-3"><span>{m.details.users}</span><span className="font-mono text-slate-900">{city.users.toLocaleString()}</span></div>
+            <div className="flex justify-between gap-3"><span>{m.details.co2}</span><span className="font-mono text-emerald-700">{city.co2} kg</span></div>
+            <div className="flex justify-between gap-3"><span>{m.details.solar}</span><span className="font-mono text-amber-600">{city.solar}%</span></div>
+          </div>
+        )}
       </div>
     </div>
   );
