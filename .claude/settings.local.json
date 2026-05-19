@@ -83,7 +83,8 @@
       "Bash(node -e \"const b=require\\('./src/core/data/borders.json'\\);console.log\\('rings:',b.rings.length,'first ring pts:',b.rings[0].length/2,'sample:',b.rings[0].slice\\(0,6\\)\\)\")",
       "Bash(git commit -q -m 'feat\\(3d\\): G2 country borders layer *)",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\)for\\(const m of f.messages\\)if\\(m.severity===1 && \\(f.filePath.includes\\('WorldGlobe'\\)||f.filePath.includes\\('impact-map'\\)\\)\\)console.log\\(f.filePath.replace\\(/.*Tech./,''\\)+'  L'+m.line+' '+m.ruleId+' — '+m.message.split\\('\\\\n'\\)[0]\\)}\\)\")",
-      "Bash(git commit -q -m 'feat\\(3d\\): G3 capitals layer \\(dim dots + hover label\\) *)"
+      "Bash(git commit -q -m 'feat\\(3d\\): G3 capitals layer \\(dim dots + hover label\\) *)",
+      "Bash(git commit -q -m 'feat\\(3d\\): G4 i18n capital label + compact balance + docs *)"
     ]
   }
 }

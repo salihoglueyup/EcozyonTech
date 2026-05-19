@@ -157,6 +157,29 @@ visual/interaction features should stay opt-gated or behavior-preserving.
 Parked (Q1 = keep globes separate): porting the AI node/arc motif to
 `EcoGlobe` / a WorldGlobe "showcase" mode.
 
+### Real geography (G0–G5)
+
+Built from Natural Earth 110m (public domain) via `scripts/build-geo.mjs`
+(`npm run build:geo`, run manually — outputs are committed, NOT in the CI
+build chain; `data-src/` is gitignored, `topojson-client` is build-only).
+Outputs in `src/core/data/`:
+- `land.json` — 1° packed bitfield. `geo.js` exposes O(1) `isLand` +
+  re-exports `latLonToXYZ`. The globe dot field uses this (not the old
+  `ECO_GEO` ellipses) so dots align with borders. `atob` decode runs at
+  module load (Node has `atob`, so prerender's lazy resolve is fine).
+- `borders.json` — 226 rings, 0.2° quantized → one merged `LineSegments`
+  (`borders` opt). ~30 KB gz; whole WorldGlobe lazy chunk ≈ 42 KB gz.
+- `capitals.json` — 215 Admin-0 capitals → dim shared-geo/mat dots
+  (`capitals` opt). Hover reuses the raycaster but capitals are **not
+  selectable** and product cities take hover priority, so the impact
+  story stays primary. `HoverCard` renders a capital badge + skips
+  users/co2/solar (`m.details.capital`).
+
+Both layers render on `/impact` **and** dashboard compact (user choice);
+compact adaptation = fainter/thinner borders + smaller/dimmer capitals.
+To regenerate after data/source changes: `npm run build:geo` then commit
+the three JSON files.
+
 ## Roadmap (in progress)
 
 All phases complete: P1 testing/CI/ErrorBoundary/404 · P2 serverless backend +
