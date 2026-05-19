@@ -49,7 +49,6 @@ function DashboardPreview({ t, lang }) {
     },
   ];
   const d = datasets[tab];
-  const usedPct = Math.round((d.budget.used / d.budget.total) * 100);
   const dayLabels = ["P", "S", "Ç", "P", "C", "Ct", "P"];
 
   return (
@@ -184,10 +183,10 @@ function DashboardPreview({ t, lang }) {
               </div>
 
               {view === "overview" && (
-                <DashOverview t={t} d={d} usedPct={usedPct} dayLabels={dayLabels} weekHover={weekHover} setWeekHover={setWeekHover} donutHover={donutHover} setDonutHover={setDonutHover} tab={tab} live={live} tick={tick} />
+                <DashOverview t={t} d={d} dayLabels={dayLabels} weekHover={weekHover} setWeekHover={setWeekHover} donutHover={donutHover} setDonutHover={setDonutHover} tab={tab} live={live} tick={tick} />
               )}
               {view === "devices" && <DashDevices lang={lang} tab={tab} />}
-              {view === "insights" && <DashInsights lang={lang} tab={tab} d={d} />}
+              {view === "insights" && <DashInsights lang={lang} />}
             </div>
           </div>
         </div>
@@ -197,7 +196,7 @@ function DashboardPreview({ t, lang }) {
 }
 
 // ── Dashboard subviews ─────────────────────────────────────────────────────
-function DashOverview({ t, d, usedPct, dayLabels, weekHover, setWeekHover, donutHover, setDonutHover, tab, live, tick }) {
+function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, setDonutHover, tab, live, tick }) {
   // Subtle live-mode mutations
   const liveUsed = live ? Math.min(d.budget.total, d.budget.used + (tick % 4)) : d.budget.used;
   const livePct = Math.round((liveUsed / d.budget.total) * 100);
@@ -449,7 +448,7 @@ function DashDevices({ lang, tab }) {
 }
 
 // ── Insights view ──────────────────────────────────────────────────────────
-function DashInsights({ lang, tab, d }) {
+function DashInsights({ lang }) {
   const insights = lang === "tr" ? [
     { tag: "Ulaşım",   title: "Çarşamba pikinizi düşürün", body: "Hafta içi video toplantılarınızı sesli moda alırsan haftalık 1.4 kg CO₂ tasarrufu sağlarsın.", save: "1.4 kg / hf", confidence: 92, color: "#0EA5E9" },
     { tag: "Enerji",   title: "Klimayı 2°C arttır",        body: "Öğleden sonra ofiste yüksek yük görülüyor. 2°C artış kişi başı 38 kg/ay tasarrufa denk.", save: "38 kg / ay",  confidence: 88, color: "#10B981" },

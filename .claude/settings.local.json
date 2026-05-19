@@ -40,7 +40,17 @@
       "Bash(npx vitest *)",
       "Bash(grep -iE \"src[\\\\\\\\/]\")",
       "Bash(git commit -q -m 'test: Vitest + RTL infrastructure with baseline suite *)",
-      "Bash(git commit -q -m 'feat: ErrorBoundary + real 404 page *)"
+      "Bash(git commit -q -m 'feat: ErrorBoundary + real 404 page *)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);const by={};for\\(const f of r\\)for\\(const m of f.messages\\){const k=m.ruleId||'?';by[k]=\\(by[k]||0\\)+1}console.log\\(by\\);console.log\\('--- no-unused-vars detayı ---'\\);for\\(const f of r\\)for\\(const m of f.messages\\)if\\(m.ruleId==='no-unused-vars'\\)console.log\\(f.filePath.replace\\(/.*Tech./,''\\)+'  L'+m.line+'  '+m.message.split\\('.'\\)[0]\\)}\\)\")",
+      "Bash(sed -n '198,204p' src/features/dashboard/index.jsx)",
+      "Bash(sed -n '450,456p' src/features/dashboard/index.jsx)",
+      "Bash(sed -n '68,72p' src/features/how-it-works/index.jsx)",
+      "Bash(sed -n '8,8p' src/features/impact-map/index.jsx)",
+      "Bash(sed -n '165,165p' src/shared/3d/WorldGlobe.jsx)",
+      "Bash(sed -n '18,24p' src/test/pages.test.jsx)",
+      "Bash(timeout 120 npm install -D eslint-plugin-react)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;const by={};for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount;for\\(const m of f.messages\\)by[m.ruleId]=\\(by[m.ruleId]||0\\)+1}console.log\\('errors:',e,'warnings:',w\\);console.log\\(by\\)}\\)\")",
+      "Bash(git commit -q -m 'chore: CI + CLAUDE.md + lint cleanup \\(20->12 warnings, 0 errors\\) *)"
     ]
   }
 }

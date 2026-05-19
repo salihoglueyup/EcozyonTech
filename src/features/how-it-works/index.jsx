@@ -36,7 +36,7 @@ export function HowItWorks({ t, lang }) {
           </svg>
 
           {h.steps.map((s, i) => (
-            <StepCard key={i} step={s} idx={i} lang={lang} />
+            <StepCard key={i} step={s} idx={i} />
           ))}
         </div>
 
@@ -67,7 +67,7 @@ export function HowItWorks({ t, lang }) {
   );
 }
 
-function StepCard({ step, idx, lang }) {
+function StepCard({ step, idx }) {
   const ref = useRef();
   const [seen, setSeen] = useState(false);
   useEffect(() => {

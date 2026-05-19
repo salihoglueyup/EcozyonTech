@@ -162,7 +162,7 @@ import React, { useEffect, useRef } from 'react';
     const cityNodes = [];
     const cities = CITIES || [];
     const latLonToXYZ = ECO_GEO.latLonToXYZ;
-    cities.forEach((c, idx) => {
+    cities.forEach((c) => {
       const [x, y, z] = latLonToXYZ(c.lat, c.lon, R * 1.01);
 
       // Core dot

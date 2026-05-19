@@ -5,7 +5,7 @@ import { Tag } from '@/shared/ui/primitives';
 import { CITIES } from '@/core/data/cities';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 
-function ImpactMap({ t, lang }) {
+function ImpactMap({ t }) {
   const m = t.impactMap;
   const cities = CITIES || [];
 
