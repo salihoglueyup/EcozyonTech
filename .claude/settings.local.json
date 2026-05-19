@@ -69,7 +69,16 @@
       "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe interaction — zoom + keyboard + pinch \\(E3\\) *)",
       "Bash(node -e \"const m=require\\('node:fs'\\).readFileSync\\('src/core/data/cities.js','utf8'\\);const n=\\(m.match\\(/{ name:/g\\)||[]\\).length;console.log\\('city count:',n\\)\")",
       "Bash(git commit -q -m 'feat\\(3d\\): enrich city dataset + arcs \\(E4\\) *)",
-      "Bash(git commit -q -m 'docs\\(3d\\): close E5 — CLAUDE.md reflects implemented E1-E4 *)"
+      "Bash(git commit -q -m 'docs\\(3d\\): close E5 — CLAUDE.md reflects implemented E1-E4 *)",
+      "Bash(curl -sL -o data-src/countries-110m.json \"https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json\")",
+      "Bash(curl -sL -o data-src/capitals.geojson \"https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_populated_places_simple.geojson\")",
+      "Bash(timeout 120 npm install -D topojson-client)",
+      "Bash(node scripts/build-geo.mjs)",
+      "Bash(gzip -c src/core/data/borders.json)",
+      "Bash(gzip -c src/core/data/land.json)",
+      "Bash(gzip -c src/core/data/capitals.json)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('lint e:',e,'w:',w\\)}\\)\")",
+      "Bash(git commit -q -m 'feat\\(geo\\): G0 data pipeline — borders/land/capitals \\(no app change\\) *)"
     ]
   }
 }
