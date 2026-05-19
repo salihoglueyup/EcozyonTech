@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useApp } from '@/app/providers/AppProvider';
+import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 
 function ScrollProgress() {
@@ -65,7 +66,9 @@ export default function MainLayout() {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
         <Footer />
       </div>

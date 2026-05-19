@@ -39,7 +39,8 @@
       "Bash(timeout 240 npm install -D vitest@^3 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event)",
       "Bash(npx vitest *)",
       "Bash(grep -iE \"src[\\\\\\\\/]\")",
-      "Bash(git commit -q -m 'test: Vitest + RTL infrastructure with baseline suite *)"
+      "Bash(git commit -q -m 'test: Vitest + RTL infrastructure with baseline suite *)",
+      "Bash(git commit -q -m 'feat: ErrorBoundary + real 404 page *)"
     ]
   }
 }

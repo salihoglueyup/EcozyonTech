@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import MainLayout from '@/layouts/Main';
 
 const HomePage = lazy(() => import('@/pages/Home'));
@@ -7,6 +7,7 @@ const ServicesPage = lazy(() => import('@/pages/Services'));
 const ImpactPage = lazy(() => import('@/pages/Impact'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const ContactPage = lazy(() => import('@/pages/Contact'));
+const NotFoundPage = lazy(() => import('@/pages/NotFound'));
 
 function PageFallback() {
   return (
@@ -63,7 +64,14 @@ export function AppRoutes() {
             </Suspense>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <NotFoundPage />
+            </Suspense>
+          }
+        />
       </Route>
     </Routes>
   );
