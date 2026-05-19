@@ -37,8 +37,20 @@ import React, { useEffect, useRef } from 'react';
     const camera = new THREE.PerspectiveCamera(36, w() / h(), 0.1, 100);
     camera.position.set(0, 0, state.compact ? 5.8 : 5.2);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // Respect reduced-motion + scale work down on low-power devices.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lowPower =
+      (typeof navigator !== "undefined" &&
+        navigator.deviceMemory &&
+        navigator.deviceMemory <= 4) ||
+      Math.min(w(), h()) < 420;
+    const motion = reduceMotion ? 0 : 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: !lowPower, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPower ? 1.5 : 2));
     renderer.setSize(w(), h());
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
@@ -62,7 +74,7 @@ import React, { useEffect, useRef } from 'react';
     const dotPositions = [];
     const dotColors = [];
 
-    const N = state.compact ? 4500 : 8200;
+    const N = Math.round((state.compact ? 4500 : 8200) * (lowPower ? 0.55 : 1));
     const tmpColor = new THREE.Color();
     for (let i = 0; i < N; i++) {
       // Fibonacci sphere distribution → (lat, lon)
@@ -240,7 +252,7 @@ import React, { useEffect, useRef } from 'react';
 
     // ── Pointer / Drag interaction ──────────────────────────────────────────
     const drag = { active: false, lastX: 0, lastY: 0, vx: 0, vy: 0 };
-    const auto = { rot: 0.0008 }; // auto-rotation speed
+    const auto = { rot: reduceMotion ? 0 : 0.0008 }; // auto-rotation speed
     function onPointerDown(e) {
       drag.active = true;
       drag.lastX = e.clientX;
@@ -347,8 +359,30 @@ import React, { useEffect, useRef } from 'react';
     root.rotation.y = -Math.PI * 0.55; // start centered around 0° lon roughly
     root.rotation.x = 0.18;
 
-    // ── Animation loop ──────────────────────────────────────────────────────
-    let raf;
+    // ── Animation loop (paused when offscreen or tab hidden) ────────────────
+    let raf = null;
+    let onScreen = true;
+    let tabShown = typeof document === "undefined" || document.visibilityState !== "hidden";
+    const isActive = () => onScreen && tabShown;
+    const resume = () => {
+      if (raf == null && isActive()) tick();
+    };
+
+    const visIO = new IntersectionObserver(
+      ([e]) => {
+        onScreen = e.isIntersecting;
+        resume();
+      },
+      { threshold: 0.01 },
+    );
+    visIO.observe(container);
+
+    const onVisibility = () => {
+      tabShown = document.visibilityState !== "hidden";
+      resume();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const start = performance.now();
     function tick() {
       const tNow = (performance.now() - start) / 1000;
@@ -379,16 +413,16 @@ import React, { useEffect, useRef } from 'react';
         n.solar.visible = !!layers.solar && visible;
 
         if (showCity) {
-          const s = 1 + Math.sin(tNow * 1.5 + n.phase) * 0.3;
+          const s = 1 + Math.sin(tNow * 1.5 + n.phase) * 0.3 * motion;
           n.halo.scale.setScalar(s);
-          n.halo.material.opacity = 0.22 + Math.sin(tNow * 1.5 + n.phase) * 0.1;
+          n.halo.material.opacity = 0.22 + Math.sin(tNow * 1.5 + n.phase) * 0.1 * motion;
         }
         if (n.heat.visible) {
-          const s = 1 + Math.sin(tNow * 0.9 + n.phase) * 0.15;
+          const s = 1 + Math.sin(tNow * 0.9 + n.phase) * 0.15 * motion;
           n.heat.scale.setScalar(s);
         }
         if (n.solar.visible) {
-          n.solar.material.opacity = 0.3 + Math.sin(tNow * 2 + n.phase) * 0.15;
+          n.solar.material.opacity = 0.3 + Math.sin(tNow * 2 + n.phase) * 0.15 * motion;
         }
 
         // Highlight selected
@@ -405,7 +439,7 @@ import React, { useEffect, useRef } from 'react';
       arcGroup.visible = !!state.layers.arcs;
       if (arcGroup.visible) {
         arcCurves.forEach((a) => {
-          a.phase = (a.phase + 0.005) % 1;
+          a.phase = (a.phase + 0.005 * motion) % 1;
           a.line.material.opacity = Math.sin(a.phase * Math.PI) * 0.55;
           // Travel packet along the curve
           const p = a.curve.getPoint(a.phase);
@@ -420,12 +454,12 @@ import React, { useEffect, useRef } from 'react';
       terminator.material.opacity = state.showTerminator ? 0.45 : 0;
       nightHemi.material.opacity = state.showTerminator ? 0.28 : 0;
       if (state.showTerminator) {
-        terminator.rotation.y = tNow * 0.02; // slow earth-rotation feel
-        nightHemi.rotation.y = tNow * 0.02 - Math.PI / 2;
+        terminator.rotation.y = tNow * 0.02 * motion; // slow earth-rotation feel
+        nightHemi.rotation.y = tNow * 0.02 * motion - Math.PI / 2;
       }
 
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(tick);
+      raf = isActive() ? requestAnimationFrame(tick) : null;
     }
     tick();
 
@@ -451,13 +485,23 @@ import React, { useEffect, useRef } from 'react';
     }
 
     function dispose() {
-      cancelAnimationFrame(raf);
+      if (raf != null) cancelAnimationFrame(raf);
+      raf = null;
       ro.disconnect();
+      visIO.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       container.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerCancel);
       container.removeEventListener("click", onClick);
+      // Free GPU memory — renderer.dispose() alone leaks geometries/materials.
+      scene.traverse((o) => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) {
+          (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => m.dispose());
+        }
+      });
       renderer.dispose();
       if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement);
     }
