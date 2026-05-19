@@ -32,7 +32,6 @@ function ImpactMap({ t, lang }) {
 
   // Active stats with time filter
   const activeCities = useMemo(() => cities.filter((c) => c.since <= timeYear), [timeYear, cities]);
-  const totalUsers = useMemo(() => activeCities.reduce((s, c) => s + c.users, 0), [activeCities]);
   const totalCo2 = useMemo(() => activeCities.reduce((s, c) => s + c.co2, 0), [activeCities]);
   const totalPartners = useMemo(() => activeCities.filter((c) => c.partner).length, [activeCities]);
   const totalCountries = useMemo(() => new Set(activeCities.map((c) => c.country)).size, [activeCities]);

@@ -50,9 +50,7 @@ function DashboardPreview({ t, lang }) {
   ];
   const d = datasets[tab];
   const usedPct = Math.round((d.budget.used / d.budget.total) * 100);
-  const days = ["P", "S", "Ç", "P", "C", "Ct", "P"];
-  const daysEn = ["M", "T", "W", "T", "F", "S", "S"];
-  const dayLabels = days; // default
+  const dayLabels = ["P", "S", "Ç", "P", "C", "Ct", "P"];
 
   return (
     <section id="dashboard" className="relative py-20 lg:py-28">
@@ -611,13 +609,15 @@ function Donut({ values, hover, setHover }) {
   const total = values.reduce((a, b) => a + b, 0);
   const colors = ["#0EA5E9", "#10B981", "#7C3AED", "#F59E0B"];
   const R = 40, r = 26;
-  let cum = 0;
+  // Cumulative start for each slice, computed without mutating across the
+  // render boundary (values is tiny, so the O(n²) slice is fine).
+  const starts = values.map((_, i) => values.slice(0, i).reduce((a, b) => a + b, 0));
   return (
     <svg viewBox="0 0 100 100" className="h-28 w-28">
       {values.map((v, i) => {
+        const cum = starts[i];
         const a0 = (cum / total) * Math.PI * 2 - Math.PI / 2;
         const a1 = ((cum + v) / total) * Math.PI * 2 - Math.PI / 2;
-        cum += v;
         const large = v / total > 0.5 ? 1 : 0;
         const x0 = 50 + R * Math.cos(a0), y0 = 50 + R * Math.sin(a0);
         const x1 = 50 + R * Math.cos(a1), y1 = 50 + R * Math.sin(a1);

@@ -19,7 +19,15 @@
       "Bash(timeout 180 npm install -D eslint@^9 @eslint/js@^9 eslint-plugin-react-hooks eslint-plugin-react-refresh globals)",
       "Bash(timeout 120 npm uninstall framer-motion lucide-react clsx tailwind-merge)",
       "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\(Object.keys\\(p.dependencies\\).join\\(', '\\)\\)\")",
-      "Bash(git commit -q -m 'chore: SEO meta, favicon, ESLint, lean deps, accurate README *)"
+      "Bash(git commit -q -m 'chore: SEO meta, favicon, ESLint, lean deps, accurate README *)",
+      "Bash(grep -rl '\\\\b__TRACKED_VAR__\\\\b' src/pages src/layouts)",
+      "Bash(npx eslint *)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\){const errs=f.messages.filter\\(m=>m.severity===2\\);if\\(errs.length\\){console.log\\('\\\\n'+f.filePath.replace\\(/.*Tech./,''\\)\\);for\\(const m of errs\\)console.log\\('  L'+m.line+':'+m.column+'  '+m.ruleId+'  — '+m.message.split\\('\\\\n'\\)[0]\\)}}}\\)\")",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('errors:',e,' warnings:',w\\)}\\)\")",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('errors:',e,'warnings:',w\\)}\\)\")",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\)for\\(const m of f.messages\\)if\\(m.ruleId==='no-unused-vars'\\)console.log\\(f.filePath.replace\\(/.*Tech./,''\\)+'  L'+m.line+':'+m.column+'  '+m.message.split\\('.'\\)[0]\\)}\\)\")",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('ESLint -> errors:',e,'warnings:',w\\)}\\)\")",
+      "Bash(git commit -q -m 'fix: 0 ESLint errors, restore intended animations & typography *)"
     ]
   }
 }

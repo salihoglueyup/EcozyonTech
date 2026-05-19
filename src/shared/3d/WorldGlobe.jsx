@@ -469,7 +469,12 @@ import React, { useEffect, useRef } from 'react';
     const ref = useRef(null);
     const apiRef = useRef(null);
     const propsRef = useRef(props);
-    propsRef.current = props;
+    // Keep latest props available to the imperative animation loop without
+    // rebuilding the globe. Updating the ref in an effect (not during render)
+    // satisfies react-hooks and still runs before the next frame reads it.
+    useEffect(() => {
+      propsRef.current = props;
+    });
 
     // Single setup + teardown — never rebuild on prop changes
     useEffect(() => {

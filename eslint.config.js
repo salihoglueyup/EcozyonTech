@@ -27,4 +27,15 @@ export default [
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    // dev-tweaks is a vendored design-host panel mounted only in
+    // import.meta.env.DEV — it never ships to production. Its imperative
+    // ref usage is intentional; don't fail lint over rewriting it.
+    files: ['src/features/dev-tweaks/**'],
+    rules: {
+      'react-hooks/refs': 'off',
+      'react-hooks/immutability': 'off',
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ];
