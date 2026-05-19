@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
-import { NAV_ITEMS } from '@/core/config/site';
+import { FOOTER_ITEMS } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
 
 export default function Footer() {
@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="col-span-6 md:col-span-4 lg:col-span-2">
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">{t.footer.nav}</div>
             <ul className="space-y-2">
-              {NAV_ITEMS.map((it) => (
+              {FOOTER_ITEMS.filter((it) => it.key !== 'legal').map((it) => (
                 <li key={it.path}>
                   <Link to={it.path} className="text-[13px] text-slate-700 hover:text-slate-900">
                     {it.nav[lang] || it.nav.en}
@@ -37,7 +37,16 @@ export default function Footer() {
           <div className="col-span-6 md:col-span-4 lg:col-span-2">
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">{t.footer.legal}</div>
             <ul className="space-y-2">
-              {t.footer.links.legalItems.map((it) => <li key={it}><a href="#" className="text-[13px] text-slate-700 hover:text-slate-900">{it}</a></li>)}
+              <li>
+                <Link to="/legal#privacy" className="text-[13px] text-slate-700 hover:text-slate-900">
+                  {lang === 'tr' ? 'Gizlilik (KVKK)' : 'Privacy'}
+                </Link>
+              </li>
+              <li>
+                <Link to="/legal#terms" className="text-[13px] text-slate-700 hover:text-slate-900">
+                  {lang === 'tr' ? 'Kullanım Şartları' : 'Terms'}
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="col-span-12 md:col-span-4 lg:col-span-3">

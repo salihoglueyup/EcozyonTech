@@ -5,16 +5,24 @@ import { AppProvider } from '@/app/providers/AppProvider';
 
 import HomePage from '@/pages/Home';
 import ServicesPage from '@/pages/Services';
+import PricingPage from '@/pages/Pricing';
 import ImpactPage from '@/pages/Impact';
 import AboutPage from '@/pages/About';
+import BlogPage from '@/pages/Blog';
+import CareersPage from '@/pages/Careers';
 import ContactPage from '@/pages/Contact';
+import LegalPage from '@/pages/Legal';
 
 const pages = {
   Home: HomePage,
   Services: ServicesPage,
+  Pricing: PricingPage,
   Impact: ImpactPage,
   About: AboutPage,
+  Blog: BlogPage,
+  Careers: CareersPage,
   Contact: ContactPage,
+  Legal: LegalPage,
 };
 
 function renderPage(Page) {

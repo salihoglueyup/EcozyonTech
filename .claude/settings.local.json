@@ -52,7 +52,8 @@
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;const by={};for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount;for\\(const m of f.messages\\)by[m.ruleId]=\\(by[m.ruleId]||0\\)+1}console.log\\('errors:',e,'warnings:',w\\);console.log\\(by\\)}\\)\")",
       "Bash(git commit -q -m 'chore: CI + CLAUDE.md + lint cleanup \\(20->12 warnings, 0 errors\\) *)",
       "Bash(git commit -q -m 'feat: serverless backend for contact + newsletter *)",
-      "Bash(git commit -q -m 'feat: wire contact + newsletter forms to the API *)"
+      "Bash(git commit -q -m 'feat: wire contact + newsletter forms to the API *)",
+      "Bash(git commit -q -m 'feat: Pricing, Blog \\(+post\\), Careers, Legal pages \\(bilingual\\) *)"
     ]
   }
 }

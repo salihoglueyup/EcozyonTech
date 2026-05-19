@@ -4,17 +4,33 @@ import { MemoryRouter } from 'react-router-dom';
 import { AppProvider } from '@/app/providers/AppProvider';
 import { AppRoutes } from '@/app/router';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
+import { POSTS } from '@/core/data/posts';
+
+function renderAt(path) {
+  return render(
+    <AppProvider>
+      <MemoryRouter initialEntries={[path]}>
+        <AppRoutes />
+      </MemoryRouter>
+    </AppProvider>,
+  );
+}
 
 describe('routing', () => {
   it('renders the 404 page for an unknown path', async () => {
-    render(
-      <AppProvider>
-        <MemoryRouter initialEntries={['/definitely-not-a-route']}>
-          <AppRoutes />
-        </MemoryRouter>
-      </AppProvider>,
-    );
+    renderAt('/definitely-not-a-route');
     expect(await screen.findByText('404')).toBeInTheDocument();
+  });
+
+  it('renders a blog post by slug param', async () => {
+    const post = POSTS[0];
+    renderAt(`/blog/${post.slug}`);
+    expect(await screen.findByRole('heading', { level: 1, name: post.title.tr })).toBeInTheDocument();
+  });
+
+  it('handles an unknown blog slug gracefully', async () => {
+    renderAt('/blog/no-such-post');
+    expect(await screen.findByText(/bulunamadı/i)).toBeInTheDocument();
   });
 });
 
