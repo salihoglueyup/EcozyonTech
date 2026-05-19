@@ -4,7 +4,17 @@
       "Bash(git init *)",
       "Bash(git config *)",
       "Bash(git add *)",
-      "Bash(git commit -q -m 'chore: baseline snapshot before FSD refactor *)"
+      "Bash(git commit -q -m 'chore: baseline snapshot before FSD refactor *)",
+      "Bash(npm run *)",
+      "Bash(node -e \"console.log\\('router:', require\\('react-router-dom/package.json'\\).version\\)\")",
+      "Bash(rm -f fix_deep.cjs src/App.css src/App.jsx src/assets/react.svg src/assets/vite.svg)",
+      "Bash(rm -rf src/pages src/layouts \"src/shared/ui/Button\" \"src/shared/ui/Card\" \"src/features/ContactForm\" src/core/config)",
+      "Bash(mkdir -p src/shared/ui src/shared/3d src/core/data src/core/i18n src/core/config src/core/hooks src/features/hero src/features/metrics src/features/tech-ecosystem src/features/dashboard src/features/about src/features/contact src/features/how-it-works src/features/use-cases src/features/impact-map src/features/dev-tweaks src/layouts/Main src/app/providers src/pages/Home src/pages/About src/pages/Services src/pages/Impact src/pages/Contact)",
+      "Bash(git mv *)",
+      "Bash(git rm *)",
+      "Bash(rmdir src/components)",
+      "Bash(npx vite *)",
+      "Bash(git commit -q -m 'refactor: real FSD multi-page architecture with router *)"
     ]
   }
 }

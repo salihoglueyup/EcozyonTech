@@ -1,6 +1,4 @@
-import { Contact } from './sections-d';
-
-// Ecozyon Tech — TR/EN dictionary + tiny useI18n hook
+// Ecozyon Tech — TR/EN dictionary
 export const ECO_I18N = {
   tr: {
       nav: {

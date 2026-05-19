@@ -1,7 +1,6 @@
-import { Tag } from './sections-a';
-
-// Ecozyon Tech — sections B: Tech Ecosystem (AI panel + Wearable exploded view)
-import React, { useState, useEffect, useRef } from 'react';
+// Tech Ecosystem — AI panel + Wearable exploded view + Community panel
+import React, { useState } from 'react';
+import { Tag } from '@/shared/ui/primitives';
 
 function TechEcosystem({ t }) {
   return (

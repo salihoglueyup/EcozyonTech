@@ -1,8 +1,7 @@
-import { Tag, EcoLogo } from './sections-a';
-
-// Ecozyon Tech — section C: interactive dashboard preview
-import { WorldGlobe } from './globe-map';
-import React, { useState, useEffect, useMemo } from 'react';
+// Interactive dashboard preview
+import React, { useState, useEffect } from 'react';
+import { Tag, EcoLogo } from '@/shared/ui/primitives';
+import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 
 function DashboardPreview({ t, lang }) {
   const [tab, setTab] = useState(0);

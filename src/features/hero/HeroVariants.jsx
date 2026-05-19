@@ -1,4 +1,3 @@
-import { Hero } from './sections-a';
 
 // Ecozyon Tech — Hero visual variants (alternatives to the Three.js globe)
 // Exposes:

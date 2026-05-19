@@ -12,7 +12,7 @@ import * as THREE from 'three';
 //   theme:    "light" | "dark"
 //   showTerminator: boolean — day/night line
 //   compact:  boolean — smaller dots, used in dashboard
-import { CITIES, ECO_GEO } from './cities';
+import { CITIES, ECO_GEO } from '@/core/data/cities';
 import React, { useEffect, useRef } from 'react';
 
   function makeWorldGlobe(container, opts) {
