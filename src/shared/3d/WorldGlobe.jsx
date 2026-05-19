@@ -12,7 +12,8 @@ import * as THREE from 'three';
 //   theme:    "light" | "dark"
 //   showTerminator: boolean — day/night line
 //   compact:  boolean — smaller dots, used in dashboard
-import { CITIES, ECO_GEO } from '@/core/data/cities';
+import { CITIES } from '@/core/data/cities';
+import { isLand, latLonToXYZ } from '@/core/data/geo';
 import React, { useEffect, useRef } from 'react';
 
   function makeWorldGlobe(container, opts) {
@@ -73,8 +74,7 @@ import React, { useEffect, useRef } from 'react';
     const inner = new THREE.Mesh(new THREE.SphereGeometry(R * 0.985, 64, 64), innerMat);
     root.add(inner);
 
-    // ── Procedural land-mask dot field ──────────────────────────────────────
-    const isLand = ECO_GEO.isLand;
+    // ── Real land-mask dot field (raster from Natural Earth 110m) ───────────
     const dotPositions = [];
     const dotColors = [];
 
@@ -190,7 +190,6 @@ import React, { useEffect, useRef } from 'react';
     // Build markers from cities (always created; visibility controlled via layers)
     const cityNodes = [];
     const cities = CITIES || [];
-    const latLonToXYZ = ECO_GEO.latLonToXYZ;
     cities.forEach((c) => {
       const [x, y, z] = latLonToXYZ(c.lat, c.lon, R * 1.01);
 
