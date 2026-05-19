@@ -59,7 +59,8 @@
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);for\\(const f of r\\){const es=f.messages.filter\\(m=>m.severity===2\\);if\\(es.length\\){console.log\\(f.filePath.replace\\(/.*Tech./,''\\)\\);for\\(const m of es\\)console.log\\('  L'+m.line+':'+m.column+' '+m.ruleId+' — '+m.message.split\\('\\\\n'\\)[0]\\)}}}\\)\")",
       "Bash(grep -o '<title>[^<]*</title>' dist/__TRACKED_VAR__.html)",
       "Bash(grep -o 'rel=\"canonical\" href=\"[^\"]*\"' dist/__TRACKED_VAR__.html)",
-      "Bash(git commit -q -m 'feat: SEO + static prerender \\(SSR build + per-route HTML\\) *)"
+      "Bash(git commit -q -m 'feat: SEO + static prerender \\(SSR build + per-route HTML\\) *)",
+      "Bash(git commit -q -m 'feat: a11y pass + docs \\(Phase 5, enhancement roadmap complete\\) *)"
     ]
   }
 }

@@ -61,6 +61,7 @@ export default function MainLayout() {
       style={{ backgroundColor: bgColor }}
     >
       <ScrollToTop />
+      <a href="#main" className="skip-link">Ana içeriğe geç</a>
       <ScrollProgress />
       <div
         aria-hidden
@@ -72,7 +73,7 @@ export default function MainLayout() {
       />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow">
+        <main id="main" className="flex-grow">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>

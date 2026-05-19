@@ -204,6 +204,7 @@ function InlineInput({ value, onChange, placeholder, minW }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        aria-label={placeholder}
         style={{ minWidth: minW, width: `${Math.max(minW, value.length * 14 + 30)}px` }}
         className="inline-block bg-transparent border-b-2 border-dashed border-slate-300 focus:border-cyan-500 outline-none px-1 pb-0.5 font-display text-slate-900 placeholder:text-slate-400 transition-colors"
       />

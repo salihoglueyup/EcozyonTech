@@ -101,6 +101,7 @@ per-route files correctly (filesystem before the SPA rewrite in vercel.json).
 
 ## Roadmap (in progress)
 
-Phased enhancement: P1 testing/CI/ErrorBoundary/404 (done) · P2 serverless
-backend + real forms · P3 new pages (Pricing/Blog/Careers/Legal) · P4
-SEO/prerender · P5 a11y/polish. TypeScript intentionally out of scope.
+All phases complete: P1 testing/CI/ErrorBoundary/404 · P2 serverless backend +
+real forms · P3 new pages (Pricing/Blog/Careers/Legal) · P4 SEO/prerender ·
+P5 a11y (skip link, prefers-reduced-motion, labelled inputs) + polish.
+TypeScript intentionally out of scope (possible future opt-in phase).

@@ -32,6 +32,12 @@ describe('routing', () => {
     renderAt('/blog/no-such-post');
     expect(await screen.findByText(/bulunamadı/i)).toBeInTheDocument();
   });
+
+  it('exposes a skip link and a main landmark for a11y', () => {
+    const { container } = renderAt('/');
+    expect(screen.getByText('Ana içeriğe geç')).toHaveAttribute('href', '#main');
+    expect(container.querySelector('main#main')).toBeTruthy();
+  });
 });
 
 describe('ErrorBoundary', () => {

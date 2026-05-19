@@ -1,62 +1,73 @@
 # Ecozyon Tech
 
-Corporate website for Ecozyon Tech, built with **React 19**, **Vite**, **Tailwind CSS**
-and **react-router-dom**. Multi-page SPA following a Feature-Sliced Design (FSD) layout.
+Corporate **portfolio/demo** site — **React 19 + Vite 8 + Tailwind 3 +
+react-router 7**. Multi-page, prerendered, bilingual (TR/EN), Feature-Sliced
+Design, with a serverless form backend and a test/CI pipeline.
 
-## Getting Started
+## Commands
 
 ```bash
-npm install      # install dependencies
-npm run dev      # start the dev server (Vite)
-npm run build    # production build -> dist/
-npm run preview  # preview the production build
-npm run lint     # ESLint (flat config)
+npm install
+npm run dev       # Vite dev server (forms work via dev middleware)
+npm run build     # client build + SSR build + static prerender -> dist/
+npm run build:spa # client-only build (no prerender)
+npm run preview   # preview build (SPA fallback — see CLAUDE.md caveat)
+npm run lint      # ESLint (flat config)
+npm test          # Vitest (run once)
 ```
+
+`lint`, `test`, `build` are enforced by CI (`.github/workflows/ci.yml`).
 
 ## Routes
 
-| Path        | Page      | Composes                                                   |
-| ----------- | --------- | ---------------------------------------------------------- |
-| `/`         | Home      | Hero + Metrics                                             |
-| `/services` | Services  | How it works + Tech ecosystem + Use cases + Dashboard demo |
-| `/impact`   | Impact    | Interactive 3D impact map                                  |
-| `/about`    | About     | About bento (mission/vision/values/team)                   |
-| `/contact`  | Contact   | Contact form + "what happens next" timeline                |
+| Path           | Page     | Notes                                              |
+| -------------- | -------- | -------------------------------------------------- |
+| `/`            | Home     | Hero + Metrics                                     |
+| `/services`    | Services | How it works · Tech · Use cases · Dashboard demo   |
+| `/pricing`     | Pricing  | 3 tiers                                            |
+| `/impact`      | Impact   | Interactive 3D impact map                          |
+| `/about`       | About    | Mission / vision / values / team                   |
+| `/blog`        | Blog     | Data-driven list                                   |
+| `/blog/:slug`  | Post     | Individual insight                                 |
+| `/careers`     | Careers  | Open roles                                         |
+| `/contact`     | Contact  | Real form → `/api/contact`                         |
+| `/legal`       | Legal    | Privacy (KVKK) + Terms (`#privacy` / `#terms`)     |
+| `*`            | NotFound | Real bilingual 404                                 |
 
-Unknown paths redirect to `/`. SPA fallback for deep links is configured in
-`vercel.json`.
+Every route is prerendered to static HTML with its own `<title>`, canonical
+and OG tags; `sitemap.xml` + `robots.txt` are generated at build.
 
-## Architecture (Feature-Sliced Design)
+## Backend
+
+`/api/contact` and `/api/newsletter` are Vercel serverless functions sharing
+pure logic in `api/_lib/forms.js` (validation, honeypot, optional Resend via
+`RESEND_API_KEY` + `CONTACT_TO`, demo-mode otherwise). A Vite dev middleware
+runs the same logic locally — no Vercel CLI needed.
+
+## Architecture (FSD)
 
 ```
-src/
-  app/          Composition root: providers, router, App entry
-    providers/  AppProvider — lang/theme/accent/typography state (+ localStorage)
-    router.jsx  Lazy-loaded routes under the Main layout
-  pages/        One folder per route; composes feature sections + sets <title>
-  layouts/
-    Main/       Persistent shell: Navbar, Footer, ScrollToTop, scroll progress
-  features/     Self-contained sections (hero, metrics, tech-ecosystem,
-                use-cases, how-it-works, dashboard, impact-map, about,
-                contact, dev-tweaks)
-  shared/
-    ui/         Reusable primitives (Tag, GlowOrb, EcoLogo)
-    3d/         Three.js globes, lazy-loaded via LazyGlobes
-  core/
-    config/     Site metadata, routes, navigation
-    i18n/        TR/EN dictionary
-    data/        Static datasets (cities)
-    hooks/       useDocumentMeta (per-route SEO)
+api/            serverless functions + shared pure logic (unit-tested)
+scripts/        prerender.mjs (post-build static generation)
+src/app/        App (BrowserRouter) · AppShell · entry-server (StaticRouter)
+                router · providers/AppProvider
+src/pages/      one folder per route; sets <title> via useDocumentMeta
+src/layouts/Main Navbar, Footer, ScrollToTop, ErrorBoundary, skip link
+src/features/   hero, metrics, tech-ecosystem, use-cases, how-it-works,
+                dashboard, impact-map, about, contact, dev-tweaks
+src/shared/     ui (primitives, ErrorBoundary) · 3d (lazy Three.js globes)
+src/core/       config (routes/nav) · i18n · data (cities/posts/jobs) · hooks
+src/test/       Vitest setup + cross-cutting tests
 ```
 
-### Key conventions
+## Conventions
 
-- **`@/` path alias** maps to `src/` (configured in `vite.config.js` + `jsconfig.json`).
-- **Shared state** lives in `AppProvider` (`useApp()` / `useI18n()`); pages pass the
-  active dictionary down to feature sections as props.
-- **Internationalization**: TR/EN, switchable from the navbar, persisted to
-  `localStorage`.
-- **Performance**: pages are route-split and Three.js loads as its own dynamic
-  chunk only when a globe renders (initial JS is ~39 kB instead of ~1.1 MB).
-- **Design tweak panel** (`features/dev-tweaks`) is mounted only when
-  `import.meta.env.DEV` — it never ships to production.
+- `@/` alias → `src/` (vite + jsconfig).
+- Shared state in `AppProvider` (`useApp()`/`useI18n()`), persisted to
+  `localStorage`, hydration-safe (DEFAULTS first, prefs applied post-mount).
+- Pages pass the active dictionary down as the `t` prop.
+- Route-split pages; Three.js is a separate dynamic chunk (initial JS ~39 kB).
+- Prerender via React 19 `prerenderToNodeStream` + `StaticRouter`; client
+  hydrates. See `CLAUDE.md` for the full prerender notes and preview caveat.
+- a11y: skip link, `prefers-reduced-motion` handling, labelled inputs.
+- TypeScript intentionally out of scope.
