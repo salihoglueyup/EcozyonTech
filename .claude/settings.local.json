@@ -14,7 +14,12 @@
       "Bash(git rm *)",
       "Bash(rmdir src/components)",
       "Bash(npx vite *)",
-      "Bash(git commit -q -m 'refactor: real FSD multi-page architecture with router *)"
+      "Bash(git commit -q -m 'refactor: real FSD multi-page architecture with router *)",
+      "Bash(node -e \"for\\(const p of ['eslint','eslint-plugin-react-hooks','eslint-plugin-react-refresh','@eslint/js','globals']\\){try{require.resolve\\(p\\);console.log\\(p,'OK'\\)}catch{console.log\\(p,'MISSING'\\)}}\")",
+      "Bash(timeout 180 npm install -D eslint@^9 @eslint/js@^9 eslint-plugin-react-hooks eslint-plugin-react-refresh globals)",
+      "Bash(timeout 120 npm uninstall framer-motion lucide-react clsx tailwind-merge)",
+      "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\(Object.keys\\(p.dependencies\\).join\\(', '\\)\\)\")",
+      "Bash(git commit -q -m 'chore: SEO meta, favicon, ESLint, lean deps, accurate README *)"
     ]
   }
 }
