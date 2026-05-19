@@ -56,6 +56,24 @@ export const CITIES = [
     { name: "Sydney",      country: "AU", lat: -33.87,lon: 151.21, users: 189,  co2: 48,  solar: 38, partner: false, since: 2025 },
     { name: "Melbourne",   country: "AU", lat: -37.81,lon: 144.96, users: 134,  co2: 32,  solar: 36, partner: false, since: 2025 },
     { name: "Auckland",    country: "NZ", lat: -36.85,lon: 174.76, users: 67,   co2: 16,  solar: 25, partner: false, since: 2026 },
+
+    // Expansion wave (E4) — denser coverage
+    { name: "Munich",      country: "DE", lat: 48.14, lon: 11.58,  users: 196,  co2: 44,  solar: 26, partner: false, since: 2025 },
+    { name: "Zurich",      country: "CH", lat: 47.38, lon:  8.54,  users: 158,  co2: 35,  solar: 21, partner: true,  since: 2025 },
+    { name: "Vienna",      country: "AT", lat: 48.21, lon: 16.37,  users: 132,  co2: 29,  solar: 23, partner: false, since: 2026 },
+    { name: "Dublin",      country: "IE", lat: 53.35, lon: -6.26,  users: 117,  co2: 26,  solar: 12, partner: false, since: 2026 },
+    { name: "Athens",      country: "GR", lat: 37.98, lon: 23.73,  users: 71,   co2: 17,  solar: 51, partner: false, since: 2026 },
+    { name: "Prague",      country: "CZ", lat: 50.08, lon: 14.44,  users: 84,   co2: 19,  solar: 18, partner: false, since: 2026 },
+    { name: "Bursa",       country: "TR", lat: 40.19, lon: 29.06,  users: 142,  co2: 30,  solar: 40, partner: false, since: 2025 },
+    { name: "Antalya",     country: "TR", lat: 36.90, lon: 30.71,  users: 118,  co2: 27,  solar: 58, partner: false, since: 2025 },
+    { name: "Chicago",     country: "US", lat: 41.88, lon: -87.63, users: 234,  co2: 54,  solar: 20, partner: false, since: 2025 },
+    { name: "Seattle",     country: "US", lat: 47.61, lon: -122.33,users: 198,  co2: 45,  solar: 22, partner: false, since: 2025 },
+    { name: "Austin",      country: "US", lat: 30.27, lon: -97.74, users: 176,  co2: 41,  solar: 39, partner: false, since: 2026 },
+    { name: "Santiago",    country: "CL", lat: -33.45,lon: -70.67, users: 64,   co2: 16,  solar: 47, partner: false, since: 2026 },
+    { name: "Riyadh",      country: "SA", lat: 24.71, lon: 46.68,  users: 152,  co2: 34,  solar: 53, partner: false, since: 2025 },
+    { name: "Jakarta",     country: "ID", lat: -6.21, lon: 106.85, users: 121,  co2: 29,  solar: 34, partner: false, since: 2026 },
+    { name: "Shanghai",    country: "CN", lat: 31.23, lon: 121.47, users: 356,  co2: 79,  solar: 19, partner: false, since: 2025 },
+    { name: "Accra",       country: "GH", lat:  5.60, lon: -0.19,  users: 29,   co2:  7,  solar: 44, partner: false, since: 2026 },
   ];
 
   // Continent ellipses for procedural land mask

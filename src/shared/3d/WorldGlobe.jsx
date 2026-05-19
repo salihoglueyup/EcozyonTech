@@ -239,7 +239,10 @@ import React, { useEffect, useRef } from 'react';
       if (!hq) return;
       const [hx, hy, hz] = latLonToXYZ(hq.lat, hq.lon, R * 1.005);
 
-      const topCities = cities.filter((c) => c.users > 200 && c.name !== "İstanbul").slice(0, 12);
+      const topCities = cities
+        .filter((c) => c.users > 200 && c.name !== "İstanbul")
+        .sort((a, b) => b.users - a.users)
+        .slice(0, state.compact ? 10 : 16);
       topCities.forEach((c, i) => {
         const [px, py, pz] = latLonToXYZ(c.lat, c.lon, R * 1.005);
         const start = new THREE.Vector3(hx, hy, hz);

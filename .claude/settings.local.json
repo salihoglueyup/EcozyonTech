@@ -66,7 +66,9 @@
       "Bash(git commit -q -m 'perf\\(3d\\): WorldGlobe LOD + offscreen pause + dispose audit \\(E1\\) *)",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('LINT errors:',e,'warnings:',w\\)}\\)\")",
       "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe visual fidelity — atmosphere + accents \\(E2\\) *7)",
-      "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe interaction — zoom + keyboard + pinch \\(E3\\) *)"
+      "Bash(git commit -q -m 'feat\\(3d\\): WorldGlobe interaction — zoom + keyboard + pinch \\(E3\\) *)",
+      "Bash(node -e \"const m=require\\('node:fs'\\).readFileSync\\('src/core/data/cities.js','utf8'\\);const n=\\(m.match\\(/{ name:/g\\)||[]\\).length;console.log\\('city count:',n\\)\")",
+      "Bash(git commit -q -m 'feat\\(3d\\): enrich city dataset + arcs \\(E4\\) *)"
     ]
   }
 }
