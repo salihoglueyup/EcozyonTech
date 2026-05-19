@@ -14,6 +14,7 @@ import * as THREE from 'three';
 //   compact:  boolean — smaller dots, used in dashboard
 import { CITIES } from '@/core/data/cities';
 import { isLand, latLonToXYZ } from '@/core/data/geo';
+import BORDERS from '@/core/data/borders.json';
 import React, { useEffect, useRef } from 'react';
 
   function makeWorldGlobe(container, opts) {
@@ -33,6 +34,8 @@ import React, { useEffect, useRef } from 'react';
       // fixed). Defaults preserve the original look when not provided.
       cyan: opts.cyan || "#0EA5E9",
       emerald: opts.emerald || "#10B981",
+      borders: !!opts.borders,
+      capitals: !!opts.capitals,
     };
 
     const w = () => container.clientWidth;
@@ -142,6 +145,39 @@ import React, { useEffect, useRef } from 'react';
     });
     const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.14, 48, 48), glowMat);
     root.add(glow);
+
+    // ── Country borders (merged line segments, opt-in) ──────────────────────
+    const borderGroup = new THREE.Group();
+    root.add(borderGroup);
+    {
+      const seg = [];
+      const RB = R * 1.003;
+      for (const ring of BORDERS.rings) {
+        const M = ring.length / 2;
+        if (M < 2) continue;
+        for (let i = 0; i < M; i++) {
+          const j = (i + 1) % M;
+          const [ax, ay, az] = latLonToXYZ(ring[i * 2 + 1], ring[i * 2], RB);
+          const [bx, by, bz] = latLonToXYZ(ring[j * 2 + 1], ring[j * 2], RB);
+          seg.push(ax, ay, az, bx, by, bz);
+        }
+      }
+      const bGeo = new THREE.BufferGeometry();
+      bGeo.setAttribute("position", new THREE.Float32BufferAttribute(seg, 3));
+      const bColor = new THREE.Color(state.cyan).lerp(
+        new THREE.Color(state.theme === "dark" ? 0xffffff : 0x334155),
+        0.55,
+      );
+      const bMat = new THREE.LineBasicMaterial({
+        color: bColor,
+        transparent: true,
+        // Compact (dashboard) stays faint so it doesn't add noise.
+        opacity: state.compact ? 0.14 : state.theme === "dark" ? 0.34 : 0.26,
+        depthWrite: false,
+      });
+      borderGroup.add(new THREE.LineSegments(bGeo, bMat));
+    }
+    borderGroup.visible = state.borders;
 
     // ── Day/night terminator (great circle ring) ────────────────────────────
     const termMat = new THREE.LineBasicMaterial({
@@ -514,6 +550,7 @@ import React, { useEffect, useRef } from 'react';
       });
 
       // Arcs animation
+      borderGroup.visible = !!state.borders;
       arcGroup.visible = !!state.layers.arcs;
       if (arcGroup.visible) {
         arcCurves.forEach((a) => {
@@ -619,6 +656,8 @@ import React, { useEffect, useRef } from 'react';
         theme: propsRef.current.theme,
         cyan: propsRef.current.cyan,
         emerald: propsRef.current.emerald,
+        borders: propsRef.current.borders,
+        capitals: propsRef.current.capitals,
       });
       return () => apiRef.current && apiRef.current.dispose && apiRef.current.dispose();
     }, [props.theme, props.compact, props.cyan, props.emerald]);
@@ -631,9 +670,11 @@ import React, { useEffect, useRef } from 'react';
           selected: props.selected,
           timeYear: props.timeYear,
           showTerminator: props.showTerminator,
+          borders: props.borders,
+          capitals: props.capitals,
         });
       }
-    }, [JSON.stringify(props.layers), props.selected?.name, props.timeYear, props.showTerminator]);
+    }, [JSON.stringify(props.layers), props.selected?.name, props.timeYear, props.showTerminator, props.borders, props.capitals]);
 
     // Fly-to when a city is selected
     useEffect(() => {

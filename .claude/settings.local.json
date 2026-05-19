@@ -79,7 +79,9 @@
       "Bash(gzip -c src/core/data/capitals.json)",
       "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const r=JSON.parse\\(s\\);let e=0,w=0;for\\(const f of r\\){e+=f.errorCount;w+=f.warningCount}console.log\\('lint e:',e,'w:',w\\)}\\)\")",
       "Bash(git commit -q -m 'feat\\(geo\\): G0 data pipeline — borders/land/capitals \\(no app change\\) *)",
-      "Bash(git commit -q -m 'feat\\(3d\\): G1 real land mask — dots follow real coastlines *)"
+      "Bash(git commit -q -m 'feat\\(3d\\): G1 real land mask — dots follow real coastlines *)",
+      "Bash(node -e \"const b=require\\('./src/core/data/borders.json'\\);console.log\\('rings:',b.rings.length,'first ring pts:',b.rings[0].length/2,'sample:',b.rings[0].slice\\(0,6\\)\\)\")",
+      "Bash(git commit -q -m 'feat\\(3d\\): G2 country borders layer *)"
     ]
   }
 }

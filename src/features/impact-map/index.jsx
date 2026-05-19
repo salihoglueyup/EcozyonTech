@@ -107,6 +107,8 @@ function ImpactMap({ t }) {
                 theme={isDark ? "dark" : "light"}
                 cyan={accents.cyan}
                 emerald={accents.emerald}
+                borders
+                capitals
               />
 
               {/* Hover tooltip — follows the city in screen-space */}

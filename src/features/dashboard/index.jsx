@@ -411,6 +411,8 @@ function DashDevices({ lang, tab }) {
               showTerminator={false}
               compact={true}
               theme="light"
+              borders
+              capitals
             />
           ) : (
             <div className="grid place-items-center h-full text-slate-400 text-[12px]">Loading globe…</div>
