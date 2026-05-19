@@ -267,10 +267,32 @@ import React, { useEffect, useRef } from 'react';
     }
     buildArcs();
 
-    // ── Pointer / Drag interaction ──────────────────────────────────────────
+    // ── Pointer / Drag / Zoom interaction ───────────────────────────────────
     const drag = { active: false, lastX: 0, lastY: 0, vx: 0, vy: 0 };
     const auto = { rot: reduceMotion ? 0 : 0.0008 }; // auto-rotation speed
+
+    // Zoom is opt-out on the compact (dashboard) globe so it never hijacks
+    // page scroll there.
+    const zoomEnabled = !state.compact;
+    const baseZ = camera.position.z;
+    const zoom = { target: baseZ, min: baseZ * 0.62, max: baseZ * 1.35 };
+    const clampZoom = (z) => Math.max(zoom.min, Math.min(zoom.max, z));
+
+    // Active pointers (for pinch).
+    const pointers = new Map();
+    let pinchPrev = 0;
+    const pinchDist = () => {
+      const p = [...pointers.values()];
+      return Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    };
+
     function onPointerDown(e) {
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pointers.size === 2) {
+        pinchPrev = pinchDist();
+        drag.active = false;
+        return;
+      }
       drag.active = true;
       drag.lastX = e.clientX;
       drag.lastY = e.clientY;
@@ -279,6 +301,14 @@ import React, { useEffect, useRef } from 'react';
       container.style.cursor = "grabbing";
     }
     function onPointerMove(e) {
+      if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      // Pinch-zoom (two fingers)
+      if (zoomEnabled && pointers.size === 2) {
+        const d = pinchDist();
+        if (pinchPrev) zoom.target = clampZoom(zoom.target - (d - pinchPrev) * 0.01);
+        pinchPrev = d;
+        return;
+      }
       // Hover detection regardless of drag state
       handleHover(e);
       if (!drag.active) return;
@@ -293,11 +323,31 @@ import React, { useEffect, useRef } from 'react';
       // Clamp x rotation
       root.rotation.x = Math.max(-1.2, Math.min(1.2, root.rotation.x));
     }
-    function onPointerUp() {
+    function onPointerUp(e) {
+      if (e && pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+      if (pointers.size < 2) pinchPrev = 0;
       drag.active = false;
       container.style.cursor = "grab";
     }
-    function onPointerCancel() {
+    function onWheel(e) {
+      if (!zoomEnabled) return;
+      e.preventDefault(); // don't scroll the page while zooming the globe
+      zoom.target = clampZoom(zoom.target + e.deltaY * 0.0016 * baseZ);
+    }
+    function onKeyDown(e) {
+      const step = 0.12;
+      if (e.key === "ArrowLeft") root.rotation.y -= step;
+      else if (e.key === "ArrowRight") root.rotation.y += step;
+      else if (e.key === "ArrowUp") root.rotation.x = Math.max(-1.2, root.rotation.x - step);
+      else if (e.key === "ArrowDown") root.rotation.x = Math.min(1.2, root.rotation.x + step);
+      else if (zoomEnabled && (e.key === "+" || e.key === "=")) zoom.target = clampZoom(zoom.target - baseZ * 0.08);
+      else if (zoomEnabled && (e.key === "-" || e.key === "_")) zoom.target = clampZoom(zoom.target + baseZ * 0.08);
+      else return;
+      e.preventDefault();
+    }
+    function onPointerCancel(e) {
+      if (e && pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+      pinchPrev = 0;
       drag.active = false;
       hoveredCity = null;
       state.onHover(null);
@@ -309,11 +359,20 @@ import React, { useEffect, useRef } from 'react';
 
     container.style.cursor = "grab";
     container.style.touchAction = "none";
+    // Keyboard a11y: focusable, labelled, arrow-rotate / +- zoom.
+    container.tabIndex = 0;
+    container.setAttribute("role", "application");
+    container.setAttribute(
+      "aria-label",
+      "Interactive 3D globe. Arrow keys rotate" + (zoomEnabled ? ", plus/minus zoom." : "."),
+    );
     container.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", onPointerCancel);
     container.addEventListener("click", onClick);
+    container.addEventListener("wheel", onWheel, { passive: false });
+    container.addEventListener("keydown", onKeyDown);
 
     // Raycaster for hover/click
     const raycaster = new THREE.Raycaster();
@@ -475,6 +534,11 @@ import React, { useEffect, useRef } from 'react';
         nightHemi.rotation.y = tNow * 0.02 * motion - Math.PI / 2;
       }
 
+      // Smooth zoom toward target distance.
+      if (Math.abs(camera.position.z - zoom.target) > 0.001) {
+        camera.position.z += (zoom.target - camera.position.z) * 0.12;
+      }
+
       renderer.render(scene, camera);
       raf = isActive() ? requestAnimationFrame(tick) : null;
     }
@@ -512,6 +576,8 @@ import React, { useEffect, useRef } from 'react';
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerCancel);
       container.removeEventListener("click", onClick);
+      container.removeEventListener("wheel", onWheel);
+      container.removeEventListener("keydown", onKeyDown);
       // Free GPU memory — renderer.dispose() alone leaks geometries/materials.
       scene.traverse((o) => {
         if (o.geometry) o.geometry.dispose();
