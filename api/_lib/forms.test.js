@@ -37,6 +37,51 @@ describe('processContact', () => {
     });
     expect(r.body.data.name.length).toBe(80);
   });
+
+  it('clamps every text field independently', () => {
+    const r = processContact({
+      name: 'a'.repeat(200),
+      company: 'b'.repeat(200),
+      email: 'c@d.co',
+      message: 'm'.repeat(5000),
+      purpose: 'p'.repeat(200),
+    });
+    expect(r.status).toBe(200);
+    expect(r.body.data.name.length).toBe(80);
+    expect(r.body.data.company.length).toBe(120);
+    expect(r.body.data.message.length).toBe(2000);
+    expect(r.body.data.purpose.length).toBe(80);
+  });
+
+  it('trims surrounding whitespace before validation', () => {
+    const r = processContact({
+      name: '  Ada  ',
+      company: '\tAcme\n',
+      email: '  ada@example.com  ',
+    });
+    expect(r.status).toBe(200);
+    expect(r.body.data.name).toBe('Ada');
+    expect(r.body.data.company).toBe('Acme');
+    expect(r.body.data.email).toBe('ada@example.com');
+  });
+
+  it('rejects an email that is only whitespace', () => {
+    const r = processContact({ name: 'Ada', company: 'Acme', email: '     ' });
+    expect(r.status).toBe(422);
+    expect(r.body.errors).toMatchObject({ email: 'invalid' });
+  });
+
+  it('accepts a missing message (optional field)', () => {
+    const r = processContact({ name: 'Ada', company: 'Acme', email: 'a@b.co' });
+    expect(r.status).toBe(200);
+    expect(r.body.data.message).toBe('');
+  });
+
+  it('treats null/undefined fields as empty strings', () => {
+    const r = processContact({ name: null, company: undefined, email: 'a@b.co' });
+    expect(r.status).toBe(422);
+    expect(r.body.errors).toMatchObject({ name: 'required', company: 'required' });
+  });
 });
 
 describe('processNewsletter', () => {

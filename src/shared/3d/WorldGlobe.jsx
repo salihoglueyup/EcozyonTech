@@ -13,7 +13,7 @@ import * as THREE from 'three';
 //   showTerminator: boolean — day/night line
 //   compact:  boolean — smaller dots, used in dashboard
 import { CITIES } from '@/core/data/cities';
-import { isLand, latLonToXYZ } from '@/core/data/geo';
+import { isLand, latLonToXYZ, cityFacingRotation, shortestYawDelta } from '@/core/data/geo';
 import BORDERS from '@/core/data/borders.json';
 import CAPITALS from '@/core/data/capitals.json';
 import React, { useEffect, useRef } from 'react';
@@ -626,22 +626,9 @@ import React, { useEffect, useRef } from 'react';
 
     function flyTo(city) {
       if (!city) return;
-      // Bring (lat, lon) to face the camera at (0, 0, +R).
-      // Derived from latLonToXYZ + Three.js Euler order XYZ (Ry applied before Rx
-      // to the local point): tan(ry) = -x/z and tan(rx) = y/sqrt(x²+z²) give
-      //   ry = -π/2 - lon·π/180   (mod 2π)
-      //   rx = lat·π/180
-      // The previous formula was off by π in yaw (centered the antipode) and
-      // damped pitch by 0.7 (latitude undershoot).
-      const targetY = -Math.PI / 2 - (city.lon * Math.PI) / 180;
-      const targetX = Math.max(-1.2, Math.min(1.2, (city.lat * Math.PI) / 180));
-      // Normalize yaw to the nearest equivalent angle so the lerp takes the
-      // short way around.
-      let dy = targetY - root.rotation.y;
-      while (dy > Math.PI) dy -= Math.PI * 2;
-      while (dy < -Math.PI) dy += Math.PI * 2;
-      rotTarget.y = root.rotation.y + dy;
-      rotTarget.x = targetX;
+      const { yaw, pitch } = cityFacingRotation(city.lat, city.lon);
+      rotTarget.y = root.rotation.y + shortestYawDelta(yaw, root.rotation.y);
+      rotTarget.x = pitch;
       rotTarget.active = true;
     }
 

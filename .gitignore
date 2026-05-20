@@ -12,6 +12,7 @@ dist
 dist-ssr
 dist-server
 data-src
+coverage
 *.local
 
 # Editor directories and files

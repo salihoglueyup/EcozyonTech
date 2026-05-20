@@ -62,5 +62,41 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/test/setup.js',
     css: false,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'json-summary'],
+      reportsDirectory: './coverage',
+      // Only score the actual app + shared API logic. Three.js, dev-tweaks,
+      // configs and tests are excluded so the percentage tracks coverage that
+      // we can meaningfully act on.
+      include: ['src/**/*.{js,jsx}', 'api/_lib/**/*.js'],
+      thresholds: {
+        // Baseline at the time of writing: 91% lines, 65% branches, 70% fns.
+        // Floors guard against regressions; raise them as we add tests.
+        lines: 85,
+        statements: 85,
+        functions: 65,
+        branches: 60,
+      },
+      exclude: [
+        'src/**/*.test.{js,jsx}',
+        'src/**/*.config.{js,jsx}',
+        'src/test/**',
+        'src/main.jsx',
+        'src/entry-server.jsx',
+        'src/app/App.jsx',
+        'src/core/lib/vitals.js',
+        'src/features/dev-tweaks/**',
+        'src/shared/3d/**',
+        'src/features/impact-map/**',
+        'src/features/dashboard/**',
+        'src/features/tech-ecosystem/**',
+        'src/features/use-cases/**',
+        'src/features/how-it-works/**',
+        'src/features/about/**',
+        'src/features/hero/**',
+        'src/features/metrics/**',
+      ],
+    },
   },
 })
