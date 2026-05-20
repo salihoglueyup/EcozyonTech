@@ -302,6 +302,7 @@ export const ECO_I18N = {
         pause: "Duraklat",
         globeFull: "Etkileşimli 3B küre. Ok tuşları döndürür, +/- yakınlaştırır.",
         globeCompact: "Etkileşimli 3B küre. Ok tuşları döndürür.",
+        skipToContent: "Ana içeriğe geç",
       },
     },
 
@@ -607,6 +608,7 @@ export const ECO_I18N = {
         pause: "Pause",
         globeFull: "Interactive 3D globe. Arrow keys rotate, plus/minus zoom.",
         globeCompact: "Interactive 3D globe. Arrow keys rotate.",
+        skipToContent: "Skip to main content",
       },
     },
   };

@@ -27,6 +27,16 @@
   .skip-link:focus {
     @apply not-sr-only fixed left-4 top-4 z-[100] rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-medium shadow-lg;
   }
+
+  /* Subtle route transition — keyframe is neutralised by the
+     prefers-reduced-motion block below. */
+  @keyframes pageFade {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .page-fade {
+    animation: pageFade .26s ease-out;
+  }
 }
 
 /* Respect users who prefer reduced motion: neutralise the marquee/float/

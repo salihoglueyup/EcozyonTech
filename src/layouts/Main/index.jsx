@@ -54,14 +54,15 @@ function ScrollToTop() {
 }
 
 export default function MainLayout() {
-  const { bgColor } = useApp();
+  const { bgColor, t } = useApp();
+  const { pathname } = useLocation();
   return (
     <div
       className="min-h-screen text-slate-900 font-body transition-colors duration-300"
       style={{ backgroundColor: bgColor }}
     >
       <ScrollToTop />
-      <a href="#main" className="skip-link">Ana içeriğe geç</a>
+      <a href="#main" className="skip-link">{t.a11y.skipToContent}</a>
       <ScrollProgress />
       <div
         aria-hidden
@@ -75,7 +76,9 @@ export default function MainLayout() {
         <Navbar />
         <main id="main" className="flex-grow">
           <ErrorBoundary>
-            <Outlet />
+            <div key={pathname} className="page-fade">
+              <Outlet />
+            </div>
           </ErrorBoundary>
         </main>
         <Footer />
