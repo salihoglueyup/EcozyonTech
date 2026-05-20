@@ -105,8 +105,10 @@ Imperative Three.js. `WorldGlobe(props)` (React) → `makeWorldGlobe(container,
 opts)` → `{ dispose, update, flyTo }`.
 
 **Two separate globes exist on purpose** (decided to keep separate):
-- `EcoGlobe` — abstract hero decoration, Home only. **Do not touch** during
-  WorldGlobe work.
+- `EcoGlobe` — abstract hero decoration, Home only. Shares the AI motif
+  (nodes + arcs + traveling packets) and the perf hygiene (IO/visibility
+  pause, reduced-motion, full dispose) with WorldGlobe, but is otherwise
+  independent — no shared code. **Do not touch** during WorldGlobe work.
 - `WorldGlobe` — the geographic data globe. **Reused in two places**, so
   every change must preserve both:
   - `/impact` (ImpactMap): full — all layers, side panel, hover tooltip,
@@ -154,8 +156,9 @@ arcGroup (HQ "İstanbul" → top cities by users, lines + traveling packets).
 Invariants for future 3D work: keep `/services` compact light + scroll-safe
 and `/impact` behavior intact; keep deterministic for prerender/tests; new
 visual/interaction features should stay opt-gated or behavior-preserving.
-Parked (Q1 = keep globes separate): porting the AI node/arc motif to
-`EcoGlobe` / a WorldGlobe "showcase" mode.
+Parked: a WorldGlobe "showcase" mode (compact decorative variant of the
+data globe). The AI node/arc motif port to `EcoGlobe` is done — see the
+EcoGlobe note above.
 
 ### Real geography (G0–G5)
 
