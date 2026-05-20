@@ -3,12 +3,12 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { POSTS } from '@/core/data/posts';
+import { POSTS, readingTime } from '@/core/data/posts';
 
 const meta = routeByKey('blog');
 
 export default function BlogPage() {
-  const { lang } = useApp();
+  const { lang, t } = useApp();
   const tr = lang === 'tr';
   useDocumentMeta(
     meta.title[lang],
@@ -42,6 +42,7 @@ export default function BlogPage() {
                   {p.tag[lang]}
                 </span>
                 <time className="text-slate-500 font-mono">{p.date}</time>
+                <span className="text-slate-400 font-mono">· {readingTime(p, lang)} {t.blog.readMin}</span>
               </div>
               <h2 className="mt-3 font-display text-[20px] lg:text-[22px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">
                 {p.title[lang]}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import CookieBanner from './CookieBanner';
 import { useApp } from '@/app/providers/AppProvider';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
@@ -85,6 +86,7 @@ export default function MainLayout() {
       </div>
 
       {import.meta.env.DEV && <DevTweaks />}
+      <CookieBanner />
     </div>
   );
 }

@@ -74,3 +74,11 @@ export const POSTS = [
 ];
 
 export const postBySlug = (slug) => POSTS.find((p) => p.slug === slug);
+
+// Approximate reading time for a post body, in minutes (200 wpm baseline).
+// Counts the active language only — TR and EN word counts are usually close.
+export function readingTime(post, lang = 'tr') {
+  const text = (post.body?.[lang] || []).join(' ');
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  return Math.max(1, Math.round(words / 200));
+}

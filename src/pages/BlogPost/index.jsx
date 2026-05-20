@@ -2,12 +2,12 @@ import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { postBySlug } from '@/core/data/posts';
+import { postBySlug, readingTime } from '@/core/data/posts';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const { lang } = useApp();
+  const { lang, t } = useApp();
   const tr = lang === 'tr';
   const post = postBySlug(slug);
 
@@ -30,6 +30,7 @@ export default function BlogPostPage() {
         <div className="mt-6 flex items-center gap-3 text-[11px]">
           <Tag color="emerald">{post.tag[lang]}</Tag>
           <time className="text-slate-500 font-mono">{post.date}</time>
+          <span className="text-slate-400 font-mono">· {readingTime(post, lang)} {t.blog.readMin}</span>
         </div>
         <h1 className="mt-4 font-display text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.06] tracking-[-0.02em] text-slate-900">
           {post.title[lang]}
