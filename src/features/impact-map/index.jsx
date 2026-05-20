@@ -1,7 +1,8 @@
 // Impact Map — 3D globe with layers + interactions
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
+import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { CITIES } from '@/core/data/cities';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 import { useApp } from '@/app/providers/AppProvider';
@@ -202,8 +203,16 @@ function ImpactMap({ t }) {
 }
 
 function StatPill({ label, value, accent, live }) {
+  const ref = useRef();
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  // Live counters update continuously — don't tween them, just render.
   return (
-    <div className="px-5 py-4 relative">
+    <div ref={ref} className="px-5 py-4 relative">
       {live && (
         <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[9px] uppercase tracking-wider font-semibold text-emerald-700">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -211,7 +220,9 @@ function StatPill({ label, value, accent, live }) {
         </span>
       )}
       <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500">{label}</div>
-      <div className="mt-1 font-display text-[24px] tracking-tight" style={{ color: accent }}>{value}</div>
+      <div className="mt-1 font-display text-[24px] tracking-tight" style={{ color: accent }}>
+        {live ? value : <AnimatedNumber value={value} play={seen} />}
+      </div>
     </div>
   );
 }

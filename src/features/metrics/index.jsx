@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
+import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 
 // ── Metrics ────────────────────────────────────────────────────────────────
 export function Metrics({ t }) {
@@ -53,7 +54,8 @@ function MetricCard({ m, idx }) {
       </div>
 
       <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
-        {m.value}<span style={{ color: accent }}>{m.suffix}</span>
+        <AnimatedNumber value={m.value} play={seen} />
+        <span style={{ color: accent }}>{m.suffix}</span>
       </div>
       <div className="mt-2 text-[14px] text-slate-800 font-medium">{m.label}</div>
       <div className="mt-1 text-[12px] text-slate-500 leading-snug">{m.note}</div>
