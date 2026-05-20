@@ -5,7 +5,7 @@ import { NAV_ITEMS, ROUTES } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
 
 export default function Navbar() {
-  const { lang, setLang, theme, setTheme } = useApp();
+  const { lang, setLang, theme, setTheme, t } = useApp();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -16,7 +16,7 @@ export default function Navbar() {
   }, []);
 
   const contactPath = ROUTES.find((r) => r.key === 'contact')?.path || '/contact';
-  const cta = lang === 'tr' ? "Dashboard'u Keşfet" : 'Explore dashboard';
+  const cta = t.nav.cta;
 
   const linkClass = ({ isActive }) =>
     `px-3 py-1.5 rounded-full text-[13px] transition ${
@@ -45,7 +45,7 @@ export default function Navbar() {
           </nav>
 
           <div className="ml-auto flex items-center gap-1.5 pl-2 sm:border-l sm:border-slate-900/10">
-            <ThemeToggle theme={theme} setTheme={setTheme} />
+            <ThemeToggle theme={theme} setTheme={setTheme} t={t} />
             <LangSwitch lang={lang} setLang={setLang} />
             <NavLink
               to="/services"
@@ -59,7 +59,7 @@ export default function Navbar() {
               type="button"
               onClick={() => setMobileOpen(true)}
               className="lg:hidden inline-flex items-center justify-center h-8 w-8 rounded-full text-slate-700 hover:bg-slate-900/[.04]"
-              aria-label="Open menu"
+              aria-label={t.a11y.openMenu}
             >
               <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h14M3 10h14M3 14h14" strokeLinecap="round" /></svg>
             </button>
@@ -73,7 +73,7 @@ export default function Navbar() {
           <div className="absolute right-3 top-3 left-3 rounded-3xl bg-white/95 backdrop-blur-2xl border border-white/70 shadow-2xl p-5 animate-[fadeUp_.25s_ease]">
             <div className="flex items-center justify-between mb-4">
               <EcoLogo />
-              <button onClick={() => setMobileOpen(false)} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.04]">
+              <button onClick={() => setMobileOpen(false)} aria-label={t.a11y.closeMenu} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.04]">
                 <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" /></svg>
               </button>
             </div>
@@ -105,15 +105,15 @@ export default function Navbar() {
   );
 }
 
-function ThemeToggle({ theme, setTheme }) {
+function ThemeToggle({ theme, setTheme, t }) {
   const dark = theme === 'dark';
   return (
     <button
       type="button"
       onClick={() => setTheme(dark ? 'light' : 'dark')}
       className="relative inline-flex items-center justify-center h-7 w-7 rounded-full text-slate-700 hover:bg-slate-900/[.04] transition"
-      aria-label="Toggle theme"
-      title={dark ? 'Light mode' : 'Dark mode'}
+      aria-label={t.a11y.toggleTheme}
+      title={dark ? t.a11y.lightMode : t.a11y.darkMode}
     >
       <svg viewBox="0 0 20 20" className={`h-3.5 w-3.5 transition-all ${dark ? 'opacity-0 scale-50 absolute' : 'opacity-100 scale-100'}`} fill="none" stroke="currentColor" strokeWidth="1.6">
         <circle cx="10" cy="10" r="3.5" />

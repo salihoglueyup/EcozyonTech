@@ -185,7 +185,7 @@ function DashboardPreview({ t, lang }) {
               {view === "overview" && (
                 <DashOverview t={t} d={d} dayLabels={dayLabels} weekHover={weekHover} setWeekHover={setWeekHover} donutHover={donutHover} setDonutHover={setDonutHover} tab={tab} live={live} tick={tick} />
               )}
-              {view === "devices" && <DashDevices lang={lang} tab={tab} />}
+              {view === "devices" && <DashDevices t={t} lang={lang} tab={tab} />}
               {view === "insights" && <DashInsights lang={lang} />}
             </div>
           </div>
@@ -317,7 +317,7 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
 }
 
 // ── Devices view ───────────────────────────────────────────────────────────
-function DashDevices({ lang, tab }) {
+function DashDevices({ t, lang, tab }) {
   const devices = [
     { name: "Ecozyon Band v2", id: "ECZ-08431", battery: 78, sync: lang === "tr" ? "2 dk önce" : "2 min ago", co2: "-1.4 kg", status: "online", user: "Emre Y." },
     { name: "Ecozyon Ring",    id: "ECZ-08432", battery: 92, sync: lang === "tr" ? "şimdi"     : "now",       co2: "-0.8 kg", status: "online", user: "Zeynep D." },
@@ -413,6 +413,7 @@ function DashDevices({ lang, tab }) {
               theme="light"
               borders
               capitals
+              ariaLabel={t.a11y.globeCompact}
             />
           ) : (
             <div className="grid place-items-center h-full text-slate-400 text-[12px]">Loading globe…</div>

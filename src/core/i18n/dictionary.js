@@ -292,6 +292,17 @@ export const ECO_I18N = {
         },
         rights: "Ecozyon Tech © 2026 — Towards a Smarter Future",
       },
+      a11y: {
+        openMenu: "Menüyü aç",
+        closeMenu: "Menüyü kapat",
+        toggleTheme: "Temayı değiştir",
+        lightMode: "Aydınlık mod",
+        darkMode: "Karanlık mod",
+        play: "Oynat",
+        pause: "Duraklat",
+        globeFull: "Etkileşimli 3B küre. Ok tuşları döndürür, +/- yakınlaştırır.",
+        globeCompact: "Etkileşimli 3B küre. Ok tuşları döndürür.",
+      },
     },
 
     en: {
@@ -585,6 +596,17 @@ export const ECO_I18N = {
           socialItems: ["LinkedIn", "X / Twitter", "GitHub", "Newsletter"],
         },
         rights: "Ecozyon Tech © 2026 — Towards a Smarter Future",
+      },
+      a11y: {
+        openMenu: "Open menu",
+        closeMenu: "Close menu",
+        toggleTheme: "Toggle theme",
+        lightMode: "Light mode",
+        darkMode: "Dark mode",
+        play: "Play",
+        pause: "Pause",
+        globeFull: "Interactive 3D globe. Arrow keys rotate, plus/minus zoom.",
+        globeCompact: "Interactive 3D globe. Arrow keys rotate.",
       },
     },
   };

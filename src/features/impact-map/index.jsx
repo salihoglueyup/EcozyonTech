@@ -109,6 +109,7 @@ function ImpactMap({ t }) {
                 emerald={accents.emerald}
                 borders
                 capitals
+                ariaLabel={t.a11y.globeFull}
               />
 
               {/* Hover tooltip — follows the city in screen-space */}

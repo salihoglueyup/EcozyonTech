@@ -424,7 +424,8 @@ import React, { useEffect, useRef } from 'react';
     container.setAttribute("role", "application");
     container.setAttribute(
       "aria-label",
-      "Interactive 3D globe. Arrow keys rotate" + (zoomEnabled ? ", plus/minus zoom." : "."),
+      opts.ariaLabel ||
+        "Interactive 3D globe. Arrow keys rotate" + (zoomEnabled ? ", plus/minus zoom." : "."),
     );
     container.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
@@ -694,6 +695,7 @@ import React, { useEffect, useRef } from 'react';
         emerald: propsRef.current.emerald,
         borders: propsRef.current.borders,
         capitals: propsRef.current.capitals,
+        ariaLabel: propsRef.current.ariaLabel,
       });
       return () => apiRef.current && apiRef.current.dispose && apiRef.current.dispose();
     }, [props.theme, props.compact, props.cyan, props.emerald]);

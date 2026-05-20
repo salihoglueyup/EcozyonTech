@@ -6,6 +6,7 @@ import { useApp } from '@/app/providers/AppProvider';
 
 export default function Footer() {
   const { t, lang } = useApp();
+  const newsletterP = t.contact.emailP;
   return (
     <footer className="relative pt-16 pb-10 mt-8 border-t border-slate-900/[.08]">
       <div className="mx-auto max-w-7xl px-6">
@@ -53,7 +54,7 @@ export default function Footer() {
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">
               {lang === 'tr' ? 'Bültene abone ol' : 'Subscribe to newsletter'}
             </div>
-            <NewsletterForm lang={lang} />
+            <NewsletterForm lang={lang} placeholder={newsletterP} />
             <div className="mt-4 text-[11.5px] text-slate-500 leading-relaxed">
               {lang === 'tr' ? 'Ürün güncellemeleri ve sürdürülebilirlik analizleri. Spam yok.' : 'Product updates and sustainability briefings. No spam.'}
             </div>
@@ -68,7 +69,7 @@ export default function Footer() {
   );
 }
 
-function NewsletterForm({ lang }) {
+function NewsletterForm({ lang, placeholder }) {
   const [email, setEmail] = useState('');
   const [hp, setHp] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
@@ -117,7 +118,7 @@ function NewsletterForm({ lang }) {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@company.com"
+        placeholder={placeholder}
         className="flex-1 bg-transparent outline-none text-[12.5px] text-slate-800 placeholder:text-slate-400"
       />
       <input

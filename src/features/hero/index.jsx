@@ -321,7 +321,7 @@ function VideoModal({ t, lang, onClose }) {
           <button
             onClick={() => setPlaying(!playing)}
             className="absolute bottom-4 left-4 h-10 w-10 rounded-full bg-white/90 text-slate-900 grid place-items-center shadow-lg hover:scale-105 transition"
-            aria-label={playing ? "Pause" : "Play"}
+            aria-label={playing ? t.a11y.pause : t.a11y.play}
           >
             {playing ? (
               <svg viewBox="0 0 16 16" className="h-4 w-4" fill="currentColor"><rect x="4" y="3" width="3" height="10" /><rect x="9" y="3" width="3" height="10" /></svg>
