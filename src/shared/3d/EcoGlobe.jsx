@@ -16,6 +16,13 @@ import React, { useEffect, useRef } from 'react';
     const camera = new THREE.PerspectiveCamera(38, w() / h(), 0.1, 100);
     camera.position.set(0, 0, 6.4);
 
+    // Respect reduced-motion + pause when offscreen / tab hidden.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motion = reduceMotion ? 0 : 1;
+
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(w(), h());
@@ -111,6 +118,9 @@ import React, { useEffect, useRef } from 'react';
     });
     const ARCS = 8;
     const arcs = [];
+    // Shared packet geometry — every traveling dot reuses the same sphere
+    // (smaller GPU footprint than per-arc geometry).
+    const packetGeo = new THREE.SphereGeometry(0.022, 8, 8);
     for (let i = 0; i < ARCS; i++) {
       const a = nodes[Math.floor(Math.random() * nodes.length)];
       const b = nodes[Math.floor(Math.random() * nodes.length)];
@@ -124,7 +134,20 @@ import React, { useEffect, useRef } from 'react';
       const line = new THREE.Line(geo, arcMat.clone());
       line.material.opacity = 0;
       root.add(line);
-      arcs.push({ line, t: Math.random() });
+
+      // AI-motif: a traveling data packet that rides the arc — gives the
+      // globe a clear "intelligence flowing between nodes" read.
+      const packetMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(opts.emerald),
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const packet = new THREE.Mesh(packetGeo, packetMat);
+      root.add(packet);
+
+      arcs.push({ line, curve, packet, t: Math.random() });
     }
 
     // ── Mouse-follow ────────────────────────────────────────────────────────
@@ -147,43 +170,74 @@ import React, { useEffect, useRef } from 'react';
     });
     ro.observe(container);
 
-    // ── Animate ─────────────────────────────────────────────────────────────
-    let raf;
+    // ── Animate (paused offscreen / when tab hidden) ────────────────────────
+    let raf = null;
+    let onScreen = true;
+    let tabShown = typeof document === "undefined" || document.visibilityState !== "hidden";
+    const isActive = () => onScreen && tabShown;
+    const resume = () => {
+      if (raf == null && isActive()) tick();
+    };
+
+    const visIO = new IntersectionObserver(
+      ([e]) => { onScreen = e.isIntersecting; resume(); },
+      { threshold: 0.01 },
+    );
+    visIO.observe(container);
+
+    const onVisibility = () => { tabShown = document.visibilityState !== "hidden"; resume(); };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const start = performance.now();
+    const packetPos = new THREE.Vector3();
     function tick() {
       const t = (performance.now() - start) / 1000;
 
       // Smooth follow
       current.x += (target.x - current.x) * 0.04;
       current.y += (target.y - current.y) * 0.04;
-      root.rotation.y = t * 0.08 + current.x;
+      root.rotation.y = t * 0.08 * motion + current.x;
       root.rotation.x = current.y;
 
       // Pulse nodes
       nodes.forEach((n) => {
-        const s = 1 + Math.sin(t * 2 + n.phase) * 0.35;
+        const s = 1 + Math.sin(t * 2 + n.phase) * 0.35 * motion;
         n.halo.scale.setScalar(s);
-        n.halo.material.opacity = 0.18 + Math.sin(t * 2 + n.phase) * 0.12;
+        n.halo.material.opacity = 0.18 + Math.sin(t * 2 + n.phase) * 0.12 * motion;
       });
 
-      // Arcs fade in/out
+      // Arcs fade in/out + travel a data packet along each curve
       arcs.forEach((a) => {
-        a.t += 0.008;
-        const phase = (a.t % 1);
-        a.line.material.opacity = Math.sin(phase * Math.PI) * 0.45;
+        a.t = (a.t + 0.008 * motion) % 1;
+        const k = Math.sin(a.t * Math.PI);
+        a.line.material.opacity = k * 0.45;
+        a.curve.getPoint(a.t, packetPos);
+        a.packet.position.copy(packetPos);
+        a.packet.material.opacity = k * 0.9;
+        a.packet.scale.setScalar(0.6 + k * 0.8);
       });
 
       renderer.render(scene, camera);
-      raf = requestAnimationFrame(tick);
+      raf = isActive() ? requestAnimationFrame(tick) : null;
     }
     tick();
 
     return function dispose() {
-      cancelAnimationFrame(raf);
+      if (raf != null) cancelAnimationFrame(raf);
+      raf = null;
       window.removeEventListener("mousemove", onMove);
       ro.disconnect();
+      visIO.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      // Free GPU memory — renderer.dispose() alone leaks geometries/materials.
+      scene.traverse((o) => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) {
+          (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => m.dispose());
+        }
+      });
       renderer.dispose();
-      container.removeChild(renderer.domElement);
+      if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement);
     };
   }
 
