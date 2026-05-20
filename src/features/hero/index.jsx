@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
+import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
 
 // ── Hero ───────────────────────────────────────────────────────────────────
@@ -221,6 +222,10 @@ function Typewriter({ text, charMs = 26 }) {
 function VideoModal({ t, lang, onClose }) {
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const dialogRef = useRef(null);
+  const titleId = "video-modal-title";
+  const descId = "video-modal-desc";
+  useFocusTrap(dialogRef, true);
 
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -246,19 +251,24 @@ function VideoModal({ t, lang, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[80] grid place-items-center p-4 lg:p-8">
-      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose} aria-hidden="true" />
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descId}
         className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
       >
         {/* Header */}
         <div className="flex items-start justify-between p-5 pb-3 border-b border-slate-900/[.06]">
           <div>
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700">{lang === "tr" ? "Tanıtım" : "Intro"}</div>
-            <h3 className="mt-1 font-display text-[22px] tracking-tight text-slate-900">{t.hero.videoTitle}</h3>
-            <p className="text-[12.5px] text-slate-500 mt-0.5">{t.hero.videoSub}</p>
+            <h3 id={titleId} className="mt-1 font-display text-[22px] tracking-tight text-slate-900">{t.hero.videoTitle}</h3>
+            <p id={descId} className="text-[12.5px] text-slate-500 mt-0.5">{t.hero.videoSub}</p>
           </div>
-          <button onClick={onClose} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.05]">
-            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round"/></svg>
+          <button onClick={onClose} aria-label={lang === "tr" ? "Kapat" : "Close"} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.05]">
+            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round"/></svg>
           </button>
         </div>
 

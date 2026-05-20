@@ -142,6 +142,8 @@ function NewsletterForm({ lang, placeholder }) {
         value={email}
         onChange={(e) => { setEmail(e.target.value); if (status === 'error') setStatus('idle'); }}
         placeholder={placeholder}
+        aria-invalid={status === 'error' || status === 'limited'}
+        aria-describedby={status === 'limited' ? 'footer-newsletter-msg' : undefined}
         className="flex-1 bg-transparent outline-none text-[12.5px] text-slate-800 placeholder:text-slate-400"
       />
       <input
@@ -173,7 +175,7 @@ function NewsletterForm({ lang, placeholder }) {
       </button>
     </form>
     {status === 'limited' && (
-      <p role="status" aria-live="polite" className="mt-2 text-[11.5px] text-rose-600 max-w-xs">
+      <p id="footer-newsletter-msg" role="status" aria-live="polite" className="mt-2 text-[11.5px] text-rose-600 max-w-xs">
         {tDict.contact.rateLimited.replace('{s}', retryAfterSec)}
       </p>
     )}
