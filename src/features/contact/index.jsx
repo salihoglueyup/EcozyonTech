@@ -11,6 +11,12 @@ export function Contact({ t, lang }) {
   const [purposeOpen, setPurposeOpen] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const idleTimerRef = useRef(null);
+
+  // Clear the pending success → idle timer on unmount.
+  useEffect(() => () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+  }, []);
 
   const validEmail = /^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(email);
   const canSubmit = name && company && validEmail && status !== "sending";
@@ -30,7 +36,7 @@ export function Contact({ t, lang }) {
       if (res.ok && data.ok) {
         setStatus("success");
         setName(""); setCompany(""); setEmail(""); setMessage("");
-        setTimeout(() => setStatus("idle"), 6000);
+        idleTimerRef.current = setTimeout(() => setStatus("idle"), 6000);
       } else {
         setStatus("error");
       }
