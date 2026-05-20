@@ -94,10 +94,14 @@ export function Contact({ t, lang }) {
                   type="email"
                   value={email} onChange={(e) => setEmail(e.target.value)}
                   placeholder={t.contact.emailP}
+                  aria-invalid={email !== '' && !validEmail}
+                  aria-describedby={email !== '' && !validEmail ? 'contact-email-error' : undefined}
                   className="w-full bg-transparent outline-none text-[14px] text-slate-900 placeholder:text-slate-400"
                 />
                 {email && !validEmail && (
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10.5px] text-amber-600 font-mono">!</span>
+                  <span id="contact-email-error" className="absolute left-0 top-full mt-1 text-[10.5px] text-amber-700 font-medium">
+                    {t.contact.emailInvalid}
+                  </span>
                 )}
               </FieldGroup>
               <FieldGroup label={t.contact.msgLabel}>
@@ -122,7 +126,7 @@ export function Contact({ t, lang }) {
                 style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)" }}
               >
                 {sending
-                  ? (lang === "tr" ? "Gönderiliyor…" : "Sending…")
+                  ? t.contact.sending
                   : status === "success"
                     ? t.contact.sent
                     : t.contact.submit}
@@ -139,14 +143,8 @@ export function Contact({ t, lang }) {
                 status === "error" ? "text-rose-600" : "text-emerald-700"
               }`}
             >
-              {status === "success" &&
-                (lang === "tr"
-                  ? "Teşekkürler! Mesajın alındı, 24 saat içinde döneceğiz."
-                  : "Thanks! Your message was received — we'll reply within 24 hours.")}
-              {status === "error" &&
-                (lang === "tr"
-                  ? "Gönderilemedi. Lütfen alanları kontrol edip tekrar dene."
-                  : "Couldn't send. Please check the fields and try again.")}
+              {status === "success" && t.contact.sentLong}
+              {status === "error" && t.contact.sendError}
             </p>
           </form>
 
@@ -214,25 +212,52 @@ function InlineInput({ value, onChange, placeholder, minW }) {
 
 function PurposePicker({ value, setValue, open, setOpen, options }) {
   const wrapRef = useRef(null);
+  const optionRefs = useRef([]);
+  const triggerRef = useRef(null);
+
+  // Move DOM focus to the currently-selected option whenever the menu opens.
+  useEffect(() => {
+    if (!open) return;
+    const idx = Math.max(0, options.indexOf(value));
+    queueMicrotask(() => optionRefs.current[idx]?.focus());
+  }, [open, options, value]);
+
   useEffect(() => {
     if (!open) return;
     const onDown = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
     };
-    const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
     document.addEventListener('pointerdown', onDown);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('pointerdown', onDown);
-      document.removeEventListener('keydown', onKey);
-    };
+    return () => document.removeEventListener('pointerdown', onDown);
   }, [open, setOpen]);
+
+  const onListKeyDown = (e) => {
+    const focused = optionRefs.current.findIndex((el) => el === document.activeElement);
+    if (e.key === 'Escape') {
+      setOpen(false);
+      triggerRef.current?.focus();
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      const next = focused < 0 ? 0 : (focused + 1) % options.length;
+      optionRefs.current[next]?.focus();
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      const prev = focused <= 0 ? options.length - 1 : focused - 1;
+      optionRefs.current[prev]?.focus();
+      e.preventDefault();
+    } else if (e.key === 'Home') {
+      optionRefs.current[0]?.focus();
+      e.preventDefault();
+    } else if (e.key === 'End') {
+      optionRefs.current[options.length - 1]?.focus();
+      e.preventDefault();
+    }
+  };
 
   return (
     <span ref={wrapRef} className="relative inline-block align-baseline">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(!open)}
         aria-haspopup="listbox"
@@ -243,15 +268,20 @@ function PurposePicker({ value, setValue, open, setOpen, options }) {
         <svg viewBox="0 0 12 12" className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 5l3 3 3-3" /></svg>
       </button>
       {open && (
-        <div role="listbox" className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white border border-slate-900/[.08] shadow-xl p-1.5">
-          {options.map((o) => (
+        <div
+          role="listbox"
+          onKeyDown={onListKeyDown}
+          className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white border border-slate-900/[.08] shadow-xl p-1.5"
+        >
+          {options.map((o, i) => (
             <button
               key={o}
+              ref={(el) => { optionRefs.current[i] = el; }}
               type="button"
               role="option"
               aria-selected={o === value}
-              onClick={() => { setValue(o); setOpen(false); }}
-              className={`block w-full text-left text-[13px] font-sans px-3 py-1.5 rounded-lg ${o === value ? "bg-emerald-50 text-emerald-700" : "text-slate-700 hover:bg-slate-50"}`}
+              onClick={() => { setValue(o); setOpen(false); triggerRef.current?.focus(); }}
+              className={`block w-full text-left text-[13px] font-sans px-3 py-1.5 rounded-lg focus:outline-none focus:bg-emerald-50 focus:text-emerald-700 ${o === value ? "bg-emerald-50 text-emerald-700" : "text-slate-700 hover:bg-slate-50"}`}
             >
               {o}
             </button>
