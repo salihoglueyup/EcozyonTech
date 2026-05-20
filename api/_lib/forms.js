@@ -9,6 +9,34 @@ function json(status, body) {
   return { status, body };
 }
 
+// ── Rate limiting ──────────────────────────────────────────────────────────
+// Soft per-IP sliding window. Module-scoped Map persists for the lifetime
+// of a serverless instance, so this is best-effort — Vercel may spin up
+// multiple instances and a determined attacker can cycle IPs. Good enough
+// to deflect honest flooding (refresh-spamming the submit button).
+const WINDOWS = {
+  contact:    { ms: 60_000, max: 5 },
+  newsletter: { ms: 60_000, max: 3 },
+};
+const HITS = new Map(); // key: `${kind}:${ip}` → array of timestamps
+
+export function checkRate(kind, ip, now = Date.now()) {
+  const cfg = WINDOWS[kind];
+  if (!cfg || !ip) return { ok: true };
+  const key = `${kind}:${ip}`;
+  const arr = (HITS.get(key) || []).filter((t) => now - t < cfg.ms);
+  if (arr.length >= cfg.max) {
+    return { ok: false, retryAfterMs: cfg.ms - (now - arr[0]) };
+  }
+  arr.push(now);
+  HITS.set(key, arr);
+  return { ok: true };
+}
+
+export function _resetRateLimits() {
+  HITS.clear(); // test-only helper, exported for unit tests
+}
+
 /**
  * Validate + normalize a contact submission.
  * Honeypot: a non-empty `company_website` means a bot — we pretend success.
@@ -72,9 +100,17 @@ export async function deliver(kind, data, env = process.env) {
 }
 
 /** Shared HTTP entry used by both the Vercel adapter and the dev middleware. */
-export async function handle(kind, method, body, env) {
+export async function handle(kind, method, body, env, ip) {
   if (method !== 'POST') {
     return json(405, { ok: false, error: 'method_not_allowed' });
+  }
+  const rate = checkRate(kind, ip);
+  if (!rate.ok) {
+    return json(429, {
+      ok: false,
+      error: 'rate_limited',
+      retryAfterMs: rate.retryAfterMs,
+    });
   }
   const process = kind === 'contact' ? processContact : processNewsletter;
   const result = process(body || {});

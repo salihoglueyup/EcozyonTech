@@ -18,7 +18,8 @@ function devApi() {
           let body = {}
           try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
           const { handle } = await server.ssrLoadModule('/api/_lib/forms.js')
-          const { status, body: out } = await handle(kind, req.method, body, process.env)
+          const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || ''
+          const { status, body: out } = await handle(kind, req.method, body, process.env, ip)
           res.statusCode = status
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify(out))
