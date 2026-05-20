@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import App from './app/App.jsx'
+import { registerVitals } from './core/lib/vitals.js'
 
 const root = document.getElementById('root')
 const tree = (
@@ -16,3 +17,5 @@ if (root.hasChildNodes()) {
 } else {
   createRoot(root).render(tree)
 }
+
+registerVitals()
