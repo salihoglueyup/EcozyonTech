@@ -18,31 +18,63 @@ const template = await readFile(join(distDir, 'index.html'), 'utf8');
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+const today = new Date().toISOString().slice(0, 10);
+
 // Build the list of concrete URLs to prerender.
 const routes = ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).map((r) => ({
   path: r.path,
   title: r.title.tr,
   desc: SITE.description,
+  lastmod: today,
 }));
 for (const p of POSTS) {
   routes.push({
     path: `/blog/${p.slug}`,
     title: `${p.title.tr} — Ecozyon Tech`,
     desc: p.excerpt.tr,
+    lastmod: p.date || today,
+    post: p, // carry the post so we can emit BlogPosting JSON-LD
   });
 }
 
-function headFor({ path, title, desc }) {
-  const url = SITE.url + (path === '/' ? '/' : path);
+function blogPostingLd(route, url) {
+  const p = route.post;
   return [
+    '<script type="application/ld+json">',
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: p.title.tr,
+      description: p.excerpt.tr,
+      datePublished: p.date,
+      dateModified: p.date,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      author: { '@type': 'Organization', name: 'Ecozyon Tech', url: SITE.url },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Ecozyon Tech',
+        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.svg` },
+      },
+      image: `${SITE.url}/og.svg`,
+      inLanguage: 'tr',
+    }),
+    '</script>',
+  ].join('');
+}
+
+function headFor(route) {
+  const url = SITE.url + (route.path === '/' ? '/' : route.path);
+  const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
-    `<meta property="og:title" content="${esc(title)}" />`,
-    `<meta property="og:description" content="${esc(desc)}" />`,
+    `<meta property="og:title" content="${esc(route.title)}" />`,
+    `<meta property="og:description" content="${esc(route.desc)}" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
-    `<meta name="twitter:title" content="${esc(title)}" />`,
-    `<meta name="twitter:description" content="${esc(desc)}" />`,
-  ].join('\n    ');
+    `<meta name="twitter:title" content="${esc(route.title)}" />`,
+    `<meta name="twitter:description" content="${esc(route.desc)}" />`,
+  ];
+  if (route.post) tags.push(blogPostingLd(route, url));
+  return tags.join('\n    ');
 }
 
 let count = 0;
@@ -66,11 +98,11 @@ for (const route of routes) {
   count++;
 }
 
-// sitemap.xml
+// sitemap.xml — emit <lastmod> from the post date or the build date.
 const urls = routes
   .map(
     (r) =>
-      `  <url><loc>${SITE.url}${r.path === '/' ? '/' : r.path}</loc></url>`,
+      `  <url><loc>${SITE.url}${r.path === '/' ? '/' : r.path}</loc><lastmod>${r.lastmod}</lastmod></url>`,
   )
   .join('\n');
 await writeFile(
