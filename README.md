@@ -5,13 +5,12 @@
 > backend, an interactive 3D globe driven by real-world geography, and a
 > green CI pipeline.
 
+[![CI](https://github.com/salihoglueyup/EcozyonTech/actions/workflows/ci.yml/badge.svg)](https://github.com/salihoglueyup/EcozyonTech/actions/workflows/ci.yml)
 ![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![Vite 8](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind 3](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss&logoColor=white)
 ![React Router 7](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-r184-000000?logo=threedotjs&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-33%2F33-22c55e)
-![Lint](https://img.shields.io/badge/lint-0_errors-22c55e)
 ![Prerender](https://img.shields.io/badge/prerender-static_SSG-10b981)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -41,6 +40,8 @@
 ## Quick start
 
 ```bash
+git clone https://github.com/salihoglueyup/EcozyonTech.git
+cd EcozyonTech
 npm install
 npm run dev        # Vite dev server (forms work via dev middleware)
 npm run build      # client build + SSR build + static prerender → dist/
