@@ -84,8 +84,8 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                     <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{t.hero.live}</div>
                     <div className="text-[10px] text-emerald-700 font-mono">●  LIVE</div>
                   </div>
-                  <div key={liveIdx} className="mt-1 text-[13px] text-slate-800 leading-snug animate-[fadeUp_.5s_ease]">
-                    {t.hero.liveItems[liveIdx]}
+                  <div className="mt-1 text-[13px] text-slate-800 leading-snug min-h-[2.6em]">
+                    <Typewriter key={liveIdx} text={t.hero.liveItems[liveIdx]} />
                   </div>
                 </div>
               </div>
@@ -176,6 +176,44 @@ function PartnerLogo({ name, idx }) {
       </svg>
       <span className="text-[14.5px] font-display tracking-tight">{name}</span>
     </div>
+  );
+}
+
+// ── Typewriter (live AI suggestion text) ───────────────────────────────────
+// Mount with a fresh `key` per message so each instance only types out
+// its own `text` once — keeps the effect dependency-clean and matches
+// the parent's existing `key={liveIdx}` rotation.
+function Typewriter({ text, charMs = 26 }) {
+  const reduceMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [shown, setShown] = useState(reduceMotion ? text.length : 0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    let i = 0;
+    let last = performance.now();
+    let raf;
+    const step = (now) => {
+      if (now - last >= charMs) {
+        i = Math.min(text.length, i + 1);
+        setShown(i);
+        last = now;
+      }
+      if (i < text.length) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => raf && cancelAnimationFrame(raf);
+  }, [text, charMs, reduceMotion]);
+
+  return (
+    <>
+      {text.slice(0, shown)}
+      {shown < text.length && (
+        <span className="inline-block w-[5px] h-[1em] bg-emerald-500/80 ml-[1px] align-text-bottom animate-pulse" aria-hidden />
+      )}
+    </>
   );
 }
 
