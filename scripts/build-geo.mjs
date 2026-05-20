@@ -93,7 +93,10 @@ const places = JSON.parse(await readFile(join(root, 'data-src', 'capitals.geojso
 const caps = [];
 for (const f of places.features) {
   const p = f.properties || {};
-  if (!String(p.featurecla || '').startsWith('Admin-0 capital')) continue;
+  // Match the primary admin-0 capital only — Natural Earth also tags secondary
+  // seats ("Admin-0 capital alt": Lagos, Tel Aviv, Kyoto, Cape Town, Baguio, …)
+  // which would otherwise show up as "capitals" next to the real one.
+  if (String(p.featurecla || '') !== 'Admin-0 capital') continue;
   const [lon, lat] = f.geometry.coordinates;
   caps.push({
     n: p.name || p.nameascii || '',
