@@ -3,6 +3,7 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { postBySlug } from '@/core/data/posts';
+import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -15,20 +16,10 @@ export default function BlogPostPage() {
     post ? post.excerpt[lang] : undefined,
   );
 
-  if (!post) {
-    return (
-      <section className="relative py-20 lg:py-28 pt-32">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h1 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] text-slate-900">
-            {tr ? 'Bu yazı bulunamadı' : 'Post not found'}
-          </h1>
-          <Link to="/blog" className="mt-6 inline-flex items-center gap-2 text-[13.5px] font-medium text-cyan-700">
-            ← {tr ? 'Tüm yazılar' : 'All posts'}
-          </Link>
-        </div>
-      </section>
-    );
-  }
+  // Unknown slug → render the real 404 page so users get a consistent
+  // dead-end UX (the prerender step never emits HTML for unknown slugs,
+  // so this only triggers on client navigation / SPA fallback).
+  if (!post) return <NotFoundPage />;
 
   return (
     <article className="relative py-20 lg:py-28 pt-32">

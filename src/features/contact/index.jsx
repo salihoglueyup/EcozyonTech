@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 
 // ── Contact — inline madlib form ───────────────────────────────────────────
@@ -213,22 +213,43 @@ function InlineInput({ value, onChange, placeholder, minW }) {
 }
 
 function PurposePicker({ value, setValue, open, setOpen, options }) {
+  const wrapRef = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open, setOpen]);
+
   return (
-    <span className="relative inline-block align-baseline">
+    <span ref={wrapRef} className="relative inline-block align-baseline">
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 rounded-full px-3.5 py-0.5 font-display text-[0.85em] hover:bg-emerald-100 transition ring-1 ring-emerald-500/15"
       >
         {value}
         <svg viewBox="0 0 12 12" className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 5l3 3 3-3" /></svg>
       </button>
       {open && (
-        <div className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white border border-slate-900/[.08] shadow-xl p-1.5">
+        <div role="listbox" className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white border border-slate-900/[.08] shadow-xl p-1.5">
           {options.map((o) => (
             <button
               key={o}
               type="button"
+              role="option"
+              aria-selected={o === value}
               onClick={() => { setValue(o); setOpen(false); }}
               className={`block w-full text-left text-[13px] font-sans px-3 py-1.5 rounded-lg ${o === value ? "bg-emerald-50 text-emerald-700" : "text-slate-700 hover:bg-slate-50"}`}
             >

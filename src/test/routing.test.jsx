@@ -30,7 +30,8 @@ describe('routing', () => {
 
   it('handles an unknown blog slug gracefully', async () => {
     renderAt('/blog/no-such-post');
-    expect(await screen.findByText(/bulunamadı/i)).toBeInTheDocument();
+    // Unknown slug renders the real 404 page (consistent dead-end UX).
+    expect(await screen.findByText('404')).toBeInTheDocument();
   });
 
   it('exposes a skip link and a main landmark for a11y', () => {
