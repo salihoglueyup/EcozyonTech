@@ -33,11 +33,18 @@ export default {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        shake: {
+          '10%, 90%': { transform: 'translateX(-1px)' },
+          '20%, 80%': { transform: 'translateX(2px)' },
+          '30%, 50%, 70%': { transform: 'translateX(-3px)' },
+          '40%, 60%': { transform: 'translateX(3px)' },
+        },
       },
       animation: {
         fadeUp: 'fadeUp .5s ease both',
         float: 'float 6s ease-in-out infinite',
         marquee: 'marquee 42s linear infinite',
+        shake: 'shake .32s ease',
       },
     },
   },

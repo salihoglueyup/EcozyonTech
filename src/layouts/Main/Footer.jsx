@@ -98,16 +98,29 @@ function NewsletterForm({ lang, placeholder }) {
 
   if (status === 'success') {
     return (
-      <p role="status" className="text-[12.5px] text-emerald-700 py-2">
-        {lang === 'tr' ? '✓ Abone oldun, teşekkürler!' : '✓ Subscribed, thank you!'}
-      </p>
+      <div
+        role="status"
+        className="inline-flex items-center gap-2 rounded-full bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-3 py-1.5 text-[12.5px] font-medium animate-[fadeUp_.32s_ease-out]"
+      >
+        <span
+          className="inline-flex items-center justify-center h-4 w-4 rounded-full text-white"
+          style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+        >
+          <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <path d="M2 6.4l2.8 2.6L10 3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+        {lang === 'tr' ? 'Abone oldun, teşekkürler!' : 'Subscribed, thank you!'}
+      </div>
     );
   }
 
   return (
     <form
       onSubmit={onSubmit}
-      className="flex items-center gap-2 rounded-full bg-white/70 border border-slate-900/[.08] p-1 pl-3.5 max-w-xs"
+      className={`flex items-center gap-2 rounded-full bg-white/70 border p-1 pl-3.5 max-w-xs transition-colors ${
+        status === 'error' ? 'border-rose-500/40 animate-[shake_.32s_ease]' : 'border-slate-900/[.08]'
+      }`}
     >
       <label className="sr-only" htmlFor="footer-newsletter-email">
         {lang === 'tr' ? 'E-posta' : 'Email'}
@@ -117,7 +130,7 @@ function NewsletterForm({ lang, placeholder }) {
         type="email"
         required
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => { setEmail(e.target.value); if (status === 'error') setStatus('idle'); }}
         placeholder={placeholder}
         className="flex-1 bg-transparent outline-none text-[12.5px] text-slate-800 placeholder:text-slate-400"
       />
@@ -133,9 +146,20 @@ function NewsletterForm({ lang, placeholder }) {
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="rounded-full bg-slate-900 text-white text-[11.5px] font-medium px-3 py-1.5 hover:bg-slate-800 disabled:opacity-50"
+        aria-label={lang === 'tr' ? 'Abone ol' : 'Subscribe'}
+        className={`rounded-full text-white text-[11.5px] font-medium px-3 py-1.5 disabled:opacity-60 transition-colors ${
+          status === 'error' ? 'bg-rose-600 hover:bg-rose-500' : 'bg-slate-900 hover:bg-slate-800'
+        }`}
       >
-        {status === 'sending' ? '…' : status === 'error' ? '!' : '→'}
+        {status === 'sending' ? (
+          <span className="inline-block h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" aria-hidden />
+        ) : status === 'error' ? (
+          '!'
+        ) : (
+          <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <path d="M3 7h8m-3-3 3 3-3 3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
       </button>
     </form>
   );
