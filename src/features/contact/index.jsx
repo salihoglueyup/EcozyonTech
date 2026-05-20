@@ -10,7 +10,8 @@ export function Contact({ t, lang }) {
   const [purpose, setPurpose] = useState(t.contact.purposes[0]);
   const [purposeOpen, setPurposeOpen] = useState(false);
   const [honeypot, setHoneypot] = useState("");
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error | limited
+  const [retryAfterSec, setRetryAfterSec] = useState(0);
   const idleTimerRef = useRef(null);
 
   // Clear the pending success → idle timer on unmount.
@@ -37,6 +38,9 @@ export function Contact({ t, lang }) {
         setStatus("success");
         setName(""); setCompany(""); setEmail(""); setMessage("");
         idleTimerRef.current = setTimeout(() => setStatus("idle"), 6000);
+      } else if (res.status === 429) {
+        setRetryAfterSec(Math.ceil((data.retryAfterMs || 60_000) / 1000));
+        setStatus("limited");
       } else {
         setStatus("error");
       }
@@ -146,11 +150,12 @@ export function Contact({ t, lang }) {
               role="status"
               aria-live="polite"
               className={`mt-3 text-[12.5px] min-h-[1.1em] ${
-                status === "error" ? "text-rose-600" : "text-emerald-700"
+                status === "error" || status === "limited" ? "text-rose-600" : "text-emerald-700"
               }`}
             >
               {status === "success" && t.contact.sentLong}
               {status === "error" && t.contact.sendError}
+              {status === "limited" && t.contact.rateLimited.replace('{s}', retryAfterSec)}
             </p>
           </form>
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
 import { FOOTER_ITEMS } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
+import { ECO_I18N } from '@/core/i18n/dictionary';
 
 export default function Footer() {
   const { t, lang } = useApp();
@@ -70,9 +71,12 @@ export default function Footer() {
 }
 
 function NewsletterForm({ lang, placeholder }) {
+  // Get t locally so the form can show the same rate-limit copy as Contact.
+  const tDict = ECO_I18N[lang] || ECO_I18N.tr;
   const [email, setEmail] = useState('');
   const [hp, setHp] = useState('');
-  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error | limited
+  const [retryAfterSec, setRetryAfterSec] = useState(0);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -88,6 +92,9 @@ function NewsletterForm({ lang, placeholder }) {
       if (res.ok && data.ok) {
         setStatus('success');
         setEmail('');
+      } else if (res.status === 429) {
+        setRetryAfterSec(Math.ceil((data.retryAfterMs || 60_000) / 1000));
+        setStatus('limited');
       } else {
         setStatus('error');
       }
@@ -116,10 +123,13 @@ function NewsletterForm({ lang, placeholder }) {
   }
 
   return (
+    <div>
     <form
       onSubmit={onSubmit}
       className={`flex items-center gap-2 rounded-full bg-white/70 border p-1 pl-3.5 max-w-xs transition-colors ${
-        status === 'error' ? 'border-rose-500/40 animate-[shake_.32s_ease]' : 'border-slate-900/[.08]'
+        status === 'error' || status === 'limited'
+          ? 'border-rose-500/40 animate-[shake_.32s_ease]'
+          : 'border-slate-900/[.08]'
       }`}
     >
       <label className="sr-only" htmlFor="footer-newsletter-email">
@@ -148,12 +158,12 @@ function NewsletterForm({ lang, placeholder }) {
         disabled={status === 'sending'}
         aria-label={lang === 'tr' ? 'Abone ol' : 'Subscribe'}
         className={`rounded-full text-white text-[11.5px] font-medium px-3 py-1.5 disabled:opacity-60 transition-colors ${
-          status === 'error' ? 'bg-rose-600 hover:bg-rose-500' : 'bg-slate-900 hover:bg-slate-800'
+          status === 'error' || status === 'limited' ? 'bg-rose-600 hover:bg-rose-500' : 'bg-slate-900 hover:bg-slate-800'
         }`}
       >
         {status === 'sending' ? (
           <span className="inline-block h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" aria-hidden />
-        ) : status === 'error' ? (
+        ) : status === 'error' || status === 'limited' ? (
           '!'
         ) : (
           <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -162,5 +172,11 @@ function NewsletterForm({ lang, placeholder }) {
         )}
       </button>
     </form>
+    {status === 'limited' && (
+      <p role="status" aria-live="polite" className="mt-2 text-[11.5px] text-rose-600 max-w-xs">
+        {tDict.contact.rateLimited.replace('{s}', retryAfterSec)}
+      </p>
+    )}
+    </div>
   );
 }
