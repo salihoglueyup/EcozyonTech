@@ -332,6 +332,7 @@ export const ECO_I18N = {
         searchLabel: "Yazılarda ara",
         searchP: "Yazılarda ara…",
         noResults: "Aramana uygun yazı bulunamadı.",
+        related: "İlgili yazılar",
       },
       careers: {
         apply: "Başvur",
@@ -692,6 +693,7 @@ export const ECO_I18N = {
         searchLabel: "Search posts",
         searchP: "Search posts…",
         noResults: "No posts match your search.",
+        related: "Related posts",
       },
       careers: {
         apply: "Apply",

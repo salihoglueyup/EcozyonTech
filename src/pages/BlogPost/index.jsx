@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { postBySlug, readingTime } from '@/core/data/posts';
+import { postBySlug, readingTime, relatedPosts } from '@/core/data/posts';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -20,6 +20,8 @@ export default function BlogPostPage() {
   // dead-end UX (the prerender step never emits HTML for unknown slugs,
   // so this only triggers on client navigation / SPA fallback).
   if (!post) return <NotFoundPage />;
+
+  const related = relatedPosts(post);
 
   return (
     <article className="relative py-20 lg:py-28 pt-32">
@@ -42,6 +44,33 @@ export default function BlogPostPage() {
             </p>
           ))}
         </div>
+
+        {related.length > 0 && (
+          <aside className="mt-16 pt-8 border-t border-slate-900/[.08]">
+            <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-4">
+              {t.blog.related}
+            </h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {related.map((r) => (
+                <Link
+                  key={r.slug}
+                  to={`/blog/${r.slug}`}
+                  className="group block rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-5 hover:ring-cyan-500/30 transition"
+                >
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/15 px-2 py-0.5 font-semibold">
+                      {r.tag[lang]}
+                    </span>
+                    <time className="text-slate-500 font-mono">{r.date}</time>
+                  </div>
+                  <h3 className="mt-2 font-display text-[16px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">
+                    {r.title[lang]}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
       </div>
     </article>
   );

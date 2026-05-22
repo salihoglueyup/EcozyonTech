@@ -75,6 +75,20 @@ export const POSTS = [
 
 export const postBySlug = (slug) => POSTS.find((p) => p.slug === slug);
 
+// Up to `n` posts most relevant to `post`: same tag first, then most recent.
+// Deterministic (stable sort keys) so prerender/tests don't drift.
+export function relatedPosts(post, all = POSTS, n = 2) {
+  if (!post) return [];
+  const others = all.filter((p) => p.slug !== post.slug);
+  const sorted = [...others].sort((a, b) => {
+    const at = a.tag.en === post.tag.en ? 0 : 1;
+    const bt = b.tag.en === post.tag.en ? 0 : 1;
+    if (at !== bt) return at - bt; // same-tag posts win
+    return String(b.date || '').localeCompare(String(a.date || '')); // then recency
+  });
+  return sorted.slice(0, n);
+}
+
 // Distinct tags in first-appearance order. `id` is the English tag (a stable
 // key that survives language switches); `label` carries both translations so
 // the UI can render in the active language without losing the active filter.

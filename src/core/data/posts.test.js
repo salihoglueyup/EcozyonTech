@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { POSTS, postTags, filterByTag, searchPosts, readingTime } from './posts';
+import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, readingTime } from './posts';
 
 describe('postTags', () => {
   it('returns distinct tags in first-appearance order', () => {
@@ -82,6 +82,39 @@ describe('searchPosts', () => {
 
   it('returns empty for a term that appears nowhere', () => {
     expect(searchPosts(POSTS, 'zzzznotfound', 'tr')).toEqual([]);
+  });
+});
+
+describe('relatedPosts', () => {
+  const list = [
+    { slug: 'a', date: '2026-04-01', tag: { en: 'Guide' } },
+    { slug: 'b', date: '2026-03-01', tag: { en: 'Hardware' } },
+    { slug: 'c', date: '2026-02-01', tag: { en: 'Guide' } },
+    { slug: 'd', date: '2026-01-01', tag: { en: 'Community' } },
+  ];
+
+  it('never includes the post itself', () => {
+    const r = relatedPosts(list[0], list, 3);
+    expect(r.map((p) => p.slug)).not.toContain('a');
+  });
+
+  it('prefers same-tag posts, then falls back to recency', () => {
+    // a is Guide; the only other Guide is c, so c must come first.
+    const r = relatedPosts(list[0], list, 3);
+    expect(r[0].slug).toBe('c');
+    // remaining slots filled by most recent of the rest (b before d).
+    expect(r.map((p) => p.slug)).toEqual(['c', 'b', 'd']);
+  });
+
+  it('respects the n limit and returns [] for no post', () => {
+    expect(relatedPosts(list[0], list, 2)).toHaveLength(2);
+    expect(relatedPosts(null)).toEqual([]);
+  });
+
+  it('works against the real dataset deterministically', () => {
+    const r = relatedPosts(POSTS[0]);
+    expect(r.length).toBeLessThanOrEqual(2);
+    expect(r.every((p) => p.slug !== POSTS[0].slug)).toBe(true);
   });
 });
 
