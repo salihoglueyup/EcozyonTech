@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
+import { NAV_ITEMS } from '@/core/config/site';
 
 export default function NotFoundPage() {
   const { lang } = useApp();
@@ -35,6 +36,31 @@ export default function NotFoundPage() {
           {tr ? 'Ana sayfaya dön' : 'Back to home'}
           <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
         </Link>
+
+        <div className="mt-10 pt-8 border-t border-slate-900/[.08]">
+          <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">
+            {tr ? 'Popüler sayfalar' : 'Popular pages'}
+          </div>
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {NAV_ITEMS.map((it) => (
+              <Link
+                key={it.path}
+                to={it.path}
+                className="rounded-full bg-white/70 ring-1 ring-slate-900/[.08] px-3 py-1.5 text-[12.5px] text-slate-700 hover:text-slate-900 hover:ring-cyan-500/30 transition"
+              >
+                {it.nav[lang] || it.nav.en}
+              </Link>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event('ecozyon:cmdk'))}
+            className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] text-slate-500 hover:text-slate-900 transition"
+          >
+            {tr ? 'veya hızlıca ara' : 'or search quickly'}
+            <kbd className="rounded-md bg-slate-900/[.06] px-1.5 py-0.5 font-sans font-medium text-slate-600">⌘K</kbd>
+          </button>
+        </div>
       </div>
     </section>
   );
