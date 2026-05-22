@@ -319,6 +319,9 @@ export const ECO_I18N = {
         all: "Tümü",
         filterLabel: "Etikete göre filtrele",
         empty: "Bu etikette yazı yok.",
+        searchLabel: "Yazılarda ara",
+        searchP: "Yazılarda ara…",
+        noResults: "Aramana uygun yazı bulunamadı.",
       },
       careers: {
         apply: "Başvur",
@@ -657,6 +660,9 @@ export const ECO_I18N = {
         all: "All",
         filterLabel: "Filter by tag",
         empty: "No posts under this tag.",
+        searchLabel: "Search posts",
+        searchP: "Search posts…",
+        noResults: "No posts match your search.",
       },
       careers: {
         apply: "Apply",

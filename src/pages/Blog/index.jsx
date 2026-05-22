@@ -4,7 +4,7 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { POSTS, readingTime, postTags, filterByTag } from '@/core/data/posts';
+import { POSTS, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
 
 const meta = routeByKey('blog');
 const TAGS = postTags(POSTS);
@@ -13,7 +13,8 @@ export default function BlogPage() {
   const { lang, t } = useApp();
   const tr = lang === 'tr';
   const [activeTag, setActiveTag] = useState(null);
-  const visible = filterByTag(POSTS, activeTag);
+  const [query, setQuery] = useState('');
+  const visible = searchPosts(filterByTag(POSTS, activeTag), query, lang);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -32,6 +33,20 @@ export default function BlogPage() {
               {tr ? 'içgörüler' : 'insights'}
             </span>
           </h1>
+        </div>
+
+        <div className="mb-5 relative max-w-sm">
+          <svg className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t.blog.searchP}
+            aria-label={t.blog.searchLabel}
+            className="w-full rounded-full bg-white/70 ring-1 ring-slate-900/[.08] pl-10 pr-4 py-2.5 text-[13px] text-slate-800 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400"
+          />
         </div>
 
         <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label={t.blog.filterLabel}>
@@ -80,7 +95,9 @@ export default function BlogPage() {
             </Link>
           ))}
           {visible.length === 0 && (
-            <p className="py-10 text-center text-[14px] text-slate-500">{t.blog.empty}</p>
+            <p className="py-10 text-center text-[14px] text-slate-500">
+              {query.trim() ? t.blog.noResults : t.blog.empty}
+            </p>
           )}
         </div>
       </div>

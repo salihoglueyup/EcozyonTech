@@ -92,6 +92,21 @@ export function filterByTag(posts, tagId) {
   return posts.filter((p) => p.tag.en === tagId);
 }
 
+// Case-insensitive substring search over a post's title, excerpt, tag and
+// body in the active language. An empty/whitespace query returns the list
+// unchanged so it composes cleanly with filterByTag (AND semantics).
+export function searchPosts(posts, query, lang = 'tr') {
+  const q = String(query ?? '').trim().toLowerCase();
+  if (!q) return posts;
+  return posts.filter((p) => {
+    const hay = [p.title?.[lang], p.excerpt?.[lang], p.tag?.[lang], ...(p.body?.[lang] || [])]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return hay.includes(q);
+  });
+}
+
 // Approximate reading time for a post body, in minutes (200 wpm baseline).
 // Counts the active language only — TR and EN word counts are usually close.
 export function readingTime(post, lang = 'tr') {
