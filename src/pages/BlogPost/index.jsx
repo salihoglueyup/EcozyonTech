@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { postBySlug, readingTime, relatedPosts } from '@/core/data/posts';
+import { postBySlug, readingTime, relatedPosts, postNeighbors } from '@/core/data/posts';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -22,6 +22,7 @@ export default function BlogPostPage() {
   if (!post) return <NotFoundPage />;
 
   const related = relatedPosts(post);
+  const { prev, next } = postNeighbors(post.slug);
 
   return (
     <article className="relative py-20 lg:py-28 pt-32">
@@ -44,6 +45,23 @@ export default function BlogPostPage() {
             </p>
           ))}
         </div>
+
+        {(prev || next) && (
+          <nav className="mt-14 pt-8 border-t border-slate-900/[.08] flex items-stretch gap-3" aria-label={tr ? 'Yazı gezinmesi' : 'Post navigation'}>
+            {prev ? (
+              <Link to={`/blog/${prev.slug}`} className="group flex-1 rounded-2xl border border-white/70 bg-white/70 ring-1 ring-slate-900/[.05] p-4 hover:ring-cyan-500/30 transition">
+                <span className="text-[11px] text-slate-500">← {t.blog.prevPost}</span>
+                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">{prev.title[lang]}</span>
+              </Link>
+            ) : <span className="flex-1" />}
+            {next ? (
+              <Link to={`/blog/${next.slug}`} className="group flex-1 rounded-2xl border border-white/70 bg-white/70 ring-1 ring-slate-900/[.05] p-4 text-right hover:ring-cyan-500/30 transition">
+                <span className="text-[11px] text-slate-500">{t.blog.nextPost} →</span>
+                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">{next.title[lang]}</span>
+              </Link>
+            ) : <span className="flex-1" />}
+          </nav>
+        )}
 
         {related.length > 0 && (
           <aside className="mt-16 pt-8 border-t border-slate-900/[.08]">

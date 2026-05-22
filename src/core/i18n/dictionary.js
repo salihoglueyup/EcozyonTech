@@ -333,6 +333,8 @@ export const ECO_I18N = {
         searchP: "Yazılarda ara…",
         noResults: "Aramana uygun yazı bulunamadı.",
         related: "İlgili yazılar",
+        prevPost: "Önceki yazı",
+        nextPost: "Sonraki yazı",
       },
       careers: {
         apply: "Başvur",
@@ -694,6 +696,8 @@ export const ECO_I18N = {
         searchP: "Search posts…",
         noResults: "No posts match your search.",
         related: "Related posts",
+        prevPost: "Previous post",
+        nextPost: "Next post",
       },
       careers: {
         apply: "Apply",

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, readingTime } from './posts';
+import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime } from './posts';
 
 describe('postTags', () => {
   it('returns distinct tags in first-appearance order', () => {
@@ -115,6 +115,28 @@ describe('relatedPosts', () => {
     const r = relatedPosts(POSTS[0]);
     expect(r.length).toBeLessThanOrEqual(2);
     expect(r.every((p) => p.slug !== POSTS[0].slug)).toBe(true);
+  });
+});
+
+describe('postNeighbors', () => {
+  it('returns null prev for the first post and null next for the last', () => {
+    const first = postNeighbors(POSTS[0].slug);
+    expect(first.prev).toBeNull();
+    expect(first.next?.slug).toBe(POSTS[1].slug);
+
+    const last = postNeighbors(POSTS[POSTS.length - 1].slug);
+    expect(last.next).toBeNull();
+    expect(last.prev?.slug).toBe(POSTS[POSTS.length - 2].slug);
+  });
+
+  it('returns both neighbors for a middle post', () => {
+    const mid = postNeighbors(POSTS[1].slug);
+    expect(mid.prev?.slug).toBe(POSTS[0].slug);
+    expect(mid.next?.slug).toBe(POSTS[2].slug);
+  });
+
+  it('returns nulls for an unknown slug', () => {
+    expect(postNeighbors('nope')).toEqual({ prev: null, next: null });
   });
 });
 

@@ -75,6 +75,14 @@ export const POSTS = [
 
 export const postBySlug = (slug) => POSTS.find((p) => p.slug === slug);
 
+// Adjacent posts in list order (POSTS is newest-first): prev = the newer
+// neighbor, next = the older one. Either is null at the ends.
+export function postNeighbors(slug, all = POSTS) {
+  const i = all.findIndex((p) => p.slug === slug);
+  if (i === -1) return { prev: null, next: null };
+  return { prev: all[i - 1] || null, next: all[i + 1] || null };
+}
+
 // Up to `n` posts most relevant to `post`: same tag first, then most recent.
 // Deterministic (stable sort keys) so prerender/tests don't drift.
 export function relatedPosts(post, all = POSTS, n = 2) {
