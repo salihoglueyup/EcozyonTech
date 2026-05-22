@@ -5,6 +5,7 @@ import Footer from './Footer';
 import CookieBanner from './CookieBanner';
 import { useApp } from '@/app/providers/AppProvider';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
+import CommandPalette from '@/shared/ui/CommandPalette';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 
 function ScrollProgress() {
@@ -85,6 +86,7 @@ export default function MainLayout() {
         <Footer />
       </div>
 
+      <CommandPalette />
       {import.meta.env.DEV && <DevTweaks />}
       <CookieBanner />
     </div>

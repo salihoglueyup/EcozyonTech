@@ -101,7 +101,9 @@
       "Bash(xargs ls -la)",
       "Bash(npm install *)",
       "PowerShell(npm run *)",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "Bash(mv -f src/shared/ui/commandPalette.js src/shared/ui/commands.js)",
+      "Bash(mv -f src/shared/ui/commandPalette.test.js src/shared/ui/commands.test.js)"
     ]
   }
 }

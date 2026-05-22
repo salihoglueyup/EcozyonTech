@@ -1,0 +1,152 @@
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApp } from '@/app/providers/AppProvider';
+import { useFocusTrap } from '@/shared/ui/useFocusTrap';
+import { ROUTES } from '@/core/config/site';
+import { POSTS } from '@/core/data/posts';
+import { buildCommands, filterCommands } from './commands';
+
+// Site-wide ⌘K / Ctrl+K palette. Mounted once in the layout; renders nothing
+// until opened, so it adds nothing to the prerendered HTML.
+export default function CommandPalette() {
+  const { lang, t, theme, setTheme, setLang } = useApp();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [active, setActive] = useState(0);
+  const dialogRef = useRef(null);
+  const listId = useId();
+  useFocusTrap(dialogRef, open);
+
+  const close = useCallback(() => {
+    setOpen(false);
+    setQuery('');
+    setActive(0);
+  }, []);
+
+  // Action items carry handlers; data items (pages/posts) carry `to`.
+  const items = useMemo(() => {
+    const data = buildCommands({ routes: ROUTES, posts: POSTS, lang });
+    const actions = [
+      {
+        id: 'action:theme',
+        type: 'action',
+        label: t.cmd.toggleTheme,
+        keywords: ['theme', 'tema', 'dark', 'light', 'karanlık', 'aydınlık'],
+        run: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+      },
+      {
+        id: 'action:lang',
+        type: 'action',
+        label: lang === 'tr' ? 'English' : 'Türkçe',
+        keywords: ['language', 'dil', 'tr', 'en', 'türkçe', 'english'],
+        run: () => setLang(lang === 'tr' ? 'en' : 'tr'),
+      },
+    ];
+    return [...data, ...actions];
+  }, [lang, t, theme, setTheme, setLang]);
+
+  const results = useMemo(() => filterCommands(items, query), [items, query]);
+  const kindLabel = { page: t.cmd.pages, post: t.cmd.posts, action: t.cmd.actions };
+
+  const run = useCallback(
+    (item) => {
+      if (!item) return;
+      if (item.run) item.run();
+      else if (item.to) navigate(item.to);
+      close();
+    },
+    [navigate, close],
+  );
+
+  // Global open/close shortcut (⌘K / Ctrl+K) + a custom event so UI affordances
+  // (e.g. the navbar button) can open the palette without lifting state.
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        setOpen((v) => !v);
+      }
+    };
+    const onOpen = () => setOpen(true);
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('ecozyon:cmdk', onOpen);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('ecozyon:cmdk', onOpen);
+    };
+  }, []);
+
+  if (!open) return null;
+
+  const onListKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); setActive((i) => Math.min(i + 1, results.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive((i) => Math.max(i - 1, 0)); }
+    else if (e.key === 'Enter') { e.preventDefault(); run(results[active]); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[120] flex items-start justify-center p-4 pt-[12vh]">
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" aria-hidden="true" onClick={close} />
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.cmd.placeholder}
+        onKeyDown={onListKey}
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/70 bg-white shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] animate-[fadeUp_.2s_ease-out]"
+      >
+        <div className="flex items-center gap-3 border-b border-slate-900/[.07] px-4">
+          <svg className="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
+          </svg>
+          <input
+            autoFocus
+            type="text"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls={listId}
+            aria-activedescendant={results[active] ? `${listId}-${active}` : undefined}
+            value={query}
+            onChange={(e) => { setQuery(e.target.value); setActive(0); }}
+            placeholder={t.cmd.placeholder}
+            className="w-full bg-transparent py-3.5 text-[14px] text-slate-800 outline-none placeholder:text-slate-400"
+          />
+        </div>
+
+        <ul id={listId} role="listbox" className="max-h-[52vh] overflow-y-auto py-1.5">
+          {results.length === 0 && (
+            <li className="px-4 py-6 text-center text-[13px] text-slate-500">{t.cmd.noResults}</li>
+          )}
+          {results.map((item, i) => (
+            <li
+              key={item.id}
+              id={`${listId}-${i}`}
+              role="option"
+              aria-selected={i === active}
+              onClick={() => run(item)}
+              onMouseEnter={() => setActive(i)}
+              className={`mx-1.5 flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] ${
+                i === active ? 'bg-slate-900 text-white' : 'text-slate-700'
+              }`}
+            >
+              <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
+                {item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : '→'}
+              </span>
+              <span className="flex-1 truncate">{item.label}</span>
+              {item.hint && (
+                <span className={`text-[11px] ${i === active ? 'text-white/60' : 'text-slate-400'}`}>{item.hint}</span>
+              )}
+              <span className={`text-[10.5px] uppercase tracking-wide ${i === active ? 'text-white/50' : 'text-slate-300'}`}>
+                {kindLabel[item.type]}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="border-t border-slate-900/[.07] px-4 py-2 text-[11px] text-slate-400">{t.cmd.hint}</div>
+      </div>
+    </div>
+  );
+}

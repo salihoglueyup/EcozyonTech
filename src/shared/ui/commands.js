@@ -1,0 +1,43 @@
+// Pure data + matching logic for the ⌘K command palette. The React shell
+// (CommandPalette.jsx) owns focus/keyboard/navigation; everything here is
+// side-effect-free and unit-tested.
+
+// Build the navigable item list from routes + blog posts. Action items
+// (theme/lang) are appended by the component since they carry handlers.
+// Each item: { id, type: 'page'|'post', label, hint, to }.
+export function buildCommands({ routes, posts, lang = 'tr' }) {
+  const pages = routes
+    .filter((r) => r.path !== '*' && !r.path.includes(':'))
+    .map((r) => ({
+      id: `page:${r.path}`,
+      type: 'page',
+      label: r.nav?.[lang] || r.nav?.en || r.path,
+      to: r.path,
+    }));
+  const blog = (posts || []).map((p) => ({
+    id: `post:${p.slug}`,
+    type: 'post',
+    label: p.title?.[lang] || p.title?.en || p.slug,
+    hint: p.tag?.[lang],
+    to: `/blog/${p.slug}`,
+  }));
+  return [...pages, ...blog];
+}
+
+// Substring filter over label + hint + keywords, ranked so that label
+// prefix matches surface first. An empty query returns the list unchanged.
+export function filterCommands(items, query) {
+  const q = String(query ?? '').trim().toLowerCase();
+  if (!q) return items;
+  const scored = [];
+  for (const it of items) {
+    const label = String(it.label).toLowerCase();
+    const hay = `${label} ${it.hint || ''} ${(it.keywords || []).join(' ')}`.toLowerCase();
+    const idx = hay.indexOf(q);
+    if (idx === -1) continue;
+    const score = label.startsWith(q) ? 0 : label.includes(q) ? 1 : 2;
+    scored.push({ it, score, idx });
+  }
+  scored.sort((a, b) => a.score - b.score || a.idx - b.idx);
+  return scored.map((s) => s.it);
+}

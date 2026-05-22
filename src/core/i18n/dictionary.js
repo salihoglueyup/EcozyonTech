@@ -349,6 +349,15 @@ export const ECO_I18N = {
         sendError: "Gönderilemedi. Alanları kontrol edip tekrar dene.",
         close: "Kapat",
       },
+      cmd: {
+        placeholder: "Sayfa, yazı veya komut ara…",
+        pages: "Sayfalar",
+        posts: "Yazılar",
+        actions: "Komutlar",
+        noResults: "Sonuç bulunamadı",
+        toggleTheme: "Temayı değiştir",
+        hint: "↑↓ gez · ↵ aç · esc kapat",
+      },
     },
 
     en: {
@@ -699,6 +708,15 @@ export const ECO_I18N = {
         sent: "Application received, thank you!",
         sendError: "Couldn't send. Check the fields and try again.",
         close: "Close",
+      },
+      cmd: {
+        placeholder: "Search pages, posts or commands…",
+        pages: "Pages",
+        posts: "Posts",
+        actions: "Commands",
+        noResults: "No results",
+        toggleTheme: "Toggle theme",
+        hint: "↑↓ navigate · ↵ open · esc close",
       },
     },
   };

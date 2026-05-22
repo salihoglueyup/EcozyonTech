@@ -52,6 +52,17 @@ export default function Navbar() {
           </nav>
 
           <div className="ml-auto flex items-center gap-1.5 pl-2 sm:border-l sm:border-slate-900/10">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event('ecozyon:cmdk'))}
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] hover:bg-slate-900/[.07] px-2.5 py-1.5 text-[11.5px] text-slate-500 transition"
+              aria-label={t.cmd.placeholder}
+            >
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
+              </svg>
+              <kbd className="font-sans font-medium">⌘K</kbd>
+            </button>
             <ThemeToggle theme={theme} setTheme={setTheme} t={t} />
             <LangSwitch lang={lang} setLang={setLang} />
             <NavLink
