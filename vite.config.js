@@ -10,8 +10,9 @@ function devApi() {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const route = req.url?.split('?')[0]
-        if (route !== '/api/contact' && route !== '/api/newsletter') return next()
-        const kind = route === '/api/contact' ? 'contact' : 'newsletter'
+        const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
+        const kind = KINDS[route]
+        if (!kind) return next()
         let raw = ''
         req.on('data', (c) => (raw += c))
         req.on('end', async () => {

@@ -17,6 +17,7 @@ function json(status, body) {
 const WINDOWS = {
   contact:    { ms: 60_000, max: 5 },
   newsletter: { ms: 60_000, max: 3 },
+  apply:      { ms: 60_000, max: 3 },
 };
 const HITS = new Map(); // key: `${kind}:${ip}` → array of timestamps
 
@@ -62,6 +63,26 @@ export function processContact(input = {}) {
     ok: true,
     data: { name, company, email, message, purpose },
   });
+}
+
+/** Validate + normalize a job application. `role` is the position applied for. */
+export function processApply(input = {}) {
+  if (input.company_website) return json(200, { ok: true }); // silent honeypot
+
+  const name = clamp(input.name, 80);
+  const email = clamp(input.email, 160);
+  const role = clamp(input.role, 120);
+  const note = clamp(input.note, 2000);
+
+  const errors = {};
+  if (name.length < 2) errors.name = 'required';
+  if (!EMAIL_RE.test(email)) errors.email = 'invalid';
+  if (role.length < 1) errors.role = 'required';
+
+  if (Object.keys(errors).length) {
+    return json(422, { ok: false, errors });
+  }
+  return json(200, { ok: true, data: { name, email, role, note } });
 }
 
 /** Validate a newsletter subscription. */
@@ -112,7 +133,8 @@ export async function handle(kind, method, body, env, ip) {
       retryAfterMs: rate.retryAfterMs,
     });
   }
-  const process = kind === 'contact' ? processContact : processNewsletter;
+  const process =
+    kind === 'contact' ? processContact : kind === 'apply' ? processApply : processNewsletter;
   const result = process(body || {});
   if (result.status === 200 && result.body.data) {
     try {

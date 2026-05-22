@@ -1,15 +1,18 @@
+import { useEffect, useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
+import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { routeByKey } from '@/core/config/site';
 import { JOBS } from '@/core/data/jobs';
 
 const meta = routeByKey('careers');
 
 export default function CareersPage() {
-  const { lang } = useApp();
+  const { lang, t } = useApp();
   const tr = lang === 'tr';
+  const [openJob, setOpenJob] = useState(null);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -55,14 +58,15 @@ export default function CareersPage() {
                 <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900">{j.title[lang]}</h2>
                 <p className="mt-1 text-[13.5px] text-slate-600 leading-relaxed">{j.desc[lang]}</p>
               </div>
-              <a
-                href={`mailto:hello@ecozyon.tech?subject=${encodeURIComponent(j.title.en)}`}
+              <button
+                type="button"
+                onClick={() => setOpenJob(j)}
                 className="self-start inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white shrink-0"
                 style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
               >
-                {tr ? 'Başvur' : 'Apply'}
+                {t.careers.apply}
                 <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
-              </a>
+              </button>
             </div>
           ))}
         </div>
@@ -74,6 +78,147 @@ export default function CareersPage() {
           </Link>
         </div>
       </div>
+
+      {openJob && <ApplyModal job={openJob} lang={lang} t={t} onClose={() => setOpenJob(null)} />}
     </section>
+  );
+}
+
+function ApplyModal({ job, lang, t, onClose }) {
+  const c = t.careers;
+  const dialogRef = useRef(null);
+  useFocusTrap(dialogRef, true);
+  const titleId = useId();
+  const descId = useId();
+  const role = job.title[lang];
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [note, setNote] = useState('');
+  const [hp, setHp] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error | limited
+  const [retryAfterSec, setRetryAfterSec] = useState(0);
+
+  // Escape closes the dialog; focus restoration is handled by useFocusTrap.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, note, role: job.title.en, company_website: hp }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        setStatus('success');
+      } else if (res.status === 429) {
+        setRetryAfterSec(Math.ceil((data.retryAfterMs || 60_000) / 1000));
+        setStatus('limited');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  const invalid = status === 'error' || status === 'limited';
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" aria-hidden="true" onClick={onClose} />
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descId}
+        className="relative w-full max-w-md rounded-3xl border border-white/70 bg-white p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={c.close}
+          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-900/[.06] hover:text-slate-900"
+        >
+          <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" strokeLinecap="round" /></svg>
+        </button>
+
+        <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 pr-8">
+          {c.applyTitle.replace('{role}', role)}
+        </h2>
+
+        {status === 'success' ? (
+          <div id={descId} role="status" className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-4 py-3 text-[13.5px] font-medium">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-white" style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}>
+              <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 6.4l2.8 2.6L10 3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </span>
+            {c.sent}
+          </div>
+        ) : (
+          <>
+            <p id={descId} className="mt-1.5 text-[13px] text-slate-600 leading-relaxed">{c.applyIntro}</p>
+            <form onSubmit={onSubmit} className="mt-5 space-y-3">
+              <div>
+                <label htmlFor="apply-name" className="block text-[12px] font-medium text-slate-700 mb-1">{c.nameLabel}</label>
+                <input
+                  id="apply-name" type="text" required value={name}
+                  onChange={(e) => { setName(e.target.value); if (invalid) setStatus('idle'); }}
+                  placeholder={c.nameP}
+                  className="w-full rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                />
+              </div>
+              <div>
+                <label htmlFor="apply-email" className="block text-[12px] font-medium text-slate-700 mb-1">{c.emailLabel}</label>
+                <input
+                  id="apply-email" type="email" required value={email}
+                  onChange={(e) => { setEmail(e.target.value); if (invalid) setStatus('idle'); }}
+                  placeholder={c.emailP}
+                  aria-invalid={invalid}
+                  aria-describedby={status === 'limited' ? 'apply-msg' : undefined}
+                  className={`w-full rounded-xl bg-white border px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none placeholder:text-slate-400 ${invalid ? 'border-rose-500/50' : 'border-slate-900/[.12] focus:border-cyan-500/50'}`}
+                />
+              </div>
+              <div>
+                <label htmlFor="apply-note" className="block text-[12px] font-medium text-slate-700 mb-1">{c.noteLabel}</label>
+                <textarea
+                  id="apply-note" rows={3} value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder={c.noteP}
+                  className="w-full resize-none rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                />
+              </div>
+              <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" />
+
+              <button
+                type="submit"
+                disabled={status === 'sending'}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white disabled:opacity-60"
+                style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+              >
+                {status === 'sending' ? c.sending : c.submit}
+              </button>
+
+              {status === 'error' && (
+                <p role="alert" className="text-[12.5px] text-rose-600">{c.sendError}</p>
+              )}
+              {status === 'limited' && (
+                <p id="apply-msg" role="status" aria-live="polite" className="text-[12.5px] text-rose-600">
+                  {t.contact.rateLimited.replace('{s}', retryAfterSec)}
+                </p>
+              )}
+            </form>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { processContact, processNewsletter, deliver, handle, checkRate, _resetRateLimits } from './forms.js';
+import { processContact, processNewsletter, processApply, deliver, handle, checkRate, _resetRateLimits } from './forms.js';
 
 describe('processContact', () => {
   it('accepts a valid submission', () => {
@@ -90,6 +90,50 @@ describe('processNewsletter', () => {
   });
   it('rejects an invalid email', () => {
     expect(processNewsletter({ email: 'bad' }).status).toBe(422);
+  });
+});
+
+describe('processApply', () => {
+  it('accepts a valid application and normalizes fields', () => {
+    const r = processApply({
+      name: '  Grace Hopper ',
+      email: 'grace@navy.mil',
+      role: 'Senior Frontend Engineer',
+      note: 'COBOL, then React.',
+    });
+    expect(r.status).toBe(200);
+    expect(r.body.ok).toBe(true);
+    expect(r.body.data).toEqual({
+      name: 'Grace Hopper',
+      email: 'grace@navy.mil',
+      role: 'Senior Frontend Engineer',
+      note: 'COBOL, then React.',
+    });
+  });
+
+  it('treats the note as optional', () => {
+    const r = processApply({ name: 'Ada', email: 'ada@x.co', role: 'ML Engineer' });
+    expect(r.status).toBe(200);
+    expect(r.body.data.note).toBe('');
+  });
+
+  it('rejects missing name / role and invalid email with 422', () => {
+    const r = processApply({ name: 'A', email: 'nope', role: '' });
+    expect(r.status).toBe(422);
+    expect(r.body.errors).toMatchObject({ name: 'required', email: 'invalid', role: 'required' });
+  });
+
+  it('silently succeeds on honeypot', () => {
+    const r = processApply({ company_website: 'http://spam', email: 'x', name: 'y', role: 'z' });
+    expect(r.status).toBe(200);
+    expect(r.body.ok).toBe(true);
+    expect(r.body.data).toBeUndefined();
+  });
+
+  it('clamps over-long fields', () => {
+    const r = processApply({ name: 'n'.repeat(200), email: 'a@b.co', role: 'r'.repeat(200) });
+    expect(r.body.data.name).toHaveLength(80);
+    expect(r.body.data.role).toHaveLength(120);
   });
 });
 
