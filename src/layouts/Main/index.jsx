@@ -6,6 +6,7 @@ import CookieBanner from './CookieBanner';
 import { useApp } from '@/app/providers/AppProvider';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import CommandPalette from '@/shared/ui/CommandPalette';
+import BackToTop from '@/shared/ui/BackToTop';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 
 function ScrollProgress() {
@@ -87,6 +88,7 @@ export default function MainLayout() {
       </div>
 
       <CommandPalette />
+      <BackToTop label={t.a11y.backToTop} />
       {import.meta.env.DEV && <DevTweaks />}
       <CookieBanner />
     </div>

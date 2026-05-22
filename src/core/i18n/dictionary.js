@@ -318,6 +318,7 @@ export const ECO_I18N = {
         globeFull: "Etkileşimli 3B küre. Ok tuşları döndürür, +/- yakınlaştırır.",
         globeCompact: "Etkileşimli 3B küre. Ok tuşları döndürür.",
         skipToContent: "Ana içeriğe geç",
+        backToTop: "Başa dön",
       },
       cookies: {
         text: "Bu site çalışmak için yalnızca temel çerez kullanır. Ayrıntılı bilgi için ",
@@ -699,6 +700,7 @@ export const ECO_I18N = {
         globeFull: "Interactive 3D globe. Arrow keys rotate, plus/minus zoom.",
         globeCompact: "Interactive 3D globe. Arrow keys rotate.",
         skipToContent: "Skip to main content",
+        backToTop: "Back to top",
       },
       cookies: {
         text: "This site uses only essential cookies. Details in our ",
