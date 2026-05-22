@@ -47,4 +47,12 @@ describe('page smoke render', () => {
     renderPage(HomePage);
     expect(document.title).toContain('Ecozyon Tech');
   });
+
+  it('About renders the journey timeline with all milestones', () => {
+    const { getByText, getAllByText } = renderPage(AboutPage);
+    expect(getByText('// Yolculuğumuz')).toBeTruthy(); // eyebrow (default tr)
+    expect(getByText('Kuruluş')).toBeTruthy();
+    expect(getByText('Bugün')).toBeTruthy();
+    expect(getAllByText('2025')).toHaveLength(2); // two milestones share 2025
+  });
 });

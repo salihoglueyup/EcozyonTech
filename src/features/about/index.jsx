@@ -84,8 +84,36 @@ export function AboutBento({ t, lang }) {
             <p className="text-[13.5px] text-slate-700 leading-relaxed">{b.partners.text}</p>
           </BentoCell>
         </div>
+
+        <Timeline timeline={t.about.timeline} />
       </div>
     </section>
+  );
+}
+
+function Timeline({ timeline }) {
+  if (!timeline) return null;
+  return (
+    <div className="mt-16 lg:mt-20">
+      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-2">// {timeline.eyebrow}</div>
+      <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 mb-8">
+        {timeline.title}
+      </h3>
+      <ol className="relative border-l border-slate-900/[.10] ml-3 space-y-8">
+        {timeline.items.map((it, i) => (
+          <li key={i} className="relative pl-8">
+            <span
+              className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full ring-4 ring-white"
+              style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+              aria-hidden="true"
+            />
+            <div className="font-mono text-[12px] text-slate-500">{it.year}</div>
+            <div className="mt-0.5 font-display text-[18px] tracking-tight text-slate-900">{it.title}</div>
+            <p className="mt-1 text-[13.5px] text-slate-600 leading-relaxed max-w-xl">{it.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
