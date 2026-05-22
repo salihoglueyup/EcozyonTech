@@ -335,6 +335,9 @@ export const ECO_I18N = {
         related: "İlgili yazılar",
         prevPost: "Önceki yazı",
         nextPost: "Sonraki yazı",
+        share: "Paylaş",
+        copyLink: "Bağlantıyı kopyala",
+        copied: "Kopyalandı",
       },
       careers: {
         apply: "Başvur",
@@ -698,6 +701,9 @@ export const ECO_I18N = {
         related: "Related posts",
         prevPost: "Previous post",
         nextPost: "Next post",
+        share: "Share",
+        copyLink: "Copy link",
+        copied: "Copied",
       },
       careers: {
         apply: "Apply",
