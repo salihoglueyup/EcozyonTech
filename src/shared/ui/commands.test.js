@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildCommands, filterCommands } from './commands';
+import { buildCommands, filterCommands, orderByRecents } from './commands';
 import { ROUTES } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 
@@ -60,5 +60,31 @@ describe('filterCommands', () => {
 
   it('returns empty when nothing matches', () => {
     expect(filterCommands(items, 'zzzz')).toEqual([]);
+  });
+});
+
+describe('orderByRecents', () => {
+  const items = buildCommands({ routes: ROUTES, posts: POSTS, lang: 'tr' });
+
+  it('returns the list unchanged when there are no recents', () => {
+    expect(orderByRecents(items, [])).toBe(items);
+    expect(orderByRecents(items, null)).toBe(items);
+  });
+
+  it('floats recent posts to the front in order, each appearing once', () => {
+    const slugs = [POSTS[2].slug, POSTS[0].slug];
+    const out = orderByRecents(items, slugs);
+    expect(out[0].recent).toBe(true);
+    expect(out[0].to).toBe(`/blog/${POSTS[2].slug}`);
+    expect(out[1].to).toBe(`/blog/${POSTS[0].slug}`);
+    // No post appears twice (recent copy replaces the tail entry).
+    const blogTos = out.filter((i) => i.type === 'post').map((i) => i.to);
+    expect(blogTos.length).toBe(new Set(blogTos).size);
+  });
+
+  it('ignores unknown slugs and keeps pages reachable', () => {
+    const out = orderByRecents(items, ['nope', POSTS[0].slug]);
+    expect(out[0].to).toBe(`/blog/${POSTS[0].slug}`);
+    expect(out.some((i) => i.type === 'page')).toBe(true);
   });
 });

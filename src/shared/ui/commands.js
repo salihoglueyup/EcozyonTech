@@ -24,6 +24,34 @@ export function buildCommands({ routes, posts, lang = 'tr' }) {
   return [...pages, ...blog];
 }
 
+// Reorder so recently-viewed posts (by slug, in order) surface first; the
+// recent copies get a distinct id + `recent` flag and are removed from the
+// tail so each post appears once. Used for the empty-query palette view.
+export function orderByRecents(items, recentSlugs) {
+  const slugs = (recentSlugs || []).filter(Boolean);
+  if (!slugs.length) return items;
+  const slugSet = new Set(slugs);
+  const slugOf = (it) =>
+    it.type === 'post' && typeof it.to === 'string' && it.to.startsWith('/blog/')
+      ? it.to.slice('/blog/'.length)
+      : null;
+  const bySlug = new Map();
+  for (const it of items) {
+    const s = slugOf(it);
+    if (s) bySlug.set(s, it);
+  }
+  const recent = [];
+  for (const s of slugs) {
+    const it = bySlug.get(s);
+    if (it) recent.push({ ...it, id: `recent:${s}`, recent: true });
+  }
+  const rest = items.filter((it) => {
+    const s = slugOf(it);
+    return !(s && slugSet.has(s));
+  });
+  return [...recent, ...rest];
+}
+
 // Substring filter over label + hint + keywords, ranked so that label
 // prefix matches surface first. An empty query returns the list unchanged.
 export function filterCommands(items, query) {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
@@ -6,6 +6,7 @@ import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { postBySlug, readingTime, relatedPosts, postNeighbors } from '@/core/data/posts';
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
+import { recordRecent } from '@/core/lib/recents';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -18,6 +19,11 @@ export default function BlogPostPage() {
     post ? `${post.title[lang]} — Ecozyon Tech` : 'Yazı bulunamadı — Ecozyon Tech',
     post ? post.excerpt[lang] : undefined,
   );
+
+  // Remember this post as recently viewed (client-only; storage-guarded).
+  useEffect(() => {
+    if (post) recordRecent(post.slug);
+  }, [post]);
 
   // Unknown slug → render the real 404 page so users get a consistent
   // dead-end UX (the prerender step never emits HTML for unknown slugs,

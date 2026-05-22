@@ -4,7 +4,8 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { ROUTES } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
-import { buildCommands, filterCommands } from './commands';
+import { readRecents } from '@/core/lib/recents';
+import { buildCommands, filterCommands, orderByRecents } from './commands';
 
 // Site-wide ⌘K / Ctrl+K palette. Mounted once in the layout; renders nothing
 // until opened, so it adds nothing to the prerendered HTML.
@@ -14,6 +15,7 @@ export default function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
+  const [recentSlugs, setRecentSlugs] = useState([]);
   const dialogRef = useRef(null);
   const listId = useId();
   useFocusTrap(dialogRef, open);
@@ -46,7 +48,11 @@ export default function CommandPalette() {
     return [...data, ...actions];
   }, [lang, t, theme, setTheme, setLang]);
 
-  const results = useMemo(() => filterCommands(items, query), [items, query]);
+  // Empty query → recently-viewed posts float to the top; otherwise filter.
+  const results = useMemo(
+    () => (query.trim() ? filterCommands(items, query) : orderByRecents(items, recentSlugs)),
+    [items, query, recentSlugs],
+  );
   const kindLabel = { page: t.cmd.pages, post: t.cmd.posts, action: t.cmd.actions };
 
   const run = useCallback(
@@ -65,10 +71,11 @@ export default function CommandPalette() {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
+        setRecentSlugs(readRecents()); // refresh from storage on each toggle
         setOpen((v) => !v);
       }
     };
-    const onOpen = () => setOpen(true);
+    const onOpen = () => { setRecentSlugs(readRecents()); setOpen(true); };
     window.addEventListener('keydown', onKey);
     window.addEventListener('ecozyon:cmdk', onOpen);
     return () => {
@@ -132,7 +139,7 @@ export default function CommandPalette() {
               }`}
             >
               <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
-                {item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : '→'}
+                {item.recent ? '↺' : item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : '→'}
               </span>
               <span className="flex-1 truncate">{item.label}</span>
               {item.hint && (

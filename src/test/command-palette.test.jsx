@@ -55,6 +55,16 @@ describe('CommandPalette', () => {
     expect(screen.queryByRole('dialog')).toBeNull(); // closes after navigating
   });
 
+  it('floats recently-viewed posts to the top of the empty-query view', async () => {
+    localStorage.setItem('ecozyon.recents', JSON.stringify(['community-challenges']));
+    setup();
+    act(() => { window.dispatchEvent(new Event('ecozyon:cmdk')); });
+    await screen.findByRole('combobox');
+    const first = screen.getAllByRole('option')[0];
+    expect(first).toHaveTextContent(/topluluk/i); // the community post, tr title
+    localStorage.removeItem('ecozyon.recents');
+  });
+
   it('shows a no-results message for an unmatched query', async () => {
     const user = userEvent.setup();
     setup();
