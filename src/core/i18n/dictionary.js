@@ -316,6 +316,9 @@ export const ECO_I18N = {
       },
       blog: {
         readMin: "dk okuma",
+        all: "Tümü",
+        filterLabel: "Etikete göre filtrele",
+        empty: "Bu etikette yazı yok.",
       },
     },
 
@@ -635,6 +638,9 @@ export const ECO_I18N = {
       },
       blog: {
         readMin: "min read",
+        all: "All",
+        filterLabel: "Filter by tag",
+        empty: "No posts under this tag.",
       },
     },
   };

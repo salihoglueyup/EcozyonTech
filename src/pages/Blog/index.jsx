@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { POSTS, readingTime } from '@/core/data/posts';
+import { POSTS, readingTime, postTags, filterByTag } from '@/core/data/posts';
 
 const meta = routeByKey('blog');
+const TAGS = postTags(POSTS);
 
 export default function BlogPage() {
   const { lang, t } = useApp();
   const tr = lang === 'tr';
+  const [activeTag, setActiveTag] = useState(null);
+  const visible = filterByTag(POSTS, activeTag);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -30,8 +34,29 @@ export default function BlogPage() {
           </h1>
         </div>
 
+        <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label={t.blog.filterLabel}>
+          {[{ id: null, label: { tr: t.blog.all, en: t.blog.all } }, ...TAGS].map((tg) => {
+            const on = activeTag === tg.id;
+            return (
+              <button
+                key={tg.id ?? 'all'}
+                type="button"
+                onClick={() => setActiveTag(tg.id)}
+                aria-pressed={on}
+                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
+                  on
+                    ? 'bg-slate-900 text-white ring-slate-900'
+                    : 'bg-white/70 text-slate-700 ring-slate-900/[.08] hover:ring-cyan-500/30'
+                }`}
+              >
+                {tg.label[lang]}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="space-y-3">
-          {POSTS.map((p) => (
+          {visible.map((p) => (
             <Link
               key={p.slug}
               to={`/blog/${p.slug}`}
@@ -54,6 +79,9 @@ export default function BlogPage() {
               </span>
             </Link>
           ))}
+          {visible.length === 0 && (
+            <p className="py-10 text-center text-[14px] text-slate-500">{t.blog.empty}</p>
+          )}
         </div>
       </div>
     </section>

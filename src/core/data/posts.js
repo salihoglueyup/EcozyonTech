@@ -75,6 +75,23 @@ export const POSTS = [
 
 export const postBySlug = (slug) => POSTS.find((p) => p.slug === slug);
 
+// Distinct tags in first-appearance order. `id` is the English tag (a stable
+// key that survives language switches); `label` carries both translations so
+// the UI can render in the active language without losing the active filter.
+export function postTags(posts = POSTS) {
+  const seen = new Map();
+  for (const p of posts) {
+    if (!seen.has(p.tag.en)) seen.set(p.tag.en, { id: p.tag.en, label: p.tag });
+  }
+  return [...seen.values()];
+}
+
+// Filter by the stable tag id. A null/empty id means "all".
+export function filterByTag(posts, tagId) {
+  if (!tagId) return posts;
+  return posts.filter((p) => p.tag.en === tagId);
+}
+
 // Approximate reading time for a post body, in minutes (200 wpm baseline).
 // Counts the active language only — TR and EN word counts are usually close.
 export function readingTime(post, lang = 'tr') {
