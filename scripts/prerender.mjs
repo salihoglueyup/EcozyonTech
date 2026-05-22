@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ROUTES, SITE } from '../src/core/config/site.js';
 import { POSTS } from '../src/core/data/posts.js';
+import { buildFeed } from '../src/core/lib/feed.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -204,4 +205,7 @@ await writeFile(
   `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`,
 );
 
-console.log(`✓ prerendered ${count} routes + ${ogCount} blog OG cards + sitemap.xml + robots.txt`);
+// feed.xml — RSS 2.0 of every blog post (newest-first, as authored).
+await writeFile(join(distDir, 'feed.xml'), buildFeed({ posts: POSTS, site: SITE, lang: 'tr' }));
+
+console.log(`✓ prerendered ${count} routes + ${ogCount} blog OG cards + sitemap.xml + robots.txt + feed.xml`);
