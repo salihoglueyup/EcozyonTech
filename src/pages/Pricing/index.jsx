@@ -1,15 +1,17 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
+import { CURRENCIES, defaultCurrency, formatMoney } from '@/core/lib/currency';
 
 const meta = routeByKey('pricing');
 
 const TIERS = [
   {
     id: 'individual',
-    price: { tr: 'Ücretsiz', en: 'Free' },
+    priceLabel: { tr: 'Ücretsiz', en: 'Free' },
     period: { tr: 'pilot dönemi', en: 'pilot period' },
     name: { tr: 'Bireysel', en: 'Individual' },
     tagline: { tr: 'Kişisel karbon koçun', en: 'Your personal carbon coach' },
@@ -22,7 +24,8 @@ const TIERS = [
   {
     id: 'team',
     featured: true,
-    price: { tr: '₺149', en: '$5' },
+    // Per-market prices, switched by the currency toggle (not FX-converted).
+    amounts: { TRY: 149, USD: 5, EUR: 5 },
     period: { tr: 'kişi / ay', en: 'user / mo' },
     name: { tr: 'Takım', en: 'Team' },
     tagline: { tr: 'Ekipler için ölçülebilir etki', en: 'Measurable impact for teams' },
@@ -34,7 +37,7 @@ const TIERS = [
   },
   {
     id: 'enterprise',
-    price: { tr: 'Görüşelim', en: "Let's talk" },
+    priceLabel: { tr: 'Görüşelim', en: "Let's talk" },
     period: { tr: 'özel teklif', en: 'custom quote' },
     name: { tr: 'Kurumsal', en: 'Enterprise' },
     tagline: { tr: 'Scope 1-2-3 raporlama', en: 'Scope 1-2-3 reporting' },
@@ -49,6 +52,7 @@ const TIERS = [
 export default function PricingPage() {
   const { lang } = useApp();
   const tr = lang === 'tr';
+  const [currency, setCurrency] = useState(defaultCurrency(lang));
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -72,6 +76,29 @@ export default function PricingPage() {
               ? 'Pilot dönemde bireysel kullanım ücretsiz. Takım ve kurumsal planlar büyüdükçe açılır.'
               : 'Individual use is free during the pilot. Team and enterprise unlock as you grow.'}
           </p>
+
+          <div
+            className="mt-6 inline-flex items-center gap-1 rounded-full bg-white/70 ring-1 ring-slate-900/[.08] p-1"
+            role="group"
+            aria-label={tr ? 'Para birimi' : 'Currency'}
+          >
+            {CURRENCIES.map((c) => {
+              const on = currency === c.id;
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setCurrency(c.id)}
+                  aria-pressed={on}
+                  className={`rounded-full px-3 py-1.5 text-[12.5px] font-medium tabular-nums transition ${
+                    on ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {c.symbol} {c.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -92,8 +119,8 @@ export default function PricingPage() {
               <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold" style={{ color: tier.accent }}>
                 {tier.name[lang]}
               </div>
-              <div className="mt-2 font-display text-[40px] leading-none tracking-tight text-slate-900">
-                {tier.price[lang]}
+              <div className="mt-2 font-display text-[40px] leading-none tracking-tight text-slate-900 tabular-nums">
+                {tier.amounts ? formatMoney(tier.amounts[currency], currency) : tier.priceLabel[lang]}
               </div>
               <div className="mt-1 text-[12.5px] text-slate-500">{tier.period[lang]}</div>
               <p className="mt-3 text-[14px] text-slate-600">{tier.tagline[lang]}</p>
