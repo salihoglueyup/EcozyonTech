@@ -12,7 +12,10 @@ const tree = (
 )
 
 // Prerendered HTML present (production) -> hydrate; empty (dev) -> render.
-if (root.hasChildNodes()) {
+// Test for an *element* child, not any node: in dev Vite serves index.html
+// verbatim, so the `<!--ssr-outlet-->` comment is itself a child node and
+// `hasChildNodes()` would wrongly trigger hydration against an empty root.
+if (root.firstElementChild) {
   hydrateRoot(root, tree)
 } else {
   createRoot(root).render(tree)
