@@ -120,7 +120,7 @@ function ShareBar({ post, lang, t }) {
       setTimeout(() => setCopied(false), 2000);
       toast({ message: t.blog.copied, type: 'success' });
     } catch {
-      toast({ message: lang === 'tr' ? 'Kopyalanamadı' : 'Could not copy', type: 'error' });
+      toast({ message: t.blog.copyError, type: 'error' });
     }
   };
 

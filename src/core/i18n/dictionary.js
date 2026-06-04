@@ -359,6 +359,7 @@ export const ECO_I18N = {
         text: "Bu site çalışmak için yalnızca temel çerez kullanır. Ayrıntılı bilgi için ",
         link: "gizlilik politikası",
         accept: "Tamam",
+        saved: "Tercihler kaydedildi",
       },
       blog: {
         readMin: "dk okuma",
@@ -374,6 +375,7 @@ export const ECO_I18N = {
         share: "Paylaş",
         copyLink: "Bağlantıyı kopyala",
         copied: "Kopyalandı",
+        copyError: "Kopyalanamadı",
       },
       careers: {
         apply: "Başvur",
@@ -776,6 +778,7 @@ export const ECO_I18N = {
         text: "This site uses only essential cookies. Details in our ",
         link: "privacy policy",
         accept: "OK",
+        saved: "Preferences saved",
       },
       blog: {
         readMin: "min read",
@@ -791,6 +794,7 @@ export const ECO_I18N = {
         share: "Share",
         copyLink: "Copy link",
         copied: "Copied",
+        copyError: "Could not copy",
       },
       careers: {
         apply: "Apply",

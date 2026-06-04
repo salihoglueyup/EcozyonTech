@@ -9,7 +9,7 @@ const STORAGE_KEY = 'ecozyon.cookies.ack';
 // so the banner never appears again. SSR-safe: hidden by default, the
 // localStorage check happens in a post-mount effect.
 export default function CookieBanner() {
-  const { t, lang } = useApp();
+  const { t } = useApp();
   const toast = useToast();
   const [visible, setVisible] = useState(false);
 
@@ -30,7 +30,7 @@ export default function CookieBanner() {
   const accept = () => {
     try { window.localStorage.setItem(STORAGE_KEY, '1'); } catch { /* noop */ }
     setVisible(false);
-    toast({ message: lang === 'tr' ? 'Tercihler kaydedildi' : 'Preferences saved', type: 'success' });
+    toast({ message: t.cookies.saved, type: 'success' });
   };
 
   if (!visible) return null;
