@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SectionHeader } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { Reveal, RevealGroup } from '@/shared/ui/useReveal';
 
 /**
  * FAQ accordion — renders from t.faq dictionary entries.
@@ -20,11 +20,13 @@ export function FAQ({ t }) {
         <SectionHeader center color="cyan" eyebrow="FAQ" title={faq.title} className="mb-12" />
 
         <div className="space-y-2">
-          {faq.items.map((item, i) => (
-            <Reveal key={i} delay={i * 60}>
-              <AccordionItem q={item.q} a={item.a} />
-            </Reveal>
-          ))}
+          <RevealGroup step={60}>
+            {faq.items.map((item) => (
+              <Reveal key={item.q}>
+                <AccordionItem q={item.q} a={item.a} />
+              </Reveal>
+            ))}
+          </RevealGroup>
         </div>
       </div>
     </section>

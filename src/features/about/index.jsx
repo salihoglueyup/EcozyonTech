@@ -1,12 +1,12 @@
 import React from 'react';
 import { SectionHeader, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { Reveal, RevealGroup, Parallax } from '@/shared/ui/useReveal';
 
 export function AboutBento({ t, lang }) {
   const b = t.about.bento;
   return (
     <section id="about" className="relative py-20 lg:py-28">
-      <div className="absolute inset-0 -z-10 pointer-events-none opacity-60"
+      <Parallax speed={0.18} className="absolute inset-0 -z-10 pointer-events-none opacity-60"
         style={{ backgroundImage: "radial-gradient(circle at 80% 30%, rgba(16,185,129,.10), transparent 50%)" }} />
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
@@ -143,8 +143,9 @@ function TeamGrid({ t }) {
         </h3>
       </Reveal>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <RevealGroup step={80}>
         {team.members.map((m, i) => (
-          <Reveal key={i} delay={i * 80}>
+          <Reveal key={m.initials}>
             <div className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] dark:ring-white/[.06] p-5 text-center group hover:ring-cyan-500/30 transition">
               <InitialsAvatar
                 initials={m.initials}
@@ -157,6 +158,7 @@ function TeamGrid({ t }) {
             </div>
           </Reveal>
         ))}
+        </RevealGroup>
       </div>
     </div>
   );
