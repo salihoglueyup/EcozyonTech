@@ -1,6 +1,7 @@
 // Interactive dashboard preview
 import React, { useState, useEffect } from 'react';
 import { SectionHeader, EcoLogo } from '@/shared/ui/primitives';
+import { Tabs } from '@/shared/ui/Tabs';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 
 function DashboardPreview({ t, lang }) {
@@ -169,17 +170,13 @@ function DashboardPreview({ t, lang }) {
                     {view === "insights" && (lang === "tr" ? "Bu haftanın içgörüleri" : "This week's insights")}
                   </div>
                 </div>
-                <div className="inline-flex rounded-full bg-slate-900/[.05] p-1 text-[11.5px] font-medium text-slate-600 dark:text-slate-400 self-start">
-                  {t.dash.tabs.map((lab, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setTab(i)}
-                      className={`px-3.5 py-1.5 rounded-full transition ${tab === i ? "bg-white text-slate-900 dark:text-slate-100 shadow-sm" : "hover:text-slate-900 dark:hover:text-slate-100"}`}
-                    >
-                      {lab}
-                    </button>
-                  ))}
-                </div>
+                <Tabs
+                  tabs={t.dash.tabs.map((lab, i) => ({ id: i, label: lab }))}
+                  value={tab}
+                  onChange={setTab}
+                  size="sm"
+                  className="self-start"
+                />
               </div>
 
               {view === "overview" && (

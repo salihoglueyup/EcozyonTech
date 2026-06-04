@@ -8,6 +8,7 @@ import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
 import { useToast } from '@/shared/ui/Toast';
+import { Tooltip } from '@/shared/ui/Tooltip';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -130,12 +131,16 @@ function ShareBar({ post, lang, t }) {
   return (
     <div className="mt-5 flex items-center gap-2">
       <span className="text-[11px] uppercase tracking-[.12em] font-semibold text-slate-400 mr-1">{t.blog.share}</span>
-      <a href={links.x} target="_blank" rel="noreferrer" aria-label="X" className={iconBtn}>
-        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true"><path d="M9.5 7l4-5h-1.2L9 6 6.4 2H3l4.2 6L3 14h1.2L8 9.4 10.8 14H14L9.5 7Zm-1 1.2-.5-.7L4.5 3h1.4l2.8 4 .5.7 3.7 5.3h-1.4L8.5 8.2Z" /></svg>
-      </a>
-      <a href={links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className={iconBtn}>
-        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true"><path d="M3.5 5h2v8h-2zm1-3a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 4.5 2Zm3 3h2v1.2c.3-.5 1.1-1.4 2.6-1.4 1.8 0 2.4 1 2.4 2.7V13h-2V9.4c0-1.1-.3-1.7-1.2-1.7s-1.5.6-1.5 1.6V13h-2V5Z" /></svg>
-      </a>
+      <Tooltip label="X">
+        <a href={links.x} target="_blank" rel="noreferrer" aria-label="X" className={iconBtn}>
+          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true"><path d="M9.5 7l4-5h-1.2L9 6 6.4 2H3l4.2 6L3 14h1.2L8 9.4 10.8 14H14L9.5 7Zm-1 1.2-.5-.7L4.5 3h1.4l2.8 4 .5.7 3.7 5.3h-1.4L8.5 8.2Z" /></svg>
+        </a>
+      </Tooltip>
+      <Tooltip label="LinkedIn">
+        <a href={links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className={iconBtn}>
+          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true"><path d="M3.5 5h2v8h-2zm1-3a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 4.5 2Zm3 3h2v1.2c.3-.5 1.1-1.4 2.6-1.4 1.8 0 2.4 1 2.4 2.7V13h-2V9.4c0-1.1-.3-1.7-1.2-1.7s-1.5.6-1.5 1.6V13h-2V5Z" /></svg>
+        </a>
+      </Tooltip>
       <button
         type="button"
         onClick={copy}
