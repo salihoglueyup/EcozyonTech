@@ -254,6 +254,18 @@ export const ECO_I18N = {
           quote: { text: "Geleceği temiz ve akıllı teknolojilerle inşa ediyoruz.", author: "— Ecozyon ekibi" },
           partners: { tag: "Birlikte çalıştıklarımız", text: "ESG uyumlu üreticiler, üniversite laboratuvarları ve iklim STK'larıyla pilot programlar." },
         },
+        team: {
+          eyebrow: "Ekip",
+          title: "Arkasındaki insanlar",
+          members: [
+            { initials: "ES", name: "Eyüp S.", role: "Kurucu & CEO", focus: "Vizyon, strateji" },
+            { initials: "ZD", name: "Zeynep D.", role: "AI Araştırmacı", focus: "NLP, öneri motoru" },
+            { initials: "AE", name: "Ahmet E.", role: "Donanım Müh.", focus: "Giyilebilir cihaz" },
+            { initials: "MK", name: "Merve K.", role: "Tasarımcı", focus: "UX/UI, marka" },
+            { initials: "CB", name: "Can B.", role: "Backend Müh.", focus: "API, veri hattı" },
+            { initials: "LR", name: "Lena R.", role: "İklim Bilimci", focus: "Karbon modelleme" },
+          ],
+        },
         timeline: {
           eyebrow: "Yolculuğumuz",
           title: "Fikirden ölçülebilir etkiye",
@@ -264,6 +276,25 @@ export const ECO_I18N = {
             { year: "2026", title: "Bugün", text: "14 kişilik ekip, çok-şehirli pilot ağı ve sürekli ölçülen çevresel etki." },
           ],
         },
+      },
+      faq: {
+        title: "Sıkça Sorulan Sorular",
+        items: [
+          { q: "Ecozyon tam olarak nedir?", a: "Ecozyon Tech, giyilebilir cihaz + AI tabanlı bir sürdürülebilirlik platformudur. Bireysel karbon ayak izini ölçer, azaltma önerileri sunar ve topluluk yarışmalarıyla alışkanlık değişimi sağlar." },
+          { q: "Cihaz ne kadar enerji tüketiyor?", a: "Referans tasarım 0.4W altında çalışır — bir akıllı saatin çeyreği kadar. Kablosuz şarjla haftada bir şarj yeterlidir." },
+          { q: "Verilerim güvende mi?", a: "Evet. Tüm veriler uçtan uca şifrelenir, KVKK ve GDPR uyumludur. Ham verileri üçüncü taraflarla paylaşmıyoruz." },
+          { q: "Ücretsiz plan ne kadar süreyle geçerli?", a: "Pilot dönem boyunca bireysel kullanım tamamen ücretsiz. Ek özellikler (takım analitiği, API erişimi) için ücretli planlar mevcuttur." },
+          { q: "Hangi platformları destekliyorsunuz?", a: "iOS, Android ve web dashboard. Ayrıca REST API ile mevcut kurumsal sistemlere entegrasyon sağlanır." },
+        ],
+      },
+      testimonials: {
+        eyebrow: "Kullanıcılar ne diyor",
+        title: "Pilot programından sesler",
+        items: [
+          { quote: "İlk hafta günlük rutinlerimin ne kadar karbon ürettiğini görünce şoke oldum. Ecozyon önerileri sayesinde %22 azalttım.", initials: "AY", name: "Ayşe Y.", title: "Sürdürülebilirlik Danışmanı" },
+          { quote: "Cihaz o kadar hafif ki takmayı unutuyorsun. Ama veriler çok güçlü — ekip yarışmasında ilk 3'e girdik.", initials: "KT", name: "Kerem T.", title: "Yazılım Mühendisi" },
+          { quote: "Kurumsal ESG raporlaması için tam ihtiyacımız olan araç. API entegrasyonu 2 saatte tamamlandı.", initials: "SB", name: "Selin B.", title: "ESG Yöneticisi, GreenCorp" },
+        ],
       },
       contact: {
         eyebrow: "İletişim",
@@ -300,6 +331,10 @@ export const ECO_I18N = {
         nav: "Site haritası",
         legal: "Yasal",
         social: "Bağlan",
+        privacy: "Gizlilik (KVKK)",
+        terms: "Kullanım Şartları",
+        newsletterTitle: "Bültene abone ol",
+        newsletterNote: "Ürün güncellemeleri ve sürdürülebilirlik analizleri. Spam yok.",
         links: {
           navItems: ["Çözümler", "Teknoloji", "Dashboard", "Hakkımızda"],
           legalItems: ["Gizlilik", "Kullanım koşulları", "Çerez politikası", "ESG raporu"],
@@ -636,6 +671,18 @@ export const ECO_I18N = {
           quote: { text: "We build the future with clean and intelligent technology.", author: "— The Ecozyon team" },
           partners: { tag: "Who we work with", text: "Pilots with ESG-aligned manufacturers, university labs and climate NGOs." },
         },
+        team: {
+          eyebrow: "Team",
+          title: "The people behind it",
+          members: [
+            { initials: "ES", name: "Eyüp S.", role: "Founder & CEO", focus: "Vision, strategy" },
+            { initials: "ZD", name: "Zeynep D.", role: "AI Researcher", focus: "NLP, rec engine" },
+            { initials: "AE", name: "Ahmet E.", role: "Hardware Eng.", focus: "Wearable device" },
+            { initials: "MK", name: "Merve K.", role: "Designer", focus: "UX/UI, brand" },
+            { initials: "CB", name: "Can B.", role: "Backend Eng.", focus: "API, data pipeline" },
+            { initials: "LR", name: "Lena R.", role: "Climate Scientist", focus: "Carbon modelling" },
+          ],
+        },
         timeline: {
           eyebrow: "Our journey",
           title: "From idea to measurable impact",
@@ -646,6 +693,25 @@ export const ECO_I18N = {
             { year: "2026", title: "Today", text: "A team of 14, a multi-city pilot network and environmental impact measured continuously." },
           ],
         },
+      },
+      faq: {
+        title: "Frequently Asked Questions",
+        items: [
+          { q: "What exactly is Ecozyon?", a: "Ecozyon Tech is a wearable + AI-powered sustainability platform. It measures your personal carbon footprint, suggests reductions and drives habit change through community challenges." },
+          { q: "How much power does the device use?", a: "The reference design operates below 0.4W — a quarter of a smartwatch. Wireless charging once a week is enough." },
+          { q: "Is my data safe?", a: "Yes. All data is end-to-end encrypted and compliant with KVKK and GDPR. We never share raw data with third parties." },
+          { q: "How long is the free plan valid?", a: "Individual use is completely free during the pilot period. Paid plans unlock team analytics, API access and more." },
+          { q: "Which platforms do you support?", a: "iOS, Android and a web dashboard. A REST API also enables integration with existing enterprise systems." },
+        ],
+      },
+      testimonials: {
+        eyebrow: "What users say",
+        title: "Voices from the pilot",
+        items: [
+          { quote: "I was shocked to see how much carbon my daily routines produced. Ecozyon nudges helped me cut 22% in the first week.", initials: "AY", name: "Ayşe Y.", title: "Sustainability Consultant" },
+          { quote: "The device is so light you forget you're wearing it. But the data is powerful — our team made the top 3 in the challenge.", initials: "KT", name: "Kerem T.", title: "Software Engineer" },
+          { quote: "Exactly the tool we needed for corporate ESG reporting. API integration was done in 2 hours.", initials: "SB", name: "Selin B.", title: "ESG Manager, GreenCorp" },
+        ],
       },
       contact: {
         eyebrow: "Contact",
@@ -682,6 +748,10 @@ export const ECO_I18N = {
         nav: "Sitemap",
         legal: "Legal",
         social: "Connect",
+        privacy: "Privacy",
+        terms: "Terms",
+        newsletterTitle: "Subscribe to newsletter",
+        newsletterNote: "Product updates and sustainability briefings. No spam.",
         links: {
           navItems: ["Solutions", "Technology", "Dashboard", "About"],
           legalItems: ["Privacy", "Terms", "Cookies", "ESG report"],

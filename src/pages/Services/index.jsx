@@ -6,6 +6,7 @@ import { TechEcosystem } from '@/features/tech-ecosystem';
 import { UseCases } from '@/features/use-cases';
 import { DashboardPreview } from '@/features/dashboard';
 import { Calculator } from '@/features/calculator';
+import { FAQ } from '@/features/faq';
 
 const meta = ROUTES.find((r) => r.key === 'services');
 
@@ -23,6 +24,7 @@ export default function ServicesPage() {
       <TechEcosystem t={t} />
       <UseCases t={t} lang={lang} />
       <Calculator t={t} />
+      <FAQ t={t} />
       <DashboardPreview t={t} lang={lang} />
     </div>
   );
