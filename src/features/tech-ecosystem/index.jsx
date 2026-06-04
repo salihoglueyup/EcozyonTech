@@ -215,11 +215,11 @@ function WearablePanel({ t }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-[10px] text-emerald-700 font-semibold">L{i + 1}</span>
-                  <span className="text-[13px] font-medium text-slate-800 dark:text-slate-200">{l.name}</span>
+                  <span className="text-[13px] font-medium text-slate-800">{l.name}</span>
                 </div>
                 <span className={`inline-block h-1.5 w-1.5 rounded-full ${hover ? "bg-emerald-500" : "bg-slate-300"}`} />
               </div>
-              <div className="mt-0.5 text-[11.5px] text-slate-500 dark:text-slate-400 leading-snug">{l.note}</div>
+              <div className="mt-0.5 text-[11.5px] text-slate-500 leading-snug">{l.note}</div>
             </li>
           ))}
         </ul>

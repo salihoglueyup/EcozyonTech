@@ -61,7 +61,7 @@ export function UseCases({ t, lang }) {
         </div>
 
         {/* Active persona content panel */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_24px_70px_-40px_rgba(15,23,42,.3)]">
+        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 dark:bg-white/[.04] backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_24px_70px_-40px_rgba(15,23,42,.3)]">
           <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ background: `radial-gradient(circle at 100% 0%, ${p.color}22, transparent 50%)` }} />
 
           <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_1fr]">
@@ -159,7 +159,7 @@ function IndividualMock({ color, lang }) {
       <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">
         {lang === "tr" ? "Kişisel uygulama" : "Personal app"}
       </div>
-      <div className="relative mx-auto max-w-[280px] rounded-[36px] border border-slate-900/[.08] dark:border-white/[.1] bg-white shadow-[0_30px_70px_-30px_rgba(15,23,42,.3)] overflow-hidden">
+      <div className="relative mx-auto max-w-[280px] rounded-[36px] border border-slate-900/[.08] bg-white shadow-[0_30px_70px_-30px_rgba(15,23,42,.3)] overflow-hidden">
         {/* phone notch */}
         <div className="h-6 bg-slate-900 relative">
           <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-20 h-3 rounded-full bg-black" />
@@ -167,8 +167,8 @@ function IndividualMock({ color, lang }) {
         <div className="p-4 bg-gradient-to-b from-white to-cyan-50/30">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[10.5px] text-slate-500 dark:text-slate-400">{lang === "tr" ? "Selam Emre" : "Hi Emre"}</div>
-              <div className="text-[15px] font-display tracking-tight text-slate-900 dark:text-slate-100">{lang === "tr" ? "Bugünkü hedef" : "Today's goal"}</div>
+              <div className="text-[10.5px] text-slate-500">{lang === "tr" ? "Selam Emre" : "Hi Emre"}</div>
+              <div className="text-[15px] font-display tracking-tight text-slate-900">{lang === "tr" ? "Bugünkü hedef" : "Today's goal"}</div>
             </div>
             <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500" />
           </div>
@@ -186,14 +186,14 @@ function IndividualMock({ color, lang }) {
           {/* Suggestion */}
           <div className="mt-3 rounded-xl p-3 text-[11px]" style={{ backgroundColor: `${color}10` }}>
             <div className="flex items-center justify-between">
-              <div className="font-semibold text-slate-700 dark:text-slate-300">🚲 {lang === "tr" ? "Öğle gezisi" : "Lunch ride"}</div>
+              <div className="font-semibold text-slate-700">🚲 {lang === "tr" ? "Öğle gezisi" : "Lunch ride"}</div>
               <span className="font-mono text-[10px]" style={{ color }}>-1.4 kg</span>
             </div>
-            <div className="text-slate-500 dark:text-slate-400 mt-0.5">{lang === "tr" ? "AI bugünkü için öneriyor" : "AI recommends for today"}</div>
+            <div className="text-slate-500 mt-0.5">{lang === "tr" ? "AI bugünkü için öneriyor" : "AI recommends for today"}</div>
           </div>
 
           {/* Bottom nav */}
-          <div className="mt-3 grid grid-cols-4 gap-1 text-center text-[9px] text-slate-500 dark:text-slate-400">
+          <div className="mt-3 grid grid-cols-4 gap-1 text-center text-[9px] text-slate-500">
             {["Home", "Stats", "Friends", "More"].map((l, i) => (
               <div key={l} className={`py-1.5 rounded-md ${i === 0 ? "bg-slate-900 text-white" : ""}`}>{l}</div>
             ))}
@@ -223,17 +223,17 @@ function TeamMock({ color, lang }) {
       <div className="rounded-2xl border border-slate-900/[.06] bg-white p-4 space-y-2.5">
         {team.map((m, i) => (
           <div key={i} className={`flex items-center gap-3 ${m.me ? "ring-1 ring-emerald-500/30 rounded-lg px-2 py-1 -mx-2 bg-emerald-50/40" : ""}`}>
-            <div className="w-5 text-[11px] text-slate-500 dark:text-slate-400 font-mono">{i + 1}</div>
+            <div className="w-5 text-[11px] text-slate-500 font-mono">{i + 1}</div>
             <div className="h-7 w-7 rounded-full grid place-items-center text-[10px] font-semibold text-white" style={{ background: `linear-gradient(135deg, ${["#0EA5E9", "#10B981", "#7C3AED", "#F59E0B", "#E11D48"][i]}, ${["#0EA5E9", "#10B981", "#7C3AED", "#F59E0B", "#E11D48"][i]}cc)` }}>
               {m.name.split(" ").map((p) => p[0]).join("")}
             </div>
             <div className="flex-1">
-              <div className="text-[12px] font-medium text-slate-800 dark:text-slate-200">{m.name}{m.me && <span className="ml-1.5 text-[9px] font-mono text-emerald-700">YOU</span>}</div>
+              <div className="text-[12px] font-medium text-slate-800">{m.name}{m.me && <span className="ml-1.5 text-[9px] font-mono text-emerald-700">YOU</span>}</div>
               <div className="relative h-1.5 rounded-full bg-slate-100 mt-1 overflow-hidden">
                 <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${m.pct}%`, background: `linear-gradient(90deg, #0EA5E9, ${color})` }} />
               </div>
             </div>
-            <div className="text-[11px] font-mono tabular-nums text-slate-700 dark:text-slate-300">{m.kg} kg</div>
+            <div className="text-[11px] font-mono tabular-nums text-slate-700">{m.kg} kg</div>
           </div>
         ))}
       </div>
@@ -273,7 +273,7 @@ function EnterpriseMock({ color, lang }) {
           ].map((s, i) => (
             <div key={i} className="rounded-xl p-3" style={{ backgroundColor: `${s.color}10` }}>
               <div className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: s.color }}>{s.label}</div>
-              <div className="mt-1 font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">{s.val}</div>
+              <div className="mt-1 font-display text-[18px] tracking-tight text-slate-900">{s.val}</div>
             </div>
           ))}
         </div>
@@ -287,14 +287,14 @@ function EnterpriseMock({ color, lang }) {
             { label: "GRI 305-4 Intensity ratio", status: "✓", color: "#10B981" },
           ].map((r, i) => (
             <div key={i} className="flex items-center justify-between text-[11.5px] py-1.5 border-b border-slate-900/[.04] last:border-0">
-              <span className="text-slate-700 dark:text-slate-300">{r.label}</span>
+              <span className="text-slate-700">{r.label}</span>
               <span className="font-mono text-[10.5px]" style={{ color: r.color }}>{r.status}</span>
             </div>
           ))}
         </div>
 
         {/* Download */}
-        <button className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-[11.5px] font-medium border border-slate-900/[.08] dark:border-white/[.1] text-slate-700 dark:text-slate-300 hover:bg-slate-50">
+        <button className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-[11.5px] font-medium border border-slate-900/[.08] text-slate-700 hover:bg-slate-50">
           <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M7 2v8m-3-3 3 3 3-3M3 12h8" strokeLinecap="round" /></svg>
           {lang === "tr" ? "PDF + CSV indir" : "Download PDF + CSV"}
         </button>

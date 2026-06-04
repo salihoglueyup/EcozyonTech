@@ -85,7 +85,7 @@ function StepCard({ step, idx }) {
   return (
     <div
       ref={ref}
-      className={`relative z-10 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/75 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+      className={`relative z-10 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/75 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] dark:ring-white/[.06] p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
       style={{ transitionDelay: `${idx * 120}ms` }}
     >
       {/* Step number badge */}

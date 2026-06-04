@@ -141,7 +141,7 @@ function ApplyModal({ job, lang, t, onClose }) {
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-md rounded-3xl border border-white/70 dark:border-white/[.08] bg-white p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+        className="relative w-full max-w-md rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
       >
         <button
           type="button"
@@ -173,7 +173,7 @@ function ApplyModal({ job, lang, t, onClose }) {
                   id="apply-name" type="text" required value={name}
                   onChange={(e) => { setName(e.target.value); if (invalid) setStatus('idle'); }}
                   placeholder={c.nameP}
-                  className="w-full rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                  className="w-full rounded-xl bg-white dark:bg-white/[.04] border border-slate-900/[.12] dark:border-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
                 />
               </div>
               <div>
@@ -184,7 +184,7 @@ function ApplyModal({ job, lang, t, onClose }) {
                   placeholder={c.emailP}
                   aria-invalid={invalid}
                   aria-describedby={status === 'limited' ? 'apply-msg' : undefined}
-                  className={`w-full rounded-xl bg-white border px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400 ${invalid ? 'border-rose-500/50' : 'border-slate-900/[.12] focus:border-cyan-500/50'}`}
+                  className={`w-full rounded-xl bg-white dark:bg-white/[.04] border px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400 ${invalid ? 'border-rose-500/50' : 'border-slate-900/[.12] dark:border-white/[.1] focus:border-cyan-500/50'}`}
                 />
               </div>
               <div>
@@ -193,7 +193,7 @@ function ApplyModal({ job, lang, t, onClose }) {
                   id="apply-note" rows={3} value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder={c.noteP}
-                  className="w-full resize-none rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                  className="w-full resize-none rounded-xl bg-white dark:bg-white/[.04] border border-slate-900/[.12] dark:border-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
                 />
               </div>
               <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" />
