@@ -35,7 +35,7 @@ function AccordionItem({ q, a }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] overflow-hidden transition hover:ring-cyan-500/20">
+    <div className="rounded-2xl eco-card overflow-hidden transition hover:ring-cyan-500/20">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

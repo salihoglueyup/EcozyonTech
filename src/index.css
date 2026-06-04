@@ -34,18 +34,14 @@
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
-  }
-  .dark .glass {
-    @apply bg-white/[.03] border-white/[.06];
-  }
-
-  /* Standard card style — light and dark aware */
+  /* Canonical frosted content-card surface. Mirrors the Tailwind recipe that
+     was inlined across ~7 feature/page cards so the look lives in one place.
+     Callers still supply their own radius/padding/shadow/layout utilities. */
   .eco-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 0 0 1px var(--card-ring);
+    @apply border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05];
+  }
+  .dark .eco-card {
+    @apply border-white/[.08] bg-white/[.04] ring-white/[.06];
   }
 
   /* Keyboard skip link — visible only when focused. */

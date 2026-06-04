@@ -70,7 +70,7 @@ export function Contact({ t, lang }) {
           {/* LEFT: madlib form */}
           <form
             onSubmit={onSubmit}
-            className="relative rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_30px_90px_-50px_rgba(15,23,42,.35)] p-7 lg:p-10"
+            className="relative rounded-3xl eco-card shadow-[0_30px_90px_-50px_rgba(15,23,42,.35)] p-7 lg:p-10"
           >
             <div className="font-display text-[clamp(1.3rem,2.4vw,1.85rem)] leading-[1.45] tracking-tight text-slate-800 dark:text-slate-200">
               <span>{t.contact.intro}</span>{" "}

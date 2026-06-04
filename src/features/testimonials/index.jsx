@@ -35,7 +35,7 @@ export function Testimonials({ t }) {
         <SectionHeader center color="emerald" eyebrow={data.eyebrow} title={data.title} className="mb-12" />
 
         <Reveal>
-          <div className="relative rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-8 lg:p-12 text-center">
+          <div className="relative rounded-3xl eco-card p-8 lg:p-12 text-center">
             <QuoteMark className="mx-auto h-7 w-7 text-cyan-500/40" />
 
             <blockquote className="mt-5 font-display text-[clamp(1.2rem,2.2vw,1.7rem)] leading-snug tracking-tight text-slate-900 dark:text-slate-100 max-w-2xl mx-auto transition-opacity duration-500">

@@ -86,7 +86,7 @@ export default function BlogPostPage() {
                 <Link
                   key={r.slug}
                   to={`/blog/${r.slug}`}
-                  className="group block rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-5 hover:ring-cyan-500/30 transition"
+                  className="group block rounded-2xl eco-card p-5 hover:ring-cyan-500/30 transition"
                 >
                   <div className="flex items-center gap-2 text-[11px]">
                     <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/15 px-2 py-0.5 font-semibold">

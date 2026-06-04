@@ -82,7 +82,7 @@ export default function BlogPage() {
             <Link
               key={p.slug}
               to={`/blog/${p.slug}`}
-              className="group flex flex-col sm:flex-row gap-5 rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-5 lg:p-6 hover:ring-cyan-500/30 transition"
+              className="group flex flex-col sm:flex-row gap-5 rounded-2xl eco-card p-5 lg:p-6 hover:ring-cyan-500/30 transition"
             >
               {/* Cover thumbnail */}
               <div

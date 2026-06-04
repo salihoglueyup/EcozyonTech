@@ -38,7 +38,7 @@ export function Calculator({ t }) {
 
         <div className="grid gap-4 lg:grid-cols-2">
           {/* Inputs */}
-          <div className="rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-6 lg:p-7 space-y-6">
+          <div className="rounded-3xl eco-card p-6 lg:p-7 space-y-6">
             {SLIDERS.map((s) => {
               const id = `${baseId}-${s.key}`;
               return (

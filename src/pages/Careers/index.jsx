@@ -49,7 +49,7 @@ export default function CareersPage() {
 
         <div className="space-y-3">
           {JOBS.map((j) => (
-            <div key={j.id} className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div key={j.id} className="rounded-2xl eco-card p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-[11px]">
                   <span className="inline-flex items-center rounded-full bg-cyan-50 text-cyan-700 ring-1 ring-cyan-500/15 px-2 py-0.5 font-semibold">{j.team[lang]}</span>
