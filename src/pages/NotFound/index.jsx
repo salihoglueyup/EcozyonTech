@@ -20,10 +20,10 @@ export default function NotFoundPage() {
         >
           404
         </div>
-        <h1 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,2rem)] tracking-tight text-slate-900">
+        <h1 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,2rem)] tracking-tight text-slate-900 dark:text-slate-100">
           {tr ? 'Bu sayfa yok' : "This page doesn't exist"}
         </h1>
-        <p className="mt-3 text-[14px] text-slate-600 leading-relaxed">
+        <p className="mt-3 text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed">
           {tr
             ? 'Aradığın sayfa taşınmış veya hiç var olmamış olabilir.'
             : 'The page you were looking for may have moved or never existed.'}
@@ -37,8 +37,8 @@ export default function NotFoundPage() {
           <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
         </Link>
 
-        <div className="mt-10 pt-8 border-t border-slate-900/[.08]">
-          <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-3">
+        <div className="mt-10 pt-8 border-t border-slate-900/[.08] dark:border-white/[.08]">
+          <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">
             {tr ? 'Popüler sayfalar' : 'Popular pages'}
           </div>
           <div className="flex flex-wrap justify-center gap-1.5">
@@ -46,7 +46,7 @@ export default function NotFoundPage() {
               <Link
                 key={it.path}
                 to={it.path}
-                className="rounded-full bg-white/70 ring-1 ring-slate-900/[.08] px-3 py-1.5 text-[12.5px] text-slate-700 hover:text-slate-900 hover:ring-cyan-500/30 transition"
+                className="rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] px-3 py-1.5 text-[12.5px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:ring-cyan-500/30 transition"
               >
                 {it.nav[lang] || it.nav.en}
               </Link>
@@ -55,10 +55,10 @@ export default function NotFoundPage() {
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event('ecozyon:cmdk'))}
-            className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] text-slate-500 hover:text-slate-900 transition"
+            className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition"
           >
             {tr ? 'veya hızlıca ara' : 'or search quickly'}
-            <kbd className="rounded-md bg-slate-900/[.06] px-1.5 py-0.5 font-sans font-medium text-slate-600">⌘K</kbd>
+            <kbd className="rounded-md bg-slate-900/[.06] dark:bg-white/[.08] px-1.5 py-0.5 font-sans font-medium text-slate-600 dark:text-slate-400">⌘K</kbd>
           </button>
         </div>
       </div>

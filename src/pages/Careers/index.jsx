@@ -29,34 +29,34 @@ export default function CareersPage() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-3xl mb-10">
           <Tag color="cyan">// {tr ? 'Kariyer' : 'Careers'}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {tr ? 'Daha akıllı, ' : 'Build a smarter, '}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}>
               {tr ? 'temiz bir gelecek kur' : 'cleaner future'}
             </span>
           </h1>
-          <p className="mt-3 text-[15px] text-slate-600 max-w-2xl leading-relaxed">
+          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
             {tr
               ? '14 kişilik bir ekibiz — İstanbul, Berlin ve uzaktan. Donanımdan AI’a etki yaratan işler yapıyoruz.'
               : 'A team of 14 — Istanbul, Berlin and remote. We do impactful work from hardware to AI.'}
           </p>
           <div className="mt-5 flex flex-wrap gap-1.5">
             {perks.map((p) => (
-              <span key={p} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 font-medium">{p}</span>
+              <span key={p} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 dark:text-slate-300 font-medium">{p}</span>
             ))}
           </div>
         </div>
 
         <div className="space-y-3">
           {JOBS.map((j) => (
-            <div key={j.id} className="rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div key={j.id} className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-[11px]">
                   <span className="inline-flex items-center rounded-full bg-cyan-50 text-cyan-700 ring-1 ring-cyan-500/15 px-2 py-0.5 font-semibold">{j.team[lang]}</span>
-                  <span className="text-slate-500">{j.type[lang]}</span>
+                  <span className="text-slate-500 dark:text-slate-400">{j.type[lang]}</span>
                 </div>
-                <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900">{j.title[lang]}</h2>
-                <p className="mt-1 text-[13.5px] text-slate-600 leading-relaxed">{j.desc[lang]}</p>
+                <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{j.title[lang]}</h2>
+                <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{j.desc[lang]}</p>
               </div>
               <button
                 type="button"
@@ -71,9 +71,9 @@ export default function CareersPage() {
           ))}
         </div>
 
-        <div className="mt-8 text-[13px] text-slate-600">
+        <div className="mt-8 text-[13px] text-slate-600 dark:text-slate-400">
           {tr ? 'Uygun rol göremedin mi? ' : "Don't see a fit? "}
-          <Link to="/contact" className="text-slate-900 underline underline-offset-4 decoration-emerald-500 decoration-2">
+          <Link to="/contact" className="text-slate-900 dark:text-slate-100 underline underline-offset-4 decoration-emerald-500 decoration-2">
             {tr ? 'Yine de yaz' : 'Reach out anyway'}
           </Link>
         </div>
@@ -141,18 +141,18 @@ function ApplyModal({ job, lang, t, onClose }) {
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-md rounded-3xl border border-white/70 bg-white p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+        className="relative w-full max-w-md rounded-3xl border border-white/70 dark:border-white/[.08] bg-white p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label={c.close}
-          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 hover:bg-slate-900/[.06] hover:text-slate-900"
+          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.06] hover:text-slate-900 dark:hover:text-slate-100"
         >
           <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" strokeLinecap="round" /></svg>
         </button>
 
-        <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 pr-8">
+        <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 pr-8">
           {c.applyTitle.replace('{role}', role)}
         </h2>
 
@@ -165,35 +165,35 @@ function ApplyModal({ job, lang, t, onClose }) {
           </div>
         ) : (
           <>
-            <p id={descId} className="mt-1.5 text-[13px] text-slate-600 leading-relaxed">{c.applyIntro}</p>
+            <p id={descId} className="mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{c.applyIntro}</p>
             <form onSubmit={onSubmit} className="mt-5 space-y-3">
               <div>
-                <label htmlFor="apply-name" className="block text-[12px] font-medium text-slate-700 mb-1">{c.nameLabel}</label>
+                <label htmlFor="apply-name" className="block text-[12px] font-medium text-slate-700 dark:text-slate-300 mb-1">{c.nameLabel}</label>
                 <input
                   id="apply-name" type="text" required value={name}
                   onChange={(e) => { setName(e.target.value); if (invalid) setStatus('idle'); }}
                   placeholder={c.nameP}
-                  className="w-full rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                  className="w-full rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
                 />
               </div>
               <div>
-                <label htmlFor="apply-email" className="block text-[12px] font-medium text-slate-700 mb-1">{c.emailLabel}</label>
+                <label htmlFor="apply-email" className="block text-[12px] font-medium text-slate-700 dark:text-slate-300 mb-1">{c.emailLabel}</label>
                 <input
                   id="apply-email" type="email" required value={email}
                   onChange={(e) => { setEmail(e.target.value); if (invalid) setStatus('idle'); }}
                   placeholder={c.emailP}
                   aria-invalid={invalid}
                   aria-describedby={status === 'limited' ? 'apply-msg' : undefined}
-                  className={`w-full rounded-xl bg-white border px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none placeholder:text-slate-400 ${invalid ? 'border-rose-500/50' : 'border-slate-900/[.12] focus:border-cyan-500/50'}`}
+                  className={`w-full rounded-xl bg-white border px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400 ${invalid ? 'border-rose-500/50' : 'border-slate-900/[.12] focus:border-cyan-500/50'}`}
                 />
               </div>
               <div>
-                <label htmlFor="apply-note" className="block text-[12px] font-medium text-slate-700 mb-1">{c.noteLabel}</label>
+                <label htmlFor="apply-note" className="block text-[12px] font-medium text-slate-700 dark:text-slate-300 mb-1">{c.noteLabel}</label>
                 <textarea
                   id="apply-note" rows={3} value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder={c.noteP}
-                  className="w-full resize-none rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
+                  className="w-full resize-none rounded-xl bg-white border border-slate-900/[.12] px-3.5 py-2.5 text-[13.5px] text-slate-800 dark:text-slate-200 outline-none focus:border-cyan-500/50 placeholder:text-slate-400"
                 />
               </div>
               <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={hp} onChange={(e) => setHp(e.target.value)} className="hidden" />

@@ -54,20 +54,20 @@ export default function LegalPage() {
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
         <Tag color="slate">// {tr ? 'Yasal' : 'Legal'}</Tag>
-        <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3rem)] leading-[1.06] tracking-[-0.02em] text-slate-900">
+        <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3rem)] leading-[1.06] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
           {tr ? 'Gizlilik & Şartlar' : 'Privacy & Terms'}
         </h1>
-        <p className="mt-2 text-[12.5px] text-slate-500">
+        <p className="mt-2 text-[12.5px] text-slate-500 dark:text-slate-400">
           {tr ? 'Son güncelleme: Mayıs 2026' : 'Last updated: May 2026'}
         </p>
 
         <div className="mt-10 space-y-12">
           {SECTIONS.map((s) => (
             <div key={s.id} id={s.id} className="scroll-mt-28">
-              <h2 className="font-display text-[22px] tracking-tight text-slate-900">{s.title[lang]}</h2>
+              <h2 className="font-display text-[22px] tracking-tight text-slate-900 dark:text-slate-100">{s.title[lang]}</h2>
               <div className="mt-4 space-y-4">
                 {s.body[lang].map((p, i) => (
-                  <p key={i} className="text-[14.5px] text-slate-700 leading-[1.7]">{p}</p>
+                  <p key={i} className="text-[14.5px] text-slate-700 dark:text-slate-300 leading-[1.7]">{p}</p>
                 ))}
               </div>
             </div>

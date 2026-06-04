@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
+import { Reveal } from '@/shared/ui/useReveal';
 
 // ── Metrics ────────────────────────────────────────────────────────────────
 export function Metrics({ t }) {
   return (
     <section id="metrics" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
           <div>
             <Tag color="cyan">// 01 · Impact</Tag>
-            <h2 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 max-w-xl">
+            <h2 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100 max-w-xl">
               {t.metrics.title}
             </h2>
           </div>
-          <p className="max-w-md text-[14.5px] text-slate-600 leading-relaxed">{t.metrics.sub}</p>
+          <p className="max-w-md text-[14.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{t.metrics.sub}</p>
         </div>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {t.metrics.items.map((m, i) => <MetricCard key={i} m={m} idx={i} />)}
@@ -40,7 +43,7 @@ function MetricCard({ m, idx }) {
   return (
     <div
       ref={ref}
-      className="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/60 backdrop-blur-xl p-6 ring-1 ring-slate-900/[.04] hover:ring-cyan-500/30 transition"
+      className="group relative overflow-hidden rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl p-6 ring-1 ring-slate-900/[.04] dark:ring-white/[.06] hover:ring-cyan-500/30 transition"
       style={{ transitionDelay: `${idx * 60}ms` }}
     >
       <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition" style={{ background: `radial-gradient(circle, ${accent}60, transparent)` }} />
@@ -53,15 +56,15 @@ function MetricCard({ m, idx }) {
         {m.trend && <MetricSparkline data={m.trend} color={accent} />}
       </div>
 
-      <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
+      <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 dark:text-slate-100 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
         <AnimatedNumber value={m.value} play={seen} />
         <span style={{ color: accent }}>{m.suffix}</span>
       </div>
-      <div className="mt-2 text-[14px] text-slate-800 font-medium">{m.label}</div>
-      <div className="mt-1 text-[12px] text-slate-500 leading-snug">{m.note}</div>
+      <div className="mt-2 text-[14px] text-slate-800 dark:text-slate-200 font-medium">{m.label}</div>
+      <div className="mt-1 text-[12px] text-slate-500 dark:text-slate-400 leading-snug">{m.note}</div>
 
       {(m.delta || m.compare) && (
-        <div className="mt-4 pt-3 border-t border-slate-900/[.05] flex items-center justify-between text-[11px] gap-2">
+        <div className="mt-4 pt-3 border-t border-slate-900/[.05] dark:border-white/[.06] flex items-center justify-between text-[11px] gap-2">
           {m.delta && (
             <span className="inline-flex items-center gap-1 font-mono" style={{ color: accent }}>
               <svg className="h-2.5 w-2.5" viewBox="0 0 10 10" fill="currentColor"><path d="M5 2l4 5H1z" /></svg>

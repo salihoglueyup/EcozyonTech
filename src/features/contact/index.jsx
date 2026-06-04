@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
 
 // ── Contact — inline madlib form ───────────────────────────────────────────
 export function Contact({ t, lang }) {
@@ -57,19 +58,21 @@ export function Contact({ t, lang }) {
 
       <div className="mx-auto max-w-6xl px-6">
         <div className="text-center max-w-2xl mx-auto">
+          <Reveal>
           <Tag color="emerald">// 07 · {t.contact.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {t.contact.title}
           </h2>
+          </Reveal>
         </div>
 
         <div className="relative mt-12 grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-5">
           {/* LEFT: madlib form */}
           <form
             onSubmit={onSubmit}
-            className="relative rounded-3xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] shadow-[0_30px_90px_-50px_rgba(15,23,42,.35)] p-7 lg:p-10"
+            className="relative rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_30px_90px_-50px_rgba(15,23,42,.35)] p-7 lg:p-10"
           >
-            <div className="font-display text-[clamp(1.3rem,2.4vw,1.85rem)] leading-[1.45] tracking-tight text-slate-800">
+            <div className="font-display text-[clamp(1.3rem,2.4vw,1.85rem)] leading-[1.45] tracking-tight text-slate-800 dark:text-slate-200">
               <span>{t.contact.intro}</span>{" "}
               <InlineInput value={name} onChange={setName} placeholder={t.contact.nameP} minW={120} />
               <span>{t.contact.from}</span>
@@ -125,9 +128,9 @@ export function Contact({ t, lang }) {
             </div>
 
             <div className="mt-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="text-[12.5px] text-slate-500">
+              <div className="text-[12.5px] text-slate-500 dark:text-slate-400">
                 {t.contact.emailFallback}{" "}
-                <a href="mailto:hello@ecozyon.tech" className="text-slate-900 underline underline-offset-4 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">hello@ecozyon.tech</a>
+                <a href="mailto:hello@ecozyon.tech" className="text-slate-900 dark:text-slate-100 underline underline-offset-4 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">hello@ecozyon.tech</a>
               </div>
               <button
                 type="submit"
@@ -160,9 +163,9 @@ export function Contact({ t, lang }) {
           </form>
 
           {/* RIGHT: what happens next timeline */}
-          <aside className="rounded-3xl border border-white/70 bg-gradient-to-br from-emerald-50/60 via-white/70 to-cyan-50/40 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-7 lg:p-8">
+          <aside className="rounded-3xl border border-white/70 dark:border-white/[.08] bg-gradient-to-br from-emerald-50/60 via-white/70 to-cyan-50/40 dark:from-emerald-500/[.06] dark:via-slate-900/50 dark:to-cyan-500/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-7 lg:p-8">
             <div className="text-[11px] uppercase tracking-[.14em] font-semibold text-emerald-700">{t.contact.nextTitle}</div>
-            <h3 className="mt-2 font-display text-[20px] tracking-tight text-slate-900 leading-tight">
+            <h3 className="mt-2 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
               {lang === "tr" ? "24 saat — demo — pilot" : "24 hours — demo — pilot"}
             </h3>
 
@@ -174,13 +177,13 @@ export function Contact({ t, lang }) {
                     style={{ background: `linear-gradient(135deg, ${["#0EA5E9","#10B981","#7C3AED"][i]}, ${["#0EA5E9","#10B981","#7C3AED"][i]}cc)` }}>
                     0{i + 1}
                   </span>
-                  <div className="text-[13.5px] font-medium text-slate-900">{step.t}</div>
-                  <div className="text-[12px] text-slate-600 leading-relaxed mt-0.5">{step.d}</div>
+                  <div className="text-[13.5px] font-medium text-slate-900 dark:text-slate-100">{step.t}</div>
+                  <div className="text-[12px] text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">{step.d}</div>
                 </li>
               ))}
             </ol>
 
-            <div className="mt-5 pt-4 border-t border-slate-900/[.06] flex items-center gap-3 text-[11.5px] text-slate-500">
+            <div className="mt-5 pt-4 border-t border-slate-900/[.06] dark:border-white/[.06] flex items-center gap-3 text-[11.5px] text-slate-500 dark:text-slate-400">
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="8" cy="8" r="6" /><path d="M8 5v3.5l2.5 1.5" strokeLinecap="round" /></svg>
               {lang === "tr" ? "Ortalama yanıt: 8 saat" : "Avg. response: 8h"}
             </div>
@@ -193,7 +196,7 @@ export function Contact({ t, lang }) {
 
 function FieldGroup({ label, required, children }) {
   return (
-    <label className="relative block rounded-2xl bg-white/80 border border-slate-900/[.08] px-3.5 py-2.5 focus-within:border-cyan-500/60 focus-within:ring-2 focus-within:ring-cyan-500/15 transition">
+    <label className="relative block rounded-2xl bg-white/80 dark:bg-white/[.06] border border-slate-900/[.08] dark:border-white/[.1] px-3.5 py-2.5 focus-within:border-cyan-500/60 focus-within:ring-2 focus-within:ring-cyan-500/15 transition">
       <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold flex items-center gap-1">
         {label}
         {required && <span className="text-cyan-600">*</span>}
@@ -215,7 +218,7 @@ function InlineInput({ value, onChange, placeholder, minW }) {
         placeholder={placeholder}
         aria-label={placeholder}
         style={{ minWidth: minW, width: `${Math.max(minW, value.length * 14 + 30)}px` }}
-        className="inline-block bg-transparent border-b-2 border-dashed border-slate-300 focus:border-cyan-500 outline-none px-1 pb-0.5 font-display text-slate-900 placeholder:text-slate-400 transition-colors"
+        className="inline-block bg-transparent border-b-2 border-dashed border-slate-300 dark:border-slate-600 focus:border-cyan-500 outline-none px-1 pb-0.5 font-display text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors"
       />
     </span>
   );
@@ -282,7 +285,7 @@ function PurposePicker({ value, setValue, open, setOpen, options }) {
         <div
           role="listbox"
           onKeyDown={onListKeyDown}
-          className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white border border-slate-900/[.08] shadow-xl p-1.5"
+          className="absolute z-20 left-0 top-full mt-2 min-w-[180px] rounded-xl bg-white dark:bg-slate-800 border border-slate-900/[.08] dark:border-white/[.1] shadow-xl p-1.5"
         >
           {options.map((o, i) => (
             <button
@@ -292,7 +295,7 @@ function PurposePicker({ value, setValue, open, setOpen, options }) {
               role="option"
               aria-selected={o === value}
               onClick={() => { setValue(o); setOpen(false); triggerRef.current?.focus(); }}
-              className={`block w-full text-left text-[13px] font-sans px-3 py-1.5 rounded-lg focus:outline-none focus:bg-emerald-50 focus:text-emerald-700 ${o === value ? "bg-emerald-50 text-emerald-700" : "text-slate-700 hover:bg-slate-50"}`}
+              className={`block w-full text-left text-[13px] font-sans px-3 py-1.5 rounded-lg focus:outline-none focus:bg-emerald-50 dark:focus:bg-emerald-500/[.1] focus:text-emerald-700 dark:focus:text-emerald-400 ${o === value ? "bg-emerald-50 dark:bg-emerald-500/[.1] text-emerald-700 dark:text-emerald-400" : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/[.06]"}`}
             >
               {o}
             </button>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
 
 // ────────────────────────────────────────────────────────────────────────────
 // HOW IT WORKS — 3-step flow
@@ -15,14 +16,16 @@ export function HowItWorks({ t, lang }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-12">
+          <Reveal>
           <Tag color="emerald">// 02 · {h.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {h.title}{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>
               {h.titleAccent}
             </span>
           </h2>
-          <p className="mt-3 text-[15px] text-slate-600 max-w-2xl leading-relaxed">{h.sub}</p>
+          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{h.sub}</p>
+          </Reveal>
         </div>
 
         {/* Stepper */}
@@ -56,7 +59,7 @@ export function HowItWorks({ t, lang }) {
                   : "Free hardware + 12-month Pro plan for early users."}
               </div>
             </div>
-            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 text-[13.5px] font-medium px-5 py-3 hover:bg-slate-100 transition self-start">
+            <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 dark:text-slate-100 text-[13.5px] font-medium px-5 py-3 hover:bg-slate-100 transition self-start">
               {h.cta}
               <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
             </Link>
@@ -82,7 +85,7 @@ function StepCard({ step, idx }) {
   return (
     <div
       ref={ref}
-      className={`relative z-10 rounded-3xl border border-white/70 bg-white/75 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+      className={`relative z-10 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/75 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
       style={{ transitionDelay: `${idx * 120}ms` }}
     >
       {/* Step number badge */}
@@ -96,19 +99,19 @@ function StepCard({ step, idx }) {
             <span className="absolute inset-0 rounded-full animate-ping" style={{ backgroundColor: accent }} />
           </span>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] px-2.5 py-1 text-[10.5px] text-slate-600 font-mono">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] px-2.5 py-1 text-[10.5px] text-slate-600 dark:text-slate-400 font-mono">
           <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="7" cy="7" r="5" /><path d="M7 4v3.5L9 9" strokeLinecap="round" /></svg>
           {step.time}
         </span>
       </div>
 
       <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold mb-1" style={{ color: accent }}>{step.tag}</div>
-      <h3 className="font-display text-[22px] lg:text-[24px] tracking-tight text-slate-900 leading-tight">{step.title}</h3>
-      <p className="mt-2.5 text-[13.5px] text-slate-600 leading-relaxed">{step.desc}</p>
+      <h3 className="font-display text-[22px] lg:text-[24px] tracking-tight text-slate-900 dark:text-slate-100 leading-tight">{step.title}</h3>
+      <p className="mt-2.5 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{step.desc}</p>
 
       <ul className="mt-5 space-y-2">
         {step.bullets.map((b, i) => (
-          <li key={i} className="flex items-start gap-2 text-[12.5px] text-slate-700">
+          <li key={i} className="flex items-start gap-2 text-[12.5px] text-slate-700 dark:text-slate-300">
             <svg className="mt-0.5 h-4 w-4 flex-none" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="7" stroke={accent} strokeOpacity=".25" />
               <path d="M5 8l2 2 4-4" stroke={accent} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -179,7 +182,7 @@ function StepVisual({ idx, accent }) {
     <div className="flex items-center gap-2 h-14">
       <div className="flex-1 rounded-xl px-3 py-2 text-[11px]" style={{ backgroundColor: `${accent}15`, color: accent }}>
         <span className="font-mono uppercase tracking-wide opacity-70">tip</span>{" "}
-        <span className="text-slate-700">Bisikletle git → -1.4 kg</span>
+        <span className="text-slate-700 dark:text-slate-300">Bisikletle git → -1.4 kg</span>
       </div>
       <button className="rounded-full text-white text-[11px] font-semibold px-3 py-2 shadow-sm" style={{ backgroundColor: accent }}>
         ✓ Apply

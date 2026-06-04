@@ -1,6 +1,7 @@
 // Tech Ecosystem — AI panel + Wearable exploded view + Community panel
 import React, { useState } from 'react';
 import { Tag } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
 
 function TechEcosystem({ t }) {
   return (
@@ -17,14 +18,16 @@ function TechEcosystem({ t }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl">
+          <Reveal>
           <Tag color="emerald">// 03 · {t.tech.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {t.tech.title}{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}
             >{t.tech.titleAccent}</span>
           </h2>
+          </Reveal>
         </div>
 
         <div id="ecosystem" className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -43,7 +46,7 @@ function TechEcosystem({ t }) {
 function AIPanel({ t }) {
   const ai = t.tech.ai;
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
+    <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
       <div className="flex items-center gap-2">
         <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-700">
           <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -55,8 +58,8 @@ function AIPanel({ t }) {
         <span className="text-[11px] uppercase tracking-[.14em] font-semibold text-cyan-700">{ai.tag}</span>
       </div>
 
-      <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900">{ai.title}</h3>
-      <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed">{ai.desc}</p>
+      <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900 dark:text-slate-100">{ai.title}</h3>
+      <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{ai.desc}</p>
 
       {/* Data flow diagram */}
       <div className="mt-6 rounded-2xl border border-slate-900/[.06] bg-gradient-to-br from-slate-50 to-white p-5">
@@ -65,7 +68,7 @@ function AIPanel({ t }) {
 
       <ul className="mt-6 space-y-2.5">
         {ai.bullets.map((b, i) => (
-          <li key={i} className="flex items-start gap-2.5 text-[13.5px] text-slate-700">
+          <li key={i} className="flex items-start gap-2.5 text-[13.5px] text-slate-700 dark:text-slate-300">
             <span className="mt-1.5 inline-flex h-1.5 w-1.5 flex-none rounded-full bg-cyan-500" />
             <span>{b}</span>
           </li>
@@ -180,7 +183,7 @@ function WearablePanel({ t }) {
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]"
+      className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -197,8 +200,8 @@ function WearablePanel({ t }) {
         </span>
       </div>
 
-      <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900">{w.title}</h3>
-      <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed max-w-md">{w.desc}</p>
+      <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900 dark:text-slate-100">{w.title}</h3>
+      <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">{w.desc}</p>
 
       <div className="relative mt-6 grid grid-cols-[1.1fr_1fr] gap-6 items-center min-h-[300px]">
         <ExplodedWearable layers={w.layers} hover={hover} />
@@ -212,11 +215,11 @@ function WearablePanel({ t }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-[10px] text-emerald-700 font-semibold">L{i + 1}</span>
-                  <span className="text-[13px] font-medium text-slate-800">{l.name}</span>
+                  <span className="text-[13px] font-medium text-slate-800 dark:text-slate-200">{l.name}</span>
                 </div>
                 <span className={`inline-block h-1.5 w-1.5 rounded-full ${hover ? "bg-emerald-500" : "bg-slate-300"}`} />
               </div>
-              <div className="mt-0.5 text-[11.5px] text-slate-500 leading-snug">{l.note}</div>
+              <div className="mt-0.5 text-[11.5px] text-slate-500 dark:text-slate-400 leading-snug">{l.note}</div>
             </li>
           ))}
         </ul>
@@ -306,7 +309,7 @@ function CommunityPanel({ t }) {
   if (!c) return null;
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
+    <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.4fr] gap-6 lg:gap-10 items-center">
         {/* LEFT: copy */}
         <div>
@@ -321,22 +324,22 @@ function CommunityPanel({ t }) {
             <span className="text-[11px] uppercase tracking-[.14em] font-semibold text-violet-700">{c.tag}</span>
           </div>
 
-          <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900">{c.title}</h3>
-          <p className="mt-3 text-[14.5px] text-slate-600 leading-relaxed">{c.desc}</p>
+          <h3 className="mt-4 font-display text-[26px] lg:text-[30px] leading-tight tracking-tight text-slate-900 dark:text-slate-100">{c.title}</h3>
+          <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{c.desc}</p>
 
           {/* Stats strip */}
           <div className="mt-6 grid grid-cols-3 gap-3">
             {c.stats.map((s, i) => (
-              <div key={i} className="rounded-xl border border-slate-900/[.06] bg-white/70 p-3">
-                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold leading-tight">{s.label}</div>
-                <div className="mt-1.5 font-display text-[22px] tracking-tight text-slate-900 leading-none">{s.val}</div>
+              <div key={i} className="rounded-xl border border-slate-900/[.06] bg-white/70 dark:bg-white/[.04] p-3">
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold leading-tight">{s.label}</div>
+                <div className="mt-1.5 font-display text-[22px] tracking-tight text-slate-900 dark:text-slate-100 leading-none">{s.val}</div>
               </div>
             ))}
           </div>
 
           {/* Badge collection */}
           <div className="mt-6">
-            <div className="text-[10.5px] uppercase tracking-[.14em] text-slate-500 font-semibold mb-2.5">Badges</div>
+            <div className="text-[10.5px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold mb-2.5">Badges</div>
             <div className="flex flex-wrap gap-1.5">
               {c.badges.map((b, i) => (
                 <BadgeChip key={i} label={b} idx={i} />
@@ -349,11 +352,11 @@ function CommunityPanel({ t }) {
         <div className="relative">
           <div className="absolute inset-0 -m-4 rounded-3xl blur-2xl opacity-50 pointer-events-none"
             style={{ background: "radial-gradient(circle at 70% 30%, rgba(124,58,237,.25), transparent 60%)" }} />
-          <div className="relative rounded-2xl border border-white/70 bg-white/80 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-5 shadow-[0_24px_60px_-30px_rgba(15,23,42,.25)]">
+          <div className="relative rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/80 dark:bg-white/[.06] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-5 shadow-[0_24px_60px_-30px_rgba(15,23,42,.25)]">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500">Bike week challenge</div>
-                <div className="font-display text-[18px] tracking-tight text-slate-900">Top contributors</div>
+                <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400">Bike week challenge</div>
+                <div className="font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">Top contributors</div>
               </div>
               <div className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 text-violet-700 ring-1 ring-violet-500/15 px-2 py-1 text-[10px] font-semibold">
                 <span className="h-1 w-1 rounded-full bg-violet-500 animate-pulse" />
@@ -370,8 +373,8 @@ function CommunityPanel({ t }) {
             {/* Progress to next challenge */}
             <div className="mt-5 pt-4 border-t border-slate-900/[.06]">
               <div className="flex items-center justify-between text-[11px] mb-1.5">
-                <span className="text-slate-600">Sonraki: <span className="font-medium text-slate-900">Local food week</span></span>
-                <span className="font-mono text-slate-500">3g 12s</span>
+                <span className="text-slate-600 dark:text-slate-400">Sonraki: <span className="font-medium text-slate-900 dark:text-slate-100">Local food week</span></span>
+                <span className="font-mono text-slate-500 dark:text-slate-400">3g 12s</span>
               </div>
               <div className="relative h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div className="absolute inset-y-0 left-0 w-[68%] rounded-full" style={{ background: "linear-gradient(90deg, #7C3AED, #10B981)" }} />
@@ -418,7 +421,7 @@ function LeaderboardRow({ m, i }) {
         {medal ? (
           <span className="text-[16px] leading-none">{medal}</span>
         ) : (
-          <span className="text-[11px] font-mono text-slate-500">#{m.rank}</span>
+          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">#{m.rank}</span>
         )}
       </div>
       <div
@@ -428,7 +431,7 @@ function LeaderboardRow({ m, i }) {
         {initials}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-[12.5px] font-medium text-slate-800 leading-tight">{m.name}</div>
+        <div className="text-[12.5px] font-medium text-slate-800 dark:text-slate-200 leading-tight">{m.name}</div>
         <div className="relative h-1.5 rounded-full bg-slate-100 mt-1 overflow-hidden">
           <div
             className="absolute inset-y-0 left-0 rounded-full"
@@ -436,7 +439,7 @@ function LeaderboardRow({ m, i }) {
           />
         </div>
       </div>
-      <div className="font-mono tabular-nums text-[11.5px] text-slate-900 font-medium">{m.co2}</div>
+      <div className="font-mono tabular-nums text-[11.5px] text-slate-900 dark:text-slate-100 font-medium">{m.co2}</div>
     </div>
   );
 }

@@ -12,10 +12,15 @@ import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 function ScrollProgress() {
   const [p, setP] = useState(0);
   useEffect(() => {
+    let raf = 0;
     const onScroll = () => {
-      const sc = document.documentElement;
-      const max = sc.scrollHeight - sc.clientHeight;
-      setP(max > 0 ? (sc.scrollTop / max) * 100 : 0);
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const sc = document.documentElement;
+        const max = sc.scrollHeight - sc.clientHeight;
+        setP(max > 0 ? (sc.scrollTop / max) * 100 : 0);
+        raf = 0;
+      });
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -23,6 +28,7 @@ function ScrollProgress() {
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
   return (
@@ -61,7 +67,7 @@ export default function MainLayout() {
   const { pathname } = useLocation();
   return (
     <div
-      className="min-h-screen text-slate-900 font-body transition-colors duration-300"
+      className="min-h-screen text-slate-900 dark:text-slate-100 font-body transition-colors duration-300"
       style={{ backgroundColor: bgColor }}
     >
       <ScrollToTop />
@@ -69,7 +75,7 @@ export default function MainLayout() {
       <ScrollProgress />
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-0 opacity-[.18] mix-blend-multiply"
+        className="pointer-events-none fixed inset-0 z-0 opacity-[.18] dark:opacity-[.06] mix-blend-multiply dark:mix-blend-soft-light"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.45'/></svg>\")",

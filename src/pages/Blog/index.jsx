@@ -8,6 +8,13 @@ import { POSTS, readingTime, postTags, filterByTag, searchPosts } from '@/core/d
 
 const meta = routeByKey('blog');
 const TAGS = postTags(POSTS);
+const COVER_GRADIENTS = [
+  'linear-gradient(135deg,#0EA5E9 0%,#10B981 100%)',
+  'linear-gradient(135deg,#10B981 0%,#7C3AED 100%)',
+  'linear-gradient(135deg,#7C3AED 0%,#F59E0B 100%)',
+  'linear-gradient(135deg,#F59E0B 0%,#EC4899 100%)',
+  'linear-gradient(135deg,#EC4899 0%,#0EA5E9 100%)',
+];
 
 export default function BlogPage() {
   const { lang, t } = useApp();
@@ -27,7 +34,7 @@ export default function BlogPage() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-3xl mb-12">
           <Tag color="emerald">// {tr ? 'Blog' : 'Blog'}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {tr ? 'Notlar & ' : 'Notes & '}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}>
               {tr ? 'içgörüler' : 'insights'}
@@ -45,7 +52,7 @@ export default function BlogPage() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t.blog.searchP}
             aria-label={t.blog.searchLabel}
-            className="w-full rounded-full bg-white/70 ring-1 ring-slate-900/[.08] pl-10 pr-4 py-2.5 text-[13px] text-slate-800 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400"
+            className="w-full rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-10 pr-4 py-2.5 text-[13px] text-slate-800 dark:text-slate-200 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400 dark:placeholder:text-slate-500"
           />
         </div>
 
@@ -60,8 +67,8 @@ export default function BlogPage() {
                 aria-pressed={on}
                 className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
                   on
-                    ? 'bg-slate-900 text-white ring-slate-900'
-                    : 'bg-white/70 text-slate-700 ring-slate-900/[.08] hover:ring-cyan-500/30'
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
+                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
                 }`}
               >
                 {tg.label[lang]}
@@ -75,27 +82,46 @@ export default function BlogPage() {
             <Link
               key={p.slug}
               to={`/blog/${p.slug}`}
-              className="group block rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-6 lg:p-7 hover:ring-cyan-500/30 transition"
+              className="group flex flex-col sm:flex-row gap-5 rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-5 lg:p-6 hover:ring-cyan-500/30 transition"
             >
-              <div className="flex items-center gap-3 text-[11px]">
-                <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/15 px-2 py-0.5 font-semibold">
-                  {p.tag[lang]}
-                </span>
-                <time className="text-slate-500 font-mono">{p.date}</time>
-                <span className="text-slate-400 font-mono">· {readingTime(p, lang)} {t.blog.readMin}</span>
+              {/* Cover thumbnail */}
+              <div
+                className="shrink-0 w-full sm:w-44 h-28 sm:h-auto rounded-xl overflow-hidden"
+                style={{
+                  background: COVER_GRADIENTS[visible.indexOf(p) % COVER_GRADIENTS.length],
+                }}
+              >
+                <div className="w-full h-full flex items-center justify-center text-white/70">
+                  <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.2">
+                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15l-5-5L5 21" />
+                  </svg>
+                </div>
               </div>
-              <h2 className="mt-3 font-display text-[20px] lg:text-[22px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">
-                {p.title[lang]}
-              </h2>
-              <p className="mt-2 text-[14px] text-slate-600 leading-relaxed">{p.excerpt[lang]}</p>
-              <span className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-800">
-                {tr ? 'Devamını oku' : 'Read more'}
-                <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
-              </span>
+
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 text-[11px]">
+                  <span className="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-500/15 dark:ring-emerald-400/20 px-2 py-0.5 font-semibold">
+                    {p.tag[lang]}
+                  </span>
+                  <time className="text-slate-500 font-mono">{p.date}</time>
+                  <span className="text-slate-400 font-mono">· {readingTime(p, lang)} {t.blog.readMin}</span>
+                </div>
+                <h2 className="mt-2 font-display text-[18px] lg:text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition">
+                  {p.title[lang]}
+                </h2>
+                <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{p.excerpt[lang]}</p>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-800 dark:text-slate-200">
+                  {tr ? 'Devamını oku' : 'Read more'}
+                  <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
+                </span>
+              </div>
             </Link>
           ))}
           {visible.length === 0 && (
-            <p className="py-10 text-center text-[14px] text-slate-500">
+            <p className="py-10 text-center text-[14px] text-slate-500 dark:text-slate-400">
               {query.trim() ? t.blog.noResults : t.blog.empty}
             </p>
           )}

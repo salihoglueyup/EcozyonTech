@@ -1,6 +1,7 @@
 import { useId, useState } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { estimateAnnualCO2, potentialSavings, formatCO2 } from '@/core/lib/co2';
+import { Reveal } from '@/shared/ui/useReveal';
 
 const SLIDERS = [
   { key: 'carKmPerWeek', labelKey: 'car', unitKey: 'carUnit', max: 600, step: 10, color: '#0EA5E9' },
@@ -26,23 +27,25 @@ export function Calculator({ t }) {
     <section className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-3xl mb-8">
+          <Reveal>
           <Tag color="cyan">// {c.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.06] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(1.8rem,3.4vw,2.8rem)] leading-[1.06] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {c.title}
           </h2>
-          <p className="mt-3 text-[15px] text-slate-600 leading-relaxed max-w-2xl">{c.sub}</p>
+          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">{c.sub}</p>
+          </Reveal>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
           {/* Inputs */}
-          <div className="rounded-3xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-6 lg:p-7 space-y-6">
+          <div className="rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-6 lg:p-7 space-y-6">
             {SLIDERS.map((s) => {
               const id = `${baseId}-${s.key}`;
               return (
                 <div key={s.key}>
                   <div className="flex items-baseline justify-between mb-2">
-                    <label htmlFor={id} className="text-[13px] font-medium text-slate-700">{c[s.labelKey]}</label>
-                    <span className="font-mono text-[13px] text-slate-900 tabular-nums">
+                    <label htmlFor={id} className="text-[13px] font-medium text-slate-700 dark:text-slate-300">{c[s.labelKey]}</label>
+                    <span className="font-mono text-[13px] text-slate-900 dark:text-slate-100 tabular-nums">
                       {vals[s.key]} <span className="text-slate-400">{c[s.unitKey]}</span>
                     </span>
                   </div>

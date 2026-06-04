@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tag } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
 
 export function AboutBento({ t, lang }) {
   const b = t.about.bento;
@@ -9,12 +10,14 @@ export function AboutBento({ t, lang }) {
         style={{ backgroundImage: "radial-gradient(circle at 80% 30%, rgba(16,185,129,.10), transparent 50%)" }} />
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
+          <Reveal>
           <Tag color="emerald">// 06 · {t.about.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {t.about.title}{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>{t.about.titleAccent}</span>
           </h2>
-          <p className="mt-3 text-[15px] text-slate-600 leading-relaxed max-w-2xl">{t.about.sub}</p>
+          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">{t.about.sub}</p>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-12 gap-3 auto-rows-[150px]">
@@ -50,41 +53,42 @@ export function AboutBento({ t, lang }) {
 
           {/* Mission */}
           <BentoCell tag={b.mission.tag} color="cyan" className="col-span-12 md:col-span-6 lg:col-span-5 row-span-1">
-            <p className="font-display text-[19px] leading-snug tracking-tight text-slate-900">{b.mission.text}</p>
+            <p className="font-display text-[19px] leading-snug tracking-tight text-slate-900 dark:text-slate-100">{b.mission.text}</p>
           </BentoCell>
 
           {/* Vision */}
           <BentoCell tag={b.vision.tag} color="emerald" className="col-span-12 md:col-span-6 lg:col-span-5 row-span-1">
-            <p className="font-display text-[19px] leading-snug tracking-tight text-slate-900">{b.vision.text}</p>
+            <p className="font-display text-[19px] leading-snug tracking-tight text-slate-900 dark:text-slate-100">{b.vision.text}</p>
           </BentoCell>
 
           {/* Stat 1 */}
-          <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-1 rounded-3xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 flex flex-col justify-between">
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500">{b.stat1.label}</div>
-            <div className="font-display text-[40px] tracking-[-0.03em] text-slate-900 leading-none">{b.stat1.value}</div>
+          <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-1 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 flex flex-col justify-between">
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400">{b.stat1.label}</div>
+            <div className="font-display text-[40px] tracking-[-0.03em] text-slate-900 dark:text-slate-100 leading-none">{b.stat1.value}</div>
           </div>
 
           {/* Stat 2 */}
-          <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-1 rounded-3xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 flex flex-col justify-between">
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500">{b.stat2.label}</div>
-            <div className="font-display text-[40px] tracking-[-0.03em] text-slate-900 leading-none">{b.stat2.value}</div>
+          <div className="col-span-6 md:col-span-3 lg:col-span-2 row-span-1 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 flex flex-col justify-between">
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400">{b.stat2.label}</div>
+            <div className="font-display text-[40px] tracking-[-0.03em] text-slate-900 dark:text-slate-100 leading-none">{b.stat2.value}</div>
           </div>
 
           {/* Values */}
           <BentoCell tag={b.values.tag} color="slate" className="col-span-12 md:col-span-6 lg:col-span-4 row-span-1">
             <div className="flex flex-wrap gap-1.5 mt-1">
               {b.values.items.map((v, i) => (
-                <span key={i} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 font-medium">{v}</span>
+                <span key={i} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 dark:text-slate-300 font-medium">{v}</span>
               ))}
             </div>
           </BentoCell>
 
           {/* Partners */}
           <BentoCell tag={b.partners.tag} color="cyan" className="col-span-12 md:col-span-6 lg:col-span-4 row-span-1">
-            <p className="text-[13.5px] text-slate-700 leading-relaxed">{b.partners.text}</p>
+            <p className="text-[13.5px] text-slate-700 dark:text-slate-300 leading-relaxed">{b.partners.text}</p>
           </BentoCell>
         </div>
 
+        <TeamGrid t={t} />
         <Timeline timeline={t.about.timeline} />
       </div>
     </section>
@@ -96,7 +100,7 @@ function Timeline({ timeline }) {
   return (
     <div className="mt-16 lg:mt-20">
       <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-2">// {timeline.eyebrow}</div>
-      <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 mb-8">
+      <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
         {timeline.title}
       </h3>
       <ol className="relative border-l border-slate-900/[.10] ml-3 space-y-8">
@@ -107,12 +111,53 @@ function Timeline({ timeline }) {
               style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
               aria-hidden="true"
             />
-            <div className="font-mono text-[12px] text-slate-500">{it.year}</div>
-            <div className="mt-0.5 font-display text-[18px] tracking-tight text-slate-900">{it.title}</div>
-            <p className="mt-1 text-[13.5px] text-slate-600 leading-relaxed max-w-xl">{it.text}</p>
+            <div className="font-mono text-[12px] text-slate-500 dark:text-slate-400">{it.year}</div>
+            <div className="mt-0.5 font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">{it.title}</div>
+            <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl">{it.text}</p>
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+const TEAM_GRADIENTS = [
+  "linear-gradient(135deg,#0EA5E9,#10B981)",
+  "linear-gradient(135deg,#10B981,#7C3AED)",
+  "linear-gradient(135deg,#7C3AED,#F59E0B)",
+  "linear-gradient(135deg,#F59E0B,#EC4899)",
+  "linear-gradient(135deg,#EC4899,#0EA5E9)",
+  "linear-gradient(135deg,#0EA5E9,#7C3AED)",
+];
+
+function TeamGrid({ t }) {
+  const team = t.about.team;
+  if (!team) return null;
+  return (
+    <div className="mt-14 lg:mt-16">
+      <Reveal>
+        <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-2">// {team.eyebrow}</div>
+        <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
+          {team.title}
+        </h3>
+      </Reveal>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        {team.members.map((m, i) => (
+          <Reveal key={i} delay={i * 80}>
+            <div className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] dark:ring-white/[.06] p-5 text-center group hover:ring-cyan-500/30 transition">
+              <div
+                className="mx-auto h-14 w-14 rounded-full flex items-center justify-center text-white font-display text-[18px] tracking-tight shadow-lg"
+                style={{ background: TEAM_GRADIENTS[i % TEAM_GRADIENTS.length] }}
+              >
+                {m.initials}
+              </div>
+              <div className="mt-3 font-display text-[14px] tracking-tight text-slate-900 dark:text-slate-100">{m.name}</div>
+              <div className="mt-0.5 text-[11.5px] text-slate-500 dark:text-slate-400">{m.role}</div>
+              <div className="mt-2 text-[10.5px] text-slate-400 dark:text-slate-500 leading-snug">{m.focus}</div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
     </div>
   );
 }
@@ -121,10 +166,10 @@ function BentoCell({ tag, color = "slate", className, children }) {
   const colorMap = {
     emerald: "text-emerald-700",
     cyan: "text-cyan-700",
-    slate: "text-slate-500",
+    slate: "text-slate-500 dark:text-slate-400",
   };
   return (
-    <div className={`rounded-3xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 lg:p-6 ${className || ""}`}>
+    <div className={`rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-5 lg:p-6 ${className || ""}`}>
       <div className={`text-[10.5px] uppercase tracking-[.14em] font-semibold ${colorMap[color]} mb-2`}>// {tag}</div>
       {children}
     </div>

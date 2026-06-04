@@ -6,6 +6,7 @@ import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { CITIES } from '@/core/data/cities';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 import { useApp } from '@/app/providers/AppProvider';
+import { Reveal } from '@/shared/ui/useReveal';
 
 function ImpactMap({ t }) {
   const m = t.impactMap;
@@ -75,17 +76,19 @@ function ImpactMap({ t }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
+          <Reveal>
           <Tag color="emerald">// 03 · {m.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {m.title}{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>
               {m.titleAccent}
             </span>
           </h2>
-          <p className="mt-3 text-[15px] text-slate-600 max-w-2xl leading-relaxed">{m.sub}</p>
+          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{m.sub}</p>
+          </Reveal>
         </div>
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
+        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
           {/* Header strip with stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-slate-900/[.06] border-b border-slate-900/[.06] bg-white/40">
             <StatPill label={m.stats.cities} value={activeCities.length} accent="#10B981" />
@@ -117,12 +120,12 @@ function ImpactMap({ t }) {
               {hover && hoverPos && !selected && <HoverCard city={hover} pos={hoverPos} m={m} />}
 
               {/* Help hints (corner) */}
-              <div className="absolute bottom-3 left-3 text-[10.5px] text-slate-500 flex items-center gap-3 pointer-events-none">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 backdrop-blur px-2 py-1 ring-1 ring-slate-900/[.05]">
+              <div className="absolute bottom-3 left-3 text-[10.5px] text-slate-500 dark:text-slate-400 flex items-center gap-3 pointer-events-none">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 dark:bg-white/[.04] backdrop-blur px-2 py-1 ring-1 ring-slate-900/[.05] dark:ring-white/[.06]">
                   <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3-3 3 3 3M5 4l3-3 3 3" strokeLinecap="round" /></svg>
                   {m.helpDrag}
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 backdrop-blur px-2 py-1 ring-1 ring-slate-900/[.05]">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 dark:bg-white/[.04] backdrop-blur px-2 py-1 ring-1 ring-slate-900/[.05] dark:ring-white/[.06]">
                   <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="7" cy="7" r="3" /><circle cx="7" cy="7" r="6" /></svg>
                   {m.helpClick}
                 </span>
@@ -138,14 +141,14 @@ function ImpactMap({ t }) {
                     onFocus={() => setSearchOpen(true)}
                     onBlur={() => setTimeout(() => setSearchOpen(false), 150)}
                     placeholder={m.searchP}
-                    className="w-full rounded-full pl-9 pr-3 py-2 text-[12.5px] bg-white/80 backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 outline-none focus:ring-cyan-500/30 focus:border-cyan-500/30 text-slate-800 placeholder:text-slate-400"
+                    className="w-full rounded-full pl-9 pr-3 py-2 text-[12.5px] bg-white/80 dark:bg-white/[.06] backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 dark:border-white/[.08] outline-none focus:ring-cyan-500/30 focus:border-cyan-500/30 text-slate-800 dark:text-slate-200 placeholder:text-slate-400"
                   />
                   <svg viewBox="0 0 16 16" className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="7" cy="7" r="4.5" /><path d="M13 13l-2.5-2.5" strokeLinecap="round" /></svg>
                 </div>
                 {searchOpen && filtered.length > 0 && (
-                  <div className="mt-2 rounded-xl bg-white/95 backdrop-blur-xl border border-slate-900/[.08] shadow-xl p-1 max-h-64 overflow-y-auto">
+                  <div className="mt-2 rounded-xl bg-white/95 backdrop-blur-xl border border-slate-900/[.08] dark:border-white/[.1] shadow-xl p-1 max-h-64 overflow-y-auto">
                     {filtered.map((c) => (
-                      <button key={c.name} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => selectCity(c)} className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-[12.5px] text-slate-700 hover:bg-slate-50">
+                      <button key={c.name} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => selectCity(c)} className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-[12.5px] text-slate-700 dark:text-slate-300 hover:bg-slate-50">
                         <span className="flex items-center gap-2">
                           <span className={`h-1.5 w-1.5 rounded-full ${c.partner ? "bg-cyan-500" : "bg-emerald-500"}`} />
                           {c.name}
@@ -159,10 +162,10 @@ function ImpactMap({ t }) {
 
               {/* Time scrubber */}
               <div className="absolute top-3 right-3 z-10 w-44">
-                <div className="rounded-full bg-white/80 backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 px-3 py-1.5">
+                <div className="rounded-full bg-white/80 dark:bg-white/[.06] backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 dark:border-white/[.08] px-3 py-1.5">
                   <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-[9.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{m.timeLabel}</span>
-                    <span className="text-[10.5px] font-mono font-semibold text-slate-900">{timeYear}</span>
+                    <span className="text-[9.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{m.timeLabel}</span>
+                    <span className="text-[10.5px] font-mono font-semibold text-slate-900 dark:text-slate-100">{timeYear}</span>
                   </div>
                   <input
                     type="range" min="2024" max="2026" step="1" value={timeYear}
@@ -175,12 +178,12 @@ function ImpactMap({ t }) {
               {/* Nearest pilot pill */}
               {nearest && (
                 <div className="absolute bottom-3 right-3 z-10">
-                  <button onClick={() => selectCity(nearest)} className="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 px-3 py-1.5 text-[11.5px] text-slate-700 hover:bg-white transition">
+                  <button onClick={() => selectCity(nearest)} className="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur-md ring-1 ring-slate-900/[.06] border border-white/70 dark:border-white/[.08] px-3 py-1.5 text-[11.5px] text-slate-700 dark:text-slate-300 hover:bg-white transition">
                     <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-white text-[10px]" style={{ background: "linear-gradient(135deg,#0EA5E9,#10B981)" }}>
                       <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="6" cy="5" r="2" /><path d="M6 1v2M2 5h2M10 5h-2M6 9v2M2 11l4-3 4 3" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </span>
-                    <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{m.nearestLabel}:</span>
-                    <span className="font-semibold text-slate-900">{nearest.name}</span>
+                    <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{m.nearestLabel}:</span>
+                    <span className="font-semibold text-slate-900 dark:text-slate-100">{nearest.name}</span>
                     <span className="text-slate-400 font-mono">{nearest.country}</span>
                   </button>
                 </div>
@@ -188,7 +191,7 @@ function ImpactMap({ t }) {
             </div>
 
             {/* Side panel */}
-            <aside className="border-t lg:border-t-0 lg:border-l border-slate-900/[.05] bg-white/40 backdrop-blur-md">
+            <aside className="border-t lg:border-t-0 lg:border-l border-slate-900/[.05] dark:border-white/[.06] bg-white/40 backdrop-blur-md">
               {selected ? (
                 <CityDetail city={selected} m={m} onClose={() => setSelected(null)} />
               ) : (
@@ -219,7 +222,7 @@ function StatPill({ label, value, accent, live }) {
           live
         </span>
       )}
-      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500">{label}</div>
+      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400">{label}</div>
       <div className="mt-1 font-display text-[24px] tracking-tight" style={{ color: accent }}>
         {live ? value : <AnimatedNumber value={value} play={seen} />}
       </div>
@@ -239,14 +242,14 @@ function HoverCard({ city, pos, m }) {
       <div className="rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border border-white/60 ring-1 ring-slate-900/[.06] px-3.5 py-3 shadow-[0_18px_50px_-20px_rgba(15,23,42,.35)]">
         <div className="flex items-center gap-2 mb-1">
           <span className={`h-1.5 w-1.5 rounded-full ${city.capital ? "bg-slate-400" : city.partner ? "bg-cyan-500" : "bg-emerald-500"}`} />
-          <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{city.country}</span>
-          {city.capital && <span className="text-[9.5px] font-mono text-slate-500 ml-auto">{m.details.capital || "CAPITAL"}</span>}
+          <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{city.country}</span>
+          {city.capital && <span className="text-[9.5px] font-mono text-slate-500 dark:text-slate-400 ml-auto">{m.details.capital || "CAPITAL"}</span>}
           {!city.capital && city.partner && <span className="text-[9.5px] font-mono text-cyan-700 ml-auto">PARTNER</span>}
         </div>
-        <div className="font-display text-[16px] tracking-tight text-slate-900 leading-tight">{city.name}</div>
+        <div className="font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100 leading-tight">{city.name}</div>
         {!city.capital && (
-          <div className="mt-2 space-y-1 text-[11px] text-slate-600">
-            <div className="flex justify-between gap-3"><span>{m.details.users}</span><span className="font-mono text-slate-900">{city.users.toLocaleString()}</span></div>
+          <div className="mt-2 space-y-1 text-[11px] text-slate-600 dark:text-slate-400">
+            <div className="flex justify-between gap-3"><span>{m.details.users}</span><span className="font-mono text-slate-900 dark:text-slate-100">{city.users.toLocaleString()}</span></div>
             <div className="flex justify-between gap-3"><span>{m.details.co2}</span><span className="font-mono text-emerald-700">{city.co2} kg</span></div>
             <div className="flex justify-between gap-3"><span>{m.details.solar}</span><span className="font-mono text-amber-600">{city.solar}%</span></div>
           </div>
@@ -266,15 +269,15 @@ function LayerPanel({ layers, toggle, m, showTerminator, setShowTerminator }) {
   ];
   return (
     <div className="p-5">
-      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 mb-4">Veri katmanları</div>
+      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-4">Veri katmanları</div>
       <div className="space-y-1.5">
         {items.map(({ key, spec }) => (
           <LayerRow key={key} on={layers[key]} onToggle={() => toggle(key)} spec={spec} />
         ))}
         <LayerRow on={showTerminator} onToggle={() => setShowTerminator(!showTerminator)} spec={m.layers.terminator} />
       </div>
-      <div className="mt-6 pt-4 border-t border-slate-900/[.06] text-[11px] text-slate-500 leading-relaxed">
-        Bir nokta veya partner üzerine gel → detayları gör. <span className="font-medium text-slate-700">Tıkla</span> → şehir profilini sabit aç.
+      <div className="mt-6 pt-4 border-t border-slate-900/[.06] text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+        Bir nokta veya partner üzerine gel → detayları gör. <span className="font-medium text-slate-700 dark:text-slate-300">Tıkla</span> → şehir profilini sabit aç.
       </div>
     </div>
   );
@@ -285,16 +288,16 @@ function LayerRow({ on, onToggle, spec }) {
     <button
       type="button"
       onClick={onToggle}
-      className={`group w-full flex items-start gap-3 rounded-xl px-3 py-2.5 text-left transition border ${on ? "bg-white/80 border-slate-900/[.05]" : "bg-transparent border-transparent hover:bg-white/60"}`}
+      className={`group w-full flex items-start gap-3 rounded-xl px-3 py-2.5 text-left transition border ${on ? "bg-white/80 dark:bg-white/[.06] border-slate-900/[.05] dark:border-white/[.06]" : "bg-transparent border-transparent hover:bg-white/60 dark:bg-white/[.04]"}`}
     >
       <span className="relative mt-0.5 h-4 w-7 rounded-full flex-none" style={{ backgroundColor: on ? `${spec.color}` : "rgba(15,23,42,.12)" }}>
         <span className="absolute top-0.5 h-3 w-3 rounded-full bg-white shadow-sm transition-all" style={{ left: on ? 14 : 2 }} />
       </span>
       <span className="flex-1 min-w-0">
-        <span className="flex items-center gap-2 text-[13px] font-medium text-slate-900">
+        <span className="flex items-center gap-2 text-[13px] font-medium text-slate-900 dark:text-slate-100">
           {spec.label}
         </span>
-        <span className="block text-[11px] text-slate-500 mt-0.5 leading-snug">{spec.desc}</span>
+        <span className="block text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{spec.desc}</span>
       </span>
     </button>
   );
@@ -306,14 +309,14 @@ function CityDetail({ city, m, onClose }) {
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-2">
           <span className={`h-2 w-2 rounded-full ${city.partner ? "bg-cyan-500" : "bg-emerald-500"}`} />
-          <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{city.country}</span>
+          <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{city.country}</span>
         </div>
-        <button onClick={onClose} className="h-7 w-7 rounded-full grid place-items-center text-slate-500 hover:bg-slate-900/[.05]">
+        <button onClick={onClose} className="h-7 w-7 rounded-full grid place-items-center text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.05]">
           <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 4l6 6M10 4l-6 6" strokeLinecap="round" /></svg>
         </button>
       </div>
 
-      <h3 className="font-display text-[28px] leading-tight tracking-tight text-slate-900">{city.name}</h3>
+      <h3 className="font-display text-[28px] leading-tight tracking-tight text-slate-900 dark:text-slate-100">{city.name}</h3>
 
       {city.partner && (
         <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-cyan-50 text-cyan-700 ring-1 ring-cyan-500/15 px-2 py-0.5 text-[10.5px] font-semibold">
@@ -330,7 +333,7 @@ function CityDetail({ city, m, onClose }) {
 
       {/* Mini progress chart of solar share */}
       <div className="mt-5">
-        <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold mb-2">Renewable mix</div>
+        <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold mb-2">Renewable mix</div>
         <div className="space-y-2 text-[11.5px]">
           {[
             { label: "Solar", v: city.solar, color: "#F59E0B" },
@@ -338,9 +341,9 @@ function CityDetail({ city, m, onClose }) {
             { label: "Grid", v: 40, color: "#94A3B8" },
           ].map((b, i) => (
             <div key={i}>
-              <div className="flex justify-between text-slate-600 mb-1">
+              <div className="flex justify-between text-slate-600 dark:text-slate-400 mb-1">
                 <span>{b.label}</span>
-                <span className="font-mono text-slate-900">{b.v}%</span>
+                <span className="font-mono text-slate-900 dark:text-slate-100">{b.v}%</span>
               </div>
               <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: `${b.v}%`, background: b.color }} />
@@ -361,8 +364,8 @@ function CityDetail({ city, m, onClose }) {
 
 function DetailStat({ label, value, accent }) {
   return (
-    <div className="rounded-xl bg-white/80 border border-slate-900/[.05] p-3">
-      <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold">{label}</div>
+    <div className="rounded-xl bg-white/80 dark:bg-white/[.06] border border-slate-900/[.05] dark:border-white/[.06] p-3">
+      <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{label}</div>
       <div className="mt-1 font-display text-[18px] tracking-tight" style={{ color: accent }}>{value}</div>
     </div>
   );

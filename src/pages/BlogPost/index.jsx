@@ -36,15 +36,15 @@ export default function BlogPostPage() {
   return (
     <article className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Link to="/blog" className="inline-flex items-center gap-2 text-[12.5px] font-medium text-slate-500 hover:text-slate-900 transition">
+        <Link to="/blog" className="inline-flex items-center gap-2 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition">
           ← {tr ? 'Tüm yazılar' : 'All posts'}
         </Link>
         <div className="mt-6 flex items-center gap-3 text-[11px]">
           <Tag color="emerald">{post.tag[lang]}</Tag>
-          <time className="text-slate-500 font-mono">{post.date}</time>
+          <time className="text-slate-500 dark:text-slate-400 font-mono">{post.date}</time>
           <span className="text-slate-400 font-mono">· {readingTime(post, lang)} {t.blog.readMin}</span>
         </div>
-        <h1 className="mt-4 font-display text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.06] tracking-[-0.02em] text-slate-900">
+        <h1 className="mt-4 font-display text-[clamp(2rem,4.4vw,3.2rem)] leading-[1.06] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
           {post.title[lang]}
         </h1>
 
@@ -52,31 +52,31 @@ export default function BlogPostPage() {
 
         <div className="mt-8 space-y-5">
           {post.body[lang].map((para, i) => (
-            <p key={i} className="text-[15.5px] text-slate-700 leading-[1.75]">
+            <p key={i} className="text-[15.5px] text-slate-700 dark:text-slate-300 leading-[1.75]">
               {para}
             </p>
           ))}
         </div>
 
         {(prev || next) && (
-          <nav className="mt-14 pt-8 border-t border-slate-900/[.08] flex items-stretch gap-3" aria-label={tr ? 'Yazı gezinmesi' : 'Post navigation'}>
+          <nav className="mt-14 pt-8 border-t border-slate-900/[.08] dark:border-white/[.1] flex items-stretch gap-3" aria-label={tr ? 'Yazı gezinmesi' : 'Post navigation'}>
             {prev ? (
-              <Link to={`/blog/${prev.slug}`} className="group flex-1 rounded-2xl border border-white/70 bg-white/70 ring-1 ring-slate-900/[.05] p-4 hover:ring-cyan-500/30 transition">
-                <span className="text-[11px] text-slate-500">← {t.blog.prevPost}</span>
-                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">{prev.title[lang]}</span>
+              <Link to={`/blog/${prev.slug}`} className="group flex-1 rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-4 hover:ring-cyan-500/30 transition">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">← {t.blog.prevPost}</span>
+                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 transition">{prev.title[lang]}</span>
               </Link>
             ) : <span className="flex-1" />}
             {next ? (
-              <Link to={`/blog/${next.slug}`} className="group flex-1 rounded-2xl border border-white/70 bg-white/70 ring-1 ring-slate-900/[.05] p-4 text-right hover:ring-cyan-500/30 transition">
-                <span className="text-[11px] text-slate-500">{t.blog.nextPost} →</span>
-                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">{next.title[lang]}</span>
+              <Link to={`/blog/${next.slug}`} className="group flex-1 rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-4 text-right hover:ring-cyan-500/30 transition">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">{t.blog.nextPost} →</span>
+                <span className="mt-1 block font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 transition">{next.title[lang]}</span>
               </Link>
             ) : <span className="flex-1" />}
           </nav>
         )}
 
         {related.length > 0 && (
-          <aside className="mt-16 pt-8 border-t border-slate-900/[.08]">
+          <aside className="mt-16 pt-8 border-t border-slate-900/[.08] dark:border-white/[.1]">
             <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-4">
               {t.blog.related}
             </h2>
@@ -85,15 +85,15 @@ export default function BlogPostPage() {
                 <Link
                   key={r.slug}
                   to={`/blog/${r.slug}`}
-                  className="group block rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl ring-1 ring-slate-900/[.05] p-5 hover:ring-cyan-500/30 transition"
+                  className="group block rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-5 hover:ring-cyan-500/30 transition"
                 >
                   <div className="flex items-center gap-2 text-[11px]">
                     <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/15 px-2 py-0.5 font-semibold">
                       {r.tag[lang]}
                     </span>
-                    <time className="text-slate-500 font-mono">{r.date}</time>
+                    <time className="text-slate-500 dark:text-slate-400 font-mono">{r.date}</time>
                   </div>
-                  <h3 className="mt-2 font-display text-[16px] tracking-tight text-slate-900 leading-snug group-hover:text-cyan-700 transition">
+                  <h3 className="mt-2 font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 transition">
                     {r.title[lang]}
                   </h3>
                 </Link>
@@ -122,7 +122,7 @@ function ShareBar({ post, lang, t }) {
   };
 
   const iconBtn =
-    'inline-flex items-center justify-center h-8 w-8 rounded-full bg-white/70 ring-1 ring-slate-900/[.08] text-slate-600 hover:text-slate-900 hover:ring-cyan-500/30 transition';
+    'inline-flex items-center justify-center h-8 w-8 rounded-full bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:ring-cyan-500/30 transition';
 
   return (
     <div className="mt-5 flex items-center gap-2">
@@ -137,7 +137,7 @@ function ShareBar({ post, lang, t }) {
         type="button"
         onClick={copy}
         aria-label={t.blog.copyLink}
-        className="inline-flex items-center gap-1.5 rounded-full bg-white/70 ring-1 ring-slate-900/[.08] px-3 h-8 text-[12px] text-slate-600 hover:text-slate-900 hover:ring-cyan-500/30 transition"
+        className="inline-flex items-center gap-1.5 rounded-full bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] px-3 h-8 text-[12px] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:ring-cyan-500/30 transition"
       >
         {copied ? (
           <>

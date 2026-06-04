@@ -39,7 +39,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
           <div className="relative">
             <Tag color="emerald">{t.hero.tag}</Tag>
 
-            <h1 className="mt-6 font-display text-[clamp(2.4rem,5.4vw,4.4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900">
+            <h1 className="mt-6 font-display text-[clamp(2.4rem,5.4vw,4.4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
               <span className="block">{t.hero.title1}</span>
               <span className="block">
                 <span
@@ -49,10 +49,10 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                   {t.hero.title2}
                 </span>
               </span>
-              <span className="block text-slate-900/90">{t.hero.title3}</span>
+              <span className="block text-slate-900/90 dark:text-slate-100/90">{t.hero.title3}</span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.65] text-slate-600">
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.65] text-slate-600 dark:text-slate-400">
               {t.hero.sub}
             </p>
 
@@ -65,7 +65,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                 {t.hero.primary}
                 <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
               </Link>
-              <button onClick={() => setVideoOpen(true)} className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-slate-800 bg-white/70 backdrop-blur-md border border-white/70 ring-1 ring-slate-900/[.06] hover:bg-white transition">
+              <button onClick={() => setVideoOpen(true)} className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-slate-800 dark:text-slate-200 bg-white/70 dark:bg-white/[.06] backdrop-blur-md border border-white/70 dark:border-white/[.1] ring-1 ring-slate-900/[.06] dark:ring-white/[.06] hover:bg-white dark:hover:bg-white/[.1] transition">
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white">
                   <svg className="h-2.5 w-2.5 translate-x-[.5px]" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0v8l7-4z" /></svg>
                 </span>
@@ -74,7 +74,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
             </div>
 
             {/* Live AI suggestion */}
-            <div className="mt-10 max-w-md rounded-2xl border border-white/70 bg-white/60 backdrop-blur-xl p-3.5 pr-4 ring-1 ring-slate-900/[.04] shadow-[0_18px_60px_-30px_rgba(15,23,42,.25)]">
+            <div className="mt-10 max-w-md rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl p-3.5 pr-4 ring-1 ring-slate-900/[.04] dark:ring-white/[.06] shadow-[0_18px_60px_-30px_rgba(15,23,42,.25)]">
               <div className="flex items-center gap-3">
                 <div className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 text-white shadow-inner">
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" strokeLinecap="round" /></svg>
@@ -85,7 +85,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                     <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{t.hero.live}</div>
                     <div className="text-[10px] text-emerald-700 font-mono">●  LIVE</div>
                   </div>
-                  <div className="mt-1 text-[13px] text-slate-800 leading-snug min-h-[2.6em]">
+                  <div className="mt-1 text-[13px] text-slate-800 dark:text-slate-200 leading-snug min-h-[2.6em]">
                     <Typewriter key={liveIdx} text={t.hero.liveItems[liveIdx]} />
                   </div>
                 </div>
@@ -112,16 +112,16 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
 
               {/* Floating annotation chips */}
               <FloatChip className="top-[14%] right-[6%]" delay="0s" color="cyan">
-                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold">AI node</div>
-                <div className="text-[12px] text-slate-800">İstanbul · 0.4W</div>
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">AI node</div>
+                <div className="text-[12px] text-slate-800 dark:text-slate-200">İstanbul · 0.4W</div>
               </FloatChip>
               <FloatChip className="bottom-[18%] left-[2%]" delay=".8s" color="emerald">
-                <div className="text-[10px] uppercase tracking-[.12em] text-emerald-700 font-semibold">CO₂ saved</div>
-                <div className="text-[12px] text-slate-800">+38 kg / hr</div>
+                <div className="text-[10px] uppercase tracking-[.12em] text-emerald-700 dark:text-emerald-400 font-semibold">CO₂ saved</div>
+                <div className="text-[12px] text-slate-800 dark:text-slate-200">+38 kg / hr</div>
               </FloatChip>
               <FloatChip className="bottom-[6%] right-[10%]" delay="1.6s" color="slate">
-                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 font-semibold">Wearables</div>
-                <div className="text-[12px] text-slate-800">8,431 online</div>
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">Wearables</div>
+                <div className="text-[12px] text-slate-800 dark:text-slate-200">8,431 online</div>
               </FloatChip>
             </div>
           </div>
@@ -152,7 +152,7 @@ function FloatChip({ className, delay, color, children }) {
   const ring = color === "cyan" ? "ring-cyan-500/20" : color === "emerald" ? "ring-emerald-500/20" : "ring-slate-900/10";
   return (
     <div
-      className={`absolute ${className} rounded-2xl border border-white/70 bg-white/70 backdrop-blur-xl px-3 py-2 ring-1 ${ring} shadow-[0_10px_30px_-15px_rgba(15,23,42,.3)] animate-[float_6s_ease-in-out_infinite]`}
+      className={`absolute ${className} rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl px-3 py-2 ring-1 ${ring} shadow-[0_10px_30px_-15px_rgba(15,23,42,.3)] animate-[float_6s_ease-in-out_infinite]`}
       style={{ animationDelay: delay }}
     >
       {children}

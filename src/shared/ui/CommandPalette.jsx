@@ -95,16 +95,16 @@ export default function CommandPalette() {
 
   return (
     <div className="fixed inset-0 z-[120] flex items-start justify-center p-4 pt-[12vh]">
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" aria-hidden="true" onClick={close} />
+      <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm" aria-hidden="true" onClick={close} />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label={t.cmd.placeholder}
         onKeyDown={onListKey}
-        className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/70 bg-white shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] animate-[fadeUp_.2s_ease-out]"
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/70 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] animate-[fadeUp_.2s_ease-out]"
       >
-        <div className="flex items-center gap-3 border-b border-slate-900/[.07] px-4">
+        <div className="flex items-center gap-3 border-b border-slate-900/[.07] dark:border-white/[.08] px-4">
           <svg className="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
             <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
           </svg>
@@ -118,7 +118,7 @@ export default function CommandPalette() {
             value={query}
             onChange={(e) => { setQuery(e.target.value); setActive(0); }}
             placeholder={t.cmd.placeholder}
-            className="w-full bg-transparent py-3.5 text-[14px] text-slate-800 outline-none placeholder:text-slate-400"
+            className="w-full bg-transparent py-3.5 text-[14px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
           />
         </div>
 
@@ -135,7 +135,7 @@ export default function CommandPalette() {
               onClick={() => run(item)}
               onMouseEnter={() => setActive(i)}
               className={`mx-1.5 flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] ${
-                i === active ? 'bg-slate-900 text-white' : 'text-slate-700'
+                i === active ? 'bg-slate-900 dark:bg-white/[.12] text-white' : 'text-slate-700 dark:text-slate-300'
               }`}
             >
               <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
@@ -152,7 +152,7 @@ export default function CommandPalette() {
           ))}
         </ul>
 
-        <div className="border-t border-slate-900/[.07] px-4 py-2 text-[11px] text-slate-400">{t.cmd.hint}</div>
+        <div className="border-t border-slate-900/[.07] dark:border-white/[.08] px-4 py-2 text-[11px] text-slate-400 dark:text-slate-500">{t.cmd.hint}</div>
       </div>
     </div>
   );

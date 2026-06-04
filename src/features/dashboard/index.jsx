@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, EcoLogo } from '@/shared/ui/primitives';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
+import { Reveal } from '@/shared/ui/useReveal';
 
 function DashboardPreview({ t, lang }) {
   const [tab, setTab] = useState(0);
@@ -61,19 +62,21 @@ function DashboardPreview({ t, lang }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
           <div className="max-w-2xl">
+            <Reveal>
             <Tag color="cyan">// 05 · {t.dash.eyebrow}</Tag>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900">
+            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
               {t.dash.title}{" "}
               <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}>
                 {t.dash.titleAccent}
               </span>
             </h2>
-            <p className="mt-3 text-[14.5px] text-slate-600 max-w-lg leading-relaxed">{t.dash.sub}</p>
+            <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">{t.dash.sub}</p>
+            </Reveal>
           </div>
         </div>
 
         {/* Browser-frame style dashboard */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
+        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
           {/* Window chrome */}
           <div className="flex items-center gap-3 px-4 py-2.5 border-b border-slate-900/[.06] bg-gradient-to-b from-white/80 to-white/40">
             <div className="flex gap-1.5">
@@ -82,27 +85,27 @@ function DashboardPreview({ t, lang }) {
               <span className="h-3 w-3 rounded-full bg-[#28C840] hover:brightness-90" />
             </div>
             <div className="flex items-center gap-1 ml-2">
-              <button className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700">
+              <button className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700 dark:hover:text-slate-300">
                 <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 4L5 7l4 3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
-              <button className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700">
+              <button className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700 dark:hover:text-slate-300">
                 <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 4l4 3-4 3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
-              <button onClick={() => setTick((t) => t + 1)} className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700">
+              <button onClick={() => setTick((t) => t + 1)} className="h-6 w-6 rounded-md grid place-items-center text-slate-400 hover:bg-slate-900/[.05] hover:text-slate-700 dark:hover:text-slate-300">
                 <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7a4 4 0 0 1 7-2.5M11 7a4 4 0 0 1-7 2.5M3 4v2.5h2.5M11 9.5V7H8.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
             </div>
             <div className="flex-1 flex justify-center">
-              <div className="inline-flex items-center gap-2 rounded-md bg-white/70 px-3 py-1 text-[11px] text-slate-600 ring-1 ring-slate-900/[.06] min-w-[280px] justify-center">
+              <div className="inline-flex items-center gap-2 rounded-md bg-white/70 dark:bg-white/[.04] px-3 py-1 text-[11px] text-slate-600 dark:text-slate-400 ring-1 ring-slate-900/[.06] min-w-[280px] justify-center">
                 <svg viewBox="0 0 16 16" className="h-3 w-3 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7V5a3 3 0 0 0-6 0v2M4 7h8v6H4z" /></svg>
                 <span className="text-slate-400">app.ecozyon.tech</span>
-                <span className="text-slate-900">/dashboard</span>
+                <span className="text-slate-900 dark:text-slate-100">/dashboard</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setLive((v) => !v)}
-                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold transition ${live ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20" : "bg-slate-900/[.05] text-slate-500 hover:text-slate-700"}`}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-semibold transition ${live ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20" : "bg-slate-900/[.05] text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"}`}
                 title="Toggle live data"
               >
                 <span className={`h-1.5 w-1.5 rounded-full ${live ? "bg-emerald-500 animate-pulse" : "bg-slate-400"}`} />
@@ -135,7 +138,7 @@ function DashboardPreview({ t, lang }) {
                     className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[12.5px] text-left ${
                       it.v && it.v === view
                         ? "bg-slate-900 text-white"
-                        : "text-slate-600 hover:bg-slate-900/[.04]"
+                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-900/[.04] dark:hover:bg-white/[.06]"
                     }`}
                   >
                     <SidebarIcon name={it.i} />
@@ -147,9 +150,9 @@ function DashboardPreview({ t, lang }) {
                 ))}
               </div>
               <div className="mt-6 pt-5 border-t border-slate-900/[.06]">
-                <div className="text-[10px] uppercase tracking-[.14em] text-slate-500 font-semibold px-2 mb-2">Workspace</div>
+                <div className="text-[10px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold px-2 mb-2">Workspace</div>
                 {["Personal", "Atlas Bank", "Helios Energy"].map((w, i) => (
-                  <a key={i} href="#" className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] ${i === 0 ? "text-slate-900 font-medium" : "text-slate-500 hover:bg-slate-900/[.04]"}`}>
+                  <a key={i} href="#" className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[12px] ${i === 0 ? "text-slate-900 dark:text-slate-100 font-medium" : "text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.04] dark:hover:bg-white/[.06]"}`}>
                     <span className={`h-1.5 w-1.5 rounded-full ${i === 0 ? "bg-emerald-500" : "bg-slate-300"}`} />
                     {w}
                   </a>
@@ -162,19 +165,19 @@ function DashboardPreview({ t, lang }) {
               {/* Tabs + greeting */}
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-5">
                 <div>
-                  <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{t.dash.budgetSub}</div>
-                  <div className="font-display text-[22px] tracking-tight text-slate-900">
+                  <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{t.dash.budgetSub}</div>
+                  <div className="font-display text-[22px] tracking-tight text-slate-900 dark:text-slate-100">
                     {view === "overview" && (lang === "tr" ? "Günaydın Emre 👋" : "Good morning, Emre 👋")}
                     {view === "devices" && (lang === "tr" ? "Bağlı cihazlar" : "Connected devices")}
                     {view === "insights" && (lang === "tr" ? "Bu haftanın içgörüleri" : "This week's insights")}
                   </div>
                 </div>
-                <div className="inline-flex rounded-full bg-slate-900/[.05] p-1 text-[11.5px] font-medium text-slate-600 self-start">
+                <div className="inline-flex rounded-full bg-slate-900/[.05] p-1 text-[11.5px] font-medium text-slate-600 dark:text-slate-400 self-start">
                   {t.dash.tabs.map((lab, i) => (
                     <button
                       key={i}
                       onClick={() => setTab(i)}
-                      className={`px-3.5 py-1.5 rounded-full transition ${tab === i ? "bg-white text-slate-900 shadow-sm" : "hover:text-slate-900"}`}
+                      className={`px-3.5 py-1.5 rounded-full transition ${tab === i ? "bg-white text-slate-900 dark:text-slate-100 shadow-sm" : "hover:text-slate-900 dark:hover:text-slate-100"}`}
                     >
                       {lab}
                     </button>
@@ -203,14 +206,14 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
   return (
     <div className="grid grid-cols-12 gap-3">
                 {/* Carbon budget — radial gauge */}
-                <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] p-5">
+                <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{t.dash.budgetTitle}</div>
-                      <div className="mt-1 font-display text-[34px] leading-none tracking-tight text-slate-900">
+                      <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{t.dash.budgetTitle}</div>
+                      <div className="mt-1 font-display text-[34px] leading-none tracking-tight text-slate-900 dark:text-slate-100">
                         <span className={live ? "transition-all duration-500" : ""}>{liveUsed}</span><span className="text-slate-400 text-[18px] ml-0.5">/{d.budget.total}</span>
                       </div>
-                      <div className="text-[12px] text-slate-500 mt-1">{d.budget.unit}</div>
+                      <div className="text-[12px] text-slate-500 dark:text-slate-400 mt-1">{d.budget.unit}</div>
                     </div>
                     <div className="rounded-full bg-emerald-50 text-emerald-700 text-[10.5px] font-semibold px-2 py-1 ring-1 ring-emerald-500/15">
                       {d.delta}
@@ -220,23 +223,23 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
                   <div className="mt-4 flex items-center gap-5">
                     <RadialGauge pct={livePct} />
                     <div className="space-y-2 text-[12px] flex-1">
-                      <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-500" /><span className="text-slate-700">{livePct}% {t.dash.used}</span></div>
-                      <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-slate-200" /><span className="text-slate-700">{100 - livePct}% {t.dash.remaining}</span></div>
-                      <div className="pt-1 mt-1 border-t border-slate-100 text-[11px] text-slate-500">AI: bisikletle gidersen %12 daha az</div>
+                      <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-500" /><span className="text-slate-700 dark:text-slate-300">{livePct}% {t.dash.used}</span></div>
+                      <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-slate-200" /><span className="text-slate-700 dark:text-slate-300">{100 - livePct}% {t.dash.remaining}</span></div>
+                      <div className="pt-1 mt-1 border-t border-slate-100 text-[11px] text-slate-500 dark:text-slate-400">AI: bisikletle gidersen %12 daha az</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Weekly bars */}
-                <div className="col-span-12 lg:col-span-7 rounded-2xl bg-white border border-slate-900/[.05] p-5">
+                <div className="col-span-12 lg:col-span-7 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{t.dash.weekTitle}</div>
-                      <div className="mt-1 font-display text-[20px] tracking-tight text-slate-900">{t.dash.weekSub}</div>
+                      <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{t.dash.weekTitle}</div>
+                      <div className="mt-1 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">{t.dash.weekSub}</div>
                     </div>
                     <div className="flex items-center gap-3 text-[11px]">
-                      <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-2 w-2 rounded-full bg-cyan-500" />Actual</span>
-                      <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-0.5 w-3 rounded bg-emerald-500" />Target</span>
+                      <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-2 w-2 rounded-full bg-cyan-500" />Actual</span>
+                      <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-0.5 w-3 rounded bg-emerald-500" />Target</span>
                     </div>
                   </div>
 
@@ -244,8 +247,8 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
                 </div>
 
                 {/* Category donut */}
-                <div className="col-span-12 md:col-span-6 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] p-5">
-                  <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{t.dash.catTitle}</div>
+                <div className="col-span-12 md:col-span-6 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
+                  <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{t.dash.catTitle}</div>
                   <div className="mt-3 flex items-center gap-5">
                     <Donut values={d.cats} hover={donutHover} setHover={setDonutHover} />
                     <ul className="flex-1 space-y-2 text-[12.5px]">
@@ -259,8 +262,8 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
                             onMouseLeave={() => setDonutHover(null)}
                             className={`flex items-center justify-between px-1.5 py-1 rounded-md cursor-default transition ${isHov ? "bg-slate-50" : ""}`}
                           >
-                            <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: colors[i] }} /><span className="text-slate-700">{c}</span></span>
-                            <span className="font-mono text-slate-900 font-medium">{d.cats[i]}%</span>
+                            <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: colors[i] }} /><span className="text-slate-700 dark:text-slate-300">{c}</span></span>
+                            <span className="font-mono text-slate-900 dark:text-slate-100 font-medium">{d.cats[i]}%</span>
                           </li>
                         );
                       })}
@@ -280,21 +283,21 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
                         <div className="text-[11px] uppercase tracking-[.14em] text-emerald-700 font-semibold">{t.dash.insight}</div>
                         <span className="text-[10px] text-emerald-700 font-mono">●  LIVE</span>
                       </div>
-                      <p className="mt-1.5 text-[13.5px] text-slate-800 leading-snug">{t.dash.insightText}</p>
+                      <p className="mt-1.5 text-[13.5px] text-slate-800 dark:text-slate-200 leading-snug">{t.dash.insightText}</p>
                       <div className="mt-3 flex items-center gap-2">
                         <button className="rounded-full bg-slate-900 text-white text-[11.5px] font-medium px-3 py-1.5 hover:bg-slate-800">Apply suggestion</button>
-                        <button className="rounded-full bg-white text-slate-700 text-[11.5px] font-medium px-3 py-1.5 border border-slate-900/[.08]">Show similar</button>
+                        <button className="rounded-full bg-white text-slate-700 dark:text-slate-300 text-[11.5px] font-medium px-3 py-1.5 border border-slate-900/[.08] dark:border-white/[.1]">Show similar</button>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="font-display text-[28px] leading-none tracking-tight text-emerald-600">{d.headline}</div>
-                      <div className="text-[10.5px] text-slate-500">/ {tab === 0 ? "week" : tab === 1 ? "week" : "month"}</div>
+                      <div className="text-[10.5px] text-slate-500 dark:text-slate-400">/ {tab === 0 ? "week" : tab === 1 ? "week" : "month"}</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Sparklines row */}
-                <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] p-5">
+                <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
                     {[
                       { label: "Transport CO₂", val: d.line, color: "#0EA5E9", series: [12, 14, 11, 9, 10, 8.4, 7.8] },
@@ -305,8 +308,8 @@ function DashOverview({ t, d, dayLabels, weekHover, setWeekHover, donutHover, se
                       <div key={i} className="flex items-center gap-3">
                         <Sparkline data={s.series} color={s.color} />
                         <div>
-                          <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{s.label}</div>
-                          <div className="font-display text-[16px] text-slate-900 tracking-tight">{s.val}</div>
+                          <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{s.label}</div>
+                          <div className="font-display text-[16px] text-slate-900 dark:text-slate-100 tracking-tight">{s.val}</div>
                         </div>
                       </div>
                     ))}
@@ -337,31 +340,31 @@ function DashDevices({ t, lang, tab }) {
     <div className="grid grid-cols-12 gap-3">
       <div className="col-span-12 grid grid-cols-2 sm:grid-cols-4 gap-3">
         {stats.map((s, i) => (
-          <div key={i} className="rounded-2xl bg-white border border-slate-900/[.05] p-4">
+          <div key={i} className="rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-4">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: s.color }} />
-              <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{s.label}</span>
+              <span className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{s.label}</span>
             </div>
-            <div className="mt-2 font-display text-[26px] tracking-tight text-slate-900 leading-none">{s.val}</div>
+            <div className="mt-2 font-display text-[26px] tracking-tight text-slate-900 dark:text-slate-100 leading-none">{s.val}</div>
           </div>
         ))}
       </div>
 
-      <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-900/[.05]">
-          <div className="text-[12px] font-semibold text-slate-700">{lang === "tr" ? "Son senkronizasyon" : "Recent sync"}</div>
-          <div className="text-[11px] text-slate-500 font-mono">{devices.length} {lang === "tr" ? "satır" : "rows"}</div>
+      <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-900/[.05] dark:border-white/[.06]">
+          <div className="text-[12px] font-semibold text-slate-700 dark:text-slate-300">{lang === "tr" ? "Son senkronizasyon" : "Recent sync"}</div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">{devices.length} {lang === "tr" ? "satır" : "rows"}</div>
         </div>
         <div className="divide-y divide-slate-900/[.04]">
           {devices.map((dv, i) => (
             <div key={i} className="grid grid-cols-12 items-center px-5 py-3.5 text-[12.5px] hover:bg-slate-50/40">
               <div className="col-span-5 flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-cyan-500/15 to-emerald-500/15 ring-1 ring-slate-900/[.05] grid place-items-center">
-                  <svg viewBox="0 0 20 20" className="h-4 w-4 text-slate-700" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="6" y="3" width="8" height="14" rx="2.5"/><path d="M8 6h4M8 14h4"/></svg>
+                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-cyan-500/15 to-emerald-500/15 ring-1 ring-slate-900/[.05] dark:ring-white/[.06] grid place-items-center">
+                  <svg viewBox="0 0 20 20" className="h-4 w-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="6" y="3" width="8" height="14" rx="2.5"/><path d="M8 6h4M8 14h4"/></svg>
                 </div>
                 <div>
-                  <div className="font-medium text-slate-900">{dv.name}</div>
-                  <div className="text-[11px] text-slate-500 font-mono">{dv.id} · {dv.user}</div>
+                  <div className="font-medium text-slate-900 dark:text-slate-100">{dv.name}</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">{dv.id} · {dv.user}</div>
                 </div>
               </div>
               <div className="col-span-3 hidden sm:block">
@@ -372,16 +375,16 @@ function DashDevices({ t, lang, tab }) {
                       background: dv.battery > 50 ? "#10B981" : dv.battery > 20 ? "#F59E0B" : "#E11D48",
                     }} />
                   </div>
-                  <span className="text-slate-700 font-mono tabular-nums text-[11.5px]">{dv.battery}%</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-mono tabular-nums text-[11.5px]">{dv.battery}%</span>
                 </div>
               </div>
-              <div className="col-span-2 hidden md:block text-slate-500">{dv.sync}</div>
+              <div className="col-span-2 hidden md:block text-slate-500 dark:text-slate-400">{dv.sync}</div>
               <div className="col-span-1 hidden md:block text-emerald-700 font-medium text-right">{dv.co2}</div>
               <div className="col-span-7 sm:col-span-4 md:col-span-1 text-right">
                 <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ${
                   dv.status === "online" ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/15"
                   : dv.status === "low"  ? "bg-amber-50 text-amber-700 ring-1 ring-amber-500/20"
-                  : "bg-slate-100 text-slate-600 ring-1 ring-slate-900/10"
+                  : "bg-slate-100 text-slate-600 dark:text-slate-400 ring-1 ring-slate-900/10"
                 }`}>
                   <span className="h-1 w-1 rounded-full bg-current" />
                   {dv.status}
@@ -392,12 +395,12 @@ function DashDevices({ t, lang, tab }) {
         </div>
       </div>
 
-      <div className="col-span-12 lg:col-span-7 rounded-2xl bg-white border border-slate-900/[.05] p-5">
+      <div className="col-span-12 lg:col-span-7 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
         <div className="flex items-center justify-between">
-          <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{lang === "tr" ? "Filo dağılımı" : "Fleet distribution"}</div>
+          <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "Filo dağılımı" : "Fleet distribution"}</div>
           <div className="flex items-center gap-2 text-[10.5px]">
-            <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{lang === "tr" ? "Aktif" : "Active"}</span>
-            <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />{lang === "tr" ? "Partner" : "Partner"}</span>
+            <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{lang === "tr" ? "Aktif" : "Active"}</span>
+            <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />{lang === "tr" ? "Partner" : "Partner"}</span>
           </div>
         </div>
         <div className="mt-3 relative h-60 rounded-xl overflow-hidden bg-gradient-to-br from-slate-50 to-emerald-50/30">
@@ -419,14 +422,14 @@ function DashDevices({ t, lang, tab }) {
             <div className="grid place-items-center h-full text-slate-400 text-[12px]">Loading globe…</div>
           )}
           {/* Caption */}
-          <div className="absolute bottom-2 right-3 text-[10px] text-slate-500 font-mono bg-white/70 backdrop-blur px-2 py-0.5 rounded ring-1 ring-slate-900/[.05]">
+          <div className="absolute bottom-2 right-3 text-[10px] text-slate-500 dark:text-slate-400 font-mono bg-white/70 dark:bg-white/[.04] backdrop-blur px-2 py-0.5 rounded ring-1 ring-slate-900/[.05] dark:ring-white/[.06]">
             {lang === "tr" ? "43 şehir · 3 kıta" : "43 cities · 3 continents"}
           </div>
         </div>
       </div>
 
-      <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] p-5">
-        <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{lang === "tr" ? "Donanım sağlığı" : "Fleet health"}</div>
+      <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
+        <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "Donanım sağlığı" : "Fleet health"}</div>
         <div className="mt-3 space-y-3">
           {[
             { label: lang === "tr" ? "Firmware uptime"     : "Firmware uptime",     val: 99.4, color: "#10B981" },
@@ -436,8 +439,8 @@ function DashDevices({ t, lang, tab }) {
           ].map((it, i) => (
             <div key={i}>
               <div className="flex items-center justify-between text-[11.5px] mb-1">
-                <span className="text-slate-700">{it.label}</span>
-                <span className="font-mono text-slate-900">{it.val}%</span>
+                <span className="text-slate-700 dark:text-slate-300">{it.label}</span>
+                <span className="font-mono text-slate-900 dark:text-slate-100">{it.val}%</span>
               </div>
               <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div className="h-full rounded-full" style={{ width: `${it.val}%`, background: it.color }} />
@@ -466,15 +469,15 @@ function DashInsights({ lang }) {
 
   return (
     <div className="grid grid-cols-12 gap-3">
-      <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] p-5">
+      <div className="col-span-12 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
         <div className="flex items-start justify-between">
           <div>
-            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold">{lang === "tr" ? "30 günlük trend" : "30-day trend"}</div>
-            <div className="mt-1 font-display text-[20px] tracking-tight text-slate-900">{lang === "tr" ? "AI tahminine karşı gerçekleşen" : "AI forecast vs. actual"}</div>
+            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "30 günlük trend" : "30-day trend"}</div>
+            <div className="mt-1 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">{lang === "tr" ? "AI tahminine karşı gerçekleşen" : "AI forecast vs. actual"}</div>
           </div>
           <div className="flex items-center gap-3 text-[11px]">
-            <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-2 w-2 rounded-full bg-cyan-500" />{lang === "tr" ? "Tahmin" : "Forecast"}</span>
-            <span className="inline-flex items-center gap-1.5 text-slate-600"><span className="h-2 w-2 rounded-full bg-emerald-500" />{lang === "tr" ? "Gerçekleşen" : "Actual"}</span>
+            <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-2 w-2 rounded-full bg-cyan-500" />{lang === "tr" ? "Tahmin" : "Forecast"}</span>
+            <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400"><span className="h-2 w-2 rounded-full bg-emerald-500" />{lang === "tr" ? "Gerçekleşen" : "Actual"}</span>
           </div>
         </div>
         <TrendChart />
@@ -482,19 +485,19 @@ function DashInsights({ lang }) {
 
       <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-3">
         {insights.map((ins, i) => (
-          <div key={i} className="relative overflow-hidden rounded-2xl bg-white border border-slate-900/[.05] p-5">
+          <div key={i} className="relative overflow-hidden rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ring-1" style={{ color: ins.color, backgroundColor: `${ins.color}14`, borderColor: `${ins.color}30` }}>
                 <span className="h-1 w-1 rounded-full" style={{ backgroundColor: ins.color }} />
                 {ins.tag}
               </span>
-              <span className="text-[10.5px] text-slate-500 font-mono">{ins.confidence}% conf.</span>
+              <span className="text-[10.5px] text-slate-500 dark:text-slate-400 font-mono">{ins.confidence}% conf.</span>
             </div>
-            <h4 className="mt-3 font-display text-[17px] tracking-tight text-slate-900 leading-snug">{ins.title}</h4>
-            <p className="mt-1.5 text-[12.5px] text-slate-600 leading-relaxed">{ins.body}</p>
+            <h4 className="mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug">{ins.title}</h4>
+            <p className="mt-1.5 text-[12.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{ins.body}</p>
             <div className="mt-4 flex items-center justify-between">
               <div>
-                <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 font-semibold">{lang === "tr" ? "Tahmini tasarruf" : "Est. saving"}</div>
+                <div className="text-[10.5px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "Tahmini tasarruf" : "Est. saving"}</div>
                 <div className="font-display text-[18px] tracking-tight" style={{ color: ins.color }}>{ins.save}</div>
               </div>
               <button className="rounded-full bg-slate-900 text-white text-[11.5px] font-medium px-3 py-1.5 hover:bg-slate-800">{lang === "tr" ? "Uygula" : "Apply"}</button>
@@ -593,8 +596,8 @@ function WeeklyBars({ data, target, days, hover, setHover }) {
           );
         })}
       </svg>
-      <div className="absolute inset-x-0 -bottom-5 flex justify-around text-[10.5px] text-slate-500 font-mono">
-        {days.map((d, i) => <span key={i} className={hover === i ? "text-slate-900 font-semibold" : ""}>{d}</span>)}
+      <div className="absolute inset-x-0 -bottom-5 flex justify-around text-[10.5px] text-slate-500 dark:text-slate-400 font-mono">
+        {days.map((d, i) => <span key={i} className={hover === i ? "text-slate-900 dark:text-slate-100 font-semibold" : ""}>{d}</span>)}
       </div>
       {hover !== null && (
         <div className="absolute -top-2 left-0 right-0 flex justify-around pointer-events-none">

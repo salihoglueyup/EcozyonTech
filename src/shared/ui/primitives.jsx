@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 export function Tag({ children, color = "emerald" }) {
   const map = {
-    emerald: "bg-emerald-50/90 text-emerald-700 ring-emerald-600/15",
-    cyan: "bg-cyan-50/90 text-cyan-700 ring-cyan-600/15",
-    slate: "bg-white/80 text-slate-700 ring-slate-900/10",
+    emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",
+    cyan: "bg-cyan-50/90 dark:bg-cyan-500/[.12] text-cyan-700 dark:text-cyan-400 ring-cyan-600/15 dark:ring-cyan-400/20",
+    slate: "bg-white/80 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/10 dark:ring-white/10",
   };
   return (
     <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-medium ring-1 backdrop-blur ${map[color]}`}>
@@ -37,7 +37,7 @@ export function EcoLogo({ accent = "emerald", to = "/" }) {
   const c = accent === "cyan" ? "#0EA5E9" : "#10B981";
   return (
     <Link to={to} className="flex items-center gap-2.5 group">
-      <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-[10px] bg-slate-900 text-white shadow-sm overflow-hidden">
+      <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-[10px] bg-slate-900 dark:bg-slate-800 text-white shadow-sm overflow-hidden">
         <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden="true">
           <defs>
             <linearGradient id="ec-lg" x1="0" x2="1" y1="0" y2="1">
@@ -50,8 +50,8 @@ export function EcoLogo({ accent = "emerald", to = "/" }) {
           <circle cx="22" cy="11" r="1.6" fill="#10B981" />
         </svg>
       </span>
-      <span className="font-display text-[15px] tracking-tight text-slate-900">
-        Ecozyon<span className="text-slate-400 font-normal"> Tech</span>
+      <span className="font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">
+        Ecozyon<span className="text-slate-400 dark:text-slate-500 font-normal"> Tech</span>
       </span>
     </Link>
   );
