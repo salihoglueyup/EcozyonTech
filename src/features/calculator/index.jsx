@@ -24,7 +24,7 @@ export function Calculator({ t }) {
   const max = Math.max(est.total, 1);
 
   return (
-    <section className="relative py-20 lg:py-28">
+    <section id="calculator" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-3xl mb-8">
           <Reveal>
