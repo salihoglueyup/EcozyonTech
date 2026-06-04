@@ -18,6 +18,33 @@ export function Tag({ children, color = "emerald" }) {
   );
 }
 
+// Decorative open-quote glyph used by quote blocks (about bento, testimonials).
+// Color + size come from the caller via className (uses currentColor).
+export function QuoteMark({ className = "" }) {
+  return (
+    <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M12 8c-4 1-7 4-7 9v7h8v-8H8c0-3 1.5-5 4-6V8Zm14 0c-4 1-7 4-7 9v7h8v-8h-5c0-3 1.5-5 4-6V8Z"
+      />
+    </svg>
+  );
+}
+
+// Round avatar showing initials over a solid color or gradient. `background`
+// is any CSS background value; size/font/ring/shadow come via className, and
+// `style` merges extra inline rules (e.g. an overlap marginLeft).
+export function InitialsAvatar({ initials, background, className = "", style }) {
+  return (
+    <div
+      className={`rounded-full flex items-center justify-center text-white ${className}`}
+      style={{ background, ...style }}
+    >
+      {initials}
+    </div>
+  );
+}
+
 export function GlowOrb({ className, color, size = 480 }) {
   return (
     <div

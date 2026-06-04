@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Tag } from '@/shared/ui/primitives';
+import { Tag, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 /**
@@ -43,22 +43,18 @@ export function Testimonials({ t }) {
 
         <Reveal>
           <div className="relative rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-8 lg:p-12 text-center">
-            {/* Quote icon */}
-            <svg viewBox="0 0 32 32" className="mx-auto h-7 w-7 text-cyan-500/40">
-              <path fill="currentColor" d="M12 8c-4 1-7 4-7 9v7h8v-8H8c0-3 1.5-5 4-6V8Zm14 0c-4 1-7 4-7 9v7h8v-8h-5c0-3 1.5-5 4-6V8Z" />
-            </svg>
+            <QuoteMark className="mx-auto h-7 w-7 text-cyan-500/40" />
 
             <blockquote className="mt-5 font-display text-[clamp(1.2rem,2.2vw,1.7rem)] leading-snug tracking-tight text-slate-900 dark:text-slate-100 max-w-2xl mx-auto transition-opacity duration-500">
               "{item.quote}"
             </blockquote>
 
             <div className="mt-6 flex items-center justify-center gap-3">
-              <div
-                className="h-10 w-10 rounded-full flex items-center justify-center text-white font-display text-[13px] shadow-md"
-                style={{ background: 'linear-gradient(135deg,#0EA5E9,#10B981)' }}
-              >
-                {item.initials}
-              </div>
+              <InitialsAvatar
+                initials={item.initials}
+                background="linear-gradient(135deg,#0EA5E9,#10B981)"
+                className="h-10 w-10 font-display text-[13px] shadow-md"
+              />
               <div className="text-left">
                 <div className="text-[14px] font-medium text-slate-900 dark:text-slate-100">{item.name}</div>
                 <div className="text-[12px] text-slate-500 dark:text-slate-400">{item.title}</div>

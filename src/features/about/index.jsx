@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag } from '@/shared/ui/primitives';
+import { Tag, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 export function AboutBento({ t, lang }) {
@@ -27,7 +27,7 @@ export function AboutBento({ t, lang }) {
               backgroundImage: "radial-gradient(circle at 20% 20%, rgba(14,165,233,.4), transparent 40%), radial-gradient(circle at 80% 80%, rgba(16,185,129,.35), transparent 40%)",
             }} />
             <div className="relative">
-              <svg viewBox="0 0 32 32" className="h-7 w-7 text-cyan-400/80"><path fill="currentColor" d="M12 8c-4 1-7 4-7 9v7h8v-8H8c0-3 1.5-5 4-6V8Zm14 0c-4 1-7 4-7 9v7h8v-8h-5c0-3 1.5-5 4-6V8Z" /></svg>
+              <QuoteMark className="h-7 w-7 text-cyan-400/80" />
               <p className="mt-5 font-display text-[clamp(1.4rem,2.5vw,2.1rem)] leading-tight tracking-[-0.01em] max-w-xl">{b.quote.text}</p>
               <div className="mt-4 text-[12.5px] text-slate-300">{b.quote.author}</div>
             </div>
@@ -38,11 +38,13 @@ export function AboutBento({ t, lang }) {
                 { c: "#7C3AED", initials: "MK" },
                 { c: "#F59E0B", initials: "+11" },
               ].map((a, i) => (
-                <div key={i}
-                  className="h-9 w-9 rounded-full ring-2 ring-slate-900 flex items-center justify-center text-[10.5px] font-semibold text-white"
-                  style={{ backgroundColor: a.c, marginLeft: i ? -12 : 0 }}>
-                  {a.initials}
-                </div>
+                <InitialsAvatar
+                  key={i}
+                  initials={a.initials}
+                  background={a.c}
+                  className="h-9 w-9 ring-2 ring-slate-900 text-[10.5px] font-semibold"
+                  style={{ marginLeft: i ? -12 : 0 }}
+                />
               ))}
               <div className="ml-3 text-[12px] text-slate-300 leading-tight">
                 <div className="text-slate-100 font-medium">14 {lang === "tr" ? "kişilik ekip" : "people"}</div>
@@ -145,12 +147,11 @@ function TeamGrid({ t }) {
         {team.members.map((m, i) => (
           <Reveal key={i} delay={i * 80}>
             <div className="rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] dark:ring-white/[.06] p-5 text-center group hover:ring-cyan-500/30 transition">
-              <div
-                className="mx-auto h-14 w-14 rounded-full flex items-center justify-center text-white font-display text-[18px] tracking-tight shadow-lg"
-                style={{ background: TEAM_GRADIENTS[i % TEAM_GRADIENTS.length] }}
-              >
-                {m.initials}
-              </div>
+              <InitialsAvatar
+                initials={m.initials}
+                background={TEAM_GRADIENTS[i % TEAM_GRADIENTS.length]}
+                className="mx-auto h-14 w-14 font-display text-[18px] tracking-tight shadow-lg"
+              />
               <div className="mt-3 font-display text-[14px] tracking-tight text-slate-900 dark:text-slate-100">{m.name}</div>
               <div className="mt-0.5 text-[11.5px] text-slate-500 dark:text-slate-400">{m.role}</div>
               <div className="mt-2 text-[10.5px] text-slate-400 dark:text-slate-500 leading-snug">{m.focus}</div>

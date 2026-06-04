@@ -1,6 +1,6 @@
 // Tech Ecosystem — AI panel + Wearable exploded view + Community panel
 import React, { useState } from 'react';
-import { Tag } from '@/shared/ui/primitives';
+import { Tag, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 function TechEcosystem({ t }) {
@@ -424,12 +424,11 @@ function LeaderboardRow({ m, i }) {
           <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">#{m.rank}</span>
         )}
       </div>
-      <div
-        className="h-8 w-8 rounded-full grid place-items-center text-[10.5px] font-semibold text-white"
-        style={{ background: `linear-gradient(135deg, ${ac}, ${ac}cc)` }}
-      >
-        {initials}
-      </div>
+      <InitialsAvatar
+        initials={initials}
+        background={`linear-gradient(135deg, ${ac}, ${ac}cc)`}
+        className="h-8 w-8 text-[10.5px] font-semibold"
+      />
       <div className="flex-1 min-w-0">
         <div className="text-[12.5px] font-medium text-slate-800 dark:text-slate-200 leading-tight">{m.name}</div>
         <div className="relative h-1.5 rounded-full bg-slate-100 mt-1 overflow-hidden">
