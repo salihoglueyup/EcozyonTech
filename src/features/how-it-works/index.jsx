@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { SectionHeader } from '@/shared/ui/primitives';
 
 // ────────────────────────────────────────────────────────────────────────────
 // HOW IT WORKS — 3-step flow
@@ -16,16 +15,13 @@ export function HowItWorks({ t, lang }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-12">
-          <Reveal>
-          <Tag color="emerald">// 02 · {h.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {h.title}{" "}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>
-              {h.titleAccent}
-            </span>
-          </h2>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{h.sub}</p>
-          </Reveal>
+          <SectionHeader
+            color="emerald"
+            eyebrow={`02 · ${h.eyebrow}`}
+            title={h.title}
+            titleAccent={h.titleAccent}
+            sub={h.sub}
+          />
         </div>
 
         {/* Stepper */}

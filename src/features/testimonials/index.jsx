@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Tag, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
+import { SectionHeader, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 /**
@@ -32,14 +32,7 @@ export function Testimonials({ t }) {
   return (
     <section id="testimonials" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-4xl px-6">
-        <Reveal>
-          <div className="text-center mb-12">
-            <Tag color="emerald">// {data.eyebrow}</Tag>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-              {data.title}
-            </h2>
-          </div>
-        </Reveal>
+        <SectionHeader center color="emerald" eyebrow={data.eyebrow} title={data.title} className="mb-12" />
 
         <Reveal>
           <div className="relative rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-8 lg:p-12 text-center">

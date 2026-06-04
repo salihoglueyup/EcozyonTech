@@ -1,7 +1,6 @@
 // Tech Ecosystem — AI panel + Wearable exploded view + Community panel
 import React, { useState } from 'react';
-import { Tag, InitialsAvatar } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { SectionHeader, InitialsAvatar } from '@/shared/ui/primitives';
 
 function TechEcosystem({ t }) {
   return (
@@ -18,16 +17,12 @@ function TechEcosystem({ t }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl">
-          <Reveal>
-          <Tag color="emerald">// 03 · {t.tech.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {t.tech.title}{" "}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}
-            >{t.tech.titleAccent}</span>
-          </h2>
-          </Reveal>
+          <SectionHeader
+            color="emerald"
+            eyebrow={`03 · ${t.tech.eyebrow}`}
+            title={t.tech.title}
+            titleAccent={t.tech.titleAccent}
+          />
         </div>
 
         <div id="ecosystem" className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5">

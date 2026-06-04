@@ -1,6 +1,47 @@
 import { Link } from 'react-router-dom';
+import { Reveal } from '@/shared/ui/useReveal';
 
 // Shared visual primitives used across every feature section.
+
+// Standard section header: revealing eyebrow Tag + display heading (with an
+// optional gradient accent word) + optional sub. `center` switches to the
+// centered variant used by FAQ/testimonials. Replaces the hand-copied
+// Reveal+Tag+h2 block that lived in every feature section.
+export function SectionHeader({
+  eyebrow,
+  color = 'emerald',
+  title,
+  titleAccent,
+  sub,
+  center = false,
+  className = '',
+  subClassName = 'max-w-2xl',
+}) {
+  return (
+    <Reveal className={center ? `text-center ${className}`.trim() : className}>
+      <Tag color={color}>// {eyebrow}</Tag>
+      <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
+        {title}
+        {titleAccent && (
+          <>
+            {' '}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}
+            >
+              {titleAccent}
+            </span>
+          </>
+        )}
+      </h2>
+      {sub && (
+        <p className={`mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed ${center ? 'mx-auto ' : ''}${subClassName}`}>
+          {sub}
+        </p>
+      )}
+    </Reveal>
+  );
+}
 
 export function Tag({ children, color = "emerald" }) {
   const map = {

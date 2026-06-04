@@ -1,12 +1,11 @@
 // Impact Map — 3D globe with layers + interactions
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { CITIES } from '@/core/data/cities';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 import { useApp } from '@/app/providers/AppProvider';
-import { Reveal } from '@/shared/ui/useReveal';
 
 function ImpactMap({ t }) {
   const m = t.impactMap;
@@ -76,16 +75,13 @@ function ImpactMap({ t }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
-          <Reveal>
-          <Tag color="emerald">// 03 · {m.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {m.title}{" "}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>
-              {m.titleAccent}
-            </span>
-          </h2>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{m.sub}</p>
-          </Reveal>
+          <SectionHeader
+            color="emerald"
+            eyebrow={`03 · ${m.eyebrow}`}
+            title={m.title}
+            titleAccent={m.titleAccent}
+            sub={m.sub}
+          />
         </div>
 
         <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">

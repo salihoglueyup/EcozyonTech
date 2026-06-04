@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { SectionHeader } from '@/shared/ui/primitives';
 
 // ────────────────────────────────────────────────────────────────────────────
 // USE CASES — Personas (tabbed)
@@ -19,14 +18,13 @@ export function UseCases({ t, lang }) {
 
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
-          <Reveal>
-          <Tag color="cyan">// 04 · {u.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {u.title}{" "}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>{u.titleAccent}</span>
-          </h2>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{u.sub}</p>
-          </Reveal>
+          <SectionHeader
+            color="cyan"
+            eyebrow={`04 · ${u.eyebrow}`}
+            title={u.title}
+            titleAccent={u.titleAccent}
+            sub={u.sub}
+          />
         </div>
 
         {/* Persona tab pills */}

@@ -1,8 +1,7 @@
 // Interactive dashboard preview
 import React, { useState, useEffect } from 'react';
-import { Tag, EcoLogo } from '@/shared/ui/primitives';
+import { SectionHeader, EcoLogo } from '@/shared/ui/primitives';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
-import { Reveal } from '@/shared/ui/useReveal';
 
 function DashboardPreview({ t, lang }) {
   const [tab, setTab] = useState(0);
@@ -62,16 +61,14 @@ function DashboardPreview({ t, lang }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
           <div className="max-w-2xl">
-            <Reveal>
-            <Tag color="cyan">// 05 · {t.dash.eyebrow}</Tag>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-              {t.dash.title}{" "}
-              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}>
-                {t.dash.titleAccent}
-              </span>
-            </h2>
-            <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">{t.dash.sub}</p>
-            </Reveal>
+            <SectionHeader
+              color="cyan"
+              eyebrow={`05 · ${t.dash.eyebrow}`}
+              title={t.dash.title}
+              titleAccent={t.dash.titleAccent}
+              sub={t.dash.sub}
+              subClassName="max-w-lg"
+            />
           </div>
         </div>
 

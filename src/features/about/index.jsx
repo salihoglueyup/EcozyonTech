@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
+import { SectionHeader, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 export function AboutBento({ t, lang }) {
@@ -10,14 +10,13 @@ export function AboutBento({ t, lang }) {
         style={{ backgroundImage: "radial-gradient(circle at 80% 30%, rgba(16,185,129,.10), transparent 50%)" }} />
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
-          <Reveal>
-          <Tag color="emerald">// 06 · {t.about.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {t.about.title}{" "}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)" }}>{t.about.titleAccent}</span>
-          </h2>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">{t.about.sub}</p>
-          </Reveal>
+          <SectionHeader
+            color="emerald"
+            eyebrow={`06 · ${t.about.eyebrow}`}
+            title={t.about.title}
+            titleAccent={t.about.titleAccent}
+            sub={t.about.sub}
+          />
         </div>
 
         <div className="grid grid-cols-12 gap-3 auto-rows-[150px]">

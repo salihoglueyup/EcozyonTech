@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tag } from '@/shared/ui/primitives';
+import { SectionHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
 /**
@@ -17,14 +17,7 @@ export function FAQ({ t }) {
   return (
     <section id="faq" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <Reveal>
-          <div className="text-center mb-12">
-            <Tag color="cyan">// FAQ</Tag>
-            <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-              {faq.title}
-            </h2>
-          </div>
-        </Reveal>
+        <SectionHeader center color="cyan" eyebrow="FAQ" title={faq.title} className="mb-12" />
 
         <div className="space-y-2">
           {faq.items.map((item, i) => (
