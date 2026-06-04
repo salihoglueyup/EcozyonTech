@@ -13,6 +13,15 @@
       rel="stylesheet"
     />
 
+    <!-- No-JS fallback: <Reveal> ships prerendered content at opacity:0 and
+         only un-hides it via a client effect. Without JS those sections would
+         stay invisible, so force them visible for no-script clients/crawlers. -->
+    <noscript>
+      <style>
+        [data-reveal] { opacity: 1 !important; transform: none !important; }
+      </style>
+    </noscript>
+
     <!-- Default head; the prerender step replaces this per route. -->
     <title>Ecozyon Tech — AI ile sürdürülebilirlik</title>
     <meta
