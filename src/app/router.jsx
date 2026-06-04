@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '@/layouts/Main';
+import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
 
 const HomePage = lazy(() => import('@/pages/Home'));
 const ServicesPage = lazy(() => import('@/pages/Services'));
@@ -14,13 +15,23 @@ const ContactPage = lazy(() => import('@/pages/Contact'));
 const LegalPage = lazy(() => import('@/pages/Legal'));
 const NotFoundPage = lazy(() => import('@/pages/NotFound'));
 
+// Structural skeleton shown while a lazy route chunk loads — mirrors the
+// typical page shape (eyebrow + heading + intro, then a card grid) so the
+// layout doesn't jump when the real content swaps in.
 function PageFallback() {
   return (
-    <div className="min-h-[60vh] grid place-items-center text-slate-400 text-[13px]">
-      <span className="inline-flex items-center gap-2">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-        Yükleniyor…
-      </span>
+    <div className="mx-auto max-w-6xl px-6 py-20 lg:py-28" aria-busy="true" aria-label="Yükleniyor">
+      <div className="max-w-2xl space-y-4">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-10 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
+      </div>
     </div>
   );
 }

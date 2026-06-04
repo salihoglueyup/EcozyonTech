@@ -35,10 +35,13 @@ export function ToastProvider({ children }) {
   );
 }
 
+const NOOP_TOAST = () => undefined;
+
 export function useToast() {
-  const ctx = useContext(ToastCtx);
-  if (!ctx) throw new Error('useToast must be used within <ToastProvider>');
-  return ctx;
+  // Degrade to a no-op when rendered outside a provider (e.g. an isolated
+  // component render in tests) — toasts are non-critical UI and shouldn't
+  // crash the tree.
+  return useContext(ToastCtx) ?? NOOP_TOAST;
 }
 
 // ── Render ──────────────────────────────────────────────────────────────

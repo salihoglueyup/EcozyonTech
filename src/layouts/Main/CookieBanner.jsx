@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
+import { useToast } from '@/shared/ui/Toast';
 
 const STORAGE_KEY = 'ecozyon.cookies.ack';
 
@@ -8,7 +9,8 @@ const STORAGE_KEY = 'ecozyon.cookies.ack';
 // so the banner never appears again. SSR-safe: hidden by default, the
 // localStorage check happens in a post-mount effect.
 export default function CookieBanner() {
-  const { t } = useApp();
+  const { t, lang } = useApp();
+  const toast = useToast();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export default function CookieBanner() {
   const accept = () => {
     try { window.localStorage.setItem(STORAGE_KEY, '1'); } catch { /* noop */ }
     setVisible(false);
+    toast({ message: lang === 'tr' ? 'Tercihler kaydedildi' : 'Preferences saved', type: 'success' });
   };
 
   if (!visible) return null;
@@ -38,9 +41,9 @@ export default function CookieBanner() {
       aria-label="Cookie notice"
       className="fixed bottom-3 left-3 right-3 sm:right-auto sm:max-w-md z-[80] rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/70 dark:border-slate-700/50 ring-1 ring-slate-900/[.08] dark:ring-white/[.06] shadow-[0_20px_60px_-20px_rgba(15,23,42,.35)] p-4 animate-[fadeUp_.32s_ease-out]"
     >
-      <p className="text-[12.5px] text-slate-700 leading-relaxed">
+      <p className="text-[12.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
         {t.cookies.text}
-        <Link to="/legal#privacy" className="text-slate-900 underline underline-offset-2 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">
+        <Link to="/legal#privacy" className="text-slate-900 dark:text-slate-100 underline underline-offset-2 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">
           {t.cookies.link}
         </Link>
         .

@@ -7,6 +7,7 @@ import { postBySlug, readingTime, relatedPosts, postNeighbors } from '@/core/dat
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
+import { useToast } from '@/shared/ui/Toast';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -108,6 +109,7 @@ export default function BlogPostPage() {
 
 function ShareBar({ post, lang, t }) {
   const [copied, setCopied] = useState(false);
+  const toast = useToast();
   const url = `${SITE.url}/blog/${post.slug}`;
   const links = shareLinks(url, post.title[lang]);
 
@@ -116,8 +118,9 @@ function ShareBar({ post, lang, t }) {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      toast({ message: t.blog.copied, type: 'success' });
     } catch {
-      /* clipboard unavailable — no-op */
+      toast({ message: lang === 'tr' ? 'Kopyalanamadı' : 'Could not copy', type: 'error' });
     }
   };
 

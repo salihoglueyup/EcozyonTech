@@ -39,7 +39,7 @@ export function UseCases({ t, lang }) {
                 onClick={() => setActive(i)}
                 className={`group flex items-center gap-3 rounded-2xl px-4 py-3 border transition-all ${
                   isActive
-                    ? "bg-white text-slate-900 dark:text-slate-100 border-transparent shadow-[0_12px_32px_-18px_rgba(15,23,42,.35)]"
+                    ? "bg-white dark:bg-white/[.08] text-slate-900 dark:text-slate-100 border-transparent shadow-[0_12px_32px_-18px_rgba(15,23,42,.35)]"
                     : "bg-white/40 backdrop-blur-md text-slate-600 dark:text-slate-400 border-white/60 hover:bg-white/70 dark:bg-white/[.04]"
                 }`}
                 style={isActive ? { boxShadow: `0 12px 32px -18px ${per.color}66, 0 0 0 1px ${per.color}33 inset` } : {}}
