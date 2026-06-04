@@ -21,9 +21,24 @@ const WINDOWS = {
 };
 const HITS = new Map(); // key: `${kind}:${ip}` → array of timestamps
 
+// Drop keys whose every timestamp has expired. Run occasionally so the Map
+// doesn't grow unbounded with one-shot IPs over a long-lived instance (each
+// checkRate only prunes its own key, never the abandoned ones).
+let _sweepCounter = 0;
+function sweepExpired(now) {
+  for (const [key, arr] of HITS) {
+    const ms = WINDOWS[key.slice(0, key.indexOf(':'))]?.ms ?? 60_000;
+    if (!arr.some((t) => now - t < ms)) HITS.delete(key);
+  }
+}
+
 export function checkRate(kind, ip, now = Date.now()) {
   const cfg = WINDOWS[kind];
   if (!cfg || !ip) return { ok: true };
+  if (++_sweepCounter >= 1000) {
+    _sweepCounter = 0;
+    sweepExpired(now);
+  }
   const key = `${kind}:${ip}`;
   const arr = (HITS.get(key) || []).filter((t) => now - t < cfg.ms);
   if (arr.length >= cfg.max) {

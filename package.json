@@ -14,8 +14,16 @@
     "test:coverage": "vitest run --coverage",
     "build:geo": "node scripts/build-geo.mjs"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "feature-sliced-design",
+    "prerender",
+    "three.js",
+    "portfolio"
+  ],
+  "author": "Ecozyon Tech",
   "license": "MIT",
   "type": "module",
   "dependencies": {
