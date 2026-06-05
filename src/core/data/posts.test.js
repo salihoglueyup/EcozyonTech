@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime } from './posts';
+import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime, blockText } from './posts';
 
 describe('postTags', () => {
   it('returns distinct tags in first-appearance order', () => {
@@ -144,5 +144,28 @@ describe('readingTime', () => {
   it('is at least 1 minute even for an empty body', () => {
     expect(readingTime({ body: { tr: [] } }, 'tr')).toBe(1);
     expect(readingTime({}, 'en')).toBe(1);
+  });
+
+  it('counts heading-block text alongside paragraphs', () => {
+    const post = { body: { en: [{ h: 'A heading here', id: 'x' }, 'one two three'] } };
+    expect(readingTime(post, 'en')).toBe(1); // 6 words → rounds to 1, but headings are included
+    expect(blockText({ h: 'A heading here', id: 'x' })).toBe('A heading here');
+    expect(blockText('plain string')).toBe('plain string');
+  });
+});
+
+describe('body heading blocks', () => {
+  it('every post has heading blocks with ids shared across languages', () => {
+    for (const p of POSTS) {
+      const trHeads = p.body.tr.filter((b) => typeof b === 'object').map((b) => b.id);
+      const enHeads = p.body.en.filter((b) => typeof b === 'object').map((b) => b.id);
+      expect(trHeads.length).toBeGreaterThan(0);
+      expect(enHeads).toEqual(trHeads); // anchors stay stable on language switch
+    }
+  });
+
+  it('searchPosts matches heading text', () => {
+    const hits = searchPosts(POSTS, 'baseline yaklaşımı', 'tr');
+    expect(hits.map((p) => p.slug)).toContain('carbon-budget-basics');
   });
 });

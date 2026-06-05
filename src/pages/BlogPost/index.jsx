@@ -9,6 +9,7 @@ import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
 import { useToast } from '@/shared/ui/Toast';
 import { Tooltip } from '@/shared/ui/Tooltip';
+import { SectionNav } from '@/shared/ui/SectionNav';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -34,9 +35,16 @@ export default function BlogPostPage() {
 
   const related = relatedPosts(post);
   const { prev, next } = postNeighbors(post.slug);
+  const blocks = post.body[lang];
+  // Heading blocks ({ h, id }) double as the table-of-contents entries; the
+  // SectionNav rail tracks scroll position and anchors to these ids.
+  const headings = blocks
+    .filter((b) => typeof b === 'object' && b)
+    .map((b) => ({ id: b.id, label: b.h }));
 
   return (
     <article className="relative py-20 lg:py-28 pt-32">
+      {headings.length > 0 && <SectionNav sections={headings} alwaysLabels />}
       <div className="mx-auto max-w-3xl px-6">
         <Link to="/blog" className="inline-flex items-center gap-2 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition">
           ← {tr ? 'Tüm yazılar' : 'All posts'}
@@ -53,11 +61,21 @@ export default function BlogPostPage() {
         <ShareBar post={post} lang={lang} t={t} />
 
         <div className="mt-8 space-y-5">
-          {post.body[lang].map((para, i) => (
-            <p key={i} className="text-[15.5px] text-slate-700 dark:text-slate-300 leading-[1.75]">
-              {para}
-            </p>
-          ))}
+          {blocks.map((b, i) =>
+            typeof b === 'object' && b ? (
+              <h2
+                key={b.id}
+                id={b.id}
+                className="scroll-mt-28 pt-3 font-display text-[clamp(1.25rem,2.4vw,1.6rem)] tracking-[-0.01em] text-slate-900 dark:text-slate-100"
+              >
+                {b.h}
+              </h2>
+            ) : (
+              <p key={i} className="text-[15.5px] text-slate-700 dark:text-slate-300 leading-[1.75]">
+                {b}
+              </p>
+            ),
+          )}
         </div>
 
         {(prev || next) && (

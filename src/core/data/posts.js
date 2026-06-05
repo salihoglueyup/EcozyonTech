@@ -14,12 +14,16 @@ export const POSTS = [
     },
     body: {
       tr: [
+        { h: 'Ortalama hedef neden yetersiz', id: 'why-average' },
         'Sürdürülebilirlik araçlarının çoğu tek bir "ortalama" hedef sunar. Oysa bir kişinin ulaşım, enerji ve beslenme profili bambaşkadır.',
+        { h: 'Kişisel baseline yaklaşımı', id: 'personal-baseline' },
         'Ecozyon, ilk hafta verisinden kişisel bir baseline çıkarır ve önerileri buna göre kişiselleştirir. Sonuç: uygulanabilir, ölçülebilir alışkanlıklar.',
         'Bu yazıda baseline hesabının arkasındaki sezgiyi ve neden davranış değişiminin anahtarı olduğunu ele alıyoruz.',
       ],
       en: [
+        { h: 'Why an average target falls short', id: 'why-average' },
         'Most sustainability tools hand you a single "average" target. But transport, energy and diet profiles differ wildly per person.',
+        { h: 'The personal-baseline approach', id: 'personal-baseline' },
         'Ecozyon derives a personal baseline from week-one data and tailors suggestions to it. The result: actionable, measurable habits.',
         'This post covers the intuition behind the baseline and why it is the key to behavior change.',
       ],
@@ -39,11 +43,15 @@ export const POSTS = [
     },
     body: {
       tr: [
+        { h: 'Düşük güç tasarımı', id: 'low-power' },
         'Düşük güç, sürdürülebilir donanımın kalbidir. Sensör örnekleme hızını uyarlamalı yaparak ortalama tüketimi yarıya indirdik.',
+        { h: 'Malzeme ve enerji', id: 'materials' },
         'Kasa %92 geri dönüştürülmüş alüminyum; güneş mikro-hücresi gün ışığında günlük tüketimin ~%38\'ini karşılıyor.',
       ],
       en: [
+        { h: 'Low-power design', id: 'low-power' },
         'Low power is the heart of sustainable hardware. Adaptive sensor sampling halved average draw.',
+        { h: 'Materials and energy', id: 'materials' },
         'The housing is 92% recycled aluminium; the solar micro-cell covers ~38% of daily consumption in daylight.',
       ],
     },
@@ -62,11 +70,15 @@ export const POSTS = [
     },
     body: {
       tr: [
+        { h: 'Topluluğun etkisi', id: 'community-effect' },
         'Bireysel öneriler işe yarar, ama topluluk etkisi onları kalıcı kılar. Pilotlarda haftalık yarışmalar tutunmayı 3 katına çıkardı.',
+        { h: 'İşe yarayan formül', id: 'the-formula' },
         'Anahtar: küçük, ulaşılabilir hedefler + görünür ilerleme + akran kıyaslaması.',
       ],
       en: [
+        { h: 'The community effect', id: 'community-effect' },
         'Individual nudges work, but community makes them stick. In pilots, weekly challenges tripled retention.',
+        { h: 'The formula that works', id: 'the-formula' },
         'The key: small reachable goals + visible progress + peer comparison.',
       ],
     },
@@ -114,6 +126,10 @@ export function filterByTag(posts, tagId) {
   return posts.filter((p) => p.tag.en === tagId);
 }
 
+// A body block is either a paragraph string or a heading `{ h, id }`.
+// `id` is shared across languages so anchors/TOC stay stable on language switch.
+export const blockText = (b) => (typeof b === 'string' ? b : b?.h || '');
+
 // Case-insensitive substring search over a post's title, excerpt, tag and
 // body in the active language. An empty/whitespace query returns the list
 // unchanged so it composes cleanly with filterByTag (AND semantics).
@@ -121,7 +137,7 @@ export function searchPosts(posts, query, lang = 'tr') {
   const q = String(query ?? '').trim().toLowerCase();
   if (!q) return posts;
   return posts.filter((p) => {
-    const hay = [p.title?.[lang], p.excerpt?.[lang], p.tag?.[lang], ...(p.body?.[lang] || [])]
+    const hay = [p.title?.[lang], p.excerpt?.[lang], p.tag?.[lang], ...(p.body?.[lang] || []).map(blockText)]
       .filter(Boolean)
       .join(' ')
       .toLowerCase();
@@ -132,7 +148,7 @@ export function searchPosts(posts, query, lang = 'tr') {
 // Approximate reading time for a post body, in minutes (200 wpm baseline).
 // Counts the active language only — TR and EN word counts are usually close.
 export function readingTime(post, lang = 'tr') {
-  const text = (post.body?.[lang] || []).join(' ');
+  const text = (post.body?.[lang] || []).map(blockText).join(' ');
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
   return Math.max(1, Math.round(words / 200));
 }

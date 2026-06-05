@@ -37,4 +37,13 @@ describe('SectionNav', () => {
       expect.objectContaining({ block: 'start' }),
     );
   });
+
+  it('keeps inactive labels visible when alwaysLabels is set', () => {
+    render(<SectionNav sections={sections} alwaysLabels />);
+    // Inactive labels are dimmed-but-shown (opacity-70) rather than hidden
+    // (opacity-0) so the rail reads as a table of contents.
+    const inactive = screen.getByText('Technology');
+    expect(inactive.className).toContain('opacity-70');
+    expect(inactive.className).not.toContain('opacity-0');
+  });
 });

@@ -38,8 +38,10 @@ export function useScrollSpy(ids, { rootMargin = '-45% 0px -45% 0px' } = {}) {
  * SectionNav — fixed left-rail that tracks the active section and smooth-
  * scrolls to one on click. Desktop-only (xl+) so it never crowds content;
  * labels reveal on hover or when active. `sections`: [{ id, label }].
+ * `alwaysLabels` keeps labels visible (used as a blog table-of-contents,
+ * where the rail is a reading aid rather than a minimal dot strip).
  */
-export function SectionNav({ sections, className = '' }) {
+export function SectionNav({ sections, className = '', alwaysLabels = false }) {
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
   const active = useScrollSpy(ids);
 
@@ -74,7 +76,9 @@ export function SectionNav({ sections, className = '' }) {
               className={`text-[11px] font-medium tracking-tight transition-all duration-300 ${
                 isActive
                   ? 'opacity-100 translate-x-0 text-slate-700 dark:text-slate-200'
-                  : 'opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 text-slate-500 dark:text-slate-400'
+                  : alwaysLabels
+                    ? 'opacity-70 translate-x-0 text-slate-500 dark:text-slate-400 group-hover:opacity-100'
+                    : 'opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 text-slate-500 dark:text-slate-400'
               }`}
             >
               {s.label}
