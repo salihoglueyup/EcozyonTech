@@ -2,9 +2,11 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
-import { ROUTES } from '@/core/config/site';
+import { ROUTES, SITE } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 import { readRecents } from '@/core/lib/recents';
+import { readSaved, isSaved } from '@/core/lib/saved';
+import { useToast } from '@/shared/ui/Toast';
 import { buildCommands, filterCommands, orderByRecents } from './commands';
 
 // Site-wide ⌘K / Ctrl+K palette. Mounted once in the layout; renders nothing
@@ -12,10 +14,12 @@ import { buildCommands, filterCommands, orderByRecents } from './commands';
 export default function CommandPalette() {
   const { lang, t, theme, setTheme, setLang } = useApp();
   const navigate = useNavigate();
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const [recentSlugs, setRecentSlugs] = useState([]);
+  const [savedSlugs, setSavedSlugs] = useState([]);
   const dialogRef = useRef(null);
   const listId = useId();
   useFocusTrap(dialogRef, open);
@@ -26,9 +30,22 @@ export default function CommandPalette() {
     setActive(0);
   }, []);
 
-  // Action items carry handlers; data items (pages/posts) carry `to`.
+  const copyCurrentLink = useCallback(async () => {
+    if (typeof window === 'undefined') return;
+    try {
+      await navigator.clipboard.writeText(`${SITE.url}${window.location.pathname}`);
+      toast({ message: t.cmd.linkCopied, type: 'success' });
+    } catch {
+      toast({ message: t.blog.copyError, type: 'error' });
+    }
+  }, [toast, t]);
+
+  // Action items carry handlers; data items (pages/posts) carry `to`. Saved
+  // posts get a `saved` flag so the list can mark them.
   const items = useMemo(() => {
-    const data = buildCommands({ routes: ROUTES, posts: POSTS, lang });
+    const data = buildCommands({ routes: ROUTES, posts: POSTS, lang }).map((it) =>
+      it.type === 'post' && isSaved(savedSlugs, it.to.slice('/blog/'.length)) ? { ...it, saved: true } : it,
+    );
     const actions = [
       {
         id: 'action:theme',
@@ -44,9 +61,16 @@ export default function CommandPalette() {
         keywords: ['language', 'dil', 'tr', 'en', 'türkçe', 'english'],
         run: () => setLang(lang === 'tr' ? 'en' : 'tr'),
       },
+      {
+        id: 'action:copy-link',
+        type: 'action',
+        label: t.cmd.copyLink,
+        keywords: ['copy', 'link', 'url', 'kopyala', 'bağlantı', 'share', 'paylaş'],
+        run: copyCurrentLink,
+      },
     ];
     return [...data, ...actions];
-  }, [lang, t, theme, setTheme, setLang]);
+  }, [lang, t, theme, setTheme, setLang, savedSlugs, copyCurrentLink]);
 
   // Empty query → recently-viewed posts float to the top; otherwise filter.
   const results = useMemo(
@@ -72,10 +96,11 @@ export default function CommandPalette() {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
         setRecentSlugs(readRecents()); // refresh from storage on each toggle
+        setSavedSlugs(readSaved());
         setOpen((v) => !v);
       }
     };
-    const onOpen = () => { setRecentSlugs(readRecents()); setOpen(true); };
+    const onOpen = () => { setRecentSlugs(readRecents()); setSavedSlugs(readSaved()); setOpen(true); };
     window.addEventListener('keydown', onKey);
     window.addEventListener('ecozyon:cmdk', onOpen);
     return () => {
@@ -142,6 +167,9 @@ export default function CommandPalette() {
                 {item.recent ? '↺' : item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : '→'}
               </span>
               <span className="flex-1 truncate">{item.label}</span>
+              {item.saved && (
+                <svg viewBox="0 0 16 16" className={`h-3 w-3 shrink-0 ${i === active ? 'text-white/70' : 'text-cyan-500'}`} fill="currentColor" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.6-4 2.6z" /></svg>
+              )}
               {item.hint && (
                 <span className={`text-[11px] ${i === active ? 'text-white/60' : 'text-slate-400'}`}>{item.hint}</span>
               )}

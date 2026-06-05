@@ -409,6 +409,8 @@ export const ECO_I18N = {
         actions: "Komutlar",
         noResults: "Sonuç bulunamadı",
         toggleTheme: "Temayı değiştir",
+        copyLink: "Bu sayfanın bağlantısını kopyala",
+        linkCopied: "Bağlantı kopyalandı",
         hint: "↑↓ gez · ↵ aç · esc kapat",
       },
       calc: {
@@ -847,6 +849,8 @@ export const ECO_I18N = {
         actions: "Commands",
         noResults: "No results",
         toggleTheme: "Toggle theme",
+        copyLink: "Copy link to this page",
+        linkCopied: "Link copied",
         hint: "↑↓ navigate · ↵ open · esc close",
       },
       calc: {
