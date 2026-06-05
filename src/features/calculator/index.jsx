@@ -1,17 +1,45 @@
-import { useId, useState } from 'react';
+import { useEffect, useId } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { estimateAnnualCO2, potentialSavings, formatCO2 } from '@/core/lib/co2';
+import { CALC_FIELDS, DEFAULT_CALC, encodeCalc, decodeCalc, normalizeCalc } from '@/core/lib/calcShare';
+import { usePersistentState } from '@/shared/ui/usePersistentState';
+import { useToast } from '@/shared/ui/Toast';
 import { Reveal } from '@/shared/ui/useReveal';
 
-const SLIDERS = [
-  { key: 'carKmPerWeek', labelKey: 'car', unitKey: 'carUnit', max: 600, step: 10, color: '#0EA5E9' },
-  { key: 'kwhPerMonth', labelKey: 'energy', unitKey: 'energyUnit', max: 800, step: 10, color: '#10B981' },
-  { key: 'meatMealsPerWeek', labelKey: 'diet', unitKey: 'dietUnit', max: 21, step: 1, color: '#F59E0B' },
-];
+// Presentation per field (labels/units/color); the numeric model — keys,
+// defaults and bounds — lives in calcShare so the URL and sliders never drift.
+const SLIDER_UI = {
+  carKmPerWeek: { labelKey: 'car', unitKey: 'carUnit', color: '#0EA5E9' },
+  kwhPerMonth: { labelKey: 'energy', unitKey: 'energyUnit', color: '#10B981' },
+  meatMealsPerWeek: { labelKey: 'diet', unitKey: 'dietUnit', color: '#F59E0B' },
+};
+const SLIDERS = CALC_FIELDS.map((f) => ({ ...f, ...SLIDER_UI[f.key] }));
 
 export function Calculator({ t }) {
   const c = t.calc;
-  const [vals, setVals] = useState({ carKmPerWeek: 120, kwhPerMonth: 220, meatMealsPerWeek: 7 });
+  const toast = useToast();
+  // Last inputs persist across visits; a shared ?car=&kwh=&meat= link wins on
+  // first load (applied post-mount so prerendered HTML stays deterministic).
+  const [vals, setVals] = usePersistentState('ecozyon.calc', DEFAULT_CALC);
+  useEffect(() => {
+    const fromUrl = typeof window !== 'undefined' && decodeCalc(window.location.search);
+    if (fromUrl) setVals(normalizeCalc(fromUrl));
+    // Run once on mount; the deep link is read a single time.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const share = async () => {
+    if (typeof window === 'undefined') return;
+    const { origin, pathname } = window.location;
+    const url = `${origin}${pathname}?${encodeCalc(vals)}#calculator`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({ message: c.shareCopied, type: 'success' });
+    } catch {
+      toast({ message: c.shareError, type: 'error' });
+    }
+  };
+
   const est = estimateAnnualCO2(vals);
   const saved = potentialSavings(est.total);
   const baseId = useId();
@@ -87,6 +115,17 @@ export function Calculator({ t }) {
                   −{formatCO2(saved)}
                 </div>
               </div>
+              <button
+                type="button"
+                onClick={share}
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/[.08] ring-1 ring-white/15 px-4 h-9 text-[12.5px] font-medium text-white hover:bg-white/[.14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 transition"
+              >
+                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <circle cx="12" cy="3.5" r="2" /><circle cx="4" cy="8" r="2" /><circle cx="12" cy="12.5" r="2" />
+                  <path d="M5.7 7 10.3 4.5M5.7 9l4.6 2.5" strokeLinecap="round" />
+                </svg>
+                {c.share}
+              </button>
               <p className="mt-3 text-[11px] text-slate-400 leading-relaxed">{c.disclaimer}</p>
             </div>
           </div>
