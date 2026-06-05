@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { POSTS, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
+import { POSTS, postBySlug, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
+import { readRecents } from '@/core/lib/recents';
 
 const meta = routeByKey('blog');
 const TAGS = postTags(POSTS);
@@ -22,6 +23,15 @@ export default function BlogPage() {
   const [activeTag, setActiveTag] = useState(null);
   const [query, setQuery] = useState('');
   const visible = searchPosts(filterByTag(POSTS, activeTag), query, lang);
+
+  // Recently-viewed posts, resolved client-side after mount (localStorage is
+  // empty during prerender, so the server emits nothing and the first client
+  // render matches — no hydration mismatch).
+  const [recents, setRecents] = useState([]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRecents(readRecents().map(postBySlug).filter(Boolean));
+  }, []);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -41,6 +51,26 @@ export default function BlogPage() {
             </span>
           </h1>
         </div>
+
+        {recents.length > 0 && (
+          <div className="mb-6">
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-2.5">
+              {t.blog.recent}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {recents.map((p) => (
+                <Link
+                  key={p.slug}
+                  to={`/blog/${p.slug}`}
+                  className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-white/[.05] ring-1 ring-slate-900/[.07] dark:ring-white/[.08] pl-2.5 pr-3.5 py-1.5 text-[12.5px] text-slate-700 dark:text-slate-300 hover:ring-cyan-500/30 hover:text-slate-900 dark:hover:text-slate-100 transition max-w-[15rem]"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 shrink-0" aria-hidden="true" />
+                  <span className="truncate">{p.title[lang]}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mb-5 relative max-w-sm">
           <svg className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">

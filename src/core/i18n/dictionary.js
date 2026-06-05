@@ -376,6 +376,7 @@ export const ECO_I18N = {
         copyLink: "Bağlantıyı kopyala",
         copied: "Kopyalandı",
         copyError: "Kopyalanamadı",
+        recent: "Son okunanlar",
       },
       careers: {
         apply: "Başvur",
@@ -798,6 +799,7 @@ export const ECO_I18N = {
         copyLink: "Copy link",
         copied: "Copied",
         copyError: "Could not copy",
+        recent: "Recently viewed",
       },
       careers: {
         apply: "Apply",
