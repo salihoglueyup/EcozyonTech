@@ -11,6 +11,7 @@ import { isSaved, readSaved, toggleSavedSlug } from '@/core/lib/saved';
 import { useToast } from '@/shared/ui/Toast';
 import { Tooltip } from '@/shared/ui/Tooltip';
 import { SectionNav } from '@/shared/ui/SectionNav';
+import NewsletterForm from '@/shared/ui/NewsletterForm';
 import NotFoundPage from '@/pages/NotFound';
 
 export default function BlogPostPage() {
@@ -122,6 +123,20 @@ export default function BlogPostPage() {
             </div>
           </aside>
         )}
+
+        <aside className="mt-16 pt-8 border-t border-slate-900/[.08] dark:border-white/[.1]">
+          <div className="rounded-2xl eco-card p-6 sm:p-7">
+            <h2 className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">
+              {t.footer.newsletterTitle}
+            </h2>
+            <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">
+              {t.footer.newsletterNote}
+            </p>
+            <div className="mt-4">
+              <NewsletterForm lang={lang} placeholder={t.contact.emailP} />
+            </div>
+          </div>
+        </aside>
       </div>
     </article>
   );
