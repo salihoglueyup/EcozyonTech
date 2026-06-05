@@ -2,6 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 
+const DRAFT_KEY = 'ecozyon.contactDraft';
+
+// Session storage, guarded — null when unavailable (SSR, sandboxed iframe).
+function draftStore() {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
+
 // ── Contact — inline madlib form ───────────────────────────────────────────
 export function Contact({ t, lang }) {
   const [name, setName] = useState("");
@@ -14,11 +26,57 @@ export function Contact({ t, lang }) {
   const [status, setStatus] = useState("idle"); // idle | sending | success | error | limited
   const [retryAfterSec, setRetryAfterSec] = useState(0);
   const idleTimerRef = useRef(null);
+  const firstWriteRef = useRef(true);
 
   // Clear the pending success → idle timer on unmount.
   useEffect(() => () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
   }, []);
+
+  // Restore an in-progress draft once after mount, so a refresh or accidental
+  // navigation doesn't lose typed text. sessionStorage is client-only, so
+  // prerendered HTML and the first client render stay clean.
+  useEffect(() => {
+    const store = draftStore();
+    if (!store) return;
+    try {
+      const raw = store.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      /* eslint-disable react-hooks/set-state-in-effect */
+      if (d.name) setName(d.name);
+      if (d.company) setCompany(d.company);
+      if (d.email) setEmail(d.email);
+      if (d.message) setMessage(d.message);
+      if (d.purpose && t.contact.purposes.includes(d.purpose)) setPurpose(d.purpose);
+      /* eslint-enable react-hooks/set-state-in-effect */
+    } catch {
+      /* corrupt draft — ignore */
+    }
+    // Restore once on mount; the picker options are stable per language.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Autosave the draft as fields change; clear it once everything is empty
+  // (which also covers the post-submit reset). The first run is skipped so a
+  // not-yet-restored empty form never wipes a stored draft.
+  useEffect(() => {
+    if (firstWriteRef.current) {
+      firstWriteRef.current = false;
+      return;
+    }
+    const store = draftStore();
+    if (!store) return;
+    try {
+      if (!name && !company && !email && !message) {
+        store.removeItem(DRAFT_KEY);
+      } else {
+        store.setItem(DRAFT_KEY, JSON.stringify({ name, company, email, message, purpose }));
+      }
+    } catch {
+      /* storage full/unavailable — keep in-memory only */
+    }
+  }, [name, company, email, message, purpose]);
 
   const validEmail = /^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(email);
   const canSubmit = name && company && validEmail && status !== "sending";
