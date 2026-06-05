@@ -1,5 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { CALC_FIELDS, DEFAULT_CALC, normalizeCalc, encodeCalc, decodeCalc } from './calcShare';
+import {
+  CALC_FIELDS,
+  DEFAULT_CALC,
+  CALC_PRESETS,
+  normalizeCalc,
+  encodeCalc,
+  decodeCalc,
+  applyPreset,
+  presetSaving,
+} from './calcShare';
 
 describe('normalizeCalc', () => {
   it('fills missing fields from the defaults', () => {
@@ -56,6 +65,43 @@ describe('decodeCalc null semantics', () => {
   it('clamps out-of-range params from the URL', () => {
     expect(decodeCalc('car=-5&kwh=99999&meat=2').carKmPerWeek).toBe(0);
     expect(decodeCalc('car=-5&kwh=99999&meat=2').kwhPerMonth).toBe(800);
+  });
+});
+
+describe('presets', () => {
+  const byId = (id) => CALC_PRESETS.find((p) => p.id === id);
+
+  it('applyPreset returns a normalized, in-bounds state', () => {
+    const out = applyPreset(byId('carLite'), { carKmPerWeek: 600, kwhPerMonth: 220, meatMealsPerWeek: 7 });
+    expect(out.carKmPerWeek).toBe(300); // halved
+    for (const f of CALC_FIELDS) expect(out[f.key]).toBeLessThanOrEqual(f.max);
+  });
+
+  it('veg zeroes meat meals', () => {
+    expect(applyPreset(byId('veg'), DEFAULT_CALC).meatMealsPerWeek).toBe(0);
+  });
+
+  it('energySave cuts electricity ~30%', () => {
+    expect(applyPreset(byId('energySave'), { ...DEFAULT_CALC, kwhPerMonth: 200 }).kwhPerMonth).toBe(140);
+  });
+
+  it('presetSaving reports a positive, bounded share against current', () => {
+    const r = presetSaving(byId('veg'), DEFAULT_CALC);
+    expect(r.savedKg).toBeGreaterThan(0);
+    expect(r.pct).toBeGreaterThan(0);
+    expect(r.pct).toBeLessThanOrEqual(1);
+  });
+
+  it('presetSaving is zero (never negative) when nothing changes', () => {
+    const noMeat = { ...DEFAULT_CALC, meatMealsPerWeek: 0 };
+    const r = presetSaving(byId('veg'), noMeat);
+    expect(r.savedKg).toBe(0);
+    expect(r.pct).toBe(0);
+  });
+
+  it('presetSaving handles an all-zero footprint without dividing by zero', () => {
+    const zero = { carKmPerWeek: 0, kwhPerMonth: 0, meatMealsPerWeek: 0 };
+    expect(presetSaving(byId('carLite'), zero).pct).toBe(0);
   });
 });
 

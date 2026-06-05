@@ -32,6 +32,16 @@ describe('Calculator', () => {
   it('shows a potential-savings figure', () => {
     setup();
     expect(screen.getByText(t.calc.savingsNote)).toBeTruthy();
-    expect(screen.getByText(/^−/)).toBeTruthy(); // savings rendered with a leading minus
+    // Savings render as a leading minus + mass (kg/t); preset badges use % so
+    // we anchor on the unit to target the savings figure specifically.
+    expect(screen.getByText(/^−[\d.]+\s(kg|t)$/)).toBeTruthy();
+  });
+
+  it('applies a quick-scenario preset to the inputs', () => {
+    setup();
+    const diet = screen.getByLabelText(t.calc.diet);
+    expect(Number(diet.value)).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(t.calc.presets.veg) }));
+    expect(Number(diet.value)).toBe(0); // vegetarian week zeroes meat meals
   });
 });

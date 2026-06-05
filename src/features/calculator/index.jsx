@@ -1,7 +1,7 @@
 import { useEffect, useId } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { estimateAnnualCO2, potentialSavings, formatCO2 } from '@/core/lib/co2';
-import { CALC_FIELDS, DEFAULT_CALC, encodeCalc, decodeCalc, normalizeCalc } from '@/core/lib/calcShare';
+import { CALC_FIELDS, DEFAULT_CALC, CALC_PRESETS, encodeCalc, decodeCalc, normalizeCalc, applyPreset, presetSaving } from '@/core/lib/calcShare';
 import { usePersistentState } from '@/shared/ui/usePersistentState';
 import { useToast } from '@/shared/ui/Toast';
 import { Reveal } from '@/shared/ui/useReveal';
@@ -91,6 +91,33 @@ export function Calculator({ t }) {
                 </div>
               );
             })}
+
+            {/* Quick scenarios — each applies a transform of the current
+                inputs; the badge shows what it would cut from them now. */}
+            <div className="pt-2 border-t border-slate-900/[.06] dark:border-white/[.06]">
+              <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-2.5">
+                {c.presetsTitle}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {CALC_PRESETS.map((p) => {
+                  const { pct } = presetSaving(p, vals);
+                  const shown = Math.round(pct * 100);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setVals(applyPreset(p, vals))}
+                      className="group inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-white/[.05] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-3 pr-2 py-1.5 text-[12.5px] font-medium text-slate-700 dark:text-slate-300 hover:ring-cyan-500/40 hover:text-slate-900 dark:hover:text-slate-100 transition"
+                    >
+                      {c.presets[p.id]}
+                      <span className={`rounded-full px-1.5 py-0.5 text-[10.5px] font-semibold tabular-nums ${shown > 0 ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400' : 'bg-slate-500/10 text-slate-400'}`}>
+                        {shown > 0 ? `−${shown}%` : '—'}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* Result */}

@@ -2,6 +2,7 @@
 // can round-trip through a URL (?car=120&kwh=220&meat=7) or localStorage and
 // restore the exact sliders. This module owns the calculator's input model
 // (fields, defaults, bounds); the feature imports it so the two never drift.
+import { estimateAnnualCO2 } from './co2';
 
 // `key` is the model field, `param` the short URL token, `max` the slider
 // ceiling. All inputs are non-negative integers.
@@ -55,6 +56,30 @@ export function decodeCalc(input) {
     }
   }
   return seen ? vals : null;
+}
+
+// Quick scenarios. Each is a pure transform of the *current* inputs, so its
+// saving is always measured against whatever the sliders show now (no baseline
+// bookkeeping). Clicking one applies the transform; the badge shows what it
+// would cut from the current footprint.
+export const CALC_PRESETS = [
+  { id: 'carLite', apply: (v) => ({ ...v, carKmPerWeek: Math.round(v.carKmPerWeek / 2) }) },
+  { id: 'veg', apply: (v) => ({ ...v, meatMealsPerWeek: 0 }) },
+  { id: 'energySave', apply: (v) => ({ ...v, kwhPerMonth: Math.round(v.kwhPerMonth * 0.7) }) },
+];
+
+// Apply a preset to current values, returning a normalized (in-bounds) state.
+export function applyPreset(preset, vals) {
+  return normalizeCalc(preset.apply(normalizeCalc(vals)));
+}
+
+// What a preset would cut from the current footprint: absolute kg and the
+// share of the current total. Zero (never negative) when it changes nothing.
+export function presetSaving(preset, vals) {
+  const current = estimateAnnualCO2(normalizeCalc(vals)).total;
+  const next = estimateAnnualCO2(applyPreset(preset, vals)).total;
+  const savedKg = Math.max(0, current - next);
+  return { savedKg, pct: current > 0 ? savedKg / current : 0, next };
 }
 
 function toParams(input) {
