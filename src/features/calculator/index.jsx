@@ -1,4 +1,5 @@
 import { useEffect, useId } from 'react';
+import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { estimateAnnualCO2, potentialSavings, formatCO2 } from '@/core/lib/co2';
 import { CALC_FIELDS, DEFAULT_CALC, CALC_PRESETS, encodeCalc, decodeCalc, normalizeCalc, applyPreset, presetSaving } from '@/core/lib/calcShare';
@@ -142,17 +143,26 @@ export function Calculator({ t }) {
                   −{formatCO2(saved)}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={share}
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/[.08] ring-1 ring-white/15 px-4 h-9 text-[12.5px] font-medium text-white hover:bg-white/[.14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 transition"
-              >
-                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <circle cx="12" cy="3.5" r="2" /><circle cx="4" cy="8" r="2" /><circle cx="12" cy="12.5" r="2" />
-                  <path d="M5.7 7 10.3 4.5M5.7 9l4.6 2.5" strokeLinecap="round" />
-                </svg>
-                {c.share}
-              </button>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={share}
+                  className="inline-flex items-center gap-2 rounded-full bg-white/[.08] ring-1 ring-white/15 px-4 h-9 text-[12.5px] font-medium text-white hover:bg-white/[.14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 transition"
+                >
+                  <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <circle cx="12" cy="3.5" r="2" /><circle cx="4" cy="8" r="2" /><circle cx="12" cy="12.5" r="2" />
+                    <path d="M5.7 7 10.3 4.5M5.7 9l4.6 2.5" strokeLinecap="round" />
+                  </svg>
+                  {c.share}
+                </button>
+                <Link
+                  to={`/contact?from=calculator&${encodeCalc(vals)}`}
+                  className="inline-flex items-center gap-2 rounded-full bg-emerald-500/90 px-4 h-9 text-[12.5px] font-semibold text-white hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 transition"
+                >
+                  {c.contactCta}
+                  <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3 6h6m-2-2 2 2-2 2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </Link>
+              </div>
               <p className="mt-3 text-[11px] text-slate-400 leading-relaxed">{c.disclaimer}</p>
             </div>
           </div>

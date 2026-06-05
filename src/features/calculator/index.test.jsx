@@ -1,12 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Calculator } from './index';
 import { ECO_I18N } from '@/core/i18n/dictionary';
 
 const t = ECO_I18N.tr;
 
 function setup() {
-  return render(<Calculator t={t} />);
+  // The "discuss this result" CTA is a router Link, so a Router is required.
+  return render(<Calculator t={t} />, { wrapper: MemoryRouter });
 }
 
 describe('Calculator', () => {

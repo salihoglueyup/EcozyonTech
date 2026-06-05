@@ -319,6 +319,7 @@ export const ECO_I18N = {
         emailP: "name@company.com",
         msgLabel: "Mesaj (opsiyonel)",
         msgP: "Bizimle paylaşmak istediğin detaylar...",
+        fromCalc: "Yıllık karbon ayak izimi ~{co2} CO₂e olarak hesapladım. Bunu azaltmak için nasıl yardımcı olabilirsiniz?",
         nextTitle: "Sıradaki adımlar",
         nextSteps: [
           { t: "24 saat içinde dönüş", d: "Ekipten biri yazılı olarak cevap verir." },
@@ -419,6 +420,7 @@ export const ECO_I18N = {
         share: "Sonucu paylaş",
         shareCopied: "Bağlantı kopyalandı",
         shareError: "Kopyalanamadı",
+        contactCta: "Bu sonuçla iletişime geç",
         presetsTitle: "Hızlı senaryolar",
         presets: {
           carLite: "Arabayı yarıya indir",
@@ -748,6 +750,7 @@ export const ECO_I18N = {
         emailP: "name@company.com",
         msgLabel: "Message (optional)",
         msgP: "Anything you'd like to share with us...",
+        fromCalc: "I estimated my annual carbon footprint at ~{co2} CO₂e. How could you help me reduce it?",
         nextTitle: "What happens next",
         nextSteps: [
           { t: "Reply within 24h", d: "Someone from the team writes back." },
@@ -848,6 +851,7 @@ export const ECO_I18N = {
         share: "Share result",
         shareCopied: "Link copied",
         shareError: "Couldn’t copy",
+        contactCta: "Discuss this result",
         presetsTitle: "Quick scenarios",
         presets: {
           carLite: "Halve driving",

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
+import { decodeCalc } from '@/core/lib/calcShare';
+import { estimateAnnualCO2, formatCO2 } from '@/core/lib/co2';
 
 const DRAFT_KEY = 'ecozyon.contactDraft';
 
@@ -27,6 +30,7 @@ export function Contact({ t, lang }) {
   const [retryAfterSec, setRetryAfterSec] = useState(0);
   const idleTimerRef = useRef(null);
   const firstWriteRef = useRef(true);
+  const [searchParams] = useSearchParams();
 
   // Clear the pending success → idle timer on unmount.
   useEffect(() => () => {
@@ -54,6 +58,23 @@ export function Contact({ t, lang }) {
       /* corrupt draft — ignore */
     }
     // Restore once on mount; the picker options are stable per language.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Arriving from the calculator's "discuss this result" CTA: prefill a
+  // localized message with the estimated footprint and preselect the "info"
+  // purpose. Runs after the draft restore above, so an explicit intent from
+  // the calculator wins over a stale draft.
+  useEffect(() => {
+    if (searchParams.get('from') !== 'calculator') return;
+    const vals = decodeCalc(searchParams);
+    if (!vals) return;
+    const total = formatCO2(estimateAnnualCO2(vals).total);
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setMessage(t.contact.fromCalc.replace('{co2}', total));
+    setPurpose(t.contact.purposes[2] ?? t.contact.purposes[0]);
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // Read the deep link once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
