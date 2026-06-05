@@ -6,6 +6,7 @@ import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
 import { POSTS, postBySlug, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
 import { readRecents } from '@/core/lib/recents';
+import { readSaved, isSaved } from '@/core/lib/saved';
 
 const meta = routeByKey('blog');
 const TAGS = postTags(POSTS);
@@ -22,16 +23,23 @@ export default function BlogPage() {
   const tr = lang === 'tr';
   const [activeTag, setActiveTag] = useState(null);
   const [query, setQuery] = useState('');
-  const visible = searchPosts(filterByTag(POSTS, activeTag), query, lang);
+  const [savedOnly, setSavedOnly] = useState(false);
 
-  // Recently-viewed posts, resolved client-side after mount (localStorage is
-  // empty during prerender, so the server emits nothing and the first client
-  // render matches — no hydration mismatch).
+  // Recently-viewed and saved slugs, resolved client-side after mount
+  // (localStorage is empty during prerender, so the server emits nothing and
+  // the first client render matches — no hydration mismatch).
   const [recents, setRecents] = useState([]);
+  const [savedSlugs, setSavedSlugs] = useState([]);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    /* eslint-disable react-hooks/set-state-in-effect */
     setRecents(readRecents().map(postBySlug).filter(Boolean));
+    setSavedSlugs(readSaved());
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
+
+  const tagged = filterByTag(POSTS, activeTag);
+  const scoped = savedOnly ? tagged.filter((p) => isSaved(savedSlugs, p.slug)) : tagged;
+  const visible = searchPosts(scoped, query, lang);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -105,6 +113,21 @@ export default function BlogPage() {
               </button>
             );
           })}
+          {savedSlugs.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setSavedOnly((v) => !v)}
+              aria-pressed={savedOnly}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
+                savedOnly
+                  ? 'bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 ring-cyan-500/30'
+                  : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
+              }`}
+            >
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill={savedOnly ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.6-4 2.6z" strokeLinejoin="round" /></svg>
+              {t.blog.savedFilter}
+            </button>
+          )}
         </div>
 
         <div className="space-y-3">
@@ -152,7 +175,7 @@ export default function BlogPage() {
           ))}
           {visible.length === 0 && (
             <p className="py-10 text-center text-[14px] text-slate-500 dark:text-slate-400">
-              {query.trim() ? t.blog.noResults : t.blog.empty}
+              {query.trim() ? t.blog.noResults : savedOnly ? t.blog.savedEmpty : t.blog.empty}
             </p>
           )}
         </div>

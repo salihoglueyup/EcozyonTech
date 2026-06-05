@@ -7,6 +7,7 @@ import { postBySlug, readingTime, relatedPosts, postNeighbors } from '@/core/dat
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
+import { isSaved, readSaved, toggleSavedSlug } from '@/core/lib/saved';
 import { useToast } from '@/shared/ui/Toast';
 import { Tooltip } from '@/shared/ui/Tooltip';
 import { SectionNav } from '@/shared/ui/SectionNav';
@@ -128,9 +129,22 @@ export default function BlogPostPage() {
 
 function ShareBar({ post, lang, t }) {
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const toast = useToast();
   const url = `${SITE.url}/blog/${post.slug}`;
   const links = shareLinks(url, post.title[lang]);
+
+  // Reflect saved state after mount (localStorage is client-only).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSaved(isSaved(readSaved(), post.slug));
+  }, [post.slug]);
+
+  const toggleSave = () => {
+    const nowSaved = toggleSavedSlug(post.slug).includes(post.slug);
+    setSaved(nowSaved);
+    toast({ message: nowSaved ? t.blog.savedOn : t.blog.savedOff, type: 'success' });
+  };
 
   const copy = async () => {
     try {
@@ -176,6 +190,20 @@ function ShareBar({ post, lang, t }) {
             {t.blog.copyLink}
           </>
         )}
+      </button>
+      <button
+        type="button"
+        onClick={toggleSave}
+        aria-pressed={saved}
+        aria-label={saved ? t.blog.unsave : t.blog.save}
+        className={`inline-flex items-center gap-1.5 rounded-full px-3 h-8 text-[12px] ring-1 transition ${
+          saved
+            ? 'bg-cyan-500/10 ring-cyan-500/30 text-cyan-700 dark:text-cyan-400'
+            : 'bg-white/70 dark:bg-white/[.04] ring-slate-900/[.08] dark:ring-white/[.1] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:ring-cyan-500/30'
+        }`}
+      >
+        <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 2.5h8v11l-4-2.6-4 2.6z" strokeLinejoin="round" /></svg>
+        {saved ? t.blog.savedLabel : t.blog.save}
       </button>
     </div>
   );
