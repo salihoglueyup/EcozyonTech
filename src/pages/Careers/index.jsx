@@ -5,14 +5,20 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { routeByKey } from '@/core/config/site';
-import { JOBS } from '@/core/data/jobs';
+import { JOBS, jobTeams, filterByTeam, searchJobs } from '@/core/data/jobs';
 
 const meta = routeByKey('careers');
+const TEAMS = jobTeams(JOBS);
 
 export default function CareersPage() {
   const { lang, t } = useApp();
   const tr = lang === 'tr';
   const [openJob, setOpenJob] = useState(null);
+  const [activeTeam, setActiveTeam] = useState(null);
+  const [query, setQuery] = useState('');
+
+  const scoped = filterByTeam(JOBS, activeTeam);
+  const visible = searchJobs(scoped, query, lang);
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -47,8 +53,52 @@ export default function CareersPage() {
           </div>
         </div>
 
+        <div className="mb-5 relative max-w-sm">
+          <svg className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t.careers.searchP}
+            aria-label={t.careers.searchLabel}
+            className="w-full rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-10 pr-4 py-2.5 text-[13px] text-slate-800 dark:text-slate-200 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+          />
+        </div>
+
+        <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={t.careers.filterLabel}>
+          {[{ id: null, label: { tr: t.careers.filterAll, en: t.careers.filterAll } }, ...TEAMS].map((tm) => {
+            const on = activeTeam === tm.id;
+            return (
+              <button
+                key={tm.id ?? 'all'}
+                type="button"
+                onClick={() => setActiveTeam(tm.id)}
+                aria-pressed={on}
+                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
+                  on
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
+                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
+                }`}
+              >
+                {tm.label[lang]}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
+          {t.careers.openRoles.replace('{n}', visible.length)}
+        </div>
+
         <div className="space-y-3">
-          {JOBS.map((j) => (
+          {visible.length === 0 && (
+            <div className="rounded-2xl eco-card p-8 text-center text-[13.5px] text-slate-500 dark:text-slate-400">
+              {t.careers.noResults}
+            </div>
+          )}
+          {visible.map((j) => (
             <div key={j.id} className="rounded-2xl eco-card p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 text-[11px]">
