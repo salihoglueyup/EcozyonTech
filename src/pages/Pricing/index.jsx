@@ -49,10 +49,21 @@ const TIERS = [
   },
 ];
 
+// Annual billing charges for 10 months instead of 12 → ~17% off. Only the
+// numeric (Team) tier is affected; Free/Custom tiers ignore it.
+const ANNUAL_MONTHS = 10;
+const SAVE_PCT = Math.round((1 - ANNUAL_MONTHS / 12) * 100);
+
 export default function PricingPage() {
   const { lang } = useApp();
   const tr = lang === 'tr';
   const [currency, setCurrency] = useState(defaultCurrency(lang));
+  const [annual, setAnnual] = useState(false);
+  // Monthly-equivalent price for a tier under the active billing period.
+  const priceFor = (tier) => {
+    const monthly = tier.amounts[currency];
+    return annual ? Math.round((monthly * ANNUAL_MONTHS) / 12) : monthly;
+  };
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -77,27 +88,60 @@ export default function PricingPage() {
               : 'Individual use is free during the pilot. Team and enterprise unlock as you grow.'}
           </p>
 
-          <div
-            className="mt-6 inline-flex items-center gap-1 rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] p-1"
-            role="group"
-            aria-label={tr ? 'Para birimi' : 'Currency'}
-          >
-            {CURRENCIES.map((c) => {
-              const on = currency === c.id;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  onClick={() => setCurrency(c.id)}
-                  aria-pressed={on}
-                  className={`rounded-full px-3 py-1.5 text-[12.5px] font-medium tabular-nums transition ${
-                    on ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  {c.symbol} {c.label}
-                </button>
-              );
-            })}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div
+              className="inline-flex items-center gap-1 rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] p-1"
+              role="group"
+              aria-label={tr ? 'Para birimi' : 'Currency'}
+            >
+              {CURRENCIES.map((c) => {
+                const on = currency === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setCurrency(c.id)}
+                    aria-pressed={on}
+                    className={`rounded-full px-3 py-1.5 text-[12.5px] font-medium tabular-nums transition ${
+                      on ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {c.symbol} {c.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              className="inline-flex items-center gap-1 rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] p-1"
+              role="group"
+              aria-label={tr ? 'Faturalama dönemi' : 'Billing period'}
+            >
+              {[
+                { id: false, label: tr ? 'Aylık' : 'Monthly' },
+                { id: true, label: tr ? 'Yıllık' : 'Annual' },
+              ].map((opt) => {
+                const on = annual === opt.id;
+                return (
+                  <button
+                    key={String(opt.id)}
+                    type="button"
+                    onClick={() => setAnnual(opt.id)}
+                    aria-pressed={on}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-medium transition ${
+                      on ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {opt.label}
+                    {opt.id && (
+                      <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${on ? 'bg-emerald-500/20 text-emerald-300 dark:text-emerald-700' : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'}`}>
+                        −%{SAVE_PCT}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -119,10 +163,20 @@ export default function PricingPage() {
               <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold" style={{ color: tier.accent }}>
                 {tier.name[lang]}
               </div>
-              <div className="mt-2 font-display text-[40px] leading-none tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
-                {tier.amounts ? formatMoney(tier.amounts[currency], currency) : tier.priceLabel[lang]}
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="font-display text-[40px] leading-none tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
+                  {tier.amounts ? formatMoney(priceFor(tier), currency) : tier.priceLabel[lang]}
+                </span>
+                {tier.amounts && annual && (
+                  <span className="text-[14px] text-slate-400 line-through tabular-nums">
+                    {formatMoney(tier.amounts[currency], currency)}
+                  </span>
+                )}
               </div>
-              <div className="mt-1 text-[12.5px] text-slate-500 dark:text-slate-400">{tier.period[lang]}</div>
+              <div className="mt-1 text-[12.5px] text-slate-500 dark:text-slate-400">
+                {tier.period[lang]}
+                {tier.amounts && annual && (tr ? ' · yıllık faturalanır' : ' · billed annually')}
+              </div>
               <p className="mt-3 text-[14px] text-slate-600 dark:text-slate-400">{tier.tagline[lang]}</p>
 
               <ul className="mt-6 space-y-2.5 flex-1">
