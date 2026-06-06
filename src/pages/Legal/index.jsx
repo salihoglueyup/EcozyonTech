@@ -25,6 +25,22 @@ const SECTIONS = [
     },
   },
   {
+    id: 'cookies',
+    title: { tr: 'Çerez Politikası', en: 'Cookie Policy' },
+    body: {
+      tr: [
+        'Bu site yalnızca işlevsel çerezler ve yerel depolama (localStorage) kullanır; reklam veya üçüncü taraf takip çerezi yoktur.',
+        'Tercihlerin (dil, tema, vurgu renkleri, kaydedilen yazılar, hesaplayıcı girdilerin) tarayıcında saklanır; sunucuya gönderilmez.',
+        'Çerez bildirimini kapattığında yalnızca bu onayı hatırlamak için tek bir kayıt tutulur. Tarayıcı ayarlarından dilediğin zaman temizleyebilirsin.',
+      ],
+      en: [
+        'This site uses only functional cookies and local storage; there are no advertising or third-party tracking cookies.',
+        'Your preferences (language, theme, accent colors, saved posts, calculator inputs) are stored in your browser and never sent to a server.',
+        'When you dismiss the cookie notice, a single record is kept only to remember that choice. You can clear it anytime from your browser settings.',
+      ],
+    },
+  },
+  {
     id: 'terms',
     title: { tr: 'Kullanım Şartları', en: 'Terms of Service' },
     body: {

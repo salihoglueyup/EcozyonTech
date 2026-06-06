@@ -43,7 +43,7 @@ export default function CookieBanner() {
     >
       <p className="text-[12.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
         {t.cookies.text}
-        <Link to="/legal#privacy" className="text-slate-900 dark:text-slate-100 underline underline-offset-2 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">
+        <Link to="/legal#cookies" className="text-slate-900 dark:text-slate-100 underline underline-offset-2 decoration-emerald-500 decoration-2 hover:decoration-cyan-500">
           {t.cookies.link}
         </Link>
         .
