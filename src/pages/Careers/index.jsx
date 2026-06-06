@@ -39,14 +39,14 @@ export default function CareersPage() {
   const openRole = useCallback((job) => { setOpenJob(job); setJobParam(job.id); }, [setJobParam]);
   const closeRole = useCallback(() => { setOpenJob(null); setJobParam(null); }, [setJobParam]);
 
-  // Open the modal from a shared ?job= link on first load. Runs once; reading
-  // the param post-mount keeps the prerendered HTML free of modal state.
+  // URL is the source of truth for the open role: a shared ?job= link, the
+  // back button, or a ⌘K jump to /careers?job= all reconcile here. Reading the
+  // param post-mount keeps the prerendered HTML free of modal state.
+  const jobParam = params.get('job');
   useEffect(() => {
-    const job = jobById(params.get('job'));
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (job) setOpenJob(job);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setOpenJob(jobById(jobParam) || null);
+  }, [jobParam]);
 
   const shareRole = useCallback(
     async (job) => {

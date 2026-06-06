@@ -2,10 +2,10 @@
 // (CommandPalette.jsx) owns focus/keyboard/navigation; everything here is
 // side-effect-free and unit-tested.
 
-// Build the navigable item list from routes + blog posts. Action items
-// (theme/lang) are appended by the component since they carry handlers.
-// Each item: { id, type: 'page'|'post', label, hint, to }.
-export function buildCommands({ routes, posts, lang = 'tr' }) {
+// Build the navigable item list from routes + blog posts + open roles. Action
+// items (theme/lang) are appended by the component since they carry handlers.
+// Each item: { id, type: 'page'|'post'|'job', label, hint, to }.
+export function buildCommands({ routes, posts, jobs, lang = 'tr' }) {
   const pages = routes
     .filter((r) => r.path !== '*' && !r.path.includes(':'))
     .map((r) => ({
@@ -21,7 +21,15 @@ export function buildCommands({ routes, posts, lang = 'tr' }) {
     hint: p.tag?.[lang],
     to: `/blog/${p.slug}`,
   }));
-  return [...pages, ...blog];
+  // Roles deep-link to the Careers page with the apply modal pre-opened.
+  const roles = (jobs || []).map((j) => ({
+    id: `job:${j.id}`,
+    type: 'job',
+    label: j.title?.[lang] || j.title?.en || j.id,
+    hint: j.team?.[lang],
+    to: `/careers?job=${j.id}`,
+  }));
+  return [...pages, ...blog, ...roles];
 }
 
 // Reorder so recently-viewed posts (by slug, in order) surface first; the

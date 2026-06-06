@@ -4,6 +4,7 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { ROUTES, SITE } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
+import { JOBS } from '@/core/data/jobs';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
 import { useToast } from '@/shared/ui/Toast';
@@ -43,7 +44,7 @@ export default function CommandPalette() {
   // Action items carry handlers; data items (pages/posts) carry `to`. Saved
   // posts get a `saved` flag so the list can mark them.
   const items = useMemo(() => {
-    const data = buildCommands({ routes: ROUTES, posts: POSTS, lang }).map((it) =>
+    const data = buildCommands({ routes: ROUTES, posts: POSTS, jobs: JOBS, lang }).map((it) =>
       it.type === 'post' && isSaved(savedSlugs, it.to.slice('/blog/'.length)) ? { ...it, saved: true } : it,
     );
     const actions = [
@@ -77,7 +78,7 @@ export default function CommandPalette() {
     () => (query.trim() ? filterCommands(items, query) : orderByRecents(items, recentSlugs)),
     [items, query, recentSlugs],
   );
-  const kindLabel = { page: t.cmd.pages, post: t.cmd.posts, action: t.cmd.actions };
+  const kindLabel = { page: t.cmd.pages, post: t.cmd.posts, job: t.cmd.roles, action: t.cmd.actions };
 
   const run = useCallback(
     (item) => {
@@ -164,7 +165,7 @@ export default function CommandPalette() {
               }`}
             >
               <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
-                {item.recent ? '↺' : item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : '→'}
+                {item.recent ? '↺' : item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : item.type === 'job' ? '⊕' : '→'}
               </span>
               <span className="flex-1 truncate">{item.label}</span>
               {item.saved && (

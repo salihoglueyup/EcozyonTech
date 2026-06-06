@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { buildCommands, filterCommands, orderByRecents } from './commands';
 import { ROUTES } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
+import { JOBS } from '@/core/data/jobs';
 
 describe('buildCommands', () => {
   it('emits a page item per concrete route and a post item per blog post', () => {
@@ -11,6 +12,19 @@ describe('buildCommands', () => {
     expect(pages.length).toBe(ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).length);
     expect(posts.length).toBe(POSTS.length);
     expect(items.every((i) => typeof i.to === 'string' && i.id)).toBe(true);
+  });
+
+  it('emits a job item per role, deep-linking to ?job=<id>', () => {
+    const items = buildCommands({ routes: ROUTES, posts: POSTS, jobs: JOBS, lang: 'en' });
+    const jobs = items.filter((i) => i.type === 'job');
+    expect(jobs.length).toBe(JOBS.length);
+    expect(jobs[0].to).toBe(`/careers?job=${JOBS[0].id}`);
+    expect(jobs[0].label).toBe(JOBS[0].title.en);
+  });
+
+  it('omits job items when no jobs are passed', () => {
+    const items = buildCommands({ routes: ROUTES, posts: POSTS, lang: 'tr' });
+    expect(items.some((i) => i.type === 'job')).toBe(false);
   });
 
   it('labels in the active language and links posts to their slug', () => {
