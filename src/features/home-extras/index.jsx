@@ -107,6 +107,38 @@ export function WhyEcozyon({ t }) {
   );
 }
 
+// Closing call-to-action band — gradient panel with primary/secondary links.
+export function CtaBand({ t }) {
+  const h = t.home;
+  return (
+    <section className="relative py-16 lg:py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <div
+            className="relative overflow-hidden rounded-3xl px-8 py-12 lg:px-14 lg:py-16 text-center"
+            style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+          >
+            <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #fff 0, transparent 40%), radial-gradient(circle at 80% 80%, #fff 0, transparent 40%)' }} aria-hidden="true" />
+            <div className="relative">
+              <h2 className="font-display text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.06] tracking-[-0.02em] text-white max-w-2xl mx-auto">{h.ctaTitle}</h2>
+              <p className="mt-4 text-[15px] text-white/85 max-w-xl mx-auto leading-relaxed">{h.ctaText}</p>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[14px] font-semibold text-slate-900 hover:bg-white/90 transition">
+                  {h.ctaPrimary}
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                </Link>
+                <Link to="/services" className="inline-flex items-center gap-2 rounded-full bg-white/15 px-6 py-3 text-[14px] font-semibold text-white ring-1 ring-white/40 hover:bg-white/25 transition">
+                  {h.ctaSecondary}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 // Spotlight on the flagship case study, bridging home → /cases.
 export function FeaturedCase({ t, lang }) {
   const h = t.home;

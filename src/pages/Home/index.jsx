@@ -4,7 +4,7 @@ import { ROUTES, SITE } from '@/core/config/site';
 import { Hero } from '@/features/hero';
 import { Metrics } from '@/features/metrics';
 import { Testimonials } from '@/features/testimonials';
-import { TrustBand, WhyEcozyon, FeaturedCase } from '@/features/home-extras';
+import { TrustBand, WhyEcozyon, FeaturedCase, CtaBand } from '@/features/home-extras';
 
 const meta = ROUTES.find((r) => r.key === 'home');
 
@@ -26,6 +26,7 @@ export default function HomePage() {
       <Metrics t={t} />
       <FeaturedCase t={t} lang={lang} />
       <Testimonials t={t} />
+      <CtaBand t={t} />
     </>
   );
 }
