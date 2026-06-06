@@ -78,6 +78,20 @@ export function Contact({ t, lang }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Arriving from a pricing plan's "get started" CTA: prefill a message naming
+  // the chosen plan + billing period and preselect the partnership purpose.
+  useEffect(() => {
+    const plan = searchParams.get('plan');
+    const planName = t.contact.planNames?.[plan];
+    if (!planName) return;
+    const billing = searchParams.get('billing') === 'annual' ? t.contact.planAnnual : t.contact.planMonthly;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setMessage(t.contact.fromPlan.replace('{plan}', planName).replace('{billing}', billing));
+    setPurpose(t.contact.purposes[0]);
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Autosave the draft as fields change; clear it once everything is empty
   // (which also covers the post-submit reset). The first run is skipped so a
   // not-yet-restored empty form never wipes a stored draft.

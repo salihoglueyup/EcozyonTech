@@ -215,7 +215,7 @@ export default function PricingPage() {
               </ul>
 
               <Link
-                to="/contact"
+                to={`/contact?plan=${tier.id}${annual ? '&billing=annual' : ''}`}
                 className={`mt-7 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium transition ${
                   tier.featured ? 'text-white' : 'text-slate-800 dark:text-slate-200 bg-white/70 dark:bg-white/[.06] border border-slate-900/[.08] dark:border-white/[.1] hover:bg-white dark:hover:bg-white/[.1]'
                 }`}
