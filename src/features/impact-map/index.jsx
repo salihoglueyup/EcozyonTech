@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { CITIES } from '@/core/data/cities';
+import { caseByCity } from '@/core/data/cases';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
 import { useApp } from '@/app/providers/AppProvider';
 
@@ -300,6 +301,7 @@ function LayerRow({ on, onToggle, spec }) {
 }
 
 function CityDetail({ city, m, onClose }) {
+  const study = caseByCity(city.name);
   return (
     <div className="p-5 relative">
       <div className="flex items-start justify-between gap-3 mb-3">
@@ -349,7 +351,14 @@ function CityDetail({ city, m, onClose }) {
         </div>
       </div>
 
-      <Link to="/contact" className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[12.5px] font-medium text-white shadow-[0_10px_30px_-12px_rgba(14,165,233,.6)]"
+      {study && (
+        <Link to={`/cases/${study.slug}`} className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[12.5px] font-medium text-slate-800 dark:text-slate-200 bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.1] dark:ring-white/[.12] hover:ring-cyan-500/40">
+          <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 2.5h6l2 2v7h-8z" strokeLinejoin="round" /><path d="M5 6h4M5 8.5h4" strokeLinecap="round" /></svg>
+          {m.details.readCase}
+        </Link>
+      )}
+
+      <Link to="/contact" className={`${study ? 'mt-2' : 'mt-6'} w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[12.5px] font-medium text-white shadow-[0_10px_30px_-12px_rgba(14,165,233,.6)]`}
         style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9,#10B981)" }}>
         {m.details.openProfile}
         <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
