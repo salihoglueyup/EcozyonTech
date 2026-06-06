@@ -1,11 +1,12 @@
-import { useEffect, useId, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
-import { routeByKey } from '@/core/config/site';
-import { JOBS, jobTeams, filterByTeam, searchJobs } from '@/core/data/jobs';
+import { useToast } from '@/shared/ui/Toast';
+import { routeByKey, SITE } from '@/core/config/site';
+import { JOBS, jobTeams, filterByTeam, searchJobs, jobById } from '@/core/data/jobs';
 
 const meta = routeByKey('careers');
 const TEAMS = jobTeams(JOBS);
@@ -13,12 +14,52 @@ const TEAMS = jobTeams(JOBS);
 export default function CareersPage() {
   const { lang, t } = useApp();
   const tr = lang === 'tr';
+  const toast = useToast();
+  const [params, setParams] = useSearchParams();
   const [openJob, setOpenJob] = useState(null);
   const [activeTeam, setActiveTeam] = useState(null);
   const [query, setQuery] = useState('');
 
   const scoped = filterByTeam(JOBS, activeTeam);
   const visible = searchJobs(scoped, query, lang);
+
+  // Keep ?job= in sync with the open modal so a role is deep-linkable.
+  // Opening pushes a history entry (shareable/back-navigable); closing
+  // replaces it so the back button doesn't just reopen the modal.
+  const setJobParam = useCallback(
+    (id) => {
+      const next = new URLSearchParams(params);
+      if (id) next.set('job', id);
+      else next.delete('job');
+      setParams(next, { replace: !id });
+    },
+    [params, setParams],
+  );
+
+  const openRole = useCallback((job) => { setOpenJob(job); setJobParam(job.id); }, [setJobParam]);
+  const closeRole = useCallback(() => { setOpenJob(null); setJobParam(null); }, [setJobParam]);
+
+  // Open the modal from a shared ?job= link on first load. Runs once; reading
+  // the param post-mount keeps the prerendered HTML free of modal state.
+  useEffect(() => {
+    const job = jobById(params.get('job'));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (job) setOpenJob(job);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const shareRole = useCallback(
+    async (job) => {
+      if (typeof window === 'undefined') return;
+      try {
+        await navigator.clipboard.writeText(`${SITE.url}/careers?job=${job.id}`);
+        toast({ message: t.careers.linkCopied, type: 'success' });
+      } catch {
+        toast({ message: t.careers.shareError, type: 'error' });
+      }
+    },
+    [toast, t],
+  );
   useDocumentMeta(
     meta.title[lang],
     tr
@@ -108,15 +149,29 @@ export default function CareersPage() {
                 <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{j.title[lang]}</h2>
                 <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{j.desc[lang]}</p>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpenJob(j)}
-                className="self-start inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white shrink-0"
-                style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
-              >
-                {t.careers.apply}
-                <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
-              </button>
+              <div className="flex items-center gap-2 shrink-0 self-start">
+                <button
+                  type="button"
+                  onClick={() => shareRole(j)}
+                  aria-label={t.careers.share}
+                  title={t.careers.share}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:ring-cyan-500/30 transition"
+                >
+                  <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <circle cx="12" cy="3.5" r="1.8" /><circle cx="4" cy="8" r="1.8" /><circle cx="12" cy="12.5" r="1.8" />
+                    <path d="M5.6 7.1 10.4 4.4M5.6 8.9l4.8 2.7" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openRole(j)}
+                  className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
+                  style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                >
+                  {t.careers.apply}
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -129,12 +184,12 @@ export default function CareersPage() {
         </div>
       </div>
 
-      {openJob && <ApplyModal job={openJob} lang={lang} t={t} onClose={() => setOpenJob(null)} />}
+      {openJob && <ApplyModal job={openJob} lang={lang} t={t} onClose={closeRole} onShare={() => shareRole(openJob)} />}
     </section>
   );
 }
 
-function ApplyModal({ job, lang, t, onClose }) {
+function ApplyModal({ job, lang, t, onClose, onShare }) {
   const c = t.careers;
   const dialogRef = useRef(null);
   useFocusTrap(dialogRef, true);
@@ -193,16 +248,30 @@ function ApplyModal({ job, lang, t, onClose }) {
         aria-describedby={descId}
         className="relative w-full max-w-md rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={c.close}
-          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.06] hover:text-slate-900 dark:hover:text-slate-100"
-        >
-          <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" strokeLinecap="round" /></svg>
-        </button>
+        <div className="absolute right-4 top-4 flex items-center gap-1">
+          <button
+            type="button"
+            onClick={onShare}
+            aria-label={c.share}
+            title={c.share}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.06] hover:text-slate-900 dark:hover:text-slate-100"
+          >
+            <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <circle cx="12" cy="3.5" r="1.8" /><circle cx="4" cy="8" r="1.8" /><circle cx="12" cy="12.5" r="1.8" />
+              <path d="M5.6 7.1 10.4 4.4M5.6 8.9l4.8 2.7" strokeLinecap="round" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={c.close}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-900/[.06] hover:text-slate-900 dark:hover:text-slate-100"
+          >
+            <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" strokeLinecap="round" /></svg>
+          </button>
+        </div>
 
-        <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 pr-8">
+        <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 pr-16">
           {c.applyTitle.replace('{role}', role)}
         </h2>
 
