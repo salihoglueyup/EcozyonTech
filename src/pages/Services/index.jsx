@@ -8,6 +8,7 @@ import { UseCases } from '@/features/use-cases';
 import { DashboardPreview } from '@/features/dashboard';
 import { Calculator } from '@/features/calculator';
 import { FAQ } from '@/features/faq';
+import { featuredHelp } from '@/core/data/help';
 
 const meta = ROUTES.find((r) => r.key === 'services');
 
@@ -28,6 +29,11 @@ export default function ServicesPage() {
     { id: 'faq', label: tr ? 'SSS' : 'FAQ' },
     { id: 'dashboard', label: tr ? 'Panel' : 'Dashboard' },
   ];
+  // A short, curated FAQ here; the full searchable list lives on /help.
+  const servicesFaq = {
+    title: t.faq.title,
+    items: featuredHelp().map((e) => ({ q: e.q[lang], a: e.a[lang] })),
+  };
   return (
     <div className="pt-10">
       <SectionNav sections={sections} />
@@ -35,7 +41,7 @@ export default function ServicesPage() {
       <TechEcosystem t={t} />
       <UseCases t={t} lang={lang} />
       <Calculator t={t} />
-      <FAQ t={t} />
+      <FAQ t={t} faq={servicesFaq} moreTo="/help" moreLabel={tr ? 'Tüm soruları gör' : 'See all questions'} />
       <DashboardPreview t={t} lang={lang} />
     </div>
   );

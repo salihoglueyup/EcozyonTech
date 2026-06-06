@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SectionHeader } from '@/shared/ui/primitives';
 import { Reveal, RevealGroup } from '@/shared/ui/useReveal';
 
@@ -6,8 +7,9 @@ import { Reveal, RevealGroup } from '@/shared/ui/useReveal';
  * FAQ accordion — renders from a { title, items: [{ q, a }] } object,
  * defaulting to t.faq. Pass `faq`/`id`/`eyebrow` to reuse it elsewhere
  * (e.g. a pricing-specific FAQ) without touching the dictionary shape.
+ * Pass `moreTo`/`moreLabel` to show a "see all" link under the list.
  */
-export function FAQ({ t, faq = t.faq, id = 'faq', eyebrow = 'FAQ' }) {
+export function FAQ({ t, faq = t.faq, id = 'faq', eyebrow = 'FAQ', moreTo, moreLabel }) {
   if (!faq) return null;
 
   return (
@@ -24,6 +26,18 @@ export function FAQ({ t, faq = t.faq, id = 'faq', eyebrow = 'FAQ' }) {
             ))}
           </RevealGroup>
         </div>
+
+        {moreTo && (
+          <div className="mt-8 text-center">
+            <Link
+              to={moreTo}
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+            >
+              {moreLabel}
+              <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );
