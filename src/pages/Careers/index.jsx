@@ -246,7 +246,7 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-md rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+        className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
       >
         <div className="absolute right-4 top-4 flex items-center gap-1">
           <button
@@ -272,8 +272,41 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
         </div>
 
         <h2 id={titleId} className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 pr-16">
-          {c.applyTitle.replace('{role}', role)}
+          {role}
         </h2>
+
+        <div className="mt-2.5 flex flex-wrap gap-1.5 text-[11.5px]">
+          <span className="inline-flex items-center rounded-full bg-cyan-50 dark:bg-cyan-500/[.12] text-cyan-700 dark:text-cyan-400 ring-1 ring-cyan-500/15 px-2.5 py-0.5 font-semibold">{job.team[lang]}</span>
+          <span className="inline-flex items-center rounded-full bg-slate-900/[.05] dark:bg-white/[.06] text-slate-600 dark:text-slate-300 px-2.5 py-0.5 font-medium">{job.level[lang]}</span>
+          <span className="inline-flex items-center rounded-full bg-slate-900/[.05] dark:bg-white/[.06] text-slate-600 dark:text-slate-300 px-2.5 py-0.5 font-medium">{job.location[lang]}</span>
+        </div>
+
+        <p className="mt-3 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{job.desc[lang]}</p>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {[
+            { heading: c.responsibilities, items: job.responsibilities[lang], color: '#0EA5E9' },
+            { heading: c.requirements, items: job.requirements[lang], color: '#10B981' },
+          ].map((col) => (
+            <div key={col.heading}>
+              <h3 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-2">{col.heading}</h3>
+              <ul className="space-y-1.5">
+                {col.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[12.5px] text-slate-700 dark:text-slate-300 leading-snug">
+                    <span className="mt-1.5 h-1 w-1 rounded-full flex-none" style={{ backgroundColor: col.color }} aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 border-t border-slate-900/[.07] dark:border-white/[.08] pt-5">
+          <h3 className="font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">
+            {c.applyTitle.replace('{role}', role)}
+          </h3>
+        </div>
 
         {status === 'success' ? (
           <div id={descId} role="status" className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-4 py-3 text-[13.5px] font-medium">
