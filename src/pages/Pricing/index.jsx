@@ -5,6 +5,46 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
 import { CURRENCIES, defaultCurrency, formatMoney } from '@/core/lib/currency';
+import { FAQ } from '@/features/faq';
+
+// Pricing-specific FAQ, rendered through the shared FAQ accordion.
+const PRICING_FAQ = [
+  {
+    q: { tr: 'Pilot dönem gerçekten ücretsiz mi?', en: 'Is the pilot period really free?' },
+    a: {
+      tr: 'Evet. Bireysel kullanım pilot boyunca ücretsiz; kredi kartı istemiyoruz.',
+      en: 'Yes. Individual use is free throughout the pilot — no credit card required.',
+    },
+  },
+  {
+    q: { tr: 'Yıllık faturalama ne kadar kazandırır?', en: 'How much does annual billing save?' },
+    a: {
+      tr: 'Yıllık planda 12 ay yerine 10 ay ödersin — yaklaşık %17 tasarruf.',
+      en: 'Annual billing charges for 10 months instead of 12 — about 17% off.',
+    },
+  },
+  {
+    q: { tr: 'Planımı sonradan değiştirebilir miyim?', en: 'Can I change plans later?' },
+    a: {
+      tr: 'İstediğin zaman yükselt veya düşür; fark orantılı olarak hesaplanır.',
+      en: 'Upgrade or downgrade anytime; the difference is prorated.',
+    },
+  },
+  {
+    q: { tr: 'Kurumsal fiyat neden özel?', en: 'Why is enterprise priced custom?' },
+    a: {
+      tr: 'Scope 1-2-3 raporlama, SSO/SCIM ve entegrasyon ihtiyaçları kuruma göre değişir; birlikte belirleriz.',
+      en: 'Scope 1-2-3 reporting, SSO/SCIM and integration needs vary by org, so we scope it together.',
+    },
+  },
+  {
+    q: { tr: 'İade politikası nedir?', en: 'What is the refund policy?' },
+    a: {
+      tr: 'Tüm ücretli planlarda 14 gün koşulsuz iade hakkın var.',
+      en: 'Every paid plan includes a 14-day no-questions-asked refund.',
+    },
+  },
+];
 
 const meta = routeByKey('pricing');
 
@@ -79,7 +119,7 @@ const COMPARE = [
 ];
 
 export default function PricingPage() {
-  const { lang } = useApp();
+  const { lang, t } = useApp();
   const tr = lang === 'tr';
   const [currency, setCurrency] = useState(defaultCurrency(lang));
   const [annual, setAnnual] = useState(false);
@@ -95,7 +135,13 @@ export default function PricingPage() {
       : 'Individual, team and enterprise plans — start free during the pilot.',
   );
 
+  const pricingFaq = {
+    title: tr ? 'Fiyatlandırma SSS' : 'Pricing FAQ',
+    items: PRICING_FAQ.map((it) => ({ q: it.q[lang], a: it.a[lang] })),
+  };
+
   return (
+    <>
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-12">
@@ -289,5 +335,8 @@ export default function PricingPage() {
         </p>
       </div>
     </section>
+
+    <FAQ t={t} faq={pricingFaq} id="pricing-faq" eyebrow={tr ? 'SSS' : 'FAQ'} />
+    </>
   );
 }

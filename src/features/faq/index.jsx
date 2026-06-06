@@ -3,21 +3,17 @@ import { SectionHeader } from '@/shared/ui/primitives';
 import { Reveal, RevealGroup } from '@/shared/ui/useReveal';
 
 /**
- * FAQ accordion — renders from t.faq dictionary entries.
- *
- * Dictionary shape:
- *   faq: {
- *     eyebrow, title, items: [{ q, a }]
- *   }
+ * FAQ accordion — renders from a { title, items: [{ q, a }] } object,
+ * defaulting to t.faq. Pass `faq`/`id`/`eyebrow` to reuse it elsewhere
+ * (e.g. a pricing-specific FAQ) without touching the dictionary shape.
  */
-export function FAQ({ t }) {
-  const faq = t.faq;
+export function FAQ({ t, faq = t.faq, id = 'faq', eyebrow = 'FAQ' }) {
   if (!faq) return null;
 
   return (
-    <section id="faq" className="relative py-20 lg:py-28">
+    <section id={id} className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <SectionHeader center color="cyan" eyebrow="FAQ" title={faq.title} className="mb-12" />
+        <SectionHeader center color="cyan" eyebrow={eyebrow} title={faq.title} className="mb-12" />
 
         <div className="space-y-2">
           <RevealGroup step={60}>
