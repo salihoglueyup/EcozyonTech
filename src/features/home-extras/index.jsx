@@ -67,6 +67,46 @@ export function TrustBand({ t }) {
   );
 }
 
+// Three-up "why Ecozyon" value props. Icons are paired to t.home.why by
+// index, so copy stays in the dictionary and only the glyph lives here.
+const WHY_ICONS = [
+  // on-device chip
+  <g key="chip"><rect x="4.5" y="4.5" width="11" height="11" rx="2" /><path d="M8 1.5v3M12 1.5v3M8 15.5v3M12 15.5v3M1.5 8h3M1.5 12h3M15.5 8h3M15.5 12h3" strokeLinecap="round" /></g>,
+  // community / trophy
+  <g key="cup"><path d="M6 3h8v3a4 4 0 0 1-8 0z" /><path d="M6 4H3.5v1A2.5 2.5 0 0 0 6 7.5M14 4h2.5v1A2.5 2.5 0 0 1 14 7.5M8 11h4M7 16h6M9.5 11v3.5h1V11" strokeLinecap="round" strokeLinejoin="round" /></g>,
+  // shield / auditable
+  <g key="shield"><path d="M10 1.8 16 4v5c0 4-2.6 6.6-6 8.2C6.6 15.6 4 13 4 9V4z" strokeLinejoin="round" /><path d="m7.2 9.4 2 2 3.6-3.8" strokeLinecap="round" strokeLinejoin="round" /></g>,
+];
+
+export function WhyEcozyon({ t }) {
+  const h = t.home;
+  return (
+    <section className="relative py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Reveal>
+          <div className="max-w-2xl mb-12">
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-cyan-600 dark:text-cyan-400 mb-3">{h.whyEyebrow}</div>
+            <h2 className="font-display text-[clamp(1.8rem,3.4vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-slate-900 dark:text-slate-100">{h.whyTitle}</h2>
+          </div>
+        </Reveal>
+        <div className="grid gap-4 md:grid-cols-3">
+          {h.why.map((item, i) => (
+            <Reveal key={item.title} delay={i * 80}>
+              <div className="h-full rounded-2xl eco-card p-7">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
+                  <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.4">{WHY_ICONS[i]}</svg>
+                </span>
+                <h3 className="mt-4 font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">{item.title}</h3>
+                <p className="mt-2 text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Spotlight on the flagship case study, bridging home → /cases.
 export function FeaturedCase({ t, lang }) {
   const h = t.home;
