@@ -5,6 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ROUTES, SITE } from '../src/core/config/site.js';
 import { POSTS } from '../src/core/data/posts.js';
+import { CASES } from '../src/core/data/cases.js';
 import { buildFeed } from '../src/core/lib/feed.js';
 import { ogCardSvg } from '../src/core/lib/og.js';
 
@@ -42,6 +43,15 @@ const routeOgSvg = (route) =>
     footerRight: OG_FOOTER,
   });
 
+const caseOgSvg = (cs) =>
+  ogCardSvg({
+    eyebrow: `Ecozyon Tech · ${cs.city}`,
+    title: cs.client.tr,
+    subtitle: cs.summary.tr,
+    footerLeft: 'ECOZYON.TECH/CASES',
+    footerRight: String(cs.year),
+  });
+
 // Build the list of concrete URLs to prerender.
 const routes = ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).map((r) => ({
   path: r.path,
@@ -58,6 +68,15 @@ for (const p of POSTS) {
     desc: p.excerpt.tr,
     lastmod: p.date || today,
     post: p, // carry the post so we can emit BlogPosting JSON-LD
+  });
+}
+for (const cs of CASES) {
+  routes.push({
+    path: `/cases/${cs.slug}`,
+    title: `${cs.client.tr} — Ecozyon Tech`,
+    desc: cs.summary.tr,
+    lastmod: today,
+    caseStudy: cs, // carry the case so we can emit Article JSON-LD + OG card
   });
 }
 
@@ -87,14 +106,41 @@ function blogPostingLd(route, url) {
   ].join('');
 }
 
+function caseStudyLd(route, url) {
+  const c = route.caseStudy;
+  const ogUrl = `${SITE.url}/og/case-${c.slug}.svg`;
+  return [
+    '<script type="application/ld+json">',
+    JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: c.client.tr,
+      description: c.summary.tr,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      author: { '@type': 'Organization', name: 'Ecozyon Tech', url: SITE.url },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Ecozyon Tech',
+        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.svg` },
+      },
+      image: ogUrl,
+      inLanguage: 'tr',
+    }),
+    '</script>',
+  ].join('');
+}
+
 function headFor(route) {
   const url = SITE.url + (route.path === '/' ? '/' : route.path);
-  // Every route gets its own branded OG card: posts by slug, pages by key.
+  // Every route gets its own branded OG card: posts by slug, cases by slug,
+  // pages by key.
   const ogImage = route.post
     ? `${SITE.url}/og/${route.post.slug}.svg`
-    : route.key
-      ? `${SITE.url}/og/route-${route.key}.svg`
-      : null;
+    : route.caseStudy
+      ? `${SITE.url}/og/case-${route.caseStudy.slug}.svg`
+      : route.key
+        ? `${SITE.url}/og/route-${route.key}.svg`
+        : null;
   const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:title" content="${esc(route.title)}" />`,
@@ -113,6 +159,7 @@ function headFor(route) {
     );
   }
   if (route.post) tags.push(blogPostingLd(route, url));
+  if (route.caseStudy) tags.push(caseStudyLd(route, url));
   return tags.join('\n    ');
 }
 
@@ -125,8 +172,12 @@ for (const p of POSTS) {
   await writeFile(join(distDir, 'og', `${p.slug}.svg`), postOgSvg(p));
   ogCount++;
 }
+for (const cs of CASES) {
+  await writeFile(join(distDir, 'og', `case-${cs.slug}.svg`), caseOgSvg(cs));
+  ogCount++;
+}
 for (const route of routes) {
-  if (route.post || !route.key) continue;
+  if (route.post || route.caseStudy || !route.key) continue;
   await writeFile(join(distDir, 'og', `route-${route.key}.svg`), routeOgSvg(route));
   ogCount++;
 }
