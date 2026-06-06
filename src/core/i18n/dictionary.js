@@ -439,6 +439,13 @@ export const ECO_I18N = {
         ctaPrimary: "İletişime geç",
         ctaSecondary: "Çözümleri gör",
       },
+      changelog: {
+        eyebrow: "Sürüm Notları",
+        title: "Neler ",
+        titleAccent: "değişti",
+        intro: "Ecozyon Tech sürekli gelişiyor. En son eklenenler, iyileştirmeler ve düzeltmeler.",
+        latest: "En son",
+      },
       help: {
         eyebrow: "Yardım Merkezi",
         title: "Nasıl ",
@@ -947,6 +954,13 @@ export const ECO_I18N = {
         ctaText: "Individual use is free during the pilot. Set it up for your team in minutes.",
         ctaPrimary: "Get in touch",
         ctaSecondary: "See solutions",
+      },
+      changelog: {
+        eyebrow: "Changelog",
+        title: "What's ",
+        titleAccent: "changed",
+        intro: "Ecozyon Tech keeps evolving. The latest additions, improvements and fixes.",
+        latest: "Latest",
       },
       help: {
         eyebrow: "Help Center",

@@ -10,6 +10,7 @@ const ImpactPage = lazy(() => import('@/pages/Impact'));
 const CasesPage = lazy(() => import('@/pages/Cases'));
 const CaseStudyPage = lazy(() => import('@/pages/CaseStudy'));
 const HelpPage = lazy(() => import('@/pages/Help'));
+const ChangelogPage = lazy(() => import('@/pages/Changelog'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -48,6 +49,7 @@ const ROUTE_ELEMENTS = [
   { path: 'cases', el: <CasesPage /> },
   { path: 'cases/:slug', el: <CaseStudyPage /> },
   { path: 'help', el: <HelpPage /> },
+  { path: 'changelog', el: <ChangelogPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
