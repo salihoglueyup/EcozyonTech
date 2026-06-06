@@ -9,6 +9,7 @@ const PricingPage = lazy(() => import('@/pages/Pricing'));
 const ImpactPage = lazy(() => import('@/pages/Impact'));
 const CasesPage = lazy(() => import('@/pages/Cases'));
 const CaseStudyPage = lazy(() => import('@/pages/CaseStudy'));
+const HelpPage = lazy(() => import('@/pages/Help'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -46,6 +47,7 @@ const ROUTE_ELEMENTS = [
   { path: 'impact', el: <ImpactPage /> },
   { path: 'cases', el: <CasesPage /> },
   { path: 'cases/:slug', el: <CaseStudyPage /> },
+  { path: 'help', el: <HelpPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
