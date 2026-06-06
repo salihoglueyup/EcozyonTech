@@ -49,6 +49,13 @@ export const ROUTES = [
     title: { tr: 'Hakkımızda — Ecozyon Tech', en: 'About — Ecozyon Tech' },
   },
   {
+    path: '/cases',
+    key: 'cases',
+    place: 'footer',
+    nav: { tr: 'Vaka Çalışmaları', en: 'Case Studies' },
+    title: { tr: 'Vaka Çalışmaları — Ecozyon Tech', en: 'Case Studies — Ecozyon Tech' },
+  },
+  {
     path: '/blog',
     key: 'blog',
     place: 'footer',
