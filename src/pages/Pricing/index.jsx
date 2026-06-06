@@ -54,6 +54,30 @@ const TIERS = [
 const ANNUAL_MONTHS = 10;
 const SAVE_PCT = Math.round((1 - ANNUAL_MONTHS / 12) * 100);
 
+// Feature comparison matrix — values align with TIERS order
+// [Individual, Team, Enterprise]. A cell is true (✓), false (—) or a
+// bilingual string. Kept in sync with each tier's feature list above.
+const COMPARE = [
+  { feature: { tr: 'Kişisel baseline', en: 'Personal baseline' }, values: [true, true, true] },
+  { feature: { tr: 'Günlük AI önerileri', en: 'Daily AI nudges' }, values: [true, true, true] },
+  { feature: { tr: 'Topluluk yarışmaları', en: 'Community challenges' }, values: [true, true, true] },
+  { feature: { tr: 'Mobil uygulama', en: 'Mobile app' }, values: [true, true, true] },
+  { feature: { tr: 'Takım liderlik tablosu', en: 'Team leaderboard' }, values: [false, true, true] },
+  { feature: { tr: 'Yönetici paneli', en: 'Admin dashboard' }, values: [false, true, true] },
+  { feature: { tr: 'Aylık ESG özeti', en: 'Monthly ESG digest' }, values: [false, true, true] },
+  { feature: { tr: 'GHG / GRI raporları', en: 'GHG / GRI reports' }, values: [false, false, true] },
+  { feature: { tr: 'SSO & SCIM', en: 'SSO & SCIM' }, values: [false, false, true] },
+  { feature: { tr: 'Özel entegrasyonlar', en: 'Custom integrations' }, values: [false, false, true] },
+  {
+    feature: { tr: 'Destek', en: 'Support' },
+    values: [
+      { tr: 'Topluluk', en: 'Community' },
+      { tr: 'Öncelikli', en: 'Priority' },
+      { tr: 'SLA + yönetici', en: 'SLA + manager' },
+    ],
+  },
+];
+
 export default function PricingPage() {
   const { lang } = useApp();
   const tr = lang === 'tr';
@@ -202,6 +226,60 @@ export default function PricingPage() {
               </Link>
             </div>
           ))}
+        </div>
+
+        {/* Feature comparison table */}
+        <div className="mt-16">
+          <h2 className="font-display text-[clamp(1.4rem,3vw,2rem)] tracking-tight text-slate-900 dark:text-slate-100">
+            {tr ? 'Planları karşılaştır' : 'Compare plans'}
+          </h2>
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full min-w-[560px] border-collapse text-left">
+              <caption className="sr-only">{tr ? 'Plan özellik karşılaştırması' : 'Plan feature comparison'}</caption>
+              <thead>
+                <tr className="border-b border-slate-900/[.08] dark:border-white/[.1]">
+                  <th scope="col" className="py-3 pr-4 text-[12px] font-medium text-slate-500 dark:text-slate-400">
+                    {tr ? 'Özellik' : 'Feature'}
+                  </th>
+                  {TIERS.map((tier) => (
+                    <th
+                      key={tier.id}
+                      scope="col"
+                      className={`py-3 px-3 text-[13px] font-semibold text-center ${tier.featured ? 'bg-emerald-500/[.06] dark:bg-emerald-400/[.06] rounded-t-xl' : ''}`}
+                      style={{ color: tier.accent }}
+                    >
+                      {tier.name[lang]}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE.map((row) => (
+                  <tr key={row.feature.en} className="border-b border-slate-900/[.05] dark:border-white/[.06]">
+                    <th scope="row" className="py-3 pr-4 text-[13px] font-normal text-slate-700 dark:text-slate-300">
+                      {row.feature[lang]}
+                    </th>
+                    {row.values.map((v, i) => (
+                      <td
+                        key={TIERS[i].id}
+                        className={`py-3 px-3 text-center text-[13px] ${TIERS[i].featured ? 'bg-emerald-500/[.06] dark:bg-emerald-400/[.06]' : ''}`}
+                      >
+                        {v === true ? (
+                          <span className="inline-flex h-5 w-5 items-center justify-center rounded-md mx-auto" style={{ backgroundColor: `${TIERS[i].accent}1f` }}>
+                            <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke={TIERS[i].accent} strokeWidth="2"><path d="M2 6l3 3 5-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                          </span>
+                        ) : v === false ? (
+                          <span className="text-slate-300 dark:text-slate-600" aria-label={tr ? 'Yok' : 'Not included'}>—</span>
+                        ) : (
+                          <span className="text-slate-700 dark:text-slate-300 font-medium">{v[lang]}</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <p className="mt-8 text-[12.5px] text-slate-500 dark:text-slate-400">
