@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime, blockText } from './posts';
+import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime, blockText, tagSlug, postTagBySlug } from './posts';
 
 describe('POSTS data', () => {
   it('every post has a bilingual author byline', () => {
@@ -34,6 +34,20 @@ describe('postTags', () => {
       { slug: 'c', tag: { tr: 'Donanım', en: 'Hardware' } },
     ];
     expect(postTags(list).map((t) => t.id)).toEqual(['Guide', 'Hardware']);
+  });
+});
+
+describe('tagSlug / postTagBySlug', () => {
+  it('slugifies a tag id and round-trips back to it', () => {
+    expect(tagSlug('AI')).toBe('ai');
+    expect(tagSlug('Guide')).toBe('guide');
+    for (const t of postTags(POSTS)) {
+      expect(postTagBySlug(tagSlug(t.id)).id).toBe(t.id);
+    }
+  });
+
+  it('returns undefined for an unknown slug', () => {
+    expect(postTagBySlug('nope')).toBeUndefined();
   });
 });
 

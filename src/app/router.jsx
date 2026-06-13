@@ -28,6 +28,7 @@ const AccessibilityPage = lazy(() => import('@/pages/Accessibility'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
+const BlogTagPage = lazy(() => import('@/pages/BlogTag'));
 const CareersPage = lazy(() => import('@/pages/Careers'));
 const ContactPage = lazy(() => import('@/pages/Contact'));
 const LegalPage = lazy(() => import('@/pages/Legal'));
@@ -80,6 +81,7 @@ const ROUTE_ELEMENTS = [
   { path: 'accessibility', el: <AccessibilityPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
+  { path: 'blog/tag/:tag', el: <BlogTagPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
   { path: 'careers', el: <CareersPage /> },
   { path: 'contact', el: <ContactPage /> },

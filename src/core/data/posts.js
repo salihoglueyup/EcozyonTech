@@ -213,6 +213,13 @@ export function filterByTag(posts, tagId) {
   return posts.filter((p) => p.tag.en === tagId);
 }
 
+// URL-safe slug for a tag's stable id (tag.en), e.g. "AI" → "ai". Powers the
+// /blog/tag/:tag pages.
+export const tagSlug = (tagEn) => String(tagEn).toLowerCase().replace(/\s+/g, '-');
+
+// Resolve a tag { id, label } from its slug, or undefined.
+export const postTagBySlug = (slug, posts = POSTS) => postTags(posts).find((t) => tagSlug(t.id) === slug);
+
 // A body block is either a paragraph string or a heading `{ h, id }`.
 // `id` is shared across languages so anchors/TOC stay stable on language switch.
 export const blockText = (b) => (typeof b === 'string' ? b : b?.h || '');

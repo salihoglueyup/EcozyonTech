@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
 import { ROUTES, SITE } from '../src/core/config/site.js';
-import { POSTS } from '../src/core/data/posts.js';
+import { POSTS, postTags, tagSlug } from '../src/core/data/posts.js';
 import { CASES } from '../src/core/data/cases.js';
 import { INTEGRATIONS } from '../src/core/data/integrations.js';
 import { buildFeed } from '../src/core/lib/feed.js';
@@ -95,6 +95,14 @@ for (const p of POSTS) {
     desc: p.excerpt.tr,
     lastmod: p.date || today,
     post: p, // carry the post so we can emit BlogPosting JSON-LD
+  });
+}
+for (const tg of postTags(POSTS)) {
+  routes.push({
+    path: `/blog/tag/${tagSlug(tg.id)}`,
+    title: `${tg.label.tr} — Blog — Ecozyon Tech`,
+    desc: `${tg.label.tr} etiketli yazılar — Ecozyon Tech`,
+    lastmod: today,
   });
 }
 for (const cs of CASES) {

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { postBySlug, readingTime, relatedPosts, postNeighbors } from '@/core/data/posts';
+import { postBySlug, readingTime, relatedPosts, postNeighbors, tagSlug } from '@/core/data/posts';
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
@@ -52,7 +52,9 @@ export default function BlogPostPage() {
           ← {tr ? 'Tüm yazılar' : 'All posts'}
         </Link>
         <div className="mt-6 flex items-center gap-3 text-[11px]">
-          <Tag color="emerald">{post.tag[lang]}</Tag>
+          <Link to={`/blog/tag/${tagSlug(post.tag.en)}`} className="rounded-full hover:opacity-80 transition">
+            <Tag color="emerald">{post.tag[lang]}</Tag>
+          </Link>
           <time className="text-slate-500 dark:text-slate-400 font-mono">{post.date}</time>
           <span className="text-slate-400 font-mono">· {readingTime(post, lang)} {t.blog.readMin}</span>
         </div>
