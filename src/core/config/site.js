@@ -77,6 +77,13 @@ export const ROUTES = [
     title: { tr: 'Sistem Durumu — Ecozyon Tech', en: 'System Status — Ecozyon Tech' },
   },
   {
+    path: '/resources',
+    key: 'resources',
+    place: 'footer',
+    nav: { tr: 'Kaynaklar', en: 'Resources' },
+    title: { tr: 'Kaynaklar — Ecozyon Tech', en: 'Resources — Ecozyon Tech' },
+  },
+  {
     path: '/press',
     key: 'press',
     place: 'footer',

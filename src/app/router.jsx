@@ -13,6 +13,7 @@ const HelpPage = lazy(() => import('@/pages/Help'));
 const ChangelogPage = lazy(() => import('@/pages/Changelog'));
 const StatusPage = lazy(() => import('@/pages/Status'));
 const PressPage = lazy(() => import('@/pages/Press'));
+const ResourcesPage = lazy(() => import('@/pages/Resources'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -54,6 +55,7 @@ const ROUTE_ELEMENTS = [
   { path: 'changelog', el: <ChangelogPage /> },
   { path: 'status', el: <StatusPage /> },
   { path: 'press', el: <PressPage /> },
+  { path: 'resources', el: <ResourcesPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
