@@ -76,6 +76,22 @@ export const CITIES = [
     { name: "Accra",       country: "GH", lat:  5.60, lon: -0.19,  users: 29,   co2:  7,  solar: 44, partner: false, since: 2026 },
   ];
 
+  // Cumulative network growth by year, derived from each city's join year
+  // (`since`). Returns one value per year for a metric:
+  // 'users' | 'cities' | 'co2' | 'partners' | 'countries'. Shared by the home
+  // trust band, the impact stat pills and the resources hub so they all tell
+  // the same growth story from one source.
+  export const GROWTH_YEARS = [2024, 2025, 2026];
+  export function networkGrowth(metric, years = GROWTH_YEARS, cities = CITIES) {
+    return years.map((y) => {
+      const upTo = cities.filter((c) => c.since <= y);
+      if (metric === 'cities') return upTo.length;
+      if (metric === 'partners') return upTo.filter((c) => c.partner).length;
+      if (metric === 'countries') return new Set(upTo.map((c) => c.country)).size;
+      return upTo.reduce((s, c) => s + (c[metric] || 0), 0); // users | co2
+    });
+  }
+
   // Continent ellipses for procedural land mask
   // (lat, lon, lat-radius, lon-radius)
   const CONTINENTS = [

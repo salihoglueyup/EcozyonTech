@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
+import { Sparkline } from '@/shared/ui/charts';
 import { Reveal } from '@/shared/ui/useReveal';
-import { CITIES } from '@/core/data/cities';
+import { CITIES, networkGrowth } from '@/core/data/cities';
 import { CASES, caseBySlug } from '@/core/data/cases';
 
 // The flagship case spotlighted on the home page (falls back to the first).
@@ -15,6 +16,14 @@ const STATS = {
   cities: CITIES.length,
   co2: CITIES.reduce((s, c) => s + c.co2, 0),
   partners: CITIES.filter((c) => c.partner).length,
+};
+
+// Per-metric cumulative growth series (2024→2026) for the trust-band sparklines.
+const TRENDS = {
+  users: networkGrowth('users'),
+  cities: networkGrowth('cities'),
+  co2: networkGrowth('co2'),
+  partners: networkGrowth('partners'),
 };
 
 // One-shot IntersectionObserver → flips true when the node scrolls into view.
@@ -36,10 +45,10 @@ export function TrustBand({ t }) {
   const [ref, seen] = useInView();
   const h = t.home;
   const tiles = [
-    { value: STATS.users, label: h.trustUsers, accent: '#0EA5E9' },
-    { value: STATS.cities, label: h.trustCities, accent: '#10B981' },
-    { value: STATS.co2, label: h.trustCo2, accent: '#F59E0B' },
-    { value: STATS.partners, label: h.trustPartners, accent: '#7C3AED' },
+    { value: STATS.users, label: h.trustUsers, accent: '#0EA5E9', trend: TRENDS.users },
+    { value: STATS.cities, label: h.trustCities, accent: '#10B981', trend: TRENDS.cities },
+    { value: STATS.co2, label: h.trustCo2, accent: '#F59E0B', trend: TRENDS.co2 },
+    { value: STATS.partners, label: h.trustPartners, accent: '#7C3AED', trend: TRENDS.partners },
   ];
   return (
     <section ref={ref} className="relative py-10 lg:py-14 border-y border-slate-900/[.06] dark:border-white/[.06]">
@@ -58,6 +67,7 @@ export function TrustBand({ t }) {
                   style={{ color: tile.accent }}
                 />
                 <div className="mt-1.5 text-[12px] text-slate-500 dark:text-slate-400">{tile.label}</div>
+                <Sparkline data={tile.trend} color={tile.accent} width={120} height={20} dot={false} className="mt-2 h-5 w-24 mx-auto lg:mx-0" />
               </div>
             ))}
           </div>

@@ -7,11 +7,15 @@ import { routeByKey } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 import { CASES } from '@/core/data/cases';
 import { featuredHelp } from '@/core/data/help';
+import { networkGrowth } from '@/core/data/cities';
+import { Sparkline } from '@/shared/ui/charts';
 
 const meta = routeByKey('resources');
 // Curated quick-link destinations (each is a real route; title comes from the
 // route's nav label, description from the dictionary).
 const EXPLORE = ['impact', 'pricing', 'changelog', 'status', 'press', 'careers'];
+// Cumulative network growth (users) — a small trend on the impact quick-link.
+const NETWORK_TREND = networkGrowth('users');
 
 // Small forward-arrow used on cards/links.
 function Arrow() {
@@ -72,7 +76,10 @@ export default function ResourcesPage() {
                     <span className="font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100">{route.nav[lang]}</span>
                     <span className="text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"><Arrow /></span>
                   </div>
-                  <p className="mt-2 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{r.links[key]}</p>
+                  <p className="mt-2 flex-1 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{r.links[key]}</p>
+                  {key === 'impact' && (
+                    <Sparkline data={NETWORK_TREND} color="#0EA5E9" width={120} height={22} dot={false} className="mt-3 h-5 w-full" />
+                  )}
                 </Link>
               </Reveal>
             );
