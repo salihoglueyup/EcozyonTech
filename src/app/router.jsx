@@ -18,6 +18,7 @@ const StyleguidePage = lazy(() => import('@/pages/Styleguide'));
 const SearchPage = lazy(() => import('@/pages/Search'));
 const IntegrationsPage = lazy(() => import('@/pages/Integrations'));
 const IntegrationPage = lazy(() => import('@/pages/Integration'));
+const GlossaryPage = lazy(() => import('@/pages/Glossary'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -64,6 +65,7 @@ const ROUTE_ELEMENTS = [
   { path: 'search', el: <SearchPage /> },
   { path: 'integrations', el: <IntegrationsPage /> },
   { path: 'integrations/:slug', el: <IntegrationPage /> },
+  { path: 'glossary', el: <GlossaryPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
