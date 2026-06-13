@@ -49,8 +49,16 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   lang/theme/accents/fonts, persisted to `localStorage` (`ecozyon.prefs`),
   applies CSS vars + `dark` class + `<html lang>`. Pages read from context and
   pass the active dictionary down to feature sections as the `t` prop.
-- **i18n** is `src/core/i18n/dictionary.js` (`ECO_I18N.tr` / `.en`). A test
-  enforces TR/EN top-level key parity — keep both in sync.
+- **i18n**: each namespace lives in `src/core/i18n/ns/<name>.js`
+  (default-exports `{ tr, en }`); `dictionary.js` assembles them into
+  `ECO_I18N.tr` / `.en` via `import.meta.glob`. Add a namespace = drop a new
+  file in `ns/`. A test enforces **deep** (nested) TR/EN key parity — keep
+  both in sync.
+- **design tokens**: brand color lives in `src/core/tokens.js` (consumed by
+  Tailwind, the accent system, charts); the `.eco-gradient-text` utility is
+  the brand heading gradient. **content search**: collections self-register
+  in `src/core/content/registry.js` — `buildSearchDocs` derives from it, so a
+  new searchable type is "register once" (no edits to search/palette/404).
 - **dev-tweaks** is a vendored design-host panel; mounted only when
   `import.meta.env.DEV`. Never ships. ESLint relaxes react-hooks/no-unused
   for it on purpose (see eslint.config.js override) — don't "fix" its
