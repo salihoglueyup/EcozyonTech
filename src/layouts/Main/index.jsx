@@ -8,6 +8,7 @@ import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
 import CommandPalette from '@/shared/ui/CommandPalette';
 import BackToTop from '@/shared/ui/BackToTop';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
+import VitalsHud from '@/shared/ui/VitalsHud';
 
 function ScrollProgress() {
   const [p, setP] = useState(0);
@@ -96,6 +97,7 @@ export default function MainLayout() {
       <CommandPalette />
       <BackToTop label={t.a11y.backToTop} />
       {import.meta.env.DEV && <DevTweaks />}
+      {import.meta.env.DEV && <VitalsHud />}
       <CookieBanner />
     </div>
   );

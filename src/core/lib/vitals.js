@@ -6,7 +6,22 @@ import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 const ENDPOINT = '/api/vitals';
 
+// In-process subscribers (used by the dev-only VitalsHud overlay). Notified for
+// every metric report, in both dev and prod, before any logging/beaconing.
+const listeners = new Set();
+export function onVitalsReport(fn) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
 function send(metric) {
+  for (const fn of listeners) {
+    try {
+      fn(metric);
+    } catch {
+      /* a HUD subscriber must never break telemetry */
+    }
+  }
   if (import.meta.env.DEV) {
     console.debug('[vitals]', metric.name, Math.round(metric.value), metric.rating);
     return;
