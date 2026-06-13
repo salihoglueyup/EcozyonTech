@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('preferences', () => {
   test('language toggle switches and persists', async ({ page }) => {
