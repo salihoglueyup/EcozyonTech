@@ -47,8 +47,11 @@ describe('CommandPalette', () => {
     act(() => { window.dispatchEvent(new Event('ecozyon:cmdk')); });
 
     await user.type(await screen.findByRole('combobox'), 'fiyat'); // tr: Fiyatlandırma
+    // Full-content search may surface several hits; the Pricing page (a title
+    // match) ranks first. Choosing it navigates and closes the palette.
     const options = screen.getAllByRole('option');
-    expect(options).toHaveLength(1);
+    expect(options.length).toBeGreaterThanOrEqual(1);
+    expect(options[0]).toHaveTextContent(/fiyat/i);
     await user.click(options[0]);
 
     expect(screen.getByTestId('loc')).toHaveTextContent('/pricing');

@@ -5,8 +5,12 @@ import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { ROUTES, SITE } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 import { JOBS } from '@/core/data/jobs';
+import { HELP } from '@/core/data/help';
+import { CASES } from '@/core/data/cases';
+import { CHANGELOG } from '@/core/data/changelog';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
+import { buildSearchDocs, searchDocs } from '@/core/lib/search';
 import { useToast } from '@/shared/ui/Toast';
 import { buildCommands, filterCommands, orderByRecents } from './commands';
 
@@ -73,12 +77,37 @@ export default function CommandPalette() {
     return [...data, ...actions];
   }, [lang, t, theme, setTheme, setLang, savedSlugs, copyCurrentLink]);
 
-  // Empty query → recently-viewed posts float to the top; otherwise filter.
-  const results = useMemo(
-    () => (query.trim() ? filterCommands(items, query) : orderByRecents(items, recentSlugs)),
-    [items, query, recentSlugs],
+  // Full-content search index (pages + posts + help + cases + changelog +
+  // roles), rebuilt only when the language changes.
+  const searchIndex = useMemo(
+    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, lang }),
+    [lang],
   );
-  const kindLabel = { page: t.cmd.pages, post: t.cmd.posts, job: t.cmd.roles, action: t.cmd.actions };
+
+  // Empty query → recently-viewed posts float to the top. With a query → rank
+  // the whole content index (matching body text, not just titles) and append
+  // any matching actions (theme/lang/copy).
+  const results = useMemo(() => {
+    const q = query.trim();
+    if (!q) return orderByRecents(items, recentSlugs);
+    const content = searchDocs(searchIndex, q).map((d) => {
+      const base = { id: d.id, type: d.type, label: d.title, hint: d.hint, to: d.to };
+      if (d.type === 'post' && isSaved(savedSlugs, d.to.slice('/blog/'.length))) return { ...base, saved: true };
+      return base;
+    });
+    const actions = filterCommands(items.filter((it) => it.type === 'action'), q);
+    return [...content, ...actions];
+  }, [items, query, recentSlugs, searchIndex, savedSlugs]);
+
+  const kindLabel = {
+    page: t.cmd.pages,
+    post: t.cmd.posts,
+    help: t.cmd.help,
+    case: t.cmd.cases,
+    changelog: t.cmd.changelog,
+    job: t.cmd.roles,
+    action: t.cmd.actions,
+  };
 
   const run = useCallback(
     (item) => {
@@ -165,7 +194,21 @@ export default function CommandPalette() {
               }`}
             >
               <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
-                {item.recent ? '↺' : item.type === 'action' ? '⌘' : item.type === 'post' ? '✎' : item.type === 'job' ? '⊕' : '→'}
+                {item.recent
+                  ? '↺'
+                  : item.type === 'action'
+                    ? '⌘'
+                    : item.type === 'post'
+                      ? '✎'
+                      : item.type === 'help'
+                        ? '?'
+                        : item.type === 'case'
+                          ? '◆'
+                          : item.type === 'changelog'
+                            ? '⊙'
+                            : item.type === 'job'
+                              ? '⊕'
+                              : '→'}
               </span>
               <span className="flex-1 truncate">{item.label}</span>
               {item.saved && (
