@@ -1,0 +1,25 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('smoke', () => {
+  test('home loads with hero and primary nav', async ({ page }) => {
+    await page.goto('/');
+    await expect(page).toHaveTitle(/Ecozyon Tech/);
+    // The main landmark and at least one heading render.
+    await expect(page.locator('main#main')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+  });
+
+  test('navigates from the navbar to a route', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: /Fiyatlandırma|Pricing/ }).first().click();
+    await expect(page).toHaveURL(/\/pricing$/);
+    await expect(page.getByRole('heading', { name: /Fiyat|Pricing/i }).first()).toBeVisible();
+  });
+
+  test('deep-links into a prerendered content route', async ({ page }) => {
+    await page.goto('/help');
+    await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+    // The help search box is present (the page is interactive).
+    await expect(page.getByRole('searchbox').or(page.locator('input[type="search"]')).first()).toBeVisible();
+  });
+});

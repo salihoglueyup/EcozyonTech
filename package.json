@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "build:geo": "node scripts/build-geo.mjs",
-    "bundle:check": "node scripts/check-bundle.mjs"
+    "bundle:check": "node scripts/check-bundle.mjs",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "keywords": [
     "react",
@@ -38,6 +40,7 @@
     "@eslint/js": "^9.39.4",
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo-google-fonts/space-grotesk": "^0.4.1",
+    "@playwright/test": "^1.60.0",
     "@resvg/resvg-js": "^2.6.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

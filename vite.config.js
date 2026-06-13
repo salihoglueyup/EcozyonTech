@@ -63,6 +63,9 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/test/setup.js',
     css: false,
+    // Unit/integration tests live under src/ and api/; e2e/ is Playwright's
+    // (different runner) so keep Vitest from picking up its *.spec.js files.
+    include: ['src/**/*.{test,spec}.{js,jsx}', 'api/**/*.{test,spec}.js'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'json-summary'],

@@ -137,7 +137,10 @@
       "Bash(npm ls *)",
       "Bash(npm uninstall *)",
       "Bash(sed -i 's#/og\\\\.svg#/og.png#g' scripts/prerender.mjs)",
-      "Bash(sed -i 's#https://ecozyon.tech/og\\\\.svg#https://ecozyon.tech/og.png#g' index.html)"
+      "Bash(sed -i 's#https://ecozyon.tech/og\\\\.svg#https://ecozyon.tech/og.png#g' index.html)",
+      "Bash(npx playwright *)",
+      "Bash(grep -vE \"Call log|waiting for|locator resolved|^\\\\s*$\")",
+      "Bash(grep -vE \"Call log|waiting for|locator resolved|^\\\\s*$|WebServer\")"
     ]
   }
 }
