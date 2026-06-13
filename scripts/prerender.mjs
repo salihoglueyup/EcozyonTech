@@ -7,6 +7,7 @@ import { Resvg } from '@resvg/resvg-js';
 import { ROUTES, SITE } from '../src/core/config/site.js';
 import { POSTS } from '../src/core/data/posts.js';
 import { CASES } from '../src/core/data/cases.js';
+import { INTEGRATIONS } from '../src/core/data/integrations.js';
 import { buildFeed } from '../src/core/lib/feed.js';
 import { ogCardSvg } from '../src/core/lib/og.js';
 
@@ -69,6 +70,15 @@ const caseOgSvg = (cs) =>
     footerRight: String(cs.year),
   });
 
+const integrationOgSvg = (it) =>
+  ogCardSvg({
+    eyebrow: 'Ecozyon Tech · Integrations',
+    title: it.name,
+    subtitle: it.tagline.tr,
+    footerLeft: 'ECOZYON.TECH/INTEGRATIONS',
+    footerRight: it.category.tr,
+  });
+
 // Build the list of concrete URLs to prerender.
 const routes = ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).map((r) => ({
   path: r.path,
@@ -94,6 +104,15 @@ for (const cs of CASES) {
     desc: cs.summary.tr,
     lastmod: today,
     caseStudy: cs, // carry the case so we can emit Article JSON-LD + OG card
+  });
+}
+for (const it of INTEGRATIONS) {
+  routes.push({
+    path: `/integrations/${it.slug}`,
+    title: `${it.name} — Ecozyon Tech`,
+    desc: it.tagline.tr,
+    lastmod: today,
+    integration: it, // carry the integration for its own OG card
   });
 }
 
@@ -155,9 +174,11 @@ function headFor(route) {
     ? `${SITE.url}/og/${route.post.slug}.png`
     : route.caseStudy
       ? `${SITE.url}/og/case-${route.caseStudy.slug}.png`
-      : route.key
-        ? `${SITE.url}/og/route-${route.key}.png`
-        : null;
+      : route.integration
+        ? `${SITE.url}/og/integration-${route.integration.slug}.png`
+        : route.key
+          ? `${SITE.url}/og/route-${route.key}.png`
+          : null;
   const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:title" content="${esc(route.title)}" />`,
@@ -191,6 +212,10 @@ for (const p of POSTS) {
 }
 for (const cs of CASES) {
   await writeFile(join(distDir, 'og', `case-${cs.slug}.png`), svgToPng(caseOgSvg(cs)));
+  ogCount++;
+}
+for (const it of INTEGRATIONS) {
+  await writeFile(join(distDir, 'og', `integration-${it.slug}.png`), svgToPng(integrationOgSvg(it)));
   ogCount++;
 }
 for (const route of routes) {
