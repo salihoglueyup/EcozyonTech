@@ -6,6 +6,7 @@ import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
 import { CURRENCIES, defaultCurrency, formatMoney } from '@/core/lib/currency';
 import { FAQ } from '@/features/faq';
+import { Donut } from '@/shared/ui/charts';
 
 // Pricing-specific FAQ, rendered through the shared FAQ accordion.
 const PRICING_FAQ = [
@@ -117,6 +118,11 @@ const COMPARE = [
     ],
   },
 ];
+
+// Feature coverage per tier, derived from the comparison matrix (a cell counts
+// as included unless it's explicitly false). Drives the coverage donuts.
+const TOTAL_FEATURES = COMPARE.length;
+const COVERAGE = TIERS.map((_, i) => COMPARE.filter((row) => row.values[i] !== false).length);
 
 export default function PricingPage() {
   const { lang, t } = useApp();
@@ -279,6 +285,26 @@ export default function PricingPage() {
           <h2 className="font-display text-[clamp(1.4rem,3vw,2rem)] tracking-tight text-slate-900 dark:text-slate-100">
             {tr ? 'Planları karşılaştır' : 'Compare plans'}
           </h2>
+
+          {/* Feature-coverage donuts (derived from the matrix below) */}
+          <div className="mt-5 grid max-w-md grid-cols-3 gap-3">
+            {TIERS.map((tier, i) => (
+              <div key={tier.id} className="flex flex-col items-center rounded-xl eco-card p-3">
+                <Donut
+                  value={(COVERAGE[i] / TOTAL_FEATURES) * 100}
+                  size={50}
+                  stroke={5}
+                  color={tier.accent}
+                  label={`${tier.name[lang]}: ${COVERAGE[i]}/${TOTAL_FEATURES}`}
+                >
+                  <span className="tabular-nums" style={{ color: tier.accent }}>{COVERAGE[i]}</span>
+                </Donut>
+                <div className="mt-2 text-center text-[11px] font-medium text-slate-600 dark:text-slate-300">{tier.name[lang]}</div>
+                <div className="text-[10px] text-slate-400">{tr ? `${TOTAL_FEATURES} özellikten` : `of ${TOTAL_FEATURES}`}</div>
+              </div>
+            ))}
+          </div>
+
           <div className="mt-6 overflow-x-auto">
             <table className="w-full min-w-[560px] border-collapse text-left">
               <caption className="sr-only">{tr ? 'Plan özellik karşılaştırması' : 'Plan feature comparison'}</caption>
