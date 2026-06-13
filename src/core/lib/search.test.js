@@ -28,6 +28,9 @@ const fixture = {
   jobs: [
     { id: 'fe', title: { tr: 'Frontend Mühendisi', en: 'Frontend Engineer' }, team: { tr: 'Ürün', en: 'Product' }, location: { tr: 'Uzaktan', en: 'Remote' }, responsibilities: { tr: ['React ile arayüz'], en: ['UI with React'] }, requirements: { tr: ['Deneyim'], en: ['Experience'] } },
   ],
+  integrations: [
+    { slug: 'strava', name: 'Strava', category: { tr: 'Veri', en: 'Data' }, tagline: { tr: 'Bisiklet aktiviteleri', en: 'Cycling activities' }, description: { tr: ['Webhook ile bağlanır'], en: ['Connects via webhook'] }, features: { tr: ['Anlık işleme'], en: ['Instant processing'] } },
+  ],
 };
 
 describe('fold', () => {
@@ -56,6 +59,11 @@ describe('buildSearchDocs', () => {
     expect(types).toContain('case');
     expect(types).toContain('changelog');
     expect(types).toContain('job');
+    expect(types).toContain('integration');
+  });
+
+  it('deep-links integrations by slug', () => {
+    expect(docs.find((d) => d.type === 'integration').to).toBe('/integrations/strava');
   });
 
   it('carries correct deep-links', () => {

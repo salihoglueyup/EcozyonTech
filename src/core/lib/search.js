@@ -25,7 +25,7 @@ const W_BODY = 1;
 // Build the flat doc list. Each doc: { id, type, title, hint, to, title_f,
 // hint_f, body_f } where *_f are pre-folded haystacks (so search does no
 // repeated folding). `lang` selects the active language strings.
-export function buildSearchDocs({ routes = [], posts = [], help = [], cases = [], changelog = [], jobs = [], lang = 'tr' } = {}) {
+export function buildSearchDocs({ routes = [], posts = [], help = [], cases = [], changelog = [], jobs = [], integrations = [], lang = 'tr' } = {}) {
   const pick = (o) => (o ? o[lang] ?? o.en ?? '' : '');
   const docs = [];
 
@@ -62,6 +62,11 @@ export function buildSearchDocs({ routes = [], posts = [], help = [], cases = []
     docs.push(makeDoc({ id: `job:${j.id}`, type: 'job', title: pick(j.title), hint: pick(j.team), body, to: `/careers?job=${j.id}` }));
   }
 
+  for (const i of integrations) {
+    const body = [pick(i.tagline), ...((i.description?.[lang]) || []), ...((i.features?.[lang]) || [])].join(' ');
+    docs.push(makeDoc({ id: `integration:${i.slug}`, type: 'integration', title: i.name, hint: pick(i.category), body, to: `/integrations/${i.slug}` }));
+  }
+
   return docs;
 }
 
@@ -88,7 +93,7 @@ export function scoreDoc(doc, terms, query_f) {
 }
 
 // Tie-break ordering between types when scores match (pages first, jobs last).
-const TYPE_RANK = { page: 0, post: 1, help: 2, case: 3, changelog: 4, job: 5 };
+const TYPE_RANK = { page: 0, post: 1, help: 2, case: 3, integration: 4, changelog: 5, job: 6 };
 
 // Rank docs for a query. Empty query → []. Returns the matching docs sorted by
 // score (desc), then type rank, then title, each carrying its `score`.

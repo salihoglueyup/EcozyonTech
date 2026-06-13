@@ -9,6 +9,7 @@ import { HELP } from '@/core/data/help';
 import { CASES } from '@/core/data/cases';
 import { CHANGELOG } from '@/core/data/changelog';
 import { JOBS } from '@/core/data/jobs';
+import { INTEGRATIONS } from '@/core/data/integrations';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
 
 const meta = routeByKey('search');
@@ -19,6 +20,7 @@ const TYPE_META = {
   post: { icon: '✎', key: 'posts' },
   help: { icon: '?', key: 'help' },
   case: { icon: '◆', key: 'cases' },
+  integration: { icon: '⊞', key: 'integrations' },
   changelog: { icon: '⊙', key: 'changelog' },
   job: { icon: '⊕', key: 'roles' },
 };
@@ -44,7 +46,7 @@ export default function SearchPage() {
   };
 
   const index = useMemo(
-    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, lang }),
+    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, lang }),
     [lang],
   );
   const results = useMemo(() => searchDocs(index, q), [index, q]);
