@@ -12,16 +12,24 @@ function devApi() {
         const route = req.url?.split('?')[0]
         const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
         const kind = KINDS[route]
-        if (!kind) return next()
+        const isVitals = route === '/api/vitals'
+        if (!kind && !isVitals) return next()
         let raw = ''
         req.on('data', (c) => (raw += c))
         req.on('end', async () => {
           let body = {}
           try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
-          const { handle } = await server.ssrLoadModule('/api/_lib/forms.js')
           const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || ''
-          const { status, body: out } = await handle(kind, req.method, body, process.env, ip)
+          let status, out
+          if (isVitals) {
+            const { handleVitals } = await server.ssrLoadModule('/api/_lib/vitals.js')
+            ;({ status, body: out } = await handleVitals(req.method, body, process.env))
+          } else {
+            const { handle } = await server.ssrLoadModule('/api/_lib/forms.js')
+            ;({ status, body: out } = await handle(kind, req.method, body, process.env, ip))
+          }
           res.statusCode = status
+          if (out == null) { res.end(); return }
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify(out))
         })

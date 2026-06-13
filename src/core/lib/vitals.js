@@ -1,7 +1,7 @@
-// Web Vitals RUM bootstrap. In dev each metric is logged so we can see CLS/LCP/INP
-// while iterating; in production they're beaconed to /api/vitals as JSON. The
-// endpoint is a no-op stub today — wiring it to a real backend (Vercel Log
-// Drains, BigQuery, Plausible, etc.) is a one-line swap.
+// Web Vitals RUM bootstrap. In dev each metric is logged (and surfaced in the
+// VitalsHud overlay) so we can see CLS/LCP/INP while iterating; in production
+// they're beaconed to /api/vitals, which validates the metric and forwards it
+// to a VITALS_WEBHOOK_URL sink (demo-mode acks when none is configured).
 import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 const ENDPOINT = '/api/vitals';

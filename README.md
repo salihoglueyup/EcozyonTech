@@ -88,11 +88,16 @@ scrubber, etc.) are in [`CLAUDE.md`](./CLAUDE.md) under "WorldGlobe engine".
 
 ## Backend
 
-`/api/contact` and `/api/newsletter` are Vercel serverless functions that
-share pure logic in `api/_lib/forms.js` — validation, honeypot, optional
-Resend email via `RESEND_API_KEY` + `CONTACT_TO` (demo-mode otherwise). A
-Vite dev middleware runs the exact same logic locally, so the dev loop
-matches production.
+`/api/contact`, `/api/newsletter` and `/api/apply` are Vercel serverless
+functions that share pure logic in `api/_lib/forms.js` — validation,
+honeypot, per-IP rate limiting, optional Resend email via `RESEND_API_KEY`
++ `CONTACT_TO` (demo-mode otherwise).
+
+`/api/vitals` ingests Web Vitals beacons via `api/_lib/vitals.js` —
+validates the metric and forwards it to `VITALS_WEBHOOK_URL` if set, else
+acks cheaply (demo mode). A Vite dev middleware runs the exact same logic
+locally for every endpoint, so the dev loop matches production. All `_lib`
+logic is unit-tested.
 
 ## Architecture (FSD)
 
