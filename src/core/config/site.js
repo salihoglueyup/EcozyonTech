@@ -84,6 +84,13 @@ export const ROUTES = [
     title: { tr: 'Yardım Merkezi — Ecozyon Tech', en: 'Help Center — Ecozyon Tech' },
   },
   {
+    path: '/developers',
+    key: 'developers',
+    place: 'footer',
+    nav: { tr: 'Geliştiriciler', en: 'Developers' },
+    title: { tr: 'API Referansı — Ecozyon Tech', en: 'API Reference — Ecozyon Tech' },
+  },
+  {
     path: '/changelog',
     key: 'changelog',
     place: 'footer',
