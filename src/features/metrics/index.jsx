@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Reveal } from '@/shared/ui/useReveal';
+import { Sparkline } from '@/shared/ui/charts';
 
 // ── Metrics ────────────────────────────────────────────────────────────────
 export function Metrics({ t }) {
@@ -53,7 +54,7 @@ function MetricCard({ m, idx }) {
           <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
           0{idx + 1}
         </div>
-        {m.trend && <MetricSparkline data={m.trend} color={accent} />}
+        {m.trend && <Sparkline data={m.trend} color={accent} />}
       </div>
 
       <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 dark:text-slate-100 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
@@ -77,28 +78,5 @@ function MetricCard({ m, idx }) {
         </div>
       )}
     </div>
-  );
-}
-
-function MetricSparkline({ data, color }) {
-  const max = Math.max(...data), min = Math.min(...data);
-  const W = 64, H = 22;
-  const pts = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * W;
-    const y = H - ((v - min) / Math.max(max - min, 0.0001)) * H;
-    return `${x},${y}`;
-  }).join(" ");
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="h-6 w-16 flex-none">
-      <defs>
-        <linearGradient id={`ms-${color.replace('#','')}`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor={color} stopOpacity=".3" />
-          <stop offset="1" stopColor={color} stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <polyline points={`0,${H} ${pts} ${W},${H}`} fill={`url(#ms-${color.replace('#','')})`} />
-      <polyline points={pts} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={W} cy={H - ((data[data.length - 1] - min) / Math.max(max - min, 0.0001)) * H} r="1.6" fill={color} />
-    </svg>
   );
 }

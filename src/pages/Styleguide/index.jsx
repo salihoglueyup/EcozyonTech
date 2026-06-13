@@ -7,6 +7,7 @@ import { Tabs } from '@/shared/ui/Tabs';
 import { Tooltip } from '@/shared/ui/Tooltip';
 import { useToast } from '@/shared/ui/Toast';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
+import { Sparkline, BarMini, Donut } from '@/shared/ui/charts';
 import {
   useApp,
   ACCENT_PALETTES,
@@ -310,6 +311,26 @@ export default function StyleguidePage() {
               <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7a4 4 0 1 1-1.2-2.8M11 2.5V5H8.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               {g.replay}
             </button>
+          </Section>
+
+          {/* Charts */}
+          <Section id="charts" title={sc.charts.title} desc={sc.charts.desc}>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-xl eco-card p-5">
+                <GroupLabel>{g.trend}</GroupLabel>
+                <Sparkline data={[4, 8, 6, 10, 7, 12, 9, 14]} color={accents.cyan} width={120} height={40} className="h-12 w-full" label={g.trend} />
+              </div>
+              <div className="rounded-xl eco-card p-5">
+                <GroupLabel>{g.bars}</GroupLabel>
+                <BarMini data={[5, 9, 7, 12, 8, 14, 11]} color={accents.emerald} width={120} height={40} className="h-12 w-full" label={g.bars} />
+              </div>
+              <div className="rounded-xl eco-card p-5">
+                <GroupLabel>{g.ring}</GroupLabel>
+                <Donut value={72} size={56} stroke={6} color={accents.emerald} label={`${g.ring} 72%`}>
+                  72%
+                </Donut>
+              </div>
+            </div>
           </Section>
         </div>
       </div>

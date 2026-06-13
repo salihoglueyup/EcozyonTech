@@ -13,6 +13,7 @@ export const SECTIONS = [
   { id: 'tooltip', label: { tr: 'İpucu', en: 'Tooltip' } },
   { id: 'toast', label: { tr: 'Bildirim', en: 'Toast' } },
   { id: 'numbers', label: { tr: 'Sayılar', en: 'Numbers' } },
+  { id: 'charts', label: { tr: 'Grafikler', en: 'Charts' } },
 ];
 
 // The ordered list of section ids (anchors / scroll-spy targets).

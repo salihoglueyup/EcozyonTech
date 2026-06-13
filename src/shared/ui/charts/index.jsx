@@ -1,0 +1,95 @@
+import { useId } from 'react';
+import { sparklineGeometry, barGeometry, donutGeometry } from './geometry';
+
+// Reusable SVG chart primitives built on the pure geometry helpers. All are
+// deterministic and SSR-safe (useId keeps gradient ids hydration-stable).
+// Pass `label` to expose the chart to assistive tech (role=img + aria-label);
+// omit it and the chart is treated as decorative (aria-hidden).
+
+// a11y attrs: labelled → role=img, otherwise hidden from the a11y tree.
+const a11y = (label) => (label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true });
+
+// Sparkline — a compact trend line with an optional gradient area fill and a
+// head dot at the latest value.
+export function Sparkline({
+  data,
+  color = '#0EA5E9',
+  width = 64,
+  height = 22,
+  fill = true,
+  dot = true,
+  label,
+  className = 'h-6 w-16',
+}) {
+  const id = useId();
+  const { points, area, last } = sparklineGeometry(data, { width, height });
+  if (!points) return null;
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className={`flex-none ${className}`} {...a11y(label)}>
+      {fill && (
+        <>
+          <defs>
+            <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor={color} stopOpacity=".28" />
+              <stop offset="1" stopColor={color} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <polyline points={area} fill={`url(#${id})`} stroke="none" />
+        </>
+      )}
+      <polyline points={points} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      {dot && <circle cx={last.x} cy={last.y} r="1.6" fill={color} />}
+    </svg>
+  );
+}
+
+// BarMini — a small bar chart; bars fade in from left to right for a subtle
+// sense of progression.
+export function BarMini({ data, color = '#10B981', width = 80, height = 32, gap = 2, label, className = 'h-8 w-20' }) {
+  const bars = barGeometry(data, { width, height, gap });
+  if (!bars.length) return null;
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} className={`flex-none ${className}`} {...a11y(label)}>
+      {bars.map((b, i) => (
+        <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} rx="1" fill={color} opacity={round(0.4 + (0.6 * (i + 1)) / bars.length)} />
+      ))}
+    </svg>
+  );
+}
+
+// Donut — a single-value progress ring (0–100). `children` renders centred
+// (e.g. the percentage label).
+export function Donut({
+  value,
+  color = '#10B981',
+  size = 44,
+  stroke = 5,
+  track = 'rgba(148,163,184,.25)',
+  label,
+  children,
+}) {
+  const { r, cx, cy, dash, gap } = donutGeometry(value, { size, stroke });
+  return (
+    <span className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} {...a11y(label)}>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={track} strokeWidth={stroke} />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={`${dash} ${gap}`}
+          transform={`rotate(-90 ${cx} ${cy})`}
+        />
+      </svg>
+      {children != null && (
+        <span className="absolute text-[11px] font-semibold tabular-nums text-slate-700 dark:text-slate-200">{children}</span>
+      )}
+    </span>
+  );
+}
+
+const round = (n) => Math.round(n * 100) / 100;
