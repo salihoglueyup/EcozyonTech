@@ -329,6 +329,17 @@ export const caseBySlug = (slug, all = CASES) => all.find((c) => c.slug === slug
 // the impact-map "read the case" link. Returns undefined when none exists.
 export const caseByCity = (cityName, all = CASES) => all.find((c) => c.city === cityName);
 
+// Related case studies for a given slug: same-sector cases first, then others,
+// excluding the current one. Mirrors relatedPosts for cross-linking discovery.
+export function relatedCases(slug, all = CASES, n = 2) {
+  const current = all.find((c) => c.slug === slug);
+  if (!current) return [];
+  const others = all.filter((c) => c.slug !== slug);
+  const sameSector = others.filter((c) => c.sector.en === current.sector.en);
+  const rest = others.filter((c) => c.sector.en !== current.sector.en);
+  return [...sameSector, ...rest].slice(0, n);
+}
+
 // Sectors present, each with a stable id (sector.en) + bilingual label, in
 // first-appearance order — mirrors postTags/jobTeams for an optional filter.
 export function caseSectors(cases = CASES) {

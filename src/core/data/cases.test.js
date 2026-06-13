@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CASES, caseBySlug, caseByCity, caseSectors } from './cases';
+import { CASES, caseBySlug, caseByCity, caseSectors, relatedCases } from './cases';
 import { CITIES } from './cities';
 
 describe('CASES data', () => {
@@ -78,5 +78,27 @@ describe('caseSectors', () => {
       expect(s.label).toHaveProperty('en');
       expect(s.id).toBe(s.label.en);
     }
+  });
+});
+
+describe('relatedCases', () => {
+  it('excludes the current case and returns at most n', () => {
+    const slug = CASES[0].slug;
+    const related = relatedCases(slug, CASES, 2);
+    expect(related.length).toBeLessThanOrEqual(2);
+    expect(related.some((c) => c.slug === slug)).toBe(false);
+  });
+
+  it('prefers same-sector cases first', () => {
+    const current = CASES[0];
+    const sameSectorExists = CASES.some((c) => c.slug !== current.slug && c.sector.en === current.sector.en);
+    const related = relatedCases(current.slug, CASES, 1);
+    if (sameSectorExists) {
+      expect(related[0].sector.en).toBe(current.sector.en);
+    }
+  });
+
+  it('returns [] for an unknown slug', () => {
+    expect(relatedCases('nope')).toEqual([]);
   });
 });

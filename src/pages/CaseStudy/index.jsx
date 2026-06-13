@@ -1,7 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { caseBySlug } from '@/core/data/cases';
+import { caseBySlug, relatedCases } from '@/core/data/cases';
 
 export default function CaseStudyPage() {
   const { slug } = useParams();
@@ -16,6 +16,7 @@ export default function CaseStudyPage() {
   if (!item) return <Navigate to="/cases" replace />;
 
   const c = t.cases;
+  const related = relatedCases(slug);
 
   return (
     <article className="relative py-20 lg:py-28 pt-32">
@@ -94,6 +95,29 @@ export default function CaseStudyPage() {
             <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
           </Link>
         </div>
+
+        {/* Related case studies */}
+        {related.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-4">{c.related}</h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {related.map((r) => (
+                <Link
+                  key={r.slug}
+                  to={`/cases/${r.slug}`}
+                  className="eco-lift group rounded-2xl eco-card p-5 hover:ring-cyan-500/30 transition"
+                >
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <span className="inline-flex items-center rounded-full px-2 py-0.5 font-semibold" style={{ backgroundColor: `${r.accent}1f`, color: r.accent }}>{r.city}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{r.sector[lang]}</span>
+                  </div>
+                  <h3 className="mt-2 font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{r.client[lang]}</h3>
+                  <p className="mt-1 text-[12.5px] text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{r.summary[lang]}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );
