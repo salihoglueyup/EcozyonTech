@@ -84,7 +84,7 @@ export default function DevelopersPage() {
                           <tr className="border-b border-slate-900/[.06] dark:border-white/[.06] text-slate-500 dark:text-slate-400">
                             <th scope="col" className="py-2 px-3 font-medium">{d.field}</th>
                             <th scope="col" className="py-2 px-3 font-medium">{d.type}</th>
-                            <th scope="col" className="py-2 px-3 font-medium" />
+                            <th scope="col" className="py-2 px-3 font-medium">{d.notes}</th>
                           </tr>
                         </thead>
                         <tbody>

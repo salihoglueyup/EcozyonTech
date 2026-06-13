@@ -23,6 +23,8 @@ const RoiPage = lazy(() => import('@/pages/Roi'));
 const DevelopersPage = lazy(() => import('@/pages/Developers'));
 const LeaderboardPage = lazy(() => import('@/pages/Leaderboard'));
 const ComparePage = lazy(() => import('@/pages/Compare'));
+const SitemapPage = lazy(() => import('@/pages/Sitemap'));
+const AccessibilityPage = lazy(() => import('@/pages/Accessibility'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -74,6 +76,8 @@ const ROUTE_ELEMENTS = [
   { path: 'developers', el: <DevelopersPage /> },
   { path: 'leaderboard', el: <LeaderboardPage /> },
   { path: 'compare', el: <ComparePage /> },
+  { path: 'sitemap', el: <SitemapPage /> },
+  { path: 'accessibility', el: <AccessibilityPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },

@@ -168,6 +168,20 @@ export const ROUTES = [
     title: { tr: 'Arama — Ecozyon Tech', en: 'Search — Ecozyon Tech' },
   },
   {
+    path: '/sitemap',
+    key: 'sitemap',
+    place: 'footer',
+    nav: { tr: 'Site Haritası', en: 'Sitemap' },
+    title: { tr: 'Site Haritası — Ecozyon Tech', en: 'Sitemap — Ecozyon Tech' },
+  },
+  {
+    path: '/accessibility',
+    key: 'accessibility',
+    place: 'footer',
+    nav: { tr: 'Erişilebilirlik', en: 'Accessibility' },
+    title: { tr: 'Erişilebilirlik Beyanı — Ecozyon Tech', en: 'Accessibility Statement — Ecozyon Tech' },
+  },
+  {
     path: '/legal',
     key: 'legal',
     place: 'footer',

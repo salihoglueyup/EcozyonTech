@@ -77,21 +77,21 @@ export default function GlossaryPage() {
         {visible.length === 0 ? (
           <p className="rounded-xl eco-card p-6 text-[13.5px] text-slate-500 dark:text-slate-400">{g.empty}</p>
         ) : (
-          <dl className="divide-y divide-slate-900/[.06] dark:divide-white/[.06]">
+          <div className="divide-y divide-slate-900/[.06] dark:divide-white/[.06]">
             {visible.map((term, i) => (
               <div key={term.id} id={term.id} className="scroll-mt-28 py-5">
                 <Reveal delay={Math.min(i, 6) * 40}>
-                  <dt className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2.5">
                     <a href={`#${term.id}`} className="font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-                      {term.term[lang]}
+                      <dfn className="not-italic">{term.term[lang]}</dfn>
                     </a>
                     <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-2 py-0.5 text-[10.5px] font-medium text-slate-500 dark:text-slate-400">{term.category[lang]}</span>
-                  </dt>
-                  <dd className="mt-1.5 text-[14px] text-slate-600 dark:text-slate-300 leading-relaxed">{term.definition[lang]}</dd>
+                  </div>
+                  <p className="mt-1.5 text-[14px] text-slate-600 dark:text-slate-300 leading-relaxed">{term.definition[lang]}</p>
                 </Reveal>
               </div>
             ))}
-          </dl>
+          </div>
         )}
       </div>
     </section>

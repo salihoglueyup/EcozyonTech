@@ -12,6 +12,12 @@ import ChangelogPage from '@/pages/Changelog';
 import PressPage from '@/pages/Press';
 import StyleguidePage from '@/pages/Styleguide';
 import NotFoundPage from '@/pages/NotFound';
+import ComparePage from '@/pages/Compare';
+import LeaderboardPage from '@/pages/Leaderboard';
+import SitemapPage from '@/pages/Sitemap';
+import AccessibilityPage from '@/pages/Accessibility';
+import DevelopersPage from '@/pages/Developers';
+import GlossaryPage from '@/pages/Glossary';
 
 expect.extend(toHaveNoViolations);
 
@@ -27,6 +33,12 @@ const PAGES = [
   ['Press', <PressPage />],
   ['Styleguide', <StyleguidePage />],
   ['NotFound', <NotFoundPage />],
+  ['Compare', <ComparePage />],
+  ['Leaderboard', <LeaderboardPage />],
+  ['Sitemap', <SitemapPage />],
+  ['Accessibility', <AccessibilityPage />],
+  ['Developers', <DevelopersPage />],
+  ['Glossary', <GlossaryPage />],
 ];
 
 function renderPage(ui, route = '/') {
