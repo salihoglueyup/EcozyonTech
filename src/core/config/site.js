@@ -77,6 +77,13 @@ export const ROUTES = [
     title: { tr: 'Sistem Durumu — Ecozyon Tech', en: 'System Status — Ecozyon Tech' },
   },
   {
+    path: '/press',
+    key: 'press',
+    place: 'footer',
+    nav: { tr: 'Basın', en: 'Press' },
+    title: { tr: 'Basın Odası — Ecozyon Tech', en: 'Newsroom — Ecozyon Tech' },
+  },
+  {
     path: '/blog',
     key: 'blog',
     place: 'footer',

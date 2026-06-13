@@ -12,6 +12,7 @@ const CaseStudyPage = lazy(() => import('@/pages/CaseStudy'));
 const HelpPage = lazy(() => import('@/pages/Help'));
 const ChangelogPage = lazy(() => import('@/pages/Changelog'));
 const StatusPage = lazy(() => import('@/pages/Status'));
+const PressPage = lazy(() => import('@/pages/Press'));
 const AboutPage = lazy(() => import('@/pages/About'));
 const BlogPage = lazy(() => import('@/pages/Blog'));
 const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
@@ -52,6 +53,7 @@ const ROUTE_ELEMENTS = [
   { path: 'help', el: <HelpPage /> },
   { path: 'changelog', el: <ChangelogPage /> },
   { path: 'status', el: <StatusPage /> },
+  { path: 'press', el: <PressPage /> },
   { path: 'about', el: <AboutPage /> },
   { path: 'blog', el: <BlogPage /> },
   { path: 'blog/:slug', el: <BlogPostPage /> },
