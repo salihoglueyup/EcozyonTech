@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { ECO_I18N } from '@/core/i18n/dictionary';
+import { BRAND } from '@/core/tokens';
 
 // ── Design tokens (moved out of the old monolithic app.jsx) ─────────────────
 const DEFAULTS = {
@@ -22,7 +23,7 @@ export const BG_TINTS = {
 };
 
 export const ACCENT_PALETTES = {
-  'cyan-emerald': { cyan: '#0EA5E9', emerald: '#10B981' },
+  'cyan-emerald': { cyan: BRAND.cyan, emerald: BRAND.emerald },
   'blue-violet': { cyan: '#2563EB', emerald: '#7C3AED' },
   'teal-lime': { cyan: '#0D9488', emerald: '#65A30D' },
   'sky-rose': { cyan: '#0284C7', emerald: '#E11D48' },

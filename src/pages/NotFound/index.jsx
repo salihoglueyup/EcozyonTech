@@ -33,10 +33,7 @@ export default function NotFoundPage() {
   return (
     <section className="min-h-[70vh] grid place-items-center px-6 py-24 pt-32">
       <div className="text-center max-w-md">
-        <div
-          className="font-display text-[clamp(4rem,12vw,8rem)] leading-none tracking-tight bg-clip-text text-transparent"
-          style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}
-        >
+        <div className="eco-gradient-text font-display text-[clamp(4rem,12vw,8rem)] leading-none tracking-tight">
           404
         </div>
         <h1 className="mt-4 font-display text-[clamp(1.4rem,2.6vw,2rem)] tracking-tight text-slate-900 dark:text-slate-100">

@@ -25,10 +25,7 @@ export function SectionHeader({
         {titleAccent && (
           <>
             {' '}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}
-            >
+            <span className="eco-gradient-text">
               {titleAccent}
             </span>
           </>

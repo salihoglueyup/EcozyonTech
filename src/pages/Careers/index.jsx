@@ -78,7 +78,7 @@ export default function CareersPage() {
           <Tag color="cyan">// {tr ? 'Kariyer' : 'Careers'}</Tag>
           <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {tr ? 'Daha akıllı, ' : 'Build a smarter, '}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}>
+            <span className="eco-gradient-text">
               {tr ? 'temiz bir gelecek kur' : 'cleaner future'}
             </span>
           </h1>

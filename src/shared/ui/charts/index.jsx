@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { BRAND } from '@/core/tokens';
 import { sparklineGeometry, barGeometry, donutGeometry } from './geometry';
 
 // Reusable SVG chart primitives built on the pure geometry helpers. All are
@@ -13,7 +14,7 @@ const a11y = (label) => (label ? { role: 'img', 'aria-label': label } : { 'aria-
 // head dot at the latest value.
 export function Sparkline({
   data,
-  color = '#0EA5E9',
+  color = BRAND.cyan,
   width = 64,
   height = 22,
   fill = true,
@@ -45,7 +46,7 @@ export function Sparkline({
 
 // BarMini — a small bar chart; bars fade in from left to right for a subtle
 // sense of progression.
-export function BarMini({ data, color = '#10B981', width = 80, height = 32, gap = 2, label, className = 'h-8 w-20' }) {
+export function BarMini({ data, color = BRAND.emerald, width = 80, height = 32, gap = 2, label, className = 'h-8 w-20' }) {
   const bars = barGeometry(data, { width, height, gap });
   if (!bars.length) return null;
   return (
@@ -61,7 +62,7 @@ export function BarMini({ data, color = '#10B981', width = 80, height = 32, gap 
 // (e.g. the percentage label).
 export function Donut({
   value,
-  color = '#10B981',
+  color = BRAND.emerald,
   size = 44,
   stroke = 5,
   track = 'rgba(148,163,184,.25)',

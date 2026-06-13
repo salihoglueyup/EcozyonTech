@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { BRAND } from './src/core/tokens.js';
+
 export default {
   darkMode: 'class',
   content: [
@@ -8,6 +10,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Brand accents from the single token source (src/core/tokens.js).
+        brand: { cyan: BRAND.cyan, emerald: BRAND.emerald },
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         primary: {

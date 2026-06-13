@@ -56,7 +56,7 @@ export default function SitemapPage() {
           <Tag color="cyan">// {s.eyebrow}</Tag>
           <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {s.title}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(110deg,#0EA5E9 0%,#10B981 100%)' }}>
+            <span className="eco-gradient-text">
               {s.titleAccent}
             </span>
           </h1>

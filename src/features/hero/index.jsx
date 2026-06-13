@@ -42,10 +42,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
             <h1 className="mt-6 font-display text-[clamp(2.4rem,5.4vw,4.4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
               <span className="block">{t.hero.title1}</span>
               <span className="block">
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{ backgroundImage: "linear-gradient(110deg,#0EA5E9 0%, #10B981 100%)" }}
-                >
+                <span className="eco-gradient-text">
                   {t.hero.title2}
                 </span>
               </span>
