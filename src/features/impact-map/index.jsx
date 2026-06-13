@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
+import { Sparkline } from '@/shared/ui/charts';
 import { CITIES } from '@/core/data/cities';
 import { caseByCity } from '@/core/data/cases';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
@@ -11,7 +12,7 @@ import { useApp } from '@/app/providers/AppProvider';
 function ImpactMap({ t }) {
   const m = t.impactMap;
   const { isDark, accents } = useApp();
-  const cities = CITIES || [];
+  const cities = useMemo(() => CITIES || [], []);
 
   const [layers, setLayers] = useState({
     active: true,
@@ -39,6 +40,19 @@ function ImpactMap({ t }) {
   const totalCo2 = useMemo(() => activeCities.reduce((s, c) => s + c.co2, 0), [activeCities]);
   const totalPartners = useMemo(() => activeCities.filter((c) => c.partner).length, [activeCities]);
   const totalCountries = useMemo(() => new Set(activeCities.map((c) => c.country)).size, [activeCities]);
+
+  // Real growth trends derived from the dataset: cumulative network size per
+  // year up to the scrubber's timeYear (feeds the stat-pill sparklines).
+  const trends = useMemo(() => {
+    const years = [2024, 2025, 2026].filter((y) => y <= timeYear);
+    const upTo = (y) => cities.filter((c) => c.since <= y);
+    return {
+      cities: years.map((y) => upTo(y).length),
+      countries: years.map((y) => new Set(upTo(y).map((c) => c.country)).size),
+      partners: years.map((y) => upTo(y).filter((c) => c.partner).length),
+      co2: years.map((y) => upTo(y).reduce((s, c) => s + c.co2, 0)),
+    };
+  }, [timeYear, cities]);
 
   // Live CO₂ counter — increments based on totalCo2/86400 per second
   const [liveTick, setLiveTick] = useState(0);
@@ -88,10 +102,10 @@ function ImpactMap({ t }) {
         <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
           {/* Header strip with stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-slate-900/[.06] border-b border-slate-900/[.06] bg-white/40">
-            <StatPill label={m.stats.cities} value={activeCities.length} accent="#10B981" />
-            <StatPill label={m.stats.countries} value={totalCountries} accent="#0EA5E9" />
-            <StatPill label={m.stats.partners} value={totalPartners} accent="#7C3AED" />
-            <StatPill label={m.stats.co2live} value={`${liveCo2} kg`} accent="#F59E0B" live />
+            <StatPill label={m.stats.cities} value={activeCities.length} accent="#10B981" trend={trends.cities} />
+            <StatPill label={m.stats.countries} value={totalCountries} accent="#0EA5E9" trend={trends.countries} />
+            <StatPill label={m.stats.partners} value={totalPartners} accent="#7C3AED" trend={trends.partners} />
+            <StatPill label={m.stats.co2live} value={`${liveCo2} kg`} accent="#F59E0B" live trend={trends.co2} />
           </div>
 
           {/* Main map area */}
@@ -202,7 +216,7 @@ function ImpactMap({ t }) {
   );
 }
 
-function StatPill({ label, value, accent, live }) {
+function StatPill({ label, value, accent, live, trend }) {
   const ref = useRef();
   const [seen, setSeen] = useState(false);
   useEffect(() => {
@@ -223,6 +237,9 @@ function StatPill({ label, value, accent, live }) {
       <div className="mt-1 font-display text-[24px] tracking-tight" style={{ color: accent }}>
         {live ? value : <AnimatedNumber value={value} play={seen} />}
       </div>
+      {trend && trend.length > 1 && (
+        <Sparkline data={trend} color={accent} width={120} height={20} dot={false} className="mt-2 h-5 w-full" />
+      )}
     </div>
   );
 }
