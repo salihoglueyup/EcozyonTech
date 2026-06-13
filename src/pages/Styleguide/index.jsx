@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { Tag, GlowOrb } from '@/shared/ui/primitives';
-import { Reveal } from '@/shared/ui/useReveal';
+import { Reveal, useReveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
+import { Tabs } from '@/shared/ui/Tabs';
+import { Tooltip } from '@/shared/ui/Tooltip';
+import { useToast } from '@/shared/ui/Toast';
+import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import {
   useApp,
   ACCENT_PALETTES,
@@ -57,11 +62,24 @@ function GroupLabel({ children }) {
 
 export default function StyleguidePage() {
   const { lang, t, accents } = useApp();
+  const tr = lang === 'tr';
   const g = t.styleguide;
   const sc = g.sections;
   useDocumentMeta(meta.title[lang], g.intro);
 
   const navSections = SECTIONS.map((s) => ({ id: s.id, label: s.label[lang] }));
+
+  // Interactive demo state.
+  const [tab, setTab] = useState('overview');
+  const toast = useToast();
+  const [numRef, numIn] = useReveal();
+  const [replayKey, setReplayKey] = useState(0);
+
+  const demoTabs = [
+    { id: 'overview', label: tr ? 'Genel' : 'Overview' },
+    { id: 'specs', label: tr ? 'Özellikler' : 'Specs' },
+    { id: 'activity', label: tr ? 'Etkinlik' : 'Activity' },
+  ];
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
@@ -231,6 +249,67 @@ export default function StyleguidePage() {
                 <textarea id="sg-msg" rows={3} placeholder={g.textareaPlaceholder} className="w-full rounded-xl bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.1] dark:ring-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none focus:ring-cyan-500/40 transition resize-none" />
               </div>
             </div>
+          </Section>
+
+          {/* Tabs */}
+          <Section id="tabs" title={sc.tabs.title} desc={sc.tabs.desc}>
+            <Tabs tabs={demoTabs} value={tab} onChange={setTab} />
+            <div className="mt-4 rounded-xl eco-card p-5 text-[13.5px] text-slate-600 dark:text-slate-400" role="tabpanel">
+              <span className="font-medium text-slate-900 dark:text-slate-100">{demoTabs.find((x) => x.id === tab)?.label}</span> — {g.intro}
+            </div>
+          </Section>
+
+          {/* Tooltip */}
+          <Section id="tooltip" title={sc.tooltip.title} desc={sc.tooltip.desc}>
+            <div className="flex flex-wrap gap-6">
+              {['top', 'bottom', 'left', 'right'].map((side) => (
+                <Tooltip key={side} side={side} label={`${side} tooltip`}>
+                  <button type="button" className="rounded-full px-4 py-2 text-[13px] font-medium text-slate-700 dark:text-slate-300 ring-1 ring-slate-900/[.12] dark:ring-white/[.14] hover:ring-cyan-500/40 transition">
+                    {side}
+                  </button>
+                </Tooltip>
+              ))}
+            </div>
+          </Section>
+
+          {/* Toast */}
+          <Section id="toast" title={sc.toast.title} desc={sc.toast.desc}>
+            <div className="flex flex-wrap gap-3">
+              <button type="button" onClick={() => toast({ message: g.toastMsg, type: 'success' })} className="rounded-full px-4 py-2 text-[13px] font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-500/30 hover:bg-emerald-500/[.08] transition">
+                {g.fireSuccess}
+              </button>
+              <button type="button" onClick={() => toast({ message: g.toastMsg, type: 'error' })} className="rounded-full px-4 py-2 text-[13px] font-medium text-rose-700 dark:text-rose-400 ring-1 ring-rose-500/30 hover:bg-rose-500/[.08] transition">
+                {g.fireError}
+              </button>
+              <button type="button" onClick={() => toast({ message: g.toastMsg, type: 'info' })} className="rounded-full px-4 py-2 text-[13px] font-medium text-cyan-700 dark:text-cyan-400 ring-1 ring-cyan-500/30 hover:bg-cyan-500/[.08] transition">
+                {g.fireInfo}
+              </button>
+            </div>
+          </Section>
+
+          {/* Animated number */}
+          <Section id="numbers" title={sc.numbers.title} desc={sc.numbers.desc}>
+            <div ref={numRef} className="flex flex-wrap items-end gap-x-10 gap-y-4">
+              {[
+                { value: '8.4K', label: tr ? 'Kullanıcı' : 'Users' },
+                { value: '%92', label: tr ? 'Memnuniyet' : 'Satisfaction' },
+                { value: '164t', label: 'CO₂' },
+              ].map((m) => (
+                <div key={m.label}>
+                  <AnimatedNumber
+                    key={`${m.label}-${replayKey}`}
+                    value={m.value}
+                    play={numIn}
+                    className="font-display text-[34px] leading-none tracking-tight tabular-nums text-slate-900 dark:text-slate-100"
+                  />
+                  <div className="mt-1.5 text-[12px] text-slate-500 dark:text-slate-400">{m.label}</div>
+                </div>
+              ))}
+            </div>
+            <button type="button" onClick={() => setReplayKey((k) => k + 1)} className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium text-slate-700 dark:text-slate-300 ring-1 ring-slate-900/[.12] dark:ring-white/[.14] hover:ring-cyan-500/40 transition">
+              <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7a4 4 0 1 1-1.2-2.8M11 2.5V5H8.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              {g.replay}
+            </button>
           </Section>
         </div>
       </div>

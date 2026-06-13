@@ -9,6 +9,10 @@ export const SECTIONS = [
   { id: 'cards', label: { tr: 'Kartlar', en: 'Cards' } },
   { id: 'skeletons', label: { tr: 'İskeletler', en: 'Skeletons' } },
   { id: 'forms', label: { tr: 'Formlar', en: 'Forms' } },
+  { id: 'tabs', label: { tr: 'Sekmeler', en: 'Tabs' } },
+  { id: 'tooltip', label: { tr: 'İpucu', en: 'Tooltip' } },
+  { id: 'toast', label: { tr: 'Bildirim', en: 'Toast' } },
+  { id: 'numbers', label: { tr: 'Sayılar', en: 'Numbers' } },
 ];
 
 // The ordered list of section ids (anchors / scroll-spy targets).
