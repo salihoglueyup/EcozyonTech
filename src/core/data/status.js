@@ -20,14 +20,15 @@ export const OVERALL_HEADLINE = {
   outage: { tr: 'Bir kesinti yaşanıyor', en: 'We are experiencing an outage' },
 };
 
-// Monitored components and their current state + 90-day uptime.
+// Monitored components and their current state + 90-day uptime. `series` is an
+// authored 14-day daily-uptime history (deterministic, for the sparkline).
 export const COMPONENTS = [
-  { id: 'api', name: { tr: 'API', en: 'API' }, desc: { tr: 'Genel REST & GraphQL uçları', en: 'Public REST & GraphQL endpoints' }, status: 'operational', uptime: 99.98 },
-  { id: 'dashboard', name: { tr: 'Panel', en: 'Dashboard' }, desc: { tr: 'Web uygulaması ve grafikler', en: 'Web app and analytics' }, status: 'operational', uptime: 99.95 },
-  { id: 'mobile', name: { tr: 'Mobil & Giyilebilir', en: 'Mobile & Wearable' }, desc: { tr: 'iOS/Android ve cihaz senkronu', en: 'iOS/Android and device sync' }, status: 'operational', uptime: 99.92 },
-  { id: 'ai', name: { tr: 'AI Motoru', en: 'AI Engine' }, desc: { tr: 'Tahmin ve öneri servisleri', en: 'Prediction and recommendation services' }, status: 'operational', uptime: 99.89 },
-  { id: 'integrations', name: { tr: 'Entegrasyonlar', en: 'Integrations' }, desc: { tr: 'Webhook ve üçüncü taraf bağlantılar', en: 'Webhooks and third-party connectors' }, status: 'operational', uptime: 99.97 },
-  { id: 'site', name: { tr: 'Web Sitesi', en: 'Website' }, desc: { tr: 'Pazarlama sitesi ve dokümanlar', en: 'Marketing site and docs' }, status: 'operational', uptime: 100 },
+  { id: 'api', name: { tr: 'API', en: 'API' }, desc: { tr: 'Genel REST & GraphQL uçları', en: 'Public REST & GraphQL endpoints' }, status: 'operational', uptime: 99.98, series: [100, 99.9, 100, 99.95, 100, 100, 99.98, 100, 99.92, 100, 100, 99.96, 100, 99.98] },
+  { id: 'dashboard', name: { tr: 'Panel', en: 'Dashboard' }, desc: { tr: 'Web uygulaması ve grafikler', en: 'Web app and analytics' }, status: 'operational', uptime: 99.95, series: [99.9, 100, 99.8, 100, 99.95, 100, 99.7, 100, 100, 99.9, 100, 99.95, 100, 99.95] },
+  { id: 'mobile', name: { tr: 'Mobil & Giyilebilir', en: 'Mobile & Wearable' }, desc: { tr: 'iOS/Android ve cihaz senkronu', en: 'iOS/Android and device sync' }, status: 'operational', uptime: 99.92, series: [99.8, 99.95, 100, 99.7, 100, 99.9, 100, 99.85, 100, 99.95, 99.8, 100, 99.9, 99.92] },
+  { id: 'ai', name: { tr: 'AI Motoru', en: 'AI Engine' }, desc: { tr: 'Tahmin ve öneri servisleri', en: 'Prediction and recommendation services' }, status: 'operational', uptime: 99.89, series: [99.9, 99.7, 100, 99.6, 99.4, 100, 99.8, 100, 99.9, 99.95, 100, 99.85, 100, 99.89] },
+  { id: 'integrations', name: { tr: 'Entegrasyonlar', en: 'Integrations' }, desc: { tr: 'Webhook ve üçüncü taraf bağlantılar', en: 'Webhooks and third-party connectors' }, status: 'operational', uptime: 99.97, series: [100, 100, 99.95, 100, 99.9, 100, 100, 99.98, 100, 99.95, 100, 100, 99.97, 99.97] },
+  { id: 'site', name: { tr: 'Web Sitesi', en: 'Website' }, desc: { tr: 'Pazarlama sitesi ve dokümanlar', en: 'Marketing site and docs' }, status: 'operational', uptime: 100, series: [100, 100, 100, 100, 99.98, 100, 100, 100, 100, 100, 100, 99.99, 100, 100] },
 ];
 
 // Incident history — newest first. Each incident has a severity (a status

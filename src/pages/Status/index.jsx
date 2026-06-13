@@ -3,6 +3,7 @@ import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
+import { Sparkline, Donut } from '@/shared/ui/charts';
 import {
   COMPONENTS,
   INCIDENTS,
@@ -72,9 +73,12 @@ export default function StatusPage() {
                 {OVERALL_HEADLINE[overall][lang]}
               </span>
             </div>
-            <div className="text-right">
-              <div className="font-display text-[22px] tabular-nums leading-none text-slate-900 dark:text-slate-100">{avg}%</div>
-              <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{s.uptimeLabel}</div>
+            <div className="flex items-center gap-3">
+              <Donut value={avg} size={48} stroke={5} color={overallM.accent} label={`${s.uptimeLabel}: ${avg}%`} />
+              <div className="text-right">
+                <div className="font-display text-[22px] tabular-nums leading-none text-slate-900 dark:text-slate-100">{avg}%</div>
+                <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{s.uptimeLabel}</div>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -90,9 +94,18 @@ export default function StatusPage() {
                     <div className="text-[14.5px] font-medium text-slate-900 dark:text-slate-100">{c.name[lang]}</div>
                     <div className="mt-0.5 text-[12.5px] text-slate-500 dark:text-slate-400">{c.desc[lang]}</div>
                   </div>
-                  <div className="flex shrink-0 flex-col items-end gap-1">
-                    <StatusPill status={c.status} lang={lang} />
-                    <span className="text-[11.5px] tabular-nums text-slate-400">{c.uptime}%</span>
+                  <div className="flex shrink-0 items-center gap-4">
+                    <Sparkline
+                      data={c.series}
+                      color={statusMeta(c.status).accent}
+                      width={96}
+                      height={28}
+                      className="hidden sm:block h-7 w-24"
+                    />
+                    <div className="flex flex-col items-end gap-1">
+                      <StatusPill status={c.status} lang={lang} />
+                      <span className="text-[11.5px] tabular-nums text-slate-400">{c.uptime}%</span>
+                    </div>
                   </div>
                 </div>
               </Reveal>

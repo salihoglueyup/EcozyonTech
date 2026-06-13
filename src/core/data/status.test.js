@@ -16,6 +16,9 @@ describe('status data', () => {
       expect(STATUS_META, `unknown status ${c.status}`).toHaveProperty(c.status);
       expect(c.uptime).toBeGreaterThanOrEqual(0);
       expect(c.uptime).toBeLessThanOrEqual(100);
+      expect(Array.isArray(c.series)).toBe(true);
+      expect(c.series.length).toBeGreaterThan(1);
+      expect(c.series.every((n) => typeof n === 'number')).toBe(true);
     }
   });
 
