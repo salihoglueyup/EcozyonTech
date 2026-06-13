@@ -5,11 +5,6 @@ import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { ROUTES, SITE } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 import { JOBS } from '@/core/data/jobs';
-import { HELP } from '@/core/data/help';
-import { CASES } from '@/core/data/cases';
-import { CHANGELOG } from '@/core/data/changelog';
-import { INTEGRATIONS } from '@/core/data/integrations';
-import { GLOSSARY } from '@/core/data/glossary';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
@@ -82,7 +77,7 @@ export default function CommandPalette() {
   // Full-content search index (pages + posts + help + cases + changelog +
   // roles), rebuilt only when the language changes.
   const searchIndex = useMemo(
-    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, glossary: GLOSSARY, lang }),
+    () => buildSearchDocs({ routes: ROUTES, lang }),
     [lang],
   );
 

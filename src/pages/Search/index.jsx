@@ -4,13 +4,6 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { ROUTES, routeByKey } from '@/core/config/site';
-import { POSTS } from '@/core/data/posts';
-import { HELP } from '@/core/data/help';
-import { CASES } from '@/core/data/cases';
-import { CHANGELOG } from '@/core/data/changelog';
-import { JOBS } from '@/core/data/jobs';
-import { INTEGRATIONS } from '@/core/data/integrations';
-import { GLOSSARY } from '@/core/data/glossary';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
 
 const meta = routeByKey('search');
@@ -48,7 +41,7 @@ export default function SearchPage() {
   };
 
   const index = useMemo(
-    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, glossary: GLOSSARY, lang }),
+    () => buildSearchDocs({ routes: ROUTES, lang }),
     [lang],
   );
   const results = useMemo(() => searchDocs(index, q), [index, q]);

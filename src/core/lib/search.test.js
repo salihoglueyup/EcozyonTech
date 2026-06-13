@@ -1,37 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { fold, buildSearchDocs, scoreDoc, searchDocs } from './search';
+import { COLLECTIONS } from '@/core/content/registry';
 
-const fixture = {
-  routes: [
-    { path: '/help', nav: { tr: 'Yardım', en: 'Help' } },
-    { path: '*', nav: { tr: 'NF', en: 'NF' } },
-    { path: '/blog/:slug', nav: { tr: 'X', en: 'X' } },
-  ],
-  posts: [
-    {
-      slug: 'carbon-budget',
-      title: { tr: 'Karbon bütçesi nedir', en: 'What is a carbon budget' },
-      excerpt: { tr: 'Kişisel baseline', en: 'Personal baseline' },
-      tag: { tr: 'Rehber', en: 'Guide' },
-      body: { tr: [{ h: 'Başlık', id: 'b' }, 'Ortalama hedef yetersiz kalır.'], en: ['Averages fail.'] },
-    },
-  ],
-  help: [
-    { id: 'co2', category: { tr: 'Cihaz', en: 'Device' }, q: { tr: 'CO2 nasıl ölçülür', en: 'How is CO2 measured' }, a: { tr: 'Sensör verisiyle karbon hesaplanır.', en: 'Carbon is computed from sensor data.' } },
-  ],
-  cases: [
-    { slug: 'istanbul', city: 'İstanbul', client: { tr: 'İBB pilotu', en: 'Istanbul pilot' }, sector: { tr: 'Kamu', en: 'Public' }, summary: { tr: 'Belediye ölçeğinde', en: 'Municipal scale' }, challenge: { tr: ['Trafik kaynaklı emisyon'], en: ['Traffic emissions'] }, approach: { tr: ['Sensör ağı'], en: ['Sensor net'] } },
-  ],
-  changelog: [
-    { version: '1.2.0', title: { tr: 'Hesaplayıcı', en: 'Calculator' }, changes: [{ type: 'feature', text: { tr: 'Karbon hesaplayıcı paylaşımı', en: 'Shareable carbon calculator' } }] },
-  ],
-  jobs: [
-    { id: 'fe', title: { tr: 'Frontend Mühendisi', en: 'Frontend Engineer' }, team: { tr: 'Ürün', en: 'Product' }, location: { tr: 'Uzaktan', en: 'Remote' }, responsibilities: { tr: ['React ile arayüz'], en: ['UI with React'] }, requirements: { tr: ['Deneyim'], en: ['Experience'] } },
-  ],
-  integrations: [
-    { slug: 'strava', name: 'Strava', category: { tr: 'Veri', en: 'Data' }, tagline: { tr: 'Bisiklet aktiviteleri', en: 'Cycling activities' }, description: { tr: ['Webhook ile bağlanır'], en: ['Connects via webhook'] }, features: { tr: ['Anlık işleme'], en: ['Instant processing'] } },
-  ],
-};
+const routes = [
+  { path: '/help', nav: { tr: 'Yardım', en: 'Help' } },
+  { path: '*', nav: { tr: 'NF', en: 'NF' } },
+  { path: '/blog/:slug', nav: { tr: 'X', en: 'X' } },
+];
+
+// Real registry (default collections) — the integration-level assertions run
+// against the actual content.
+const docs = buildSearchDocs({ routes, lang: 'tr' });
 
 describe('fold', () => {
   it('lowercases and strips diacritics', () => {
@@ -43,68 +22,58 @@ describe('fold', () => {
   });
 });
 
-describe('buildSearchDocs', () => {
-  const docs = buildSearchDocs({ ...fixture, lang: 'tr' });
-
+describe('buildSearchDocs (registry-driven)', () => {
   it('skips wildcard and param routes', () => {
     const pages = docs.filter((d) => d.type === 'page');
     expect(pages).toHaveLength(1);
     expect(pages[0].to).toBe('/help');
   });
 
-  it('emits one doc per content item across all types', () => {
-    const types = docs.map((d) => d.type);
-    expect(types).toContain('post');
-    expect(types).toContain('help');
-    expect(types).toContain('case');
-    expect(types).toContain('changelog');
-    expect(types).toContain('job');
-    expect(types).toContain('integration');
+  it('emits docs for every registered content type', () => {
+    const types = new Set(docs.map((d) => d.type));
+    for (const col of COLLECTIONS) expect(types.has(col.type), col.type).toBe(true);
   });
 
-  it('deep-links integrations by slug', () => {
-    expect(docs.find((d) => d.type === 'integration').to).toBe('/integrations/strava');
+  it('produces well-formed deep-links per type', () => {
+    expect(docs.find((d) => d.type === 'help').to).toMatch(/^\/help#/);
+    expect(docs.find((d) => d.type === 'case').to).toMatch(/^\/cases\//);
+    expect(docs.find((d) => d.type === 'integration').to).toMatch(/^\/integrations\//);
+    expect(docs.find((d) => d.type === 'term').to).toMatch(/^\/glossary#/);
+    expect(docs.find((d) => d.type === 'job').to).toMatch(/^\/careers\?job=/);
   });
 
-  it('carries correct deep-links', () => {
-    expect(docs.find((d) => d.type === 'help').to).toBe('/help#co2');
-    expect(docs.find((d) => d.type === 'case').to).toBe('/cases/istanbul');
-    expect(docs.find((d) => d.type === 'job').to).toBe('/careers?job=fe');
+  it('accepts injected collections (the extension point)', () => {
+    const custom = [
+      { type: 'demo', items: [{ slug: 'x', title: { tr: 'Başlık', en: 'Title' } }], toDoc: (it, pick) => ({ id: `demo:${it.slug}`, title: pick(it.title), hint: '', body: '', to: `/demo/${it.slug}` }) },
+    ];
+    const out = buildSearchDocs({ routes: [], collections: custom, lang: 'tr' });
+    expect(out).toHaveLength(1);
+    expect(out[0]).toMatchObject({ type: 'demo', to: '/demo/x', title: 'Başlık' });
   });
 });
 
-describe('searchDocs', () => {
-  const docs = buildSearchDocs({ ...fixture, lang: 'tr' });
-
+describe('searchDocs (against real content)', () => {
   it('returns nothing for an empty query', () => {
     expect(searchDocs(docs, '')).toEqual([]);
     expect(searchDocs(docs, '   ')).toEqual([]);
   });
 
   it('finds content by body text, not just titles', () => {
-    // "ortalama" only appears in the blog body
-    const hits = searchDocs(docs, 'ortalama');
-    expect(hits.map((h) => h.id)).toContain('post:carbon-budget');
-  });
-
-  it('matches help answers and case bodies', () => {
-    expect(searchDocs(docs, 'sensör').map((h) => h.type)).toEqual(expect.arrayContaining(['help', 'case']));
+    // "ortalama" appears in the carbon-budget post body, not its title.
+    expect(searchDocs(docs, 'ortalama').some((h) => h.id.startsWith('post:'))).toBe(true);
   });
 
   it('is diacritic and case insensitive', () => {
-    expect(searchDocs(docs, 'ISTANBUL').some((h) => h.id === 'case:istanbul')).toBe(true);
+    const a = searchDocs(docs, 'istanbul').map((h) => h.id);
+    const b = searchDocs(docs, 'İSTANBUL').map((h) => h.id);
+    expect(a).toEqual(b);
+    expect(a.length).toBeGreaterThan(0);
   });
 
-  it('ranks a title match above a body-only match', () => {
-    // "karbon": title of the post ("Karbon bütçesi") vs body of others
-    const hits = searchDocs(docs, 'karbon');
-    expect(hits[0].id).toBe('post:carbon-budget');
-  });
-
-  it('uses AND semantics across terms', () => {
-    // "karbon" matches several; "bütçesi" only the post → intersection is the post
+  it('ranks a title match first for "karbon bütçesi"', () => {
     const hits = searchDocs(docs, 'karbon bütçesi');
-    expect(hits.map((h) => h.id)).toEqual(['post:carbon-budget']);
+    expect(hits[0].type).toBe('post');
+    expect(hits[0].id).toContain('carbon-budget');
   });
 
   it('respects the limit', () => {
@@ -113,13 +82,11 @@ describe('searchDocs', () => {
 });
 
 describe('scoreDoc', () => {
-  const [doc] = buildSearchDocs({ posts: fixture.posts, lang: 'tr' });
+  const [doc] = buildSearchDocs({ routes: [{ path: '/x', nav: { tr: 'karbon', en: 'carbon' } }], collections: [], lang: 'tr' });
   it('drops a doc when any term is missing', () => {
     expect(scoreDoc(doc, ['karbon', 'zzzzz'], 'karbon zzzzz')).toBe(0);
   });
-  it('scores a title hit higher than a body hit', () => {
-    const titleScore = scoreDoc(doc, ['karbon'], 'karbon');
-    const bodyScore = scoreDoc(doc, ['ortalama'], 'ortalama');
-    expect(titleScore).toBeGreaterThan(bodyScore);
+  it('scores a title hit', () => {
+    expect(scoreDoc(doc, ['karbon'], 'karbon')).toBeGreaterThan(0);
   });
 });

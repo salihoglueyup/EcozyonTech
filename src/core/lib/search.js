@@ -5,6 +5,7 @@
 // Flow: buildSearchDocs(...) flattens the data into weighted text docs once,
 // then searchDocs(docs, query) ranks them for a query (multi-term AND, with
 // title matches weighted above body matches). Diacritic/case-insensitive.
+import { COLLECTIONS } from '@/core/content/registry';
 
 // Fold a string for matching: lowercase + strip combining diacritics so
 // "İstanbul" / "istanbul" / "Istanbul" all compare equal. Deterministic.
@@ -14,18 +15,16 @@ export const fold = (s) =>
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '');
 
-// Text of a blog body block (string blocks, or heading objects {h, id}).
-const blockText = (b) => (typeof b === 'string' ? b : b?.h || '');
-
 // Field weights — a hit in the title counts far more than one in the body.
 const W_TITLE = 6;
 const W_HINT = 3;
 const W_BODY = 1;
 
-// Build the flat doc list. Each doc: { id, type, title, hint, to, title_f,
-// hint_f, body_f } where *_f are pre-folded haystacks (so search does no
-// repeated folding). `lang` selects the active language strings.
-export function buildSearchDocs({ routes = [], posts = [], help = [], cases = [], changelog = [], jobs = [], integrations = [], glossary = [], lang = 'tr' } = {}) {
+// Build the flat doc list from the routes (pages) + the content registry. Each
+// registered collection self-describes its mapping, so this never needs editing
+// when a content type is added. `collections` is injectable for tests; it
+// defaults to the real registry. Each doc gains pre-folded *_f haystacks.
+export function buildSearchDocs({ routes = [], collections = COLLECTIONS, lang = 'tr' } = {}) {
   const pick = (o) => (o ? o[lang] ?? o.en ?? '' : '');
   const docs = [];
 
@@ -34,41 +33,10 @@ export function buildSearchDocs({ routes = [], posts = [], help = [], cases = []
     docs.push(makeDoc({ id: `page:${r.path}`, type: 'page', title: pick(r.nav) || r.path, hint: '', body: '', to: r.path }));
   }
 
-  for (const p of posts) {
-    const body = [pick(p.excerpt), ...((p.body?.[lang] || []).map(blockText))].join(' ');
-    docs.push(makeDoc({ id: `post:${p.slug}`, type: 'post', title: pick(p.title), hint: pick(p.tag), body, to: `/blog/${p.slug}` }));
-  }
-
-  for (const h of help) {
-    docs.push(makeDoc({ id: `help:${h.id}`, type: 'help', title: pick(h.q), hint: pick(h.category), body: pick(h.a), to: `/help#${h.id}` }));
-  }
-
-  for (const c of cases) {
-    const body = [
-      pick(c.summary),
-      ...((c.challenge?.[lang]) || []),
-      ...((c.approach?.[lang]) || []),
-    ].join(' ');
-    docs.push(makeDoc({ id: `case:${c.slug}`, type: 'case', title: pick(c.client), hint: c.city, body: `${pick(c.sector)} ${body}`, to: `/cases/${c.slug}` }));
-  }
-
-  for (const rel of changelog) {
-    const body = (rel.changes || []).map((ch) => pick(ch.text)).join(' ');
-    docs.push(makeDoc({ id: `changelog:${rel.version}`, type: 'changelog', title: `v${rel.version} — ${pick(rel.title)}`, hint: `v${rel.version}`, body, to: '/changelog' }));
-  }
-
-  for (const j of jobs) {
-    const body = [...((j.responsibilities?.[lang]) || []), ...((j.requirements?.[lang]) || []), pick(j.location)].join(' ');
-    docs.push(makeDoc({ id: `job:${j.id}`, type: 'job', title: pick(j.title), hint: pick(j.team), body, to: `/careers?job=${j.id}` }));
-  }
-
-  for (const i of integrations) {
-    const body = [pick(i.tagline), ...((i.description?.[lang]) || []), ...((i.features?.[lang]) || [])].join(' ');
-    docs.push(makeDoc({ id: `integration:${i.slug}`, type: 'integration', title: i.name, hint: pick(i.category), body, to: `/integrations/${i.slug}` }));
-  }
-
-  for (const term of glossary) {
-    docs.push(makeDoc({ id: `term:${term.id}`, type: 'term', title: pick(term.term), hint: pick(term.category), body: pick(term.definition), to: `/glossary#${term.id}` }));
+  for (const col of collections) {
+    for (const item of col.items) {
+      docs.push(makeDoc({ ...col.toDoc(item, pick, lang), type: col.type }));
+    }
   }
 
   return docs;
