@@ -87,6 +87,7 @@ export default defineConfig({
         'src/entry-server.jsx',
         'src/app/App.jsx',
         'src/core/lib/vitals.js',
+        'src/shared/ui/VitalsHud.jsx',
         'src/features/dev-tweaks/**',
         'src/shared/3d/**',
         'src/features/impact-map/**',
