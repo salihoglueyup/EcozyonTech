@@ -48,9 +48,14 @@ npm run build      # client build + SSR build + static prerender → dist/
 npm run preview    # preview build (SPA fallback — see CLAUDE.md caveat)
 npm run lint       # ESLint (flat config)
 npm test           # Vitest (run once)
+npm run e2e        # Playwright behavioral e2e (excludes @visual)
+npm run e2e:visual # Playwright visual regression (local; platform-specific)
 ```
 
-> `lint`, `test`, `build` are enforced by CI.
+> `lint`, `test`, `build`, `bundle:check` and behavioral `e2e` are enforced
+> by CI. The visual-regression suite (`e2e:visual`) is local-only — its
+> screenshot baselines are platform-specific (font rendering). Refresh them
+> after intentional UI changes with `npm run e2e:visual:update`.
 
 ## Routes
 

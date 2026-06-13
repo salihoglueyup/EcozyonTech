@@ -142,7 +142,8 @@
       "Bash(grep -vE \"Call log|waiting for|locator resolved|^\\\\s*$\")",
       "Bash(grep -vE \"Call log|waiting for|locator resolved|^\\\\s*$|WebServer\")",
       "Bash(git commit -q -m ' *4)",
-      "Bash(grep -vE \"Call log|waiting|locator resolved|^\\\\s*$|WebServer\")"
+      "Bash(grep -vE \"Call log|waiting|locator resolved|^\\\\s*$|WebServer\")",
+      "Bash(grep -vE \"Call log|waiting|^\\\\s*$|WebServer\")"
     ]
   }
 }
