@@ -22,3 +22,11 @@ if (root.firstElementChild) {
 }
 
 registerVitals()
+
+// Register the service worker for offline support — production only, so dev
+// never serves stale cached assets. Best-effort: failures are non-fatal.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}

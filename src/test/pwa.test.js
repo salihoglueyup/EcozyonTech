@@ -37,3 +37,24 @@ describe('PWA manifest', () => {
     expect(html).toMatch(/name="theme-color"/);
   });
 });
+
+describe('service worker', () => {
+  const sw = readFileSync(join(root, 'public', 'sw.js'), 'utf8');
+
+  it('registers install, activate and fetch handlers', () => {
+    expect(sw).toMatch(/addEventListener\(['"]install['"]/);
+    expect(sw).toMatch(/addEventListener\(['"]activate['"]/);
+    expect(sw).toMatch(/addEventListener\(['"]fetch['"]/);
+  });
+
+  it('precaches the offline shell and falls back to it', () => {
+    expect(sw).toMatch(/\/offline\.html/);
+    const offline = readFileSync(join(root, 'public', 'offline.html'), 'utf8');
+    expect(offline).toMatch(/<html/);
+  });
+
+  it('ignores cross-origin and non-GET requests', () => {
+    expect(sw).toMatch(/origin !== self\.location\.origin/);
+    expect(sw).toMatch(/method !== ['"]GET['"]/);
+  });
+});
