@@ -119,6 +119,13 @@ export const ROUTES = [
     title: { tr: 'Tasarım Sistemi — Ecozyon Tech', en: 'Design System — Ecozyon Tech' },
   },
   {
+    path: '/search',
+    key: 'search',
+    place: 'none',
+    nav: { tr: 'Arama', en: 'Search' },
+    title: { tr: 'Arama — Ecozyon Tech', en: 'Search — Ecozyon Tech' },
+  },
+  {
     path: '/legal',
     key: 'legal',
     place: 'footer',
