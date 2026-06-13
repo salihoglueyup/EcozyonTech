@@ -9,6 +9,7 @@ import { HELP } from '@/core/data/help';
 import { CASES } from '@/core/data/cases';
 import { CHANGELOG } from '@/core/data/changelog';
 import { INTEGRATIONS } from '@/core/data/integrations';
+import { GLOSSARY } from '@/core/data/glossary';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
@@ -81,7 +82,7 @@ export default function CommandPalette() {
   // Full-content search index (pages + posts + help + cases + changelog +
   // roles), rebuilt only when the language changes.
   const searchIndex = useMemo(
-    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, lang }),
+    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, glossary: GLOSSARY, lang }),
     [lang],
   );
 
@@ -109,6 +110,7 @@ export default function CommandPalette() {
     page: t.cmd.pages,
     post: t.cmd.posts,
     help: t.cmd.help,
+    term: t.cmd.glossary,
     case: t.cmd.cases,
     integration: t.cmd.integrations,
     changelog: t.cmd.changelog,
@@ -211,6 +213,8 @@ export default function CommandPalette() {
                       ? '✎'
                       : item.type === 'help'
                         ? '?'
+                        : item.type === 'term'
+                          ? '¶'
                         : item.type === 'case'
                           ? '◆'
                           : item.type === 'integration'

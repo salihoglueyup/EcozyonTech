@@ -9,6 +9,7 @@ import { CASES } from '@/core/data/cases';
 import { CHANGELOG } from '@/core/data/changelog';
 import { JOBS } from '@/core/data/jobs';
 import { INTEGRATIONS } from '@/core/data/integrations';
+import { GLOSSARY } from '@/core/data/glossary';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
 
 export default function NotFoundPage() {
@@ -23,7 +24,7 @@ export default function NotFoundPage() {
   // Turn the mistyped path into a query and surface the closest content — a
   // smart "did you mean" using the site search engine.
   const index = useMemo(
-    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, lang }),
+    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, integrations: INTEGRATIONS, glossary: GLOSSARY, lang }),
     [lang],
   );
   const query = pathname.replace(/[/\-_]+/g, ' ').trim();
