@@ -31,6 +31,25 @@
     @apply bg-background text-foreground antialiased font-sans;
     background-color: var(--bg, var(--background));
   }
+
+  /* Consistent keyboard-focus ring across every interactive control. Uses
+     :focus-visible so it only shows for keyboard/AT users (never on mouse
+     click), and the live accent var (falls back to cyan on the server). The
+     element+pseudo selector outweighs Tailwind's `outline-none`, so controls
+     that opt out of the default outline still get a visible focus indicator. */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible,
+  [role='button']:focus-visible,
+  [role='tab']:focus-visible,
+  [role='option']:focus-visible {
+    outline: 2px solid var(--ec-cyan, #0ea5e9);
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {
