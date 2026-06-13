@@ -1,6 +1,7 @@
-import { Tag } from '@/shared/ui/primitives';
+import { Tag, GlowOrb } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
+import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
 import {
   useApp,
   ACCENT_PALETTES,
@@ -146,6 +147,88 @@ export default function StyleguidePage() {
                     <span key={f} className="rounded-full bg-slate-900/[.04] dark:bg-white/[.06] px-3 py-1 text-[12.5px] text-slate-700 dark:text-slate-300">{f}</span>
                   ))}
                 </div>
+              </div>
+            </div>
+          </Section>
+
+          {/* Tags */}
+          <Section id="tags" title={sc.tags.title} desc={sc.tags.desc}>
+            <div className="flex flex-wrap gap-3">
+              <Tag color="emerald">emerald</Tag>
+              <Tag color="cyan">cyan</Tag>
+              <Tag color="slate">slate</Tag>
+            </div>
+          </Section>
+
+          {/* Buttons */}
+          <Section id="buttons" title={sc.buttons.title} desc={sc.buttons.desc}>
+            <div className="flex flex-wrap items-center gap-3">
+              <button type="button" className="inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
+                {g.primary}
+                <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+              </button>
+              <button type="button" className="inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06] transition">
+                {g.ghost}
+              </button>
+              <button type="button" className="inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 ring-1 ring-slate-900/[.12] dark:ring-white/[.14] hover:ring-cyan-500/40 transition">
+                {g.outline}
+              </button>
+            </div>
+          </Section>
+
+          {/* Cards & surfaces */}
+          <Section id="cards" title={sc.cards.title} desc={sc.cards.desc}>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl eco-card p-6">
+                <Tag color="cyan">eco-card</Tag>
+                <h3 className="mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100">{g.display}</h3>
+                <p className="mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{g.intro}</p>
+              </div>
+              <div className="relative overflow-hidden rounded-2xl eco-card p-6">
+                <GlowOrb className="-top-16 -right-16" color="rgba(14,165,233,.5)" size={220} />
+                <Tag color="emerald">GlowOrb</Tag>
+                <h3 className="relative mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100">{g.body}</h3>
+                <p className="relative mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{g.intro}</p>
+              </div>
+            </div>
+          </Section>
+
+          {/* Skeletons */}
+          <Section id="skeletons" title={sc.skeletons.title} desc={sc.skeletons.desc}>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl eco-card p-6 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Skeleton circle className="h-10 w-10" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-3.5 w-1/2" />
+                    <Skeleton className="h-3 w-1/3" />
+                  </div>
+                </div>
+                <Skeleton className="h-3.5 w-full" />
+                <Skeleton className="h-3.5 w-2/3" />
+              </div>
+              <CardSkeleton />
+            </div>
+          </Section>
+
+          {/* Form controls */}
+          <Section id="forms" title={sc.forms.title} desc={sc.forms.desc}>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="sg-email" className="mb-1.5 block text-[12.5px] font-medium text-slate-700 dark:text-slate-300">{g.inputLabel}</label>
+                <input id="sg-email" type="email" placeholder={g.inputPlaceholder} className="w-full rounded-xl bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.1] dark:ring-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none focus:ring-cyan-500/40 transition" />
+              </div>
+              <div>
+                <label htmlFor="sg-topic" className="mb-1.5 block text-[12.5px] font-medium text-slate-700 dark:text-slate-300">{g.selectLabel}</label>
+                <select id="sg-topic" className="w-full rounded-xl bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.1] dark:ring-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-900 dark:text-slate-100 outline-none focus:ring-cyan-500/40 transition">
+                  <option>{g.primary}</option>
+                  <option>{g.ghost}</option>
+                  <option>{g.outline}</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="sg-msg" className="mb-1.5 block text-[12.5px] font-medium text-slate-700 dark:text-slate-300">{g.textareaLabel}</label>
+                <textarea id="sg-msg" rows={3} placeholder={g.textareaPlaceholder} className="w-full rounded-xl bg-white/70 dark:bg-white/[.04] ring-1 ring-slate-900/[.1] dark:ring-white/[.1] px-3.5 py-2.5 text-[13.5px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 outline-none focus:ring-cyan-500/40 transition resize-none" />
               </div>
             </div>
           </Section>
