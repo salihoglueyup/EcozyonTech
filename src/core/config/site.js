@@ -28,6 +28,13 @@ export const ROUTES = [
     title: { tr: 'Çözümler — Ecozyon Tech', en: 'Solutions — Ecozyon Tech' },
   },
   {
+    path: '/roi',
+    key: 'roi',
+    place: 'footer',
+    nav: { tr: 'ROI Hesaplayıcı', en: 'ROI Calculator' },
+    title: { tr: 'Kurumsal ROI Hesaplayıcı — Ecozyon Tech', en: 'Business ROI Calculator — Ecozyon Tech' },
+  },
+  {
     path: '/pricing',
     key: 'pricing',
     place: 'primary',
