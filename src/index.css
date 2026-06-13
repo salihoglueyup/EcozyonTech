@@ -63,6 +63,22 @@
     @apply border-white/[.08] bg-white/[.04] ring-white/[.06];
   }
 
+  /* Micro-interactions. eco-press gives a tactile active-scale on tap/click;
+     eco-lift floats a card up slightly on hover. Both are transform-only and
+     neutralised under prefers-reduced-motion by the global block below. */
+  .eco-press {
+    @apply transition-transform duration-150 ease-out;
+  }
+  .eco-press:active {
+    transform: scale(0.97);
+  }
+  .eco-lift {
+    @apply transition-transform duration-200 ease-out;
+  }
+  .eco-lift:hover {
+    transform: translateY(-2px);
+  }
+
   /* Keyboard skip link — visible only when focused. */
   .skip-link {
     @apply sr-only;

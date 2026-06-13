@@ -182,14 +182,14 @@ export default function StyleguidePage() {
           {/* Buttons */}
           <Section id="buttons" title={sc.buttons.title} desc={sc.buttons.desc}>
             <div className="flex flex-wrap items-center gap-3">
-              <button type="button" className="inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
+              <button type="button" className="eco-press inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
                 {g.primary}
                 <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
               </button>
-              <button type="button" className="inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06] transition">
+              <button type="button" className="eco-press inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06] transition">
                 {g.ghost}
               </button>
-              <button type="button" className="inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 ring-1 ring-slate-900/[.12] dark:ring-white/[.14] hover:ring-cyan-500/40 transition">
+              <button type="button" className="eco-press inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 ring-1 ring-slate-900/[.12] dark:ring-white/[.14] hover:ring-cyan-500/40 transition">
                 {g.outline}
               </button>
             </div>
@@ -198,12 +198,12 @@ export default function StyleguidePage() {
           {/* Cards & surfaces */}
           <Section id="cards" title={sc.cards.title} desc={sc.cards.desc}>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl eco-card p-6">
+              <div className="eco-lift rounded-2xl eco-card p-6">
                 <Tag color="cyan">eco-card</Tag>
                 <h3 className="mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100">{g.display}</h3>
                 <p className="mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{g.intro}</p>
               </div>
-              <div className="relative overflow-hidden rounded-2xl eco-card p-6">
+              <div className="eco-lift relative overflow-hidden rounded-2xl eco-card p-6">
                 <GlowOrb className="-top-16 -right-16" color="rgba(14,165,233,.5)" size={220} />
                 <Tag color="emerald">GlowOrb</Tag>
                 <h3 className="relative mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100">{g.body}</h3>

@@ -55,7 +55,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event('ecozyon:cmdk'))}
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] dark:bg-white/[.08] hover:bg-slate-900/[.07] dark:hover:bg-white/[.12] px-2.5 py-1.5 text-[11.5px] text-slate-500 dark:text-slate-400 transition"
+              className="eco-press hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] dark:bg-white/[.08] hover:bg-slate-900/[.07] dark:hover:bg-white/[.12] px-2.5 py-1.5 text-[11.5px] text-slate-500 dark:text-slate-400 transition"
               aria-label={t.cmd.placeholder}
             >
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
@@ -68,7 +68,7 @@ export default function Navbar() {
             <NavLink
               to="/services"
               viewTransition
-              className="hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
+              className="eco-press hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
             >
               {cta}
@@ -114,7 +114,7 @@ export default function Navbar() {
               to={contactPath}
               viewTransition
               onClick={() => setMobileOpen(false)}
-              className="mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
+              className="eco-press mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
             >
               {cta}
