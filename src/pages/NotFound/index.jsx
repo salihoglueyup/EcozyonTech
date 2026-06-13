@@ -1,15 +1,32 @@
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { NAV_ITEMS } from '@/core/config/site';
+import { NAV_ITEMS, ROUTES } from '@/core/config/site';
+import { POSTS } from '@/core/data/posts';
+import { HELP } from '@/core/data/help';
+import { CASES } from '@/core/data/cases';
+import { CHANGELOG } from '@/core/data/changelog';
+import { JOBS } from '@/core/data/jobs';
+import { buildSearchDocs, searchDocs } from '@/core/lib/search';
 
 export default function NotFoundPage() {
   const { lang } = useApp();
   const tr = lang === 'tr';
+  const { pathname } = useLocation();
   useDocumentMeta(
     tr ? 'Sayfa bulunamadı — Ecozyon Tech' : 'Page not found — Ecozyon Tech',
     tr ? 'Aradığın sayfa bulunamadı.' : 'The page you are looking for was not found.',
   );
+
+  // Turn the mistyped path into a query and surface the closest content — a
+  // smart "did you mean" using the site search engine.
+  const index = useMemo(
+    () => buildSearchDocs({ routes: ROUTES, posts: POSTS, help: HELP, cases: CASES, changelog: CHANGELOG, jobs: JOBS, lang }),
+    [lang],
+  );
+  const query = pathname.replace(/[/\-_]+/g, ' ').trim();
+  const suggestions = useMemo(() => searchDocs(index, query).slice(0, 4), [index, query]);
 
   return (
     <section className="min-h-[70vh] grid place-items-center px-6 py-24 pt-32">
@@ -36,6 +53,28 @@ export default function NotFoundPage() {
           {tr ? 'Ana sayfaya dön' : 'Back to home'}
           <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
         </Link>
+
+        {suggestions.length > 0 && (
+          <div className="mt-10 pt-8 border-t border-slate-900/[.08] dark:border-white/[.08] text-left">
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3 text-center">
+              {tr ? 'Bunu mu arıyordun?' : 'Were you looking for…'}
+            </div>
+            <ul className="space-y-2">
+              {suggestions.map((s) => (
+                <li key={s.id}>
+                  <Link
+                    to={s.to}
+                    className="eco-lift group flex items-center gap-3 rounded-xl eco-card px-4 py-2.5 hover:ring-cyan-500/30 transition"
+                  >
+                    <span className="shrink-0 text-slate-400 group-hover:text-cyan-500" aria-hidden="true">→</span>
+                    <span className="flex-1 truncate text-[13.5px] font-medium text-slate-800 dark:text-slate-200">{s.title}</span>
+                    {s.hint && <span className="shrink-0 text-[11px] text-slate-400">{s.hint}</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="mt-10 pt-8 border-t border-slate-900/[.08] dark:border-white/[.08]">
           <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">
