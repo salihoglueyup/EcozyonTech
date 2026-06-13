@@ -118,7 +118,7 @@ export default function CommandPalette() {
     (item) => {
       if (!item) return;
       if (item.run) item.run();
-      else if (item.to) navigate(item.to);
+      else if (item.to) navigate(item.to, { viewTransition: true });
       close();
     },
     [navigate, close],

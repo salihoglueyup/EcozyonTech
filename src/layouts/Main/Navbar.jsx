@@ -45,7 +45,7 @@ export default function Navbar() {
           <EcoLogo />
           <nav className="hidden lg:flex items-center mx-3 gap-1">
             {NAV_ITEMS.map((it) => (
-              <NavLink key={it.path} to={it.path} className={linkClass}>
+              <NavLink key={it.path} to={it.path} viewTransition className={linkClass}>
                 {it.nav[lang] || it.nav.en}
               </NavLink>
             ))}
@@ -67,6 +67,7 @@ export default function Navbar() {
             <LangSwitch lang={lang} setLang={setLang} />
             <NavLink
               to="/services"
+              viewTransition
               className="hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
             >
@@ -100,6 +101,7 @@ export default function Navbar() {
                 <NavLink
                   key={it.path}
                   to={it.path}
+                  viewTransition
                   onClick={() => setMobileOpen(false)}
                   className="py-3 border-b border-slate-900/[.05] dark:border-white/[.06] last:border-0 text-[15px] text-slate-800 dark:text-slate-200 flex items-center justify-between"
                 >
@@ -110,6 +112,7 @@ export default function Navbar() {
             </nav>
             <NavLink
               to={contactPath}
+              viewTransition
               onClick={() => setMobileOpen(false)}
               className="mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}

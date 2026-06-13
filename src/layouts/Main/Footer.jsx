@@ -28,7 +28,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {FOOTER_ITEMS.filter((it) => it.key !== 'legal').map((it) => (
                 <li key={it.path}>
-                  <Link to={it.path} className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                  <Link to={it.path} viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                     {it.nav[lang] || it.nav.en}
                   </Link>
                 </li>
@@ -39,12 +39,12 @@ export default function Footer() {
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">{t.footer.legal}</div>
             <ul className="space-y-2">
               <li>
-                <Link to="/legal#privacy" className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                <Link to="/legal#privacy" viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                   {t.footer.privacy}
                 </Link>
               </li>
               <li>
-                <Link to="/legal#terms" className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                <Link to="/legal#terms" viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
                   {t.footer.terms}
                 </Link>
               </li>
