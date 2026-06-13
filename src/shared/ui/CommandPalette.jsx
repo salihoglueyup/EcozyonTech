@@ -96,8 +96,13 @@ export default function CommandPalette() {
       return base;
     });
     const actions = filterCommands(items.filter((it) => it.type === 'action'), q);
-    return [...content, ...actions];
-  }, [items, query, recentSlugs, searchIndex, savedSlugs]);
+    const out = [...content, ...actions];
+    // When there are content hits, offer a deep-link to the full results page.
+    if (content.length) {
+      out.push({ id: 'search:all', type: 'search', label: t.cmd.viewAll.replace('{q}', q), to: `/search?q=${encodeURIComponent(q)}` });
+    }
+    return out;
+  }, [items, query, recentSlugs, searchIndex, savedSlugs, t]);
 
   const kindLabel = {
     page: t.cmd.pages,
@@ -196,8 +201,10 @@ export default function CommandPalette() {
               <span className={`shrink-0 ${i === active ? 'text-white/70' : 'text-slate-400'}`} aria-hidden="true">
                 {item.recent
                   ? '↺'
-                  : item.type === 'action'
-                    ? '⌘'
+                  : item.type === 'search'
+                    ? '⌕'
+                    : item.type === 'action'
+                      ? '⌘'
                     : item.type === 'post'
                       ? '✎'
                       : item.type === 'help'
