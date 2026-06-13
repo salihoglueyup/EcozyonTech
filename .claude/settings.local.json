@@ -134,7 +134,10 @@
       "Bash(sed -n '829,846p' src/core/i18n/dictionary.js)",
       "Bash(sed -n '95,160p' src/pages/Blog/index.jsx)",
       "Bash(xargs -n1 basename)",
-      "Bash(npm ls *)"
+      "Bash(npm ls *)",
+      "Bash(npm uninstall *)",
+      "Bash(sed -i 's#/og\\\\.svg#/og.png#g' scripts/prerender.mjs)",
+      "Bash(sed -i 's#https://ecozyon.tech/og\\\\.svg#https://ecozyon.tech/og.png#g' index.html)"
     ]
   }
 }

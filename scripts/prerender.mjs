@@ -3,6 +3,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { Resvg } from '@resvg/resvg-js';
 import { ROUTES, SITE } from '../src/core/config/site.js';
 import { POSTS } from '../src/core/data/posts.js';
 import { CASES } from '../src/core/data/cases.js';
@@ -23,6 +24,22 @@ const esc = (s) =>
 
 const today = new Date().toISOString().slice(0, 10);
 const OG_FOOTER = 'React 19 · Vite 8 · Three.js';
+
+// Rasterize the branded OG SVGs to real PNGs — most social crawlers (X,
+// Facebook, LinkedIn, iMessage) don't render SVG og:image. We bundle the exact
+// brand fonts (TTF) so text renders identically on every build machine.
+const FONT_FILES = [
+  join(root, 'node_modules/@expo-google-fonts/space-grotesk/700Bold/SpaceGrotesk_700Bold.ttf'),
+  join(root, 'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf'),
+  join(root, 'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf'),
+];
+const svgToPng = (svg) =>
+  new Resvg(svg, {
+    fitTo: { mode: 'width', value: 1200 },
+    font: { fontFiles: FONT_FILES, loadSystemFonts: false, defaultFontFamily: 'Space Grotesk' },
+  })
+    .render()
+    .asPng();
 
 // Branded OG cards via the shared (unit-tested) builder.
 const postOgSvg = (post) =>
@@ -82,7 +99,7 @@ for (const cs of CASES) {
 
 function blogPostingLd(route, url) {
   const p = route.post;
-  const ogUrl = `${SITE.url}/og/${p.slug}.svg`;
+  const ogUrl = `${SITE.url}/og/${p.slug}.png`;
   return [
     '<script type="application/ld+json">',
     JSON.stringify({
@@ -97,7 +114,7 @@ function blogPostingLd(route, url) {
       publisher: {
         '@type': 'Organization',
         name: 'Ecozyon Tech',
-        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.svg` },
+        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.png` },
       },
       image: ogUrl,
       inLanguage: 'tr',
@@ -108,7 +125,7 @@ function blogPostingLd(route, url) {
 
 function caseStudyLd(route, url) {
   const c = route.caseStudy;
-  const ogUrl = `${SITE.url}/og/case-${c.slug}.svg`;
+  const ogUrl = `${SITE.url}/og/case-${c.slug}.png`;
   return [
     '<script type="application/ld+json">',
     JSON.stringify({
@@ -121,7 +138,7 @@ function caseStudyLd(route, url) {
       publisher: {
         '@type': 'Organization',
         name: 'Ecozyon Tech',
-        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.svg` },
+        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.png` },
       },
       image: ogUrl,
       inLanguage: 'tr',
@@ -135,11 +152,11 @@ function headFor(route) {
   // Every route gets its own branded OG card: posts by slug, cases by slug,
   // pages by key.
   const ogImage = route.post
-    ? `${SITE.url}/og/${route.post.slug}.svg`
+    ? `${SITE.url}/og/${route.post.slug}.png`
     : route.caseStudy
-      ? `${SITE.url}/og/case-${route.caseStudy.slug}.svg`
+      ? `${SITE.url}/og/case-${route.caseStudy.slug}.png`
       : route.key
-        ? `${SITE.url}/og/route-${route.key}.svg`
+        ? `${SITE.url}/og/route-${route.key}.png`
         : null;
   const tags = [
     `<link rel="canonical" href="${esc(url)}" />`,
@@ -169,18 +186,32 @@ function headFor(route) {
 await mkdir(join(distDir, 'og'), { recursive: true });
 let ogCount = 0;
 for (const p of POSTS) {
-  await writeFile(join(distDir, 'og', `${p.slug}.svg`), postOgSvg(p));
+  await writeFile(join(distDir, 'og', `${p.slug}.png`), svgToPng(postOgSvg(p)));
   ogCount++;
 }
 for (const cs of CASES) {
-  await writeFile(join(distDir, 'og', `case-${cs.slug}.svg`), caseOgSvg(cs));
+  await writeFile(join(distDir, 'og', `case-${cs.slug}.png`), svgToPng(caseOgSvg(cs)));
   ogCount++;
 }
 for (const route of routes) {
   if (route.post || route.caseStudy || !route.key) continue;
-  await writeFile(join(distDir, 'og', `route-${route.key}.svg`), routeOgSvg(route));
+  await writeFile(join(distDir, 'og', `route-${route.key}.png`), svgToPng(routeOgSvg(route)));
   ogCount++;
 }
+// Default brand card referenced by index.html (og:image fallback).
+await writeFile(
+  join(distDir, 'og.png'),
+  svgToPng(
+    ogCardSvg({
+      eyebrow: 'Ecozyon Tech',
+      title: 'AI ile sürdürülebilirlik',
+      subtitle: SITE.description,
+      footerLeft: 'ECOZYON.TECH',
+      footerRight: OG_FOOTER,
+    }),
+  ),
+);
+ogCount++;
 
 let count = 0;
 for (const route of routes) {
