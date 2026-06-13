@@ -70,6 +70,13 @@ export const ROUTES = [
     title: { tr: 'Sürüm Notları — Ecozyon Tech', en: 'Changelog — Ecozyon Tech' },
   },
   {
+    path: '/status',
+    key: 'status',
+    place: 'footer',
+    nav: { tr: 'Sistem Durumu', en: 'Status' },
+    title: { tr: 'Sistem Durumu — Ecozyon Tech', en: 'System Status — Ecozyon Tech' },
+  },
+  {
     path: '/blog',
     key: 'blog',
     place: 'footer',
