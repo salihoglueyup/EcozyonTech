@@ -1,40 +1,39 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { handle } from './api/_lib/forms.js'
+import { handleVitals } from './api/_lib/vitals.js'
 
-// Runs the same /api logic locally during `npm run dev` so forms work
-// without the Vercel CLI. Production uses the real functions in /api.
+// Shared /api middleware: runs the exact serverless logic locally so forms +
+// vitals work without the Vercel CLI. Mounted on both the dev server and the
+// preview server (the latter is what e2e tests run against).
+function apiMiddleware(req, res, next) {
+  const route = req.url?.split('?')[0]
+  const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
+  const kind = KINDS[route]
+  const isVitals = route === '/api/vitals'
+  if (!kind && !isVitals) return next()
+  let raw = ''
+  req.on('data', (c) => (raw += c))
+  req.on('end', async () => {
+    let body = {}
+    try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
+    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || ''
+    const { status, body: out } = isVitals
+      ? await handleVitals(req.method, body, process.env)
+      : await handle(kind, req.method, body, process.env, ip)
+    res.statusCode = status
+    if (out == null) { res.end(); return }
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(out))
+  })
+}
+
 function devApi() {
   return {
     name: 'dev-api',
-    configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
-        const route = req.url?.split('?')[0]
-        const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
-        const kind = KINDS[route]
-        const isVitals = route === '/api/vitals'
-        if (!kind && !isVitals) return next()
-        let raw = ''
-        req.on('data', (c) => (raw += c))
-        req.on('end', async () => {
-          let body = {}
-          try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
-          const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || ''
-          let status, out
-          if (isVitals) {
-            const { handleVitals } = await server.ssrLoadModule('/api/_lib/vitals.js')
-            ;({ status, body: out } = await handleVitals(req.method, body, process.env))
-          } else {
-            const { handle } = await server.ssrLoadModule('/api/_lib/forms.js')
-            ;({ status, body: out } = await handle(kind, req.method, body, process.env, ip))
-          }
-          res.statusCode = status
-          if (out == null) { res.end(); return }
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify(out))
-        })
-      })
-    },
+    configureServer(server) { server.middlewares.use(apiMiddleware) },
+    configurePreviewServer(server) { server.middlewares.use(apiMiddleware) },
   }
 }
 
