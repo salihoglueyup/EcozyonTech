@@ -42,6 +42,13 @@ export const ROUTES = [
     title: { tr: 'Fiyatlandırma — Ecozyon Tech', en: 'Pricing — Ecozyon Tech' },
   },
   {
+    path: '/leaderboard',
+    key: 'leaderboard',
+    place: 'footer',
+    nav: { tr: 'Liderlik Tablosu', en: 'Leaderboard' },
+    title: { tr: 'Liderlik Tablosu — Ecozyon Tech', en: 'Leaderboard — Ecozyon Tech' },
+  },
+  {
     path: '/impact',
     key: 'impact',
     place: 'primary',
