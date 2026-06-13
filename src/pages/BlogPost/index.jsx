@@ -60,6 +60,18 @@ export default function BlogPostPage() {
           {post.title[lang]}
         </h1>
 
+        {post.author && (
+          <div className="mt-5 flex items-center gap-2.5">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 text-[12px] font-semibold text-white" aria-hidden="true">
+              {post.author.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
+            </span>
+            <span className="text-[13px] text-slate-600 dark:text-slate-300">
+              <span className="font-medium text-slate-800 dark:text-slate-200">{post.author.name}</span>
+              <span className="text-slate-400"> · {post.author.role[lang]}</span>
+            </span>
+          </div>
+        )}
+
         <ShareBar post={post} lang={lang} t={t} />
 
         <div className="mt-8 space-y-5">

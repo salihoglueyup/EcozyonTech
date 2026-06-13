@@ -3,6 +3,7 @@ export const POSTS = [
   {
     slug: 'carbon-budget-basics',
     date: '2026-04-22',
+    author: { name: 'Dr. Selin Aydın', role: { tr: 'Veri Bilimi', en: 'Data Science' } },
     tag: { tr: 'Rehber', en: 'Guide' },
     title: {
       tr: 'Karbon bütçesi nedir ve neden kişiselleştirilmeli?',
@@ -32,6 +33,7 @@ export const POSTS = [
   {
     slug: 'wearable-design-notes',
     date: '2026-03-30',
+    author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
     tag: { tr: 'Donanım', en: 'Hardware' },
     title: {
       tr: 'Giyilebilir cihazı 0.4W altında tutmanın notları',
@@ -59,6 +61,7 @@ export const POSTS = [
   {
     slug: 'community-challenges',
     date: '2026-02-14',
+    author: { name: 'Aylin Demir', role: { tr: 'Topluluk', en: 'Community' } },
     tag: { tr: 'Topluluk', en: 'Community' },
     title: {
       tr: 'Topluluk yarışmaları davranışı nasıl 3x hızlandırıyor?',
@@ -80,6 +83,90 @@ export const POSTS = [
         'Individual nudges work, but community makes them stick. In pilots, weekly challenges tripled retention.',
         { h: 'The formula that works', id: 'the-formula' },
         'The key: small reachable goals + visible progress + peer comparison.',
+      ],
+    },
+  },
+  {
+    slug: 'how-ai-nudges-work',
+    date: '2026-05-18',
+    author: { name: 'Dr. Selin Aydın', role: { tr: 'Veri Bilimi', en: 'Data Science' } },
+    tag: { tr: 'AI', en: 'AI' },
+    title: {
+      tr: 'AI önerileri perde arkası: bağlamdan eyleme',
+      en: 'Behind AI nudges: from context to action',
+    },
+    excerpt: {
+      tr: 'Öneri motoru bağlamı, alışkanlığı ve zamanlamayı nasıl birleştirip işe yarayan bir dürtü üretir?',
+      en: 'How the recommendation engine blends context, habit and timing into a nudge that works.',
+    },
+    body: {
+      tr: [
+        { h: 'Bağlam her şeydir', id: 'context' },
+        'İyi bir öneri, doğru anda gelir. Motor; konum, aktivite ve geçmiş davranışı birleştirerek dürtüyü kişiselleştirir.',
+        { h: 'Zamanlama ve güven', id: 'timing' },
+        'Çok sık öneri yorgunluk yaratır. Modeli, yalnızca yüksek etkili anlarda devreye girecek şekilde kalibre ettik.',
+      ],
+      en: [
+        { h: 'Context is everything', id: 'context' },
+        'A good nudge arrives at the right moment. The engine blends location, activity and past behavior to personalize it.',
+        { h: 'Timing and trust', id: 'timing' },
+        'Too many nudges cause fatigue. We calibrated the model to fire only at high-impact moments.',
+      ],
+    },
+  },
+  {
+    slug: 'measuring-scope-3',
+    date: '2026-05-02',
+    author: { name: 'Ece Yılmaz', role: { tr: 'Sürdürülebilirlik', en: 'Sustainability' } },
+    tag: { tr: 'Veri', en: 'Data' },
+    title: {
+      tr: 'Scope 3’ü ölçmek: en büyük ve en zor pay',
+      en: 'Measuring Scope 3: the biggest, hardest share',
+    },
+    excerpt: {
+      tr: 'Değer zinciri emisyonları genelde toplamın çoğunu oluşturur. Onları nasıl görünür kılıyoruz?',
+      en: 'Value-chain emissions usually dominate the total. Here is how we make them visible.',
+    },
+    body: {
+      tr: [
+        { h: 'Neden zor', id: 'why-hard' },
+        'Scope 3, doğrudan kontrolünüz dışındaki kaynakları kapsar; veri dağınık ve eksiktir.',
+        { h: 'Yaklaşımımız', id: 'approach' },
+        'Aktivite verisi + sektör ortalamaları + giyilebilir sinyalleri birleştirerek şeffaf, denetlenebilir bir tahmin üretiyoruz.',
+      ],
+      en: [
+        { h: 'Why it is hard', id: 'why-hard' },
+        'Scope 3 spans sources outside your direct control; the data is scattered and incomplete.',
+        { h: 'Our approach', id: 'approach' },
+        'We combine activity data + sector averages + wearable signals into a transparent, auditable estimate.',
+      ],
+    },
+  },
+  {
+    slug: 'on-device-privacy',
+    date: '2026-04-08',
+    author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
+    tag: { tr: 'Gizlilik', en: 'Privacy' },
+    title: {
+      tr: 'Cihaz-içi işleme neden gizlilik için kritik?',
+      en: 'Why on-device processing is critical for privacy',
+    },
+    excerpt: {
+      tr: 'Ham veriyi buluta göndermeden işlemek hem gizliliği hem de pil ömrünü korur.',
+      en: 'Processing raw data without sending it to the cloud protects both privacy and battery.',
+    },
+    body: {
+      tr: [
+        { h: 'Veri cihazda kalır', id: 'on-device' },
+        'Hassas sensör verisi cihazda işlenir; yalnızca toplulaştırılmış metrikler paylaşılır.',
+        { h: 'Yan fayda: enerji', id: 'energy' },
+        'Daha az ağ trafiği, daha az radyo kullanımı demek — bu da pil ömrünü uzatır.',
+      ],
+      en: [
+        { h: 'Data stays on the device', id: 'on-device' },
+        'Sensitive sensor data is processed on the device; only aggregated metrics are shared.',
+        { h: 'Side benefit: energy', id: 'energy' },
+        'Less network traffic means less radio use — which extends battery life.',
       ],
     },
   },

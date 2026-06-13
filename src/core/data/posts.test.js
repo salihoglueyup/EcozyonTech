@@ -1,6 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime, blockText } from './posts';
 
+describe('POSTS data', () => {
+  it('every post has a bilingual author byline', () => {
+    for (const p of POSTS) {
+      expect(p.author?.name, `${p.slug} author`).toBeTruthy();
+      expect(p.author.role).toHaveProperty('tr');
+      expect(p.author.role).toHaveProperty('en');
+    }
+  });
+});
+
 describe('postTags', () => {
   it('returns distinct tags in first-appearance order', () => {
     const tags = postTags(POSTS);
