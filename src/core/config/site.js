@@ -28,6 +28,13 @@ export const ROUTES = [
     title: { tr: 'Çözümler — Ecozyon Tech', en: 'Solutions — Ecozyon Tech' },
   },
   {
+    path: '/compare',
+    key: 'compare',
+    place: 'footer',
+    nav: { tr: 'Karşılaştırma', en: 'Compare' },
+    title: { tr: 'Neden Ecozyon? — Ecozyon Tech', en: 'Why Ecozyon? — Ecozyon Tech' },
+  },
+  {
     path: '/roi',
     key: 'roi',
     place: 'footer',
