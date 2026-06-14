@@ -22,6 +22,7 @@ export const ROUTE_LOADERS = [
   { path: 'integrations/:slug', load: () => import('@/pages/Integration') },
   { path: 'glossary', load: () => import('@/pages/Glossary') },
   { path: 'roi', load: () => import('@/pages/Roi') },
+  { path: 'assessment', load: () => import('@/pages/Assessment') },
   { path: 'developers', load: () => import('@/pages/Developers') },
   { path: 'leaderboard', load: () => import('@/pages/Leaderboard') },
   { path: 'compare', load: () => import('@/pages/Compare') },

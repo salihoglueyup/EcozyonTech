@@ -31,3 +31,19 @@ test.describe('ROI estimator', () => {
     await expect(page.locator('a[href="/pricing?plan=team"]')).toBeVisible();
   });
 });
+
+test.describe('sustainability assessment', () => {
+  test('answering every step reveals a score and tailored steps', async ({ page }) => {
+    await page.goto('/assessment');
+    const main = page.locator('main#main');
+    // Four steps: pick the first option each time (click the label — the radio
+    // is sr-only) and advance.
+    for (let i = 0; i < 4; i++) {
+      await main.locator('fieldset label').first().click();
+      await main.getByRole('button', { name: /Devam|Next|skor|score/i }).click();
+    }
+    // Result: the category breakdown + retake control render.
+    await expect(main.getByText(/Kategori dağılımı|Category breakdown/i)).toBeVisible();
+    await expect(main.getByRole('button', { name: /Tekrar çöz|Retake/i })).toBeVisible();
+  });
+});

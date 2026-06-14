@@ -27,6 +27,7 @@ import ResourcesPage from '@/pages/Resources';
 import RoiPage from '@/pages/Roi';
 import IntegrationsPage from '@/pages/Integrations';
 import LegalPage from '@/pages/Legal';
+import AssessmentPage from '@/pages/Assessment';
 
 expect.extend(toHaveNoViolations);
 
@@ -57,6 +58,7 @@ const PAGES = [
   ['Roi', <RoiPage />],
   ['Integrations', <IntegrationsPage />],
   ['Legal', <LegalPage />],
+  ['Assessment', <AssessmentPage />],
 ];
 
 function renderPage(ui, route = '/') {

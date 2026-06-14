@@ -78,6 +78,14 @@ export const ROUTES = [
     title: { tr: 'Entegrasyonlar — Ecozyon Tech', en: 'Integrations — Ecozyon Tech' },
   },
   {
+    path: '/assessment',
+    key: 'assessment',
+    group: 'product',
+    place: 'nav',
+    nav: { tr: 'Değerlendirme', en: 'Assessment' },
+    title: { tr: 'Sürdürülebilirlik Değerlendirmesi — Ecozyon Tech', en: 'Sustainability Assessment — Ecozyon Tech' },
+  },
+  {
     path: '/leaderboard',
     key: 'leaderboard',
     group: 'product',
