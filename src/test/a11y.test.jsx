@@ -18,6 +18,15 @@ import SitemapPage from '@/pages/Sitemap';
 import AccessibilityPage from '@/pages/Accessibility';
 import DevelopersPage from '@/pages/Developers';
 import GlossaryPage from '@/pages/Glossary';
+import AboutPage from '@/pages/About';
+import BlogPage from '@/pages/Blog';
+import CasesPage from '@/pages/Cases';
+import CareersPage from '@/pages/Careers';
+import ContactPage from '@/pages/Contact';
+import ResourcesPage from '@/pages/Resources';
+import RoiPage from '@/pages/Roi';
+import IntegrationsPage from '@/pages/Integrations';
+import LegalPage from '@/pages/Legal';
 
 expect.extend(toHaveNoViolations);
 
@@ -39,6 +48,15 @@ const PAGES = [
   ['Accessibility', <AccessibilityPage />],
   ['Developers', <DevelopersPage />],
   ['Glossary', <GlossaryPage />],
+  ['About', <AboutPage />],
+  ['Blog', <BlogPage />],
+  ['Cases', <CasesPage />],
+  ['Careers', <CareersPage />],
+  ['Contact', <ContactPage />],
+  ['Resources', <ResourcesPage />],
+  ['Roi', <RoiPage />],
+  ['Integrations', <IntegrationsPage />],
+  ['Legal', <LegalPage />],
 ];
 
 function renderPage(ui, route = '/') {

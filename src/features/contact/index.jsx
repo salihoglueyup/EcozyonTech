@@ -264,8 +264,9 @@ export function Contact({ t, lang }) {
               {lang === "tr" ? "24 saat — demo — pilot" : "24 hours — demo — pilot"}
             </h3>
 
-            <ol className="mt-5 relative">
-              <span className="absolute left-[14px] top-3 bottom-3 w-px bg-slate-900/[.08]" />
+            <div className="mt-5 relative">
+              <span aria-hidden="true" className="absolute left-[14px] top-3 bottom-3 w-px bg-slate-900/[.08]" />
+              <ol>
               {t.contact.nextSteps.map((step, i) => (
                 <li key={i} className="relative pl-10 pb-5 last:pb-0">
                   <span className="absolute left-0 top-0 inline-flex h-7 w-7 items-center justify-center rounded-full text-white font-mono text-[10px] font-bold"
@@ -276,7 +277,8 @@ export function Contact({ t, lang }) {
                   <div className="text-[12px] text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">{step.d}</div>
                 </li>
               ))}
-            </ol>
+              </ol>
+            </div>
 
             <div className="mt-5 pt-4 border-t border-slate-900/[.06] dark:border-white/[.06] flex items-center gap-3 text-[11.5px] text-slate-500 dark:text-slate-400">
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="8" cy="8" r="6" /><path d="M8 5v3.5l2.5 1.5" strokeLinecap="round" /></svg>

@@ -66,6 +66,23 @@ function ScrollToTop() {
   return null;
 }
 
+// Announces the new page to assistive tech on SPA navigation. Screen readers
+// don't re-announce on client-side route changes, so we mirror the freshly-set
+// document title into a polite live region (after the page's title effect runs).
+function RouteAnnouncer() {
+  const { pathname } = useLocation();
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    const id = setTimeout(() => setMsg(document.title), 150);
+    return () => clearTimeout(id);
+  }, [pathname]);
+  return (
+    <div aria-live="polite" aria-atomic="true" className="sr-only">
+      {msg}
+    </div>
+  );
+}
+
 export default function MainLayout() {
   const { bgColor, t } = useApp();
   const { pathname } = useLocation();
@@ -77,6 +94,7 @@ export default function MainLayout() {
     >
       <ScrollToTop />
       <a href="#main" className="skip-link">{t.a11y.skipToContent}</a>
+      <RouteAnnouncer />
       <ScrollProgress />
       <div
         aria-hidden
