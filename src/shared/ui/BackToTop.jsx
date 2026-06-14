@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { prefersReducedMotion } from '@/core/motion';
 
 // Floating "scroll to top" button. Appears past a scroll threshold; smooth
 // scroll degrades to instant under prefers-reduced-motion.
@@ -15,8 +16,7 @@ export default function BackToTop({ label, threshold = 600 }) {
   if (!show) return null;
 
   const toTop = () => {
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
   };
 
   return (

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { prefersReducedMotion } from '@/core/motion';
 
 // Tween a numeric value (or the numeric portion of a string like "8.4K" /
 // "%92" / "164t") from 0 to target over `durationMs` once `play` flips
@@ -29,10 +30,7 @@ const ease = (k) => 1 - Math.pow(1 - k, 3);
 
 export function AnimatedNumber({ value, play, durationMs = 1200, className, style }) {
   const { prefix, target, suffix, decimals } = parse(value);
-  const reduceMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion = prefersReducedMotion();
 
   const [n, setN] = useState(play && !reduceMotion ? 0 : target);
   const rafRef = useRef(null);

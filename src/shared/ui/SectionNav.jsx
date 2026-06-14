@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { prefersReducedMotion } from '@/core/motion';
 
 /**
  * useScrollSpy — tracks which of the given section ids is closest to the
@@ -48,8 +49,7 @@ export function SectionNav({ sections, className = '', alwaysLabels = false }) {
   const go = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    el.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
   };
 
   return (

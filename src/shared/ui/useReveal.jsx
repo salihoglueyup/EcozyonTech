@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, Children, cloneElement, isValidElement } from 'react';
+import { EASING, DURATION, prefersReducedMotion } from '@/core/motion';
 
 /**
  * useReveal — fires once when the element enters the viewport.
@@ -15,10 +16,7 @@ export function useReveal(threshold = 0.15) {
     // Reveal immediately (no animation) for reduced-motion users, or when
     // IntersectionObserver is unavailable — never leave content stuck at
     // opacity:0. Set synchronously so there's no post-unmount setState.
-    if (
-      typeof IntersectionObserver === 'undefined' ||
-      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
-    ) {
+    if (typeof IntersectionObserver === 'undefined' || prefersReducedMotion()) {
       // Deferred (not sync) to avoid cascading renders; the cancel flag
       // prevents a setState after a fast unmount.
       let cancelled = false;
@@ -57,7 +55,7 @@ export function Reveal({
   children,
   from = 'bottom',
   delay = 0,
-  duration = 700,
+  duration = DURATION.reveal,
   distance = 24,
   scale = null,
   threshold = 0.15,
@@ -75,7 +73,7 @@ export function Reveal({
   const style = {
     opacity: revealed ? 1 : 0,
     transform: revealed ? 'none' : hidden,
-    transition: `opacity ${duration}ms cubic-bezier(.16,1,.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(.16,1,.3,1) ${delay}ms`,
+    transition: `opacity ${duration}ms ${EASING.out} ${delay}ms, transform ${duration}ms ${EASING.out} ${delay}ms`,
     willChange: revealed ? 'auto' : 'opacity, transform',
   };
 
@@ -120,7 +118,7 @@ export function Parallax({ children, speed = 0.2, className = '', style, as: Tag
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return;
+    if (prefersReducedMotion()) return;
 
     let raf = 0;
     let visible = false;
