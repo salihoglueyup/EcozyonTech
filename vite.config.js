@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { handle } from './api/_lib/forms.js'
 import { handleVitals } from './api/_lib/vitals.js'
+import { handleEvent } from './api/_lib/analytics.js'
 
 // Shared /api middleware: runs the exact serverless logic locally so forms +
 // vitals work without the Vercel CLI. Mounted on both the dev server and the
@@ -12,7 +13,8 @@ function apiMiddleware(req, res, next) {
   const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
   const kind = KINDS[route]
   const isVitals = route === '/api/vitals'
-  if (!kind && !isVitals) return next()
+  const isAnalytics = route === '/api/analytics'
+  if (!kind && !isVitals && !isAnalytics) return next()
   let raw = ''
   req.on('data', (c) => (raw += c))
   req.on('end', async () => {
@@ -21,7 +23,9 @@ function apiMiddleware(req, res, next) {
     const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket?.remoteAddress || ''
     const { status, body: out } = isVitals
       ? await handleVitals(req.method, body, process.env)
-      : await handle(kind, req.method, body, process.env, ip)
+      : isAnalytics
+        ? await handleEvent(req.method, body, process.env)
+        : await handle(kind, req.method, body, process.env, ip)
     res.statusCode = status
     if (out == null) { res.end(); return }
     res.setHeader('Content-Type', 'application/json')
@@ -98,6 +102,8 @@ export default defineConfig({
         'src/app/App.jsx',
         'src/core/lib/vitals.js',
         'src/shared/ui/VitalsHud.jsx',
+        'src/core/lib/analytics.js',
+        'src/shared/ui/EventsHud.jsx',
         'src/features/dev-tweaks/**',
         'src/shared/3d/**',
         'src/features/impact-map/**',

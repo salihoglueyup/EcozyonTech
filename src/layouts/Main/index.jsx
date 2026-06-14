@@ -10,6 +10,7 @@ import OnboardingTour from '@/shared/ui/OnboardingTour';
 import BackToTop from '@/shared/ui/BackToTop';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 import VitalsHud from '@/shared/ui/VitalsHud';
+import EventsHud from '@/shared/ui/EventsHud';
 
 function ScrollProgress() {
   const [p, setP] = useState(0);
@@ -100,6 +101,7 @@ export default function MainLayout() {
       <BackToTop label={t.a11y.backToTop} />
       {import.meta.env.DEV && <DevTweaks />}
       {import.meta.env.DEV && <VitalsHud />}
+      {import.meta.env.DEV && <EventsHud />}
       <CookieBanner />
     </div>
   );

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
 import { NAV_GROUPS, routesInGroup } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
+import { track } from '@/core/lib/analytics';
 
 export default function Navbar() {
   const { lang, setLang, theme, setTheme, t } = useApp();
@@ -64,7 +65,7 @@ export default function Navbar() {
           <div className="ml-auto flex items-center gap-1.5 pl-2 sm:border-l sm:border-slate-900/10 dark:sm:border-white/10">
             <button
               type="button"
-              onClick={() => window.dispatchEvent(new Event('ecozyon:cmdk'))}
+              onClick={() => { track('search_open', { source: 'navbar' }); window.dispatchEvent(new Event('ecozyon:cmdk')); }}
               className="eco-press hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.04] dark:bg-white/[.08] hover:bg-slate-900/[.07] dark:hover:bg-white/[.12] px-2.5 py-1.5 text-[11.5px] text-slate-500 dark:text-slate-400 transition"
               aria-label={t.cmd.placeholder}
             >
@@ -78,6 +79,7 @@ export default function Navbar() {
             <NavLink
               to="/pricing"
               viewTransition
+              onClick={() => track('cta_click', { to: '/pricing', source: 'navbar' })}
               className="eco-press hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
             >
@@ -130,7 +132,7 @@ export default function Navbar() {
             <NavLink
               to="/pricing"
               viewTransition
-              onClick={() => setMobileOpen(false)}
+              onClick={() => { track('cta_click', { to: '/pricing', source: 'mobile' }); setMobileOpen(false); }}
               className="eco-press mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
             >
@@ -222,7 +224,7 @@ function ThemeToggle({ theme, setTheme, t }) {
   return (
     <button
       type="button"
-      onClick={() => setTheme(dark ? 'light' : 'dark')}
+      onClick={() => { const next = dark ? 'light' : 'dark'; setTheme(next); track('theme_switch', { theme: next }); }}
       className="relative inline-flex items-center justify-center h-7 w-7 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.04] dark:hover:bg-white/[.08] transition"
       aria-label={t.a11y.toggleTheme}
       title={dark ? t.a11y.lightMode : t.a11y.darkMode}
@@ -241,8 +243,8 @@ function ThemeToggle({ theme, setTheme, t }) {
 function LangSwitch({ lang, setLang }) {
   return (
     <div className="relative inline-flex items-center rounded-full bg-slate-900/[.05] dark:bg-white/[.08] p-[3px] text-[11px] font-semibold text-slate-600 dark:text-slate-400">
-      <button onClick={() => setLang('tr')} aria-label="Türkçe" className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === 'tr' ? 'text-slate-900 dark:text-white' : ''}`}>TR</button>
-      <button onClick={() => setLang('en')} aria-label="English" className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === 'en' ? 'text-slate-900 dark:text-white' : ''}`}>EN</button>
+      <button onClick={() => { setLang('tr'); track('lang_switch', { lang: 'tr' }); }} aria-label="Türkçe" className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === 'tr' ? 'text-slate-900 dark:text-white' : ''}`}>TR</button>
+      <button onClick={() => { setLang('en'); track('lang_switch', { lang: 'en' }); }} aria-label="English" className={`relative z-10 px-2.5 py-1 rounded-full transition ${lang === 'en' ? 'text-slate-900 dark:text-white' : ''}`}>EN</button>
       <span
         className="absolute top-[3px] bottom-[3px] w-[34px] rounded-full bg-white dark:bg-slate-700 shadow-sm transition-all"
         style={{ left: lang === 'tr' ? 3 : 37 }}
