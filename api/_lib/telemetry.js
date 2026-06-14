@@ -1,4 +1,4 @@
-// Analytics event ingest — framework-neutral, shared by the Vercel function and
+// Telemetry event ingest — framework-neutral, shared by the Vercel function and
 // the Vite dev/preview middleware, and unit-tested directly. Validates the
 // beacon payload and forwards it to a pluggable sink (env-configured webhook),
 // mirroring the vitals reporter: works in demo mode with no secrets.
@@ -31,12 +31,12 @@ export function processEvent(input = {}) {
 }
 
 // Forward a validated event to an env-configured webhook. With no
-// ANALYTICS_WEBHOOK_URL it runs in demo mode (no-op) so the portfolio works
+// TELEMETRY_WEBHOOK_URL it runs in demo mode (no-op) so the portfolio works
 // without secrets.
 export async function forwardEvent(event, env = process.env) {
-  if (!env.ANALYTICS_WEBHOOK_URL) return { forwarded: false, demo: true };
+  if (!env.TELEMETRY_WEBHOOK_URL) return { forwarded: false, demo: true };
   try {
-    const res = await fetch(env.ANALYTICS_WEBHOOK_URL, {
+    const res = await fetch(env.TELEMETRY_WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(event),

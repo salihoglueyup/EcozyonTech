@@ -8,7 +8,7 @@ import { JOBS } from '@/core/data/jobs';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
 import { buildSearchDocs, searchDocs } from '@/core/lib/search';
-import { track } from '@/core/lib/analytics';
+import { track } from '@/core/lib/telemetry';
 import { useToast } from '@/shared/ui/Toast';
 import { buildCommands, filterCommands, orderByRecents } from './commands';
 

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { decodeCalc } from '@/core/lib/calcShare';
-import { track } from '@/core/lib/analytics';
+import { track } from '@/core/lib/telemetry';
 import { estimateAnnualCO2, formatCO2 } from '@/core/lib/co2';
 
 const DRAFT_KEY = 'ecozyon.contactDraft';

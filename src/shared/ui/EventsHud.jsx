@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { onAnalyticsEvent } from '@/core/lib/analytics';
+import { onTelemetryEvent } from '@/core/lib/telemetry';
 
-// Dev-only analytics overlay. Subscribes to the event tracker and shows the
+// Dev-only telemetry overlay. Subscribes to the event tracker and shows the
 // most recent events (name + props) so interaction telemetry is visible while
 // iterating. Mounted only under import.meta.env.DEV — never ships. Sits to the
 // right of the VitalsHud pill in the bottom-left corner.
@@ -13,7 +13,7 @@ export default function EventsHud() {
   const [open, setOpen] = useState(false);
 
   useEffect(
-    () => onAnalyticsEvent((e) => setEvents((prev) => [{ ...e, key: `${e.ts}-${e.name}` }, ...prev].slice(0, MAX))),
+    () => onTelemetryEvent((e) => setEvents((prev) => [{ ...e, key: `${e.ts}-${e.name}` }, ...prev].slice(0, MAX))),
     [],
   );
 

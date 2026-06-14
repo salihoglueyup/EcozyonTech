@@ -5,7 +5,7 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useToast } from '@/shared/ui/Toast';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey, SITE } from '@/core/config/site';
-import { track } from '@/core/lib/analytics';
+import { track } from '@/core/lib/telemetry';
 import {
   QUESTIONS,
   scoreAssessment,

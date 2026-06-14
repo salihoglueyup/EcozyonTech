@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
 import { NAV_GROUPS, routesInGroup } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
-import { track } from '@/core/lib/analytics';
+import { track } from '@/core/lib/telemetry';
 
 export default function Navbar() {
   const { lang, setLang, theme, setTheme, t } = useApp();

@@ -69,10 +69,11 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   renders English — AppProvider reads `?lang=` post-mount). Visible
   `<Breadcrumbs>` on deep content pages. Pricing data lives in
   `src/core/data/pricing.js` (page + prerender share it).
-- **analytics**: cookieless `track(name, props)` in `src/core/lib/analytics.js`
-  honors DNT/GPC, beacons to `/api/analytics` (sink mirrors vitals; demo-acks).
-  Dev `EventsHud` overlay. Both analytics.js + EventsHud are coverage-excluded
-  like the vitals reporter.
+- **telemetry**: cookieless `track(name, props)` in `src/core/lib/telemetry.js`
+  honors DNT/GPC, beacons to `/api/telemetry` (sink mirrors vitals; demo-acks).
+  Dev `EventsHud` overlay. Named "telemetry" not "analytics" on purpose —
+  content blockers block any URL containing "analytics" (would break the dev
+  module load). Both telemetry.js + EventsHud are coverage-excluded like vitals.
 - **motion tokens**: durations/easings live in `src/core/motion.js`, mirrored as
   `--dur-*`/`--ease-*` CSS vars (index.css `:root`). `prefersReducedMotion()` +
   `useReducedMotion()` replace ad-hoc matchMedia reads.

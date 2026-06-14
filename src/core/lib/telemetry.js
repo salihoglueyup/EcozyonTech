@@ -1,16 +1,21 @@
-// Privacy-first, cookieless event analytics. Honors Do-Not-Track / Global
+// Privacy-first, cookieless event telemetry. Honors Do-Not-Track / Global
 // Privacy Control, stores nothing, and sends no PII — just an event name, a few
 // sanitized primitive props and the current path. In dev each event is logged
 // and pushed to in-process listeners (the dev EventsHud); in prod it is
-// beaconed to /api/analytics. Telemetry must never throw into the app.
+// beaconed to /api/telemetry. Telemetry must never throw into the app.
+//
+// NB: the module + endpoint are named "telemetry", not "analytics", on purpose
+// — content blockers (uBlock/AdBlock/Brave) block any URL containing
+// "analytics", which in dev would block this very module (ERR_BLOCKED_BY_CLIENT)
+// and break the import graph.
 //
 // `track`, `isOptedOut` and `sanitizeProps` are unit-tested; the prod beacon
 // branch (sendBeacon) is excluded from coverage like the vitals reporter.
 
-const ENDPOINT = '/api/analytics';
+const ENDPOINT = '/api/telemetry';
 
 const listeners = new Set();
-export function onAnalyticsEvent(fn) {
+export function onTelemetryEvent(fn) {
   listeners.add(fn);
   return () => listeners.delete(fn);
 }

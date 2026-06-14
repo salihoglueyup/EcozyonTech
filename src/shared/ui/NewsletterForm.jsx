@@ -1,6 +1,6 @@
 import { useId, useState } from 'react';
 import { ECO_I18N } from '@/core/i18n/dictionary';
-import { track } from '@/core/lib/analytics';
+import { track } from '@/core/lib/telemetry';
 
 // Newsletter subscribe form, posting to /api/newsletter with honeypot +
 // rate-limit handling. Shared between the footer and the end of blog posts,

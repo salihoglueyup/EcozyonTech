@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { processEvent, forwardEvent, handleEvent } from './analytics.js';
+import { processEvent, forwardEvent, handleEvent } from './telemetry.js';
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -37,7 +37,7 @@ describe('forwardEvent', () => {
 
   it('posts to the configured webhook', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: true });
-    const out = await forwardEvent({ name: 'x' }, { ANALYTICS_WEBHOOK_URL: 'https://sink.example/hook' });
+    const out = await forwardEvent({ name: 'x' }, { TELEMETRY_WEBHOOK_URL: 'https://sink.example/hook' });
     expect(fetchSpy).toHaveBeenCalledOnce();
     expect(out).toEqual({ forwarded: true, demo: false });
   });

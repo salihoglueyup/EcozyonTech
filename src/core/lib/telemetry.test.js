@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { track, isOptedOut, sanitizeProps, onAnalyticsEvent } from './analytics';
+import { track, isOptedOut, sanitizeProps, onTelemetryEvent } from './telemetry';
 
 function setDNT(value) {
   Object.defineProperty(navigator, 'doNotTrack', { value, configurable: true });
@@ -41,7 +41,7 @@ describe('track', () => {
   it('notifies subscribers with a sanitized event and returns true', () => {
     setDNT(null);
     const seen = [];
-    const off = onAnalyticsEvent((e) => seen.push(e));
+    const off = onTelemetryEvent((e) => seen.push(e));
     const ok = track('cta_click', { to: '/pricing', bad: { x: 1 } });
     off();
     expect(ok).toBe(true);
@@ -54,7 +54,7 @@ describe('track', () => {
   it('does nothing when the user has opted out', () => {
     setDNT('1');
     const seen = [];
-    const off = onAnalyticsEvent((e) => seen.push(e));
+    const off = onTelemetryEvent((e) => seen.push(e));
     const ok = track('cta_click', { to: '/pricing' });
     off();
     expect(ok).toBe(false);
