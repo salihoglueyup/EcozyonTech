@@ -53,9 +53,17 @@ export function AppProvider({ children }) {
     // Intentional one-time post-hydration sync: applying persisted prefs
     // here (not in the initializer) is what keeps server HTML and the
     // client's first render identical. Single set, not a cascade.
-    const saved = loadPrefs();
+    let next = loadPrefs();
+    // A `?lang=tr|en` query param overrides the saved language — this is what
+    // makes the prerendered hreflang EN alternate (…?lang=en) render English.
+    try {
+      const q = new URLSearchParams(window.location.search).get('lang');
+      if (q === 'tr' || q === 'en') next = { ...next, lang: q };
+    } catch {
+      /* no URL access — keep saved/defaults */
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (saved !== DEFAULTS) setPrefs(saved);
+    if (next !== DEFAULTS) setPrefs(next);
   }, []);
 
   const setTweak = useCallback((keyOrEdits, val) => {

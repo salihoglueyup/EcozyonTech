@@ -11,6 +11,13 @@ test.describe('preferences', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   });
 
+  test('?lang=en renders English (the prerendered hreflang alternate)', async ({ page }) => {
+    // The prerendered <link hreflang="en"> points at …?lang=en; visiting it
+    // must actually switch the app to English for the alternate to be honest.
+    await page.goto('/pricing?lang=en');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
+
   test('theme toggle flips the dark class and persists', async ({ page }) => {
     await page.goto('/');
     const html = page.locator('html');

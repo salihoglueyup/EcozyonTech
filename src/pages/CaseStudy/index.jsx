@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { caseBySlug, relatedCases } from '@/core/data/cases';
+import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
 
 export default function CaseStudyPage() {
   const { slug } = useParams();
@@ -21,10 +22,7 @@ export default function CaseStudyPage() {
   return (
     <article className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Link to="/cases" className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7H3m3-3-3 3 3 3" /></svg>
-          {c.backToCases}
-        </Link>
+        <Breadcrumbs items={[{ label: lang === 'tr' ? 'Vaka Çalışmaları' : 'Case Studies', to: '/cases' }, { label: item.client[lang] }]} />
 
         <div className="mt-5 flex flex-wrap items-center gap-2 text-[11.5px]">
           <span className="inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold" style={{ backgroundColor: `${item.accent}1f`, color: item.accent }}>{item.city}</span>

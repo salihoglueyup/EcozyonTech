@@ -146,7 +146,15 @@
       "Bash(grep -vE \"Call log|waiting|^\\\\s*$|WebServer\")",
       "Bash(grep -roE \"className=\\\\\"bg-clip-text text-transparent\\\\\" style=\\\\{\\\\{ backgroundImage: 'linear-gradient\\\\\\(110deg,#0EA5E9 0%,#10B981 100%\\\\\\)' \\\\}\\\\}\" src/)",
       "Bash(git checkout *)",
-      "Bash(grep -E \"warning|\\\\.jsx|\\\\.js$\")"
+      "Bash(grep -E \"warning|\\\\.jsx|\\\\.js$\")",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(sed -n '1,80p' src/pages/Pricing/index.jsx)",
+      "Bash(sed -n '1,40p' src/core/data/help.js)",
+      "Bash(sed -n '49,56p' src/pages/BlogPost/index.jsx)",
+      "Bash(sed -n '6,35p' src/pages/CaseStudy/index.jsx)",
+      "Bash(sed -n '5,30p' src/pages/Integration/index.jsx)",
+      "Bash(sed -n '6,35p' src/pages/BlogTag/index.jsx)"
     ]
   }
 }

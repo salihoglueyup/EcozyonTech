@@ -11,6 +11,7 @@ import { isSaved, readSaved, toggleSavedSlug } from '@/core/lib/saved';
 import { useToast } from '@/shared/ui/Toast';
 import { Tooltip } from '@/shared/ui/Tooltip';
 import { SectionNav } from '@/shared/ui/SectionNav';
+import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
 import NewsletterForm from '@/shared/ui/NewsletterForm';
 import NotFoundPage from '@/pages/NotFound';
 
@@ -48,9 +49,7 @@ export default function BlogPostPage() {
     <article className="relative py-20 lg:py-28 pt-32">
       {headings.length > 0 && <SectionNav sections={headings} alwaysLabels />}
       <div className="mx-auto max-w-3xl px-6">
-        <Link to="/blog" className="inline-flex items-center gap-2 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition">
-          ← {tr ? 'Tüm yazılar' : 'All posts'}
-        </Link>
+        <Breadcrumbs items={[{ label: 'Blog', to: '/blog' }, { label: post.title[lang] }]} />
         <div className="mt-6 flex items-center gap-3 text-[11px]">
           <Link to={`/blog/tag/${tagSlug(post.tag.en)}`} className="rounded-full hover:opacity-80 transition">
             <Tag color="emerald">{post.tag[lang]}</Tag>

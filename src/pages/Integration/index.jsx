@@ -2,6 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { integrationBySlug, statusMeta } from '@/core/data/integrations';
+import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
 
 export default function IntegrationPage() {
   const { slug } = useParams();
@@ -19,10 +20,7 @@ export default function IntegrationPage() {
   return (
     <article className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Link to="/integrations" className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7H3m3-3-3 3 3 3" /></svg>
-          {g.back}
-        </Link>
+        <Breadcrumbs items={[{ label: lang === 'tr' ? 'Entegrasyonlar' : 'Integrations', to: '/integrations' }, { label: item.name }]} />
 
         <div className="mt-6 flex items-center gap-4">
           <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl font-display text-[24px] font-semibold text-white" style={{ backgroundColor: item.accent }} aria-hidden="true">

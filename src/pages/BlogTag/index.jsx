@@ -3,11 +3,11 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { POSTS, filterByTag, postTagBySlug, readingTime } from '@/core/data/posts';
+import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
 
 export default function BlogTagPage() {
   const { tag: slug } = useParams();
   const { lang, t } = useApp();
-  const tr = lang === 'tr';
   const tg = postTagBySlug(slug);
   useDocumentMeta(
     tg ? `${tg.label[lang]} — Blog — Ecozyon Tech` : 'Blog — Ecozyon Tech',
@@ -20,10 +20,7 @@ export default function BlogTagPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Link to="/blog" className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M11 7H3m3-3-3 3 3 3" /></svg>
-          {tr ? 'Tüm yazılar' : 'All posts'}
-        </Link>
+        <Breadcrumbs items={[{ label: 'Blog', to: '/blog' }, { label: tg.label[lang] }]} />
 
         <div className="mt-5 mb-8">
           <Tag color="emerald">// {t.blog.byTag}</Tag>

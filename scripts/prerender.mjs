@@ -4,12 +4,15 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
-import { ROUTES, SITE } from '../src/core/config/site.js';
+import { ROUTES, SITE, routeByKey } from '../src/core/config/site.js';
 import { POSTS, postTags, tagSlug } from '../src/core/data/posts.js';
 import { CASES } from '../src/core/data/cases.js';
 import { INTEGRATIONS } from '../src/core/data/integrations.js';
+import { HELP } from '../src/core/data/help.js';
+import { TIERS, PRICING_FAQ } from '../src/core/data/pricing.js';
 import { buildFeed } from '../src/core/lib/feed.js';
 import { ogCardSvg } from '../src/core/lib/og.js';
+import { blogPosting, article, website, faqPage, product, breadcrumbList, ldScript } from '../src/core/lib/jsonld.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -103,6 +106,7 @@ for (const tg of postTags(POSTS)) {
     title: `${tg.label.tr} — Blog — Ecozyon Tech`,
     desc: `${tg.label.tr} etiketli yazılar — Ecozyon Tech`,
     lastmod: today,
+    tag: tg, // carry the tag so we can emit a BreadcrumbList
   });
 }
 for (const cs of CASES) {
@@ -124,54 +128,58 @@ for (const it of INTEGRATIONS) {
   });
 }
 
-function blogPostingLd(route, url) {
-  const p = route.post;
-  const ogUrl = `${SITE.url}/og/${p.slug}.png`;
-  return [
-    '<script type="application/ld+json">',
-    JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: p.title.tr,
-      description: p.excerpt.tr,
-      datePublished: p.date,
-      dateModified: p.date,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      author: { '@type': 'Organization', name: 'Ecozyon Tech', url: SITE.url },
-      publisher: {
-        '@type': 'Organization',
-        name: 'Ecozyon Tech',
-        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.png` },
-      },
-      image: ogUrl,
-      inLanguage: 'tr',
-    }),
-    '</script>',
-  ].join('');
+// Bilingual nav label for a parent section (used in breadcrumb trails).
+const sectionName = (key) => routeByKey(key)?.nav.tr || key;
+const HOME_CRUMB = { name: routeByKey('home')?.nav.tr || 'Ana Sayfa', path: '/' };
+
+// One Offer per pricing tier; Free/Enterprise (no numeric amount) → price 0.
+const pricingOffers = TIERS.map((tier) => ({
+  name: tier.name.tr,
+  price: tier.amounts?.USD ?? 0,
+  currency: 'USD',
+}));
+
+// schema.org JSON-LD node(s) appropriate for a route, built from the shared
+// (unit-tested) builders. Every non-home page gets a BreadcrumbList; content
+// types add their own (BlogPosting/Article), and pricing/help add commerce/FAQ.
+function structuredData(route, url) {
+  const nodes = [];
+  if (route.key === 'home') {
+    nodes.push(website(SITE, 'tr'));
+  } else if (route.post) {
+    const p = route.post;
+    nodes.push(blogPosting({ post: p, url, site: SITE, image: `${SITE.url}/og/${p.slug}.png`, lang: 'tr' }));
+    nodes.push(breadcrumbList([HOME_CRUMB, { name: sectionName('blog'), path: '/blog' }, { name: p.title.tr }], SITE));
+  } else if (route.caseStudy) {
+    const c = route.caseStudy;
+    nodes.push(article({ headline: c.client.tr, description: c.summary.tr, url, site: SITE, image: `${SITE.url}/og/case-${c.slug}.png`, lang: 'tr' }));
+    nodes.push(breadcrumbList([HOME_CRUMB, { name: sectionName('cases'), path: '/cases' }, { name: c.client.tr }], SITE));
+  } else if (route.integration) {
+    const it = route.integration;
+    nodes.push(breadcrumbList([HOME_CRUMB, { name: sectionName('integrations'), path: '/integrations' }, { name: it.name }], SITE));
+  } else if (route.tag) {
+    nodes.push(breadcrumbList([HOME_CRUMB, { name: sectionName('blog'), path: '/blog' }, { name: route.tag.label.tr }], SITE));
+  } else if (route.key) {
+    if (route.key === 'pricing') {
+      nodes.push(product({ name: `${SITE.name} — ${route.navTitle}`, description: route.desc, url, site: SITE, offers: pricingOffers, currency: 'USD', lang: 'tr' }));
+      nodes.push(faqPage(PRICING_FAQ, 'tr'));
+    } else if (route.key === 'help') {
+      nodes.push(faqPage(HELP, 'tr'));
+    }
+    nodes.push(breadcrumbList([HOME_CRUMB, { name: route.navTitle }], SITE));
+  }
+  return nodes;
 }
 
-function caseStudyLd(route, url) {
-  const c = route.caseStudy;
-  const ogUrl = `${SITE.url}/og/case-${c.slug}.png`;
+// hreflang alternates. The site is one URL per route serving TR by default;
+// `?lang=en` makes the client render English, so it is the EN alternate.
+function hreflangFor(url) {
+  const en = `${url}${url.includes('?') ? '&' : '?'}lang=en`;
   return [
-    '<script type="application/ld+json">',
-    JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: c.client.tr,
-      description: c.summary.tr,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      author: { '@type': 'Organization', name: 'Ecozyon Tech', url: SITE.url },
-      publisher: {
-        '@type': 'Organization',
-        name: 'Ecozyon Tech',
-        logo: { '@type': 'ImageObject', url: `${SITE.url}/og.png` },
-      },
-      image: ogUrl,
-      inLanguage: 'tr',
-    }),
-    '</script>',
-  ].join('');
+    `<link rel="alternate" hreflang="tr" href="${esc(url)}" />`,
+    `<link rel="alternate" hreflang="en" href="${esc(en)}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${esc(url)}" />`,
+  ].join('\n    ');
 }
 
 function headFor(route) {
@@ -204,8 +212,9 @@ function headFor(route) {
       `<meta name="twitter:image" content="${esc(ogImage)}" />`,
     );
   }
-  if (route.post) tags.push(blogPostingLd(route, url));
-  if (route.caseStudy) tags.push(caseStudyLd(route, url));
+  tags.push(hreflangFor(url));
+  const ld = structuredData(route, url);
+  if (ld.length) tags.push(ldScript(ld));
   return tags.join('\n    ');
 }
 
