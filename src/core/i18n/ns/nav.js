@@ -10,7 +10,7 @@ export default {
     "howItWorks": "Nasıl çalışır",
     "useCases": "Kimler için",
     "impactMap": "Etki haritası",
-    "cta": "Dashboard'u Keşfet"
+    "cta": "Hemen Başla"
   },
   "en": {
     "solutions": "Solutions",
@@ -21,6 +21,6 @@ export default {
     "howItWorks": "How it works",
     "useCases": "Who it's for",
     "impactMap": "Impact map",
-    "cta": "Explore Dashboard"
+    "cta": "Get Started"
   }
 };

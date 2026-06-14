@@ -1,17 +1,50 @@
 import { Link } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
-import { FOOTER_ITEMS } from '@/core/config/site';
+import { FOOTER_GROUPS, routesInGroup } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
 import NewsletterForm from '@/shared/ui/NewsletterForm';
+
+function FooterCol({ title, links }) {
+  return (
+    <div>
+      <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">{title}</div>
+      <ul className="space-y-2">
+        {links.map((l) => (
+          <li key={l.to}>
+            <Link to={l.to} viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Footer() {
   const { t, lang } = useApp();
   const newsletterP = t.contact.emailP;
+
+  // One column per IA group. The legal column folds in the privacy/terms
+  // anchors and drops the bare "Legal" link (the anchors already cover it).
+  const columns = FOOTER_GROUPS.map((g) => {
+    const routes = routesInGroup(g.id, ['nav', 'footer']);
+    let links = routes.map((r) => ({ to: r.path, label: r.nav[lang] || r.nav.en }));
+    if (g.id === 'legal') {
+      links = [
+        { to: '/legal#privacy', label: t.footer.privacy },
+        { to: '/legal#terms', label: t.footer.terms },
+        ...links.filter((l) => l.to !== '/legal'),
+      ];
+    }
+    return { id: g.id, title: g.label[lang] || g.label.en, links };
+  });
+
   return (
     <footer className="relative pt-16 pb-10 mt-8 border-t border-slate-900/[.08] dark:border-white/[.08]">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-12 gap-8">
-          <div className="col-span-12 lg:col-span-5">
+          <div className="col-span-12 lg:col-span-4">
             <EcoLogo />
             <p className="mt-4 max-w-sm text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed">{t.footer.tagline}</p>
             <div className="mt-5 flex items-center gap-2">
@@ -23,34 +56,14 @@ export default function Footer() {
               <a href="https://github.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-white/70 dark:bg-white/[.06] border border-slate-900/[.08] dark:border-white/[.1] px-3 py-1.5 text-[12px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">GitHub</a>
             </div>
           </div>
-          <div className="col-span-6 md:col-span-4 lg:col-span-2">
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">{t.footer.nav}</div>
-            <ul className="space-y-2">
-              {FOOTER_ITEMS.filter((it) => it.key !== 'legal').map((it) => (
-                <li key={it.path}>
-                  <Link to={it.path} viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
-                    {it.nav[lang] || it.nav.en}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="col-span-6 md:col-span-4 lg:col-span-2">
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">{t.footer.legal}</div>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/legal#privacy" viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
-                  {t.footer.privacy}
-                </Link>
-              </li>
-              <li>
-                <Link to="/legal#terms" viewTransition className="text-[13px] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
-                  {t.footer.terms}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="col-span-12 md:col-span-4 lg:col-span-3">
+
+          <nav aria-label={t.footer.nav} className="col-span-12 lg:col-span-5 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {columns.map((c) => (
+              <FooterCol key={c.id} title={c.title} links={c.links} />
+            ))}
+          </nav>
+
+          <div className="col-span-12 lg:col-span-3">
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-500 dark:text-slate-400 mb-3">
               {t.footer.newsletterTitle}
             </div>

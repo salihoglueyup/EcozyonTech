@@ -2,21 +2,12 @@ import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { routeByKey } from '@/core/config/site';
+import { routeByKey, FOOTER_GROUPS, routesInGroup } from '@/core/config/site';
 import { POSTS } from '@/core/data/posts';
 import { CASES } from '@/core/data/cases';
 import { INTEGRATIONS } from '@/core/data/integrations';
 
 const meta = routeByKey('sitemap');
-
-// Curated page groups by route key (keeps the index meaningful rather than a
-// flat dump). Keys resolve to bilingual nav labels via routeByKey.
-const GROUPS = [
-  { id: 'product', keys: ['home', 'services', 'pricing', 'impact', 'leaderboard', 'roi', 'compare', 'integrations'] },
-  { id: 'company', keys: ['about', 'careers', 'press', 'contact', 'changelog', 'status'] },
-  { id: 'resources', keys: ['blog', 'cases', 'help', 'glossary', 'resources', 'developers', 'styleguide', 'search'] },
-  { id: 'legal', keys: ['legal', 'accessibility', 'sitemap'] },
-];
 
 function LinkList({ items }) {
   return (
@@ -37,10 +28,12 @@ export default function SitemapPage() {
   const s = t.sitemap;
   useDocumentMeta(meta.title[lang], s.intro);
 
-  const pageGroups = GROUPS.map((g) => ({
+  // Derived from the single IA grouping in config (no places filter = every
+  // route in the group, including home/search which only the sitemap lists).
+  const pageGroups = FOOTER_GROUPS.map((g) => ({
     id: g.id,
     title: s[g.id],
-    items: g.keys.map((k) => routeByKey(k)).filter(Boolean).map((r) => ({ to: r.path, label: r.nav[lang] || r.nav.en })),
+    items: routesInGroup(g.id).map((r) => ({ to: r.path, label: r.nav[lang] || r.nav.en })),
   }));
 
   const dynamicGroups = [

@@ -9,8 +9,10 @@ test.describe('smoke', () => {
     await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
   });
 
-  test('navigates from the navbar to a route', async ({ page }) => {
+  test('navigates from the navbar mega-menu to a route', async ({ page }) => {
     await page.goto('/');
+    // Pricing lives in the "Solutions" mega-menu — open it, then click through.
+    await page.getByRole('button', { name: /Çözümler|Solutions/ }).hover();
     await page.getByRole('link', { name: /Fiyatlandırma|Pricing/ }).first().click();
     await expect(page).toHaveURL(/\/pricing$/);
     await expect(page.getByRole('heading', { name: /Fiyat|Pricing/i }).first()).toBeVisible();

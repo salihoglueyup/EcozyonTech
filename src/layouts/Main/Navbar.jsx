@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
-import { NAV_ITEMS, ROUTES } from '@/core/config/site';
+import { NAV_GROUPS, routesInGroup } from '@/core/config/site';
 import { useApp } from '@/app/providers/AppProvider';
 
 export default function Navbar() {
   const { lang, setLang, theme, setTheme, t } = useApp();
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null); // active mega-menu group id
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -15,22 +17,25 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Esc closes whatever navigation surface is open.
   useEffect(() => {
-    if (!mobileOpen) return;
-    const onKey = (e) => { if (e.key === 'Escape') setMobileOpen(false); };
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      setMobileOpen(false);
+      setOpenMenu(null);
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [mobileOpen]);
+  }, []);
 
-  const contactPath = ROUTES.find((r) => r.key === 'contact')?.path || '/contact';
+  // Navigating closes any open menu/sheet (intentional reset on route change).
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOpenMenu(null);
+    setMobileOpen(false);
+  }, [pathname]);
+
   const cta = t.nav.cta;
-
-  const linkClass = ({ isActive }) =>
-    `px-3 py-1.5 rounded-full text-[13px] transition ${
-      isActive
-        ? 'text-slate-900 dark:text-white bg-slate-900/[.06] dark:bg-white/[.1]'
-        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-900/[.04] dark:hover:bg-white/[.06]'
-    }`;
 
   return (
     <>
@@ -44,10 +49,15 @@ export default function Navbar() {
         >
           <EcoLogo />
           <nav className="hidden lg:flex items-center mx-3 gap-1">
-            {NAV_ITEMS.map((it) => (
-              <NavLink key={it.path} to={it.path} viewTransition className={linkClass}>
-                {it.nav[lang] || it.nav.en}
-              </NavLink>
+            {NAV_GROUPS.map((g) => (
+              <NavMenu
+                key={g.id}
+                group={g}
+                lang={lang}
+                pathname={pathname}
+                open={openMenu === g.id}
+                setOpen={setOpenMenu}
+              />
             ))}
           </nav>
 
@@ -66,7 +76,7 @@ export default function Navbar() {
             <ThemeToggle theme={theme} setTheme={setTheme} t={t} />
             <LangSwitch lang={lang} setLang={setLang} />
             <NavLink
-              to="/services"
+              to="/pricing"
               viewTransition
               className="eco-press hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
               style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
@@ -96,22 +106,29 @@ export default function Navbar() {
                 <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" /></svg>
               </button>
             </div>
-            <nav className="flex flex-col">
-              {NAV_ITEMS.map((it) => (
-                <NavLink
-                  key={it.path}
-                  to={it.path}
-                  viewTransition
-                  onClick={() => setMobileOpen(false)}
-                  className="py-3 border-b border-slate-900/[.05] dark:border-white/[.06] last:border-0 text-[15px] text-slate-800 dark:text-slate-200 flex items-center justify-between"
-                >
-                  {it.nav[lang] || it.nav.en}
-                  <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
-                </NavLink>
+            <nav className="flex flex-col max-h-[64vh] overflow-y-auto -mr-2 pr-2">
+              {NAV_GROUPS.map((g) => (
+                <div key={g.id} className="mb-1">
+                  <div className="px-1 pt-3 pb-1 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 dark:text-slate-500">
+                    {g.label[lang] || g.label.en}
+                  </div>
+                  {routesInGroup(g.id, ['nav']).map((it) => (
+                    <NavLink
+                      key={it.path}
+                      to={it.path}
+                      viewTransition
+                      onClick={() => setMobileOpen(false)}
+                      className="py-2.5 border-b border-slate-900/[.05] dark:border-white/[.06] last:border-0 text-[14.5px] text-slate-800 dark:text-slate-200 flex items-center justify-between"
+                    >
+                      {it.nav[lang] || it.nav.en}
+                      <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
+                    </NavLink>
+                  ))}
+                </div>
               ))}
             </nav>
             <NavLink
-              to={contactPath}
+              to="/pricing"
               viewTransition
               onClick={() => setMobileOpen(false)}
               className="eco-press mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
@@ -123,6 +140,80 @@ export default function Navbar() {
         </div>
       )}
     </>
+  );
+}
+
+// One navbar mega-menu: a pill trigger that reveals its group's pages on
+// hover, click or keyboard focus. Only one menu is open at a time (state lives
+// in Navbar). Matches the glass/pill design language of the bar.
+function NavMenu({ group, lang, pathname, open, setOpen }) {
+  const items = routesInGroup(group.id, ['nav']);
+  const active = items.some((it) => it.path === pathname);
+  const cols = items.length > 5 ? 'grid-cols-2' : 'grid-cols-1';
+
+  const triggerClass = `inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[13px] transition ${
+    active || open
+      ? 'text-slate-900 dark:text-white bg-slate-900/[.06] dark:bg-white/[.1]'
+      : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-900/[.04] dark:hover:bg-white/[.06]'
+  }`;
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(group.id)}
+      onMouseLeave={() => setOpen((cur) => (cur === group.id ? null : cur))}
+    >
+      <button
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={() => setOpen((cur) => (cur === group.id ? null : group.id))}
+        className={triggerClass}
+      >
+        {group.label[lang] || group.label.en}
+        <svg
+          viewBox="0 0 12 12"
+          className={`h-3 w-3 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          aria-hidden="true"
+        >
+          <path d="M3 4.5 6 7.5 9 4.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="absolute left-1/2 top-full -translate-x-1/2 pt-2">
+          <div
+            role="menu"
+            className="w-max max-w-[min(86vw,30rem)] rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-[0_18px_44px_-18px_rgba(15,23,42,.4)] p-2 animate-[fadeUp_.18s_ease]"
+          >
+            <div className={`grid ${cols} gap-0.5`}>
+              {items.map((it) => (
+                <NavLink
+                  key={it.path}
+                  to={it.path}
+                  role="menuitem"
+                  viewTransition
+                  onClick={() => setOpen(null)}
+                  className={({ isActive }) =>
+                    `group flex items-center gap-2 rounded-xl px-3 py-2 text-[13px] transition ${
+                      isActive
+                        ? 'text-slate-900 dark:text-white bg-slate-900/[.06] dark:bg-white/[.1]'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-900/[.05] dark:hover:bg-white/[.07]'
+                    }`
+                  }
+                >
+                  <span className="flex-1 truncate">{it.nav[lang] || it.nav.en}</span>
+                  <svg className="h-3 w-3 shrink-0 text-slate-300 dark:text-slate-600 opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
