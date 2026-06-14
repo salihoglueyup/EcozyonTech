@@ -59,6 +59,27 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   the brand heading gradient. **content search**: collections self-register
   in `src/core/content/registry.js` — `buildSearchDocs` derives from it, so a
   new searchable type is "register once" (no edits to search/palette/404).
+- **navigation IA**: routes carry a `group` (product/resources/company/legal) +
+  a `place` (nav/footer/none) in `site.js`. Navbar (mega-menu), footer (columns)
+  and the sitemap all derive from one grouping via `NAV_GROUPS`/`FOOTER_GROUPS`
+  + `routesInGroup()`. `NAV_ITEMS` = the `featured` highlights (NotFound chips).
+- **structured data / SEO**: pure schema.org builders in `src/core/lib/jsonld.js`
+  (Article/Product/FAQPage/BreadcrumbList/WebSite…). The prerender injects the
+  right JSON-LD per route + TR/EN/x-default **hreflang** (the `?lang=en` alt
+  renders English — AppProvider reads `?lang=` post-mount). Visible
+  `<Breadcrumbs>` on deep content pages. Pricing data lives in
+  `src/core/data/pricing.js` (page + prerender share it).
+- **analytics**: cookieless `track(name, props)` in `src/core/lib/analytics.js`
+  honors DNT/GPC, beacons to `/api/analytics` (sink mirrors vitals; demo-acks).
+  Dev `EventsHud` overlay. Both analytics.js + EventsHud are coverage-excluded
+  like the vitals reporter.
+- **motion tokens**: durations/easings live in `src/core/motion.js`, mirrored as
+  `--dur-*`/`--ease-*` CSS vars (index.css `:root`). `prefersReducedMotion()` +
+  `useReducedMotion()` replace ad-hoc matchMedia reads.
+- **route table + prefetch**: `src/app/routes.js` is the single `path → lazy
+  import` table (kept component-free to avoid a router↔layout cycle). router.jsx
+  builds elements; `routePrefetch.js` warms a chunk on hover/focus of any
+  internal link (Save-Data-aware), mounted via `useRoutePrefetch()` in MainLayout.
 - **dev-tweaks** is a vendored design-host panel; mounted only when
   `import.meta.env.DEV`. Never ships. ESLint relaxes react-hooks/no-unused
   for it on purpose (see eslint.config.js override) — don't "fix" its
@@ -196,4 +217,11 @@ the three JSON files.
 All phases complete: P1 testing/CI/ErrorBoundary/404 · P2 serverless backend +
 real forms · P3 new pages (Pricing/Blog/Careers/Legal) · P4 SEO/prerender ·
 P5 a11y (skip link, prefers-reduced-motion, labelled inputs) + polish.
-TypeScript intentionally out of scope (possible future opt-in phase).
+
+Structural moves done: design-token pipeline · content registry · i18n ns
+split · navigation IA · structured-data/hreflang · analytics layer · motion
+tokens · route-table + prefetch (see Conventions). **Parked on purpose:** the
+`createBrowserRouter` data-router migration — high risk to the custom
+prerender, low benefit for a static-content app (no async loaders; errors
+already handled by the layout ErrorBoundary). Revisit only if real data
+loading lands. TypeScript intentionally out of scope (possible future opt-in).
