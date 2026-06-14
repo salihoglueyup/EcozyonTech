@@ -2,37 +2,11 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '@/layouts/Main';
 import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
+import { ROUTE_LOADERS } from './routes';
 
-const HomePage = lazy(() => import('@/pages/Home'));
-const ServicesPage = lazy(() => import('@/pages/Services'));
-const PricingPage = lazy(() => import('@/pages/Pricing'));
-const ImpactPage = lazy(() => import('@/pages/Impact'));
-const CasesPage = lazy(() => import('@/pages/Cases'));
-const CaseStudyPage = lazy(() => import('@/pages/CaseStudy'));
-const HelpPage = lazy(() => import('@/pages/Help'));
-const ChangelogPage = lazy(() => import('@/pages/Changelog'));
-const StatusPage = lazy(() => import('@/pages/Status'));
-const PressPage = lazy(() => import('@/pages/Press'));
-const ResourcesPage = lazy(() => import('@/pages/Resources'));
-const StyleguidePage = lazy(() => import('@/pages/Styleguide'));
-const SearchPage = lazy(() => import('@/pages/Search'));
-const IntegrationsPage = lazy(() => import('@/pages/Integrations'));
-const IntegrationPage = lazy(() => import('@/pages/Integration'));
-const GlossaryPage = lazy(() => import('@/pages/Glossary'));
-const RoiPage = lazy(() => import('@/pages/Roi'));
-const DevelopersPage = lazy(() => import('@/pages/Developers'));
-const LeaderboardPage = lazy(() => import('@/pages/Leaderboard'));
-const ComparePage = lazy(() => import('@/pages/Compare'));
-const SitemapPage = lazy(() => import('@/pages/Sitemap'));
-const AccessibilityPage = lazy(() => import('@/pages/Accessibility'));
-const AboutPage = lazy(() => import('@/pages/About'));
-const BlogPage = lazy(() => import('@/pages/Blog'));
-const BlogPostPage = lazy(() => import('@/pages/BlogPost'));
-const BlogTagPage = lazy(() => import('@/pages/BlogTag'));
-const CareersPage = lazy(() => import('@/pages/Careers'));
-const ContactPage = lazy(() => import('@/pages/Contact'));
-const LegalPage = lazy(() => import('@/pages/Legal'));
-const NotFoundPage = lazy(() => import('@/pages/NotFound'));
+// Build the lazy components once at module load (stable references across
+// renders — never re-create lazy() inside the component).
+const ROUTE_ELEMENTS = ROUTE_LOADERS.map((r) => ({ ...r, Comp: lazy(r.load) }));
 
 // Structural skeleton shown while a lazy route chunk loads — mirrors the
 // typical page shape (eyebrow + heading + intro, then a card grid) so the
@@ -55,50 +29,20 @@ function PageFallback() {
   );
 }
 
-// path → element. `index: true` for the home route.
-const ROUTE_ELEMENTS = [
-  { index: true, el: <HomePage /> },
-  { path: 'services', el: <ServicesPage /> },
-  { path: 'pricing', el: <PricingPage /> },
-  { path: 'impact', el: <ImpactPage /> },
-  { path: 'cases', el: <CasesPage /> },
-  { path: 'cases/:slug', el: <CaseStudyPage /> },
-  { path: 'help', el: <HelpPage /> },
-  { path: 'changelog', el: <ChangelogPage /> },
-  { path: 'status', el: <StatusPage /> },
-  { path: 'press', el: <PressPage /> },
-  { path: 'resources', el: <ResourcesPage /> },
-  { path: 'styleguide', el: <StyleguidePage /> },
-  { path: 'search', el: <SearchPage /> },
-  { path: 'integrations', el: <IntegrationsPage /> },
-  { path: 'integrations/:slug', el: <IntegrationPage /> },
-  { path: 'glossary', el: <GlossaryPage /> },
-  { path: 'roi', el: <RoiPage /> },
-  { path: 'developers', el: <DevelopersPage /> },
-  { path: 'leaderboard', el: <LeaderboardPage /> },
-  { path: 'compare', el: <ComparePage /> },
-  { path: 'sitemap', el: <SitemapPage /> },
-  { path: 'accessibility', el: <AccessibilityPage /> },
-  { path: 'about', el: <AboutPage /> },
-  { path: 'blog', el: <BlogPage /> },
-  { path: 'blog/tag/:tag', el: <BlogTagPage /> },
-  { path: 'blog/:slug', el: <BlogPostPage /> },
-  { path: 'careers', el: <CareersPage /> },
-  { path: 'contact', el: <ContactPage /> },
-  { path: 'legal', el: <LegalPage /> },
-  { path: '*', el: <NotFoundPage /> },
-];
-
 export function AppRoutes() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        {ROUTE_ELEMENTS.map(({ index, path, el }) => (
+        {ROUTE_ELEMENTS.map(({ index, path, Comp }) => (
           <Route
             key={path || 'index'}
             index={index}
             path={path}
-            element={<Suspense fallback={<PageFallback />}>{el}</Suspense>}
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <Comp />
+              </Suspense>
+            }
           />
         ))}
       </Route>

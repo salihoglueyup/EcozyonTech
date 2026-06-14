@@ -11,6 +11,7 @@ import BackToTop from '@/shared/ui/BackToTop';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 import VitalsHud from '@/shared/ui/VitalsHud';
 import EventsHud from '@/shared/ui/EventsHud';
+import { useRoutePrefetch } from '@/app/routePrefetch';
 
 function ScrollProgress() {
   const [p, setP] = useState(0);
@@ -68,6 +69,7 @@ function ScrollToTop() {
 export default function MainLayout() {
   const { bgColor, t } = useApp();
   const { pathname } = useLocation();
+  useRoutePrefetch();
   return (
     <div
       className="min-h-screen text-slate-900 dark:text-slate-100 font-body transition-colors duration-300"
