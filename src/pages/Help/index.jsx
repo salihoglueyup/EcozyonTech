@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
@@ -93,7 +94,7 @@ export default function HelpPage() {
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-medium text-white shrink-0"
-            style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+            style={{ backgroundImage: GRADIENTS.cta }}
           >
             {t.help.contact}
             <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>

@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
@@ -184,7 +185,7 @@ export default function PricingPage() {
                 className={`mt-7 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium transition ${
                   tier.featured ? 'text-white' : 'text-slate-800 dark:text-slate-200 bg-white/70 dark:bg-white/[.06] border border-slate-900/[.08] dark:border-white/[.1] hover:bg-white dark:hover:bg-white/[.1]'
                 }`}
-                style={tier.featured ? { backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' } : undefined}
+                style={tier.featured ? { backgroundImage: GRADIENTS.cta } : undefined}
               >
                 {tr ? 'Başla' : 'Get started'}
                 <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>

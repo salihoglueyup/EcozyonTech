@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import React from 'react';
 import { SectionHeader, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal, RevealGroup, Parallax } from '@/shared/ui/useReveal';
@@ -109,7 +110,7 @@ function Timeline({ timeline }) {
           <li key={i} className="relative pl-8">
             <span
               className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full ring-4 ring-white"
-              style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+              style={{ backgroundImage: GRADIENTS.cta }}
               aria-hidden="true"
             />
             <div className="font-mono text-[12px] text-slate-500 dark:text-slate-400">{it.year}</div>

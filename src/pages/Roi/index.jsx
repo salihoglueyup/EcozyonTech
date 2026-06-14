@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
@@ -138,7 +139,7 @@ export default function RoiPage() {
         <p className="mt-4 text-[11.5px] text-slate-400 leading-relaxed">{r.note}</p>
 
         {/* Plan recommendation */}
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: 'linear-gradient(120deg,rgba(14,165,233,.08),rgba(16,185,129,.08))' }}>
+        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
           <div>
             <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">{r.recommendTitle}</div>
             <div className="mt-1 text-[14px] text-slate-700 dark:text-slate-300">

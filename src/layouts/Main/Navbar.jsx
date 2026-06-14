@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
@@ -81,7 +82,7 @@ export default function Navbar() {
               viewTransition
               onClick={() => track('cta_click', { to: '/pricing', source: 'navbar' })}
               className="eco-press hidden sm:inline-flex relative items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12.5px] font-medium text-white shadow-[0_6px_18px_-6px_rgba(14,165,233,.6)] hover:shadow-[0_10px_28px_-8px_rgba(16,185,129,.55)] transition-shadow"
-              style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
+              style={{ backgroundImage: GRADIENTS.cta }}
             >
               {cta}
               <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
@@ -134,7 +135,7 @@ export default function Navbar() {
               viewTransition
               onClick={() => { track('cta_click', { to: '/pricing', source: 'mobile' }); setMobileOpen(false); }}
               className="eco-press mt-5 w-full inline-flex justify-center items-center gap-1.5 rounded-full px-3.5 py-3 text-[13px] font-medium text-white"
-              style={{ backgroundImage: 'linear-gradient(120deg, #0EA5E9 0%, #10B981 100%)' }}
+              style={{ backgroundImage: GRADIENTS.cta }}
             >
               {cta}
             </NavLink>

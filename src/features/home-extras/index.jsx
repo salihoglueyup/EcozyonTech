@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
@@ -126,7 +127,7 @@ export function CtaBand({ t }) {
         <Reveal>
           <div
             className="relative overflow-hidden rounded-3xl px-8 py-12 lg:px-14 lg:py-16 text-center"
-            style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+            style={{ backgroundImage: GRADIENTS.cta }}
           >
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #fff 0, transparent 40%), radial-gradient(circle at 80% 80%, #fff 0, transparent 40%)' }} aria-hidden="true" />
             <div className="relative">
@@ -173,7 +174,7 @@ export function FeaturedCase({ t, lang }) {
                 <Link
                   to={`/cases/${c.slug}`}
                   className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
-                  style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                  style={{ backgroundImage: GRADIENTS.cta }}
                 >
                   {h.featuredCta}
                   <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>

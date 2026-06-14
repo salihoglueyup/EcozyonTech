@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
@@ -53,7 +54,7 @@ export default function CookieBanner() {
           type="button"
           onClick={accept}
           className="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[12px] font-medium text-white"
-          style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+          style={{ backgroundImage: GRADIENTS.cta }}
         >
           {t.cookies.accept}
         </button>

@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
@@ -27,7 +28,7 @@ function ErrorFallback({ onReset }) {
             type="button"
             onClick={onReset}
             className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
-            style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+            style={{ backgroundImage: GRADIENTS.cta }}
           >
             {tr ? 'Tekrar dene' : 'Try again'}
           </button>

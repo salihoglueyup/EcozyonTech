@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
@@ -88,7 +89,7 @@ export default function ComparePage() {
           </table>
         </div>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: 'linear-gradient(120deg,rgba(14,165,233,.08),rgba(16,185,129,.08))' }}>
+        <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
           <div>
             <h2 className="font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{c.ctaTitle}</h2>
             <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400">{c.ctaText}</p>

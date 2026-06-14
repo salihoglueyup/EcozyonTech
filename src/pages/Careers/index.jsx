@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
@@ -166,7 +167,7 @@ export default function CareersPage() {
                   type="button"
                   onClick={() => openRole(j)}
                   className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
-                  style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                  style={{ backgroundImage: GRADIENTS.cta }}
                 >
                   {t.careers.apply}
                   <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
@@ -310,7 +311,7 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
 
         {status === 'success' ? (
           <div id={descId} role="status" className="mt-4 inline-flex items-center gap-2 rounded-2xl bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-4 py-3 text-[13.5px] font-medium">
-            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-white" style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}>
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full text-white" style={{ backgroundImage: GRADIENTS.cta }}>
               <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M2 6.4l2.8 2.6L10 3" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </span>
             {c.sent}
@@ -354,7 +355,7 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
                 type="submit"
                 disabled={status === 'sending'}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white disabled:opacity-60"
-                style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                style={{ backgroundImage: GRADIENTS.cta }}
               >
                 {status === 'sending' ? c.sending : c.submit}
               </button>

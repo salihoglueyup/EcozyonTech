@@ -23,6 +23,8 @@ export const GRADIENTS = {
   // The display-heading text gradient (also available as the .eco-gradient-text
   // CSS utility, which is accent-var driven).
   brand: `linear-gradient(110deg,${BRAND.cyan} 0%,${BRAND.emerald} 100%)`,
-  // CTA / panel gradient (slightly different angle).
+  // CTA button fill (slightly different angle from the heading gradient).
   cta: `linear-gradient(120deg,${BRAND.cyan} 0%,${BRAND.emerald} 100%)`,
+  // Faint brand-tinted panel background (cyan→emerald at 8% alpha).
+  panel: 'linear-gradient(120deg,rgba(14,165,233,.08),rgba(16,185,129,.08))',
 };

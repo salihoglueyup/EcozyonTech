@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { Donut } from '@/shared/ui/charts';
@@ -147,7 +148,7 @@ export default function AssessmentPage() {
                 onClick={onNext}
                 disabled={!answered}
                 className="eco-press inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white disabled:opacity-40 transition"
-                style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                style={{ backgroundImage: GRADIENTS.cta }}
               >
                 {step < TOTAL - 1 ? a.next : a.result.scoreLabel}
                 <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
@@ -203,7 +204,7 @@ export default function AssessmentPage() {
                 type="button"
                 onClick={share}
                 className="eco-press inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white"
-                style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+                style={{ backgroundImage: GRADIENTS.cta }}
               >
                 {a.result.share}
               </button>

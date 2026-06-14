@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
@@ -95,7 +96,7 @@ export default function PressPage() {
 
         {/* Press contact */}
         <Reveal>
-          <div className="mt-14 rounded-2xl p-7 lg:p-8 ring-1 ring-cyan-500/20" style={{ backgroundImage: 'linear-gradient(120deg,rgba(14,165,233,.08),rgba(16,185,129,.08))' }}>
+          <div className="mt-14 rounded-2xl p-7 lg:p-8 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
             <h2 className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">{p.contactTitle}</h2>
             <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">{p.contactText}</p>
             <Link

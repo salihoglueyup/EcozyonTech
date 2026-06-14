@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useId, useState } from 'react';
 import { ECO_I18N } from '@/core/i18n/dictionary';
 import { track } from '@/core/lib/telemetry';
@@ -49,7 +50,7 @@ export default function NewsletterForm({ lang, placeholder }) {
       >
         <span
           className="inline-flex items-center justify-center h-4 w-4 rounded-full text-white"
-          style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+          style={{ backgroundImage: GRADIENTS.cta }}
         >
           <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="2.2">
             <path d="M2 6.4l2.8 2.6L10 3" strokeLinecap="round" strokeLinejoin="round" />

@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
@@ -82,7 +83,7 @@ export default function IntegrationsPage() {
           })}
         </div>
 
-        <div className="mt-12 rounded-2xl p-7 ring-1 ring-cyan-500/20" style={{ backgroundImage: 'linear-gradient(120deg,rgba(14,165,233,.08),rgba(16,185,129,.08))' }}>
+        <div className="mt-12 rounded-2xl p-7 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
           <h2 className="font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{g.ctaTitle}</h2>
           <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">{g.ctaText}</p>
           <Link to="/contact?from=integrations" className="eco-press mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">

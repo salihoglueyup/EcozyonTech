@@ -1,3 +1,4 @@
+import { GRADIENTS } from '@/core/tokens';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -58,7 +59,7 @@ export default function IntegrationPage() {
           <Link
             to="/contact?from=integrations"
             className="eco-press inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
-            style={{ backgroundImage: 'linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)' }}
+            style={{ backgroundImage: GRADIENTS.cta }}
           >
             {g.cta}
             <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>

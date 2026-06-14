@@ -14,4 +14,9 @@ describe('design tokens', () => {
     expect(GRADIENTS.cta).toContain(BRAND.cyan);
     expect(GRADIENTS.cta).toContain(BRAND.emerald);
   });
+
+  it('exposes a CTA and a panel gradient', () => {
+    expect(GRADIENTS.cta).toMatch(/^linear-gradient\(120deg/);
+    expect(GRADIENTS.panel).toMatch(/^linear-gradient\(120deg,rgba/);
+  });
 });
