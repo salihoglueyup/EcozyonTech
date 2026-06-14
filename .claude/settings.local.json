@@ -154,7 +154,11 @@
       "Bash(sed -n '49,56p' src/pages/BlogPost/index.jsx)",
       "Bash(sed -n '6,35p' src/pages/CaseStudy/index.jsx)",
       "Bash(sed -n '5,30p' src/pages/Integration/index.jsx)",
-      "Bash(sed -n '6,35p' src/pages/BlogTag/index.jsx)"
+      "Bash(sed -n '6,35p' src/pages/BlogTag/index.jsx)",
+      "Bash(grep -vE \"✓|·|PASS|RUN|Test Files|Tests |Start at|Duration|transform|^\\\\s*$\")",
+      "Bash(awk -F'|' '{ gsub\\(/ /,\"\",$4\\); if \\($4+0 < 80 && $4 != \"\"\\) print }')",
+      "Bash(sed -n '1,30p' src/core/data/geo.js)",
+      "Bash(sed -n '105,130p' src/core/data/cities.js)"
     ]
   }
 }

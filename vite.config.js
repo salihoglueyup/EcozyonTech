@@ -86,12 +86,12 @@ export default defineConfig({
       // we can meaningfully act on.
       include: ['src/**/*.{js,jsx}', 'api/_lib/**/*.js'],
       thresholds: {
-        // Baseline at the time of writing: 91% lines, 65% branches, 70% fns.
-        // Floors guard against regressions; raise them as we add tests.
-        lines: 85,
-        statements: 85,
-        functions: 65,
-        branches: 60,
+        // Current: ~89% lines/stmts, ~78% branches, ~74% fns. Floors sit just
+        // below to lock in coverage and guard regressions; raise as tests grow.
+        lines: 88,
+        statements: 88,
+        functions: 70,
+        branches: 73,
       },
       exclude: [
         'src/**/*.test.{js,jsx}',

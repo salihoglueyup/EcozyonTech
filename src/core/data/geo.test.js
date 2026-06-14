@@ -4,7 +4,7 @@
 // latLonToXYZ projection.
 import { describe, it, expect } from 'vitest';
 import * as THREE from 'three';
-import { latLonToXYZ, cityFacingRotation, shortestYawDelta } from './geo.js';
+import { latLonToXYZ, cityFacingRotation, shortestYawDelta, isLand } from './geo.js';
 
 // Mirror of the Three.js Group transform: Euler XYZ order applies Ry then Rx
 // to the local point. We rebuild the resulting world position so the test
@@ -59,5 +59,20 @@ describe('shortestYawDelta', () => {
   });
   it('returns 0 when target equals current', () => {
     expect(shortestYawDelta(1.234, 1.234)).toBe(0);
+  });
+});
+
+describe('isLand (Natural Earth bitfield)', () => {
+  it('marks interior land cells true', () => {
+    expect(isLand(39, 35)).toBe(true); // central Anatolia
+    expect(isLand(40, -100)).toBe(true); // US interior
+    expect(isLand(52, 13)).toBe(true); // Berlin
+  });
+  it('marks open ocean false', () => {
+    expect(isLand(0, -150)).toBe(false); // mid Pacific
+    expect(isLand(-30, -100)).toBe(false); // SE Pacific
+  });
+  it('wraps longitude beyond ±180 to the same cell', () => {
+    expect(isLand(39, 35)).toBe(isLand(39, 35 + 360));
   });
 });

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CITIES, GROWTH_YEARS, networkGrowth } from './cities';
+import { CITIES, GROWTH_YEARS, networkGrowth, ECO_GEO } from './cities';
 
 describe('networkGrowth', () => {
   it('returns one value per year', () => {
@@ -29,5 +29,19 @@ describe('networkGrowth', () => {
   it('counts only partners for the partners metric', () => {
     const series = networkGrowth('partners');
     expect(series[series.length - 1]).toBe(CITIES.filter((c) => c.partner).length);
+  });
+});
+
+describe('ECO_GEO (legacy ellipse geography)', () => {
+  it('treats Antarctica (lat < -65) as land', () => {
+    expect(ECO_GEO.isLand(-80, 0)).toBe(true);
+  });
+  it('flags a continental ellipse as land and open ocean as not', () => {
+    expect(ECO_GEO.isLand(0, 20)).toBe(true); // central Africa
+    expect(ECO_GEO.isLand(0, -150)).toBe(false); // mid Pacific
+  });
+  it('latLonToXYZ returns a point on the sphere of radius R', () => {
+    const p = ECO_GEO.latLonToXYZ(12, 34, 2);
+    expect(Math.hypot(...p)).toBeCloseTo(2, 5);
   });
 });
