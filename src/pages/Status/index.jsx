@@ -1,4 +1,4 @@
-import { PageHeader } from '@/shared/ui/primitives';
+import { PageHeader, StatusBadge } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -18,12 +18,7 @@ const meta = routeByKey('status');
 // Small status dot + label, reused for the banner, components and incidents.
 function StatusPill({ status, lang }) {
   const m = statusMeta(status);
-  return (
-    <span className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold" style={{ color: m.accent }}>
-      <span className="h-2 w-2 rounded-full" style={{ backgroundColor: m.accent }} aria-hidden="true" />
-      {m.label[lang]}
-    </span>
-  );
+  return <StatusBadge accent={m.accent} label={m.label[lang]} />;
 }
 
 export default function StatusPage() {

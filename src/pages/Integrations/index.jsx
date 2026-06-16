@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader, ResultCount, StatusBadge } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -54,10 +54,7 @@ export default function IntegrationsPage() {
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl font-display text-[15px] font-semibold text-white" style={{ backgroundColor: it.accent }} aria-hidden="true">
                     {it.name.slice(0, 1)}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold" style={{ color: sm.accent }}>
-                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: sm.accent }} />
-                    {sm.label[lang]}
-                  </span>
+                  <StatusBadge accent={sm.accent} label={sm.label[lang]} className="text-[11px]" dotClassName="h-1.5 w-1.5" />
                 </div>
                 <h2 className="mt-3 font-display text-[17px] tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{it.name}</h2>
                 <p className="mt-1 flex-1 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{it.tagline[lang]}</p>

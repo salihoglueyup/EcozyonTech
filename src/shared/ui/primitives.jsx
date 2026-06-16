@@ -181,6 +181,19 @@ export function ResultCount({ children, className = 'mb-4' }) {
   );
 }
 
+// Status dot + label tinted by a status `accent` colour (operational/degraded/
+// down for /status, live/beta/soon for integrations). The dot is decorative
+// (aria-hidden) — its colour just echoes the label. `className` tunes the text
+// size (default `text-[12.5px]`; pass '' to inherit), `dotClassName` the dot.
+export function StatusBadge({ accent, label, className = 'text-[12.5px]', dotClassName = 'h-2 w-2' }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 font-semibold ${className}`.trim()} style={{ color: accent }}>
+      <span className={`${dotClassName} rounded-full`} style={{ backgroundColor: accent }} aria-hidden="true" />
+      {label}
+    </span>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

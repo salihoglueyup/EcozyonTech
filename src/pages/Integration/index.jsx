@@ -1,5 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
-import { ArrowRight } from '@/shared/ui/primitives';
+import { ArrowRight, StatusBadge } from '@/shared/ui/primitives';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -31,10 +31,7 @@ export default function IntegrationPage() {
           <div>
             <h1 className="font-display text-[clamp(1.7rem,4vw,2.6rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100">{item.name}</h1>
             <div className="mt-1 flex items-center gap-2 text-[12px]">
-              <span className="inline-flex items-center gap-1.5 font-semibold" style={{ color: sm.accent }}>
-                <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: sm.accent }} />
-                {sm.label[lang]}
-              </span>
+              <StatusBadge accent={sm.accent} label={sm.label[lang]} className="" dotClassName="h-1.5 w-1.5" />
               <span className="text-slate-400">·</span>
               <span className="text-slate-500 dark:text-slate-400">{item.category[lang]}</span>
             </div>

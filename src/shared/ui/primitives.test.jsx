@@ -1,6 +1,25 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, SectionHeader } from './primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, SectionHeader, StatusBadge } from './primitives';
+
+describe('StatusBadge', () => {
+  it('tints the label and the decorative dot with the accent colour', () => {
+    const { container } = render(<StatusBadge accent="rgb(16, 185, 129)" label="Operational" />);
+    const badge = screen.getByText('Operational');
+    expect(badge).toHaveStyle({ color: 'rgb(16, 185, 129)' });
+    const dot = container.querySelector('span[aria-hidden="true"]');
+    expect(dot).toHaveStyle({ backgroundColor: 'rgb(16, 185, 129)' });
+    expect(dot).toHaveClass('h-2', 'w-2', 'rounded-full');
+  });
+
+  it('allows the text size and dot size to be overridden', () => {
+    const { container } = render(
+      <StatusBadge accent="#000" label="Beta" className="text-[11px]" dotClassName="h-1.5 w-1.5" />,
+    );
+    expect(screen.getByText('Beta')).toHaveClass('text-[11px]');
+    expect(container.querySelector('span[aria-hidden="true"]')).toHaveClass('h-1.5', 'w-1.5');
+  });
+});
 
 describe('ResultCount', () => {
   it('renders an aria-live count line with default spacing', () => {
