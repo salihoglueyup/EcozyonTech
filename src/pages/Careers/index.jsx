@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
@@ -117,9 +117,7 @@ export default function CareersPage() {
 
         <div className="space-y-3">
           {visible.length === 0 && (
-            <div className="rounded-2xl eco-card p-8 text-center text-[13.5px] text-slate-500 dark:text-slate-400">
-              {t.careers.noResults}
-            </div>
+            <EmptyState>{t.careers.noResults}</EmptyState>
           )}
           {visible.map((j) => (
             <div key={j.id} className="rounded-2xl eco-card p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">

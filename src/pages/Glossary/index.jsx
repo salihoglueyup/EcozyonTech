@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FilterPills, PageHeader } from '@/shared/ui/primitives';
+import { EmptyState, FilterPills, PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -61,7 +61,7 @@ export default function GlossaryPage() {
         </div>
 
         {visible.length === 0 ? (
-          <p className="rounded-xl eco-card p-6 text-[13.5px] text-slate-500 dark:text-slate-400">{g.empty}</p>
+          <EmptyState className="rounded-xl p-6">{g.empty}</EmptyState>
         ) : (
           <div className="divide-y divide-slate-900/[.06] dark:divide-white/[.06]">
             {visible.map((term, i) => (

@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -63,7 +63,7 @@ export default function HelpPage() {
 
         <div className="space-y-2">
           {visible.length === 0 && (
-            <div className="rounded-2xl eco-card p-8 text-center text-[13.5px] text-slate-500 dark:text-slate-400">{t.help.empty}</div>
+            <EmptyState>{t.help.empty}</EmptyState>
           )}
           {visible.map((entry) => (
             <HelpItem key={entry.id} entry={entry} lang={lang} defaultOpen={entry.id === hashId} />

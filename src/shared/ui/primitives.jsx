@@ -158,6 +158,18 @@ export function FilterPills({
   );
 }
 
+// Boxed "no results / empty" state — the muted eco-card shown when a filtered
+// list comes up empty (Careers/Help/Glossary). Shared styling is the card +
+// muted text; `className` controls shape/padding/alignment (default matches the
+// Careers/Help box; Glossary passes a tighter `rounded-xl p-6`).
+export function EmptyState({ children, className = 'rounded-2xl p-8 text-center' }) {
+  return (
+    <div className={`eco-card text-[13.5px] text-slate-500 dark:text-slate-400 ${className}`.trim()}>
+      {children}
+    </div>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

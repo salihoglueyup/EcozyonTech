@@ -1,6 +1,21 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import { ArrowRight, FilterPills, PageHeader, SearchInput, SectionHeader } from './primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput, SectionHeader } from './primitives';
+
+describe('EmptyState', () => {
+  it('renders an eco-card box with muted text by default', () => {
+    const { container } = render(<EmptyState>Sonuç yok</EmptyState>);
+    const box = container.firstChild;
+    expect(box).toHaveTextContent('Sonuç yok');
+    expect(box).toHaveClass('eco-card', 'rounded-2xl', 'p-8', 'text-center');
+  });
+
+  it('lets the shape className be overridden', () => {
+    const { container } = render(<EmptyState className="rounded-xl p-6">x</EmptyState>);
+    expect(container.firstChild).toHaveClass('eco-card', 'rounded-xl', 'p-6');
+    expect(container.firstChild).not.toHaveClass('text-center');
+  });
+});
 
 describe('FilterPills', () => {
   const opts = [
