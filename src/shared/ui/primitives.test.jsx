@@ -1,6 +1,22 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput, SectionHeader } from './primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, SectionHeader } from './primitives';
+
+describe('ResultCount', () => {
+  it('renders an aria-live count line with default spacing', () => {
+    const { container } = render(<ResultCount>3 sonuç</ResultCount>);
+    const el = container.firstChild;
+    expect(el).toHaveTextContent('3 sonuç');
+    expect(el).toHaveAttribute('aria-live', 'polite');
+    expect(el).toHaveClass('mb-4', 'uppercase');
+  });
+
+  it('accepts a spacing override', () => {
+    const { container } = render(<ResultCount className="mt-4 mb-2">x</ResultCount>);
+    expect(container.firstChild).toHaveClass('mt-4', 'mb-2');
+    expect(container.firstChild).not.toHaveClass('mb-4');
+  });
+});
 
 describe('EmptyState', () => {
   it('renders an eco-card box with muted text by default', () => {

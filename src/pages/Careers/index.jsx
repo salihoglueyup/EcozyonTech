@@ -1,7 +1,8 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput } from '@/shared/ui/primitives';
+import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { Modal } from '@/shared/ui/Modal';
@@ -18,11 +19,12 @@ export default function CareersPage() {
   const toast = useToast();
   const [params, setParams] = useSearchParams();
   const [openJob, setOpenJob] = useState(null);
-  const [activeTeam, setActiveTeam] = useState(null);
-  const [query, setQuery] = useState('');
-
-  const scoped = filterByTeam(JOBS, activeTeam);
-  const visible = searchJobs(scoped, query, lang);
+  const { active: activeTeam, setActive: setActiveTeam, query, setQuery, visible } = useFilteredList({
+    items: JOBS,
+    filter: filterByTeam,
+    search: searchJobs,
+    lang,
+  });
 
   // Keep ?job= in sync with the open modal so a role is deep-linkable.
   // Opening pushes a history entry (shareable/back-navigable); closing
@@ -111,9 +113,7 @@ export default function CareersPage() {
           label={t.careers.filterLabel}
         />
 
-        <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-          {t.careers.openRoles.replace('{n}', visible.length)}
-        </div>
+        <ResultCount>{t.careers.openRoles.replace('{n}', visible.length)}</ResultCount>
 
         <div className="space-y-3">
           {visible.length === 0 && (

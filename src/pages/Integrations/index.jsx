@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -39,9 +39,7 @@ export default function IntegrationsPage() {
           label={g.filterLabel}
         />
 
-        <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-          {g.count.replace('{n}', visible.length)}
-        </div>
+        <ResultCount>{g.count.replace('{n}', visible.length)}</ResultCount>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((it) => {

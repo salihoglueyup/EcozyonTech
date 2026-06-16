@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { EmptyState, FilterPills, PageHeader } from '@/shared/ui/primitives';
+import { EmptyState, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
+import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -12,8 +13,12 @@ const CATEGORIES = glossaryCategories();
 export default function GlossaryPage() {
   const { lang, t } = useApp();
   const g = t.glossary;
-  const [query, setQuery] = useState('');
-  const [active, setActive] = useState(null);
+  const { active, setActive, query, setQuery, visible } = useFilteredList({
+    items: GLOSSARY,
+    filter: filterByCategory,
+    search: searchGlossary,
+    lang,
+  });
   // Read a #term-id anchor once, post-mount (prerender-safe).
   const [hashId] = useState(() => (typeof window !== 'undefined' ? window.location.hash.slice(1) : ''));
   useDocumentMeta(meta.title[lang], g.intro);
@@ -24,7 +29,6 @@ export default function GlossaryPage() {
     if (el) el.scrollIntoView();
   }, [hashId]);
 
-  const visible = searchGlossary(filterByCategory(GLOSSARY, active), query, lang);
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
@@ -56,9 +60,7 @@ export default function GlossaryPage() {
           label={g.filterLabel}
         />
 
-        <div className="mt-4 mb-2 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-          {g.count.replace('{n}', visible.length)}
-        </div>
+        <ResultCount className="mt-4 mb-2">{g.count.replace('{n}', visible.length)}</ResultCount>
 
         {visible.length === 0 ? (
           <EmptyState className="rounded-xl p-6">{g.empty}</EmptyState>

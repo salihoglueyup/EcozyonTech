@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -38,9 +38,7 @@ export default function CasesPage() {
           label={t.cases.filterLabel}
         />
 
-        <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-          {t.cases.count.replace('{n}', visible.length)}
-        </div>
+        <ResultCount>{t.cases.count.replace('{n}', visible.length)}</ResultCount>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {visible.map((c) => {

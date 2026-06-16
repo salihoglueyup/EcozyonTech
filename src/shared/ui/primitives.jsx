@@ -170,6 +170,17 @@ export function EmptyState({ children, className = 'rounded-2xl p-8 text-center'
   );
 }
 
+// The small muted "N results" line above a filtered list. `aria-live` so screen
+// readers hear the count update as filters/search change. `className` is the
+// spacing (default `mb-4`; Glossary uses `mt-4 mb-2`).
+export function ResultCount({ children, className = 'mb-4' }) {
+  return (
+    <div className={`text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400 ${className}`.trim()} aria-live="polite">
+      {children}
+    </div>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

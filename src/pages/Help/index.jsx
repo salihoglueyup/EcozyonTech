@@ -1,7 +1,8 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput } from '@/shared/ui/primitives';
+import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -12,8 +13,12 @@ const CATEGORIES = helpCategories(HELP);
 
 export default function HelpPage() {
   const { lang, t } = useApp();
-  const [activeCat, setActiveCat] = useState(null);
-  const [query, setQuery] = useState('');
+  const { active: activeCat, setActive: setActiveCat, query, setQuery, visible } = useFilteredList({
+    items: HELP,
+    filter: filterByCategory,
+    search: searchHelp,
+    lang,
+  });
   useDocumentMeta(meta.title[lang], t.help.intro);
 
   // Deep-link: /help#<id> opens that question and scrolls to it. Read once on
@@ -24,8 +29,6 @@ export default function HelpPage() {
     document.getElementById(hashId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [hashId]);
 
-  const scoped = filterByCategory(HELP, activeCat);
-  const visible = searchHelp(scoped, query, lang);
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
@@ -57,9 +60,7 @@ export default function HelpPage() {
           label={t.help.filterLabel}
         />
 
-        <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-          {t.help.count.replace('{n}', visible.length)}
-        </div>
+        <ResultCount>{t.help.count.replace('{n}', visible.length)}</ResultCount>
 
         <div className="space-y-2">
           {visible.length === 0 && (
