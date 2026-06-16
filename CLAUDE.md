@@ -84,10 +84,15 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   and the sitemap all derive from one grouping via `NAV_GROUPS`/`FOOTER_GROUPS`
   + `routesInGroup()`. `NAV_ITEMS` = the `featured` highlights (NotFound chips).
 - **structured data / SEO**: pure schema.org builders in `src/core/lib/jsonld.js`
-  (Article/Product/FAQPage/BreadcrumbList/WebSite…). The prerender injects the
-  right JSON-LD per route + TR/EN/x-default **hreflang** (the `?lang=en` alt
-  renders English — AppProvider reads `?lang=` post-mount). Visible
-  `<Breadcrumbs>` on deep content pages. Pricing data lives in
+  (Article/BlogPosting/Product/FAQPage/BreadcrumbList/WebSite/CollectionPage/
+  DefinedTermSet…). The prerender (`scripts/prerender.mjs` `structuredData()`)
+  picks per route: BlogPosting (real Person byline + tag keywords) on posts,
+  DefinedTermSet on /glossary, CollectionPage+ItemList on the blog/cases/
+  integrations indexes, Product+FAQPage on /pricing, FAQPage on /help, plus a
+  BreadcrumbList. TR/EN/x-default **hreflang** in the `<head>` *and* the
+  sitemap (`?lang=en` alt renders English — AppProvider reads `?lang=`
+  post-mount). Visible `<Breadcrumbs>` on deep content pages. Pricing data
+  lives in
   `src/core/data/pricing.js` (page + prerender share it).
 - **telemetry**: cookieless `track(name, props)` in `src/core/lib/telemetry.js`
   honors DNT/GPC, beacons to `/api/telemetry` (sink mirrors vitals; demo-acks).
