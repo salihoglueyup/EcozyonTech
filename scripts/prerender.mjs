@@ -285,16 +285,23 @@ for (const route of routes) {
   count++;
 }
 
-// sitemap.xml — emit <lastmod> from the post date or the build date.
+// sitemap.xml — <lastmod> from the post/build date + hreflang alternates that
+// mirror the per-route <head> annotations (TR canonical, ?lang=en for EN).
 const urls = routes
-  .map(
-    (r) =>
-      `  <url><loc>${SITE.url}${r.path === '/' ? '/' : r.path}</loc><lastmod>${r.lastmod}</lastmod></url>`,
-  )
+  .map((r) => {
+    const loc = `${SITE.url}${r.path === '/' ? '/' : r.path}`;
+    const en = `${loc}?lang=en`;
+    const alts = [
+      `    <xhtml:link rel="alternate" hreflang="tr" href="${esc(loc)}"/>`,
+      `    <xhtml:link rel="alternate" hreflang="en" href="${esc(en)}"/>`,
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${esc(loc)}"/>`,
+    ].join('\n');
+    return `  <url>\n    <loc>${esc(loc)}</loc>\n    <lastmod>${r.lastmod}</lastmod>\n${alts}\n  </url>`;
+  })
   .join('\n');
 await writeFile(
   join(distDir, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`,
 );
 
 // robots.txt
