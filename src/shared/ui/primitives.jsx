@@ -85,6 +85,36 @@ export function ArrowRight({ className = 'h-3.5 w-3.5', strokeWidth = 1.6 }) {
   );
 }
 
+// Pill search field with a leading magnifier icon — the filter input shared by
+// the Blog/Careers/Help list pages. `onChange` receives the raw string value.
+// `className` is wrapper spacing/width (e.g. "mb-5 max-w-sm"); `inputClassName`
+// tunes padding/size. Replaces the hand-copied icon + <input type="search">
+// block. (Glossary/Search keep bespoke fields — different, icon-less designs.)
+export function SearchInput({
+  value,
+  onChange,
+  placeholder,
+  label,
+  className = '',
+  inputClassName = 'py-2.5 text-[13px]',
+}) {
+  return (
+    <div className={`relative ${className}`.trim()}>
+      <svg className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
+      </svg>
+      <input
+        type="search"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        aria-label={label}
+        className={`w-full rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-10 pr-4 ${inputClassName} text-slate-800 dark:text-slate-200 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400 dark:placeholder:text-slate-500`}
+      />
+    </div>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

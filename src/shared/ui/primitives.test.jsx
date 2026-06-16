@@ -1,6 +1,25 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { ArrowRight, PageHeader, SectionHeader } from './primitives';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ArrowRight, PageHeader, SearchInput, SectionHeader } from './primitives';
+
+describe('SearchInput', () => {
+  it('renders a labelled search box and reports the raw value on change', () => {
+    const onChange = vi.fn();
+    render(<SearchInput value="" onChange={onChange} placeholder="Ara…" label="Site search" />);
+    const input = screen.getByRole('searchbox', { name: 'Site search' });
+    expect(input).toHaveAttribute('placeholder', 'Ara…');
+    fireEvent.change(input, { target: { value: 'solar' } });
+    expect(onChange).toHaveBeenCalledWith('solar');
+  });
+
+  it('applies wrapper and input size overrides', () => {
+    const { container } = render(
+      <SearchInput value="" onChange={() => {}} label="x" className="mb-5 max-w-sm" inputClassName="py-3 text-[14px]" />,
+    );
+    expect(container.firstChild).toHaveClass('relative', 'mb-5', 'max-w-sm');
+    expect(screen.getByRole('searchbox')).toHaveClass('py-3', 'text-[14px]');
+  });
+});
 
 describe('SectionHeader', () => {
   it('renders an h2 by default', () => {
