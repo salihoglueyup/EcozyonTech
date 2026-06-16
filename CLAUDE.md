@@ -61,10 +61,16 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   `SearchInput` (magnifier pill filter — Blog/Careers/Help), `FilterPills`
   (the All + categories `role=group`/`aria-pressed` toggle row; `allLabel`
   prepends the id=null pill, `children` add extra pills), `EmptyState` (muted
-  eco-card "no results" box), `Tag`, `EcoLogo`, etc. Don't re-inline these
-  patterns — reuse the primitive. A test enforces **exactly one `<h1>` per
-  route page** (heading outline + a11y), and an axe pass covers each page +
-  the navbar mega-menu.
+  eco-card "no results" box), `ResultCount` (the aria-live "N results" line),
+  `Tag`, `EcoLogo`, etc. Don't re-inline these patterns — reuse the primitive.
+  `Modal` (`shared/ui/Modal.jsx`) is the accessible dialog shell (overlay +
+  backdrop + focus-trap + Esc + scroll-lock; Careers apply + hero video use
+  it — CommandPalette/OnboardingTour keep bespoke shells). `useFilteredList`
+  (`shared/ui/useFilteredList.js`) owns a list page's filter+search state and
+  derives `visible = search(filter(items, active), query, lang)` (Careers/
+  Help/Glossary). A test enforces **exactly one `<h1>` per route page**
+  (heading outline + a11y), and an axe pass covers each page + the navbar
+  mega-menu.
 - **design tokens**: brand color lives in `src/core/tokens.js` (consumed by
   Tailwind, the accent system, charts); the `.eco-gradient-text` utility is
   the brand heading gradient; `GRADIENTS.cta`/`.panel` are the canonical CTA
