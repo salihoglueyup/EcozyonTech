@@ -84,7 +84,7 @@ function ToastContainer({ toasts, dismiss }) {
         <div
           key={t.id}
           role="status"
-          className="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/70 dark:border-slate-700/50 ring-1 ring-slate-900/[.08] dark:ring-white/[.06] shadow-[0_16px_50px_-20px_rgba(15,23,42,.4)] p-4 animate-[fadeUp_.28s_ease-out]"
+          className="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/70 dark:border-slate-700/50 ring-1 ring-slate-900/[.08] dark:ring-white/[.06] shadow-[0_16px_50px_-20px_rgba(15,23,42,.4)] p-4 animate-enter"
         >
           <span className={`mt-0.5 shrink-0 ${TYPE_STYLES[t.type] || TYPE_STYLES.info}`}>
             {ICONS[t.type] || ICONS.info}

@@ -163,7 +163,7 @@ export default function CommandPalette() {
         aria-modal="true"
         aria-label={t.cmd.placeholder}
         onKeyDown={onListKey}
-        className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/70 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] animate-[fadeUp_.2s_ease-out]"
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/70 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] animate-enter-fast"
       >
         <div className="flex items-center gap-3 border-b border-slate-900/[.07] dark:border-white/[.08] px-4">
           <svg className="h-4 w-4 text-slate-400 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">

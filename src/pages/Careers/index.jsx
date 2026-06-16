@@ -227,7 +227,7 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
       onClose={onClose}
       labelledBy={titleId}
       describedBy={descId}
-      className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+      className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-enter"
     >
         <div className="absolute right-4 top-4 flex items-center gap-1">
           <button

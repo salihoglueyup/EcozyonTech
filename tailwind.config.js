@@ -47,6 +47,10 @@ export default {
       },
       animation: {
         fadeUp: 'fadeUp .5s ease both',
+        // Token-driven entrance utilities (durations/easing from index.css
+        // :root) — the single source for overlay/menu enter timing.
+        enter: 'fadeUp var(--dur-base) var(--ease-out) both',
+        'enter-fast': 'fadeUp var(--dur-fast) var(--ease-out) both',
         float: 'float 6s ease-in-out infinite',
         marquee: 'marquee 42s linear infinite',
         shake: 'shake .32s ease',

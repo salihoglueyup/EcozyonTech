@@ -24,4 +24,21 @@ describe('AnimatedNumber', () => {
     const { container } = render(<AnimatedNumber value={27} play={false} />);
     expect(container.textContent).toBe('27');
   });
+
+  it('renders the target through a custom format function (grouped digits)', () => {
+    const fmt = new Intl.NumberFormat('en-US').format;
+    const { container } = render(<AnimatedNumber value={1840} play={false} format={fmt} />);
+    expect(container.textContent).toBe('1,840');
+  });
+
+  it('starts the tween from `from` on the first frame when playing', () => {
+    // rAF is not advanced here, so the initial paint shows the start value.
+    const { container } = render(<AnimatedNumber value={200} from={100} play durationMs={1000} />);
+    expect(container.textContent).toBe('100');
+  });
+
+  it('ignores `from` when not playing (jumps to target — back-compat)', () => {
+    const { container } = render(<AnimatedNumber value={200} from={100} play={false} />);
+    expect(container.textContent).toBe('200');
+  });
 });

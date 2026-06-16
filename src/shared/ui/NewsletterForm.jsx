@@ -46,7 +46,7 @@ export default function NewsletterForm({ lang, placeholder }) {
     return (
       <div
         role="status"
-        className="inline-flex items-center gap-2 rounded-full bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-3 py-1.5 text-[12.5px] font-medium animate-[fadeUp_.32s_ease-out]"
+        className="inline-flex items-center gap-2 rounded-full bg-emerald-50 ring-1 ring-emerald-500/20 text-emerald-700 px-3 py-1.5 text-[12.5px] font-medium animate-enter"
       >
         <span
           className="inline-flex items-center justify-center h-4 w-4 rounded-full text-white"
@@ -67,7 +67,7 @@ export default function NewsletterForm({ lang, placeholder }) {
       onSubmit={onSubmit}
       className={`flex items-center gap-2 rounded-full bg-white/70 dark:bg-white/[.06] border p-1 pl-3.5 max-w-xs transition-colors ${
         status === 'error' || status === 'limited'
-          ? 'border-rose-500/40 animate-[shake_.32s_ease]'
+          ? 'border-rose-500/40 animate-shake'
           : 'border-slate-900/[.08] dark:border-white/[.1]'
       }`}
     >

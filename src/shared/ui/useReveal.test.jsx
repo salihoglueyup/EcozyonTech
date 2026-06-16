@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { Reveal, RevealGroup, Parallax } from './useReveal';
 
 describe('Reveal', () => {
@@ -15,6 +15,42 @@ describe('Reveal', () => {
     render(<Reveal scale={0.9}><span>scaled</span></Reveal>);
     const wrapper = screen.getByText('scaled').parentElement;
     expect(wrapper.style.transform).toContain('scale(0.9)');
+  });
+
+  it('blurs the hidden state and transitions filter when blur is set', () => {
+    render(<Reveal blur={6}><span>blurred</span></Reveal>);
+    const wrapper = screen.getByText('blurred').parentElement;
+    expect(wrapper.style.filter).toBe('blur(6px)');
+    expect(wrapper.style.transition).toContain('filter');
+  });
+
+  it('omits the filter entirely when blur is 0 (default)', () => {
+    render(<Reveal><span>plain</span></Reveal>);
+    const wrapper = screen.getByText('plain').parentElement;
+    expect(wrapper.style.filter).toBe('');
+    expect(wrapper.style.transition).not.toContain('filter');
+  });
+
+  it('re-triggers (toggles opacity) when once is false', () => {
+    const callbacks = [];
+    class IO {
+      constructor(cb) { callbacks.push(cb); }
+      observe() {}
+      disconnect() {}
+    }
+    const prev = globalThis.IntersectionObserver;
+    globalThis.IntersectionObserver = IO;
+    try {
+      render(<Reveal once={false}><span>retrig</span></Reveal>);
+      const wrapper = screen.getByText('retrig').parentElement;
+      expect(wrapper.style.opacity).toBe('0');
+      act(() => callbacks[0]([{ isIntersecting: true }]));
+      expect(wrapper.style.opacity).toBe('1');
+      act(() => callbacks[0]([{ isIntersecting: false }]));
+      expect(wrapper.style.opacity).toBe('0');
+    } finally {
+      globalThis.IntersectionObserver = prev;
+    }
   });
 });
 

@@ -16,6 +16,7 @@ const meta = routeByKey('roi');
 export default function RoiPage() {
   const { lang, t } = useApp();
   const r = t.roi;
+  const nf = new Intl.NumberFormat(lang === 'tr' ? 'tr-TR' : 'en-US');
   const toast = useToast();
   useDocumentMeta(meta.title[lang], r.intro);
 
@@ -111,7 +112,7 @@ export default function RoiPage() {
               <div>
                 <div className="text-[11px] uppercase tracking-[.12em] font-semibold text-slate-400">{r.savingsLabel}</div>
                 <div className="mt-1 font-display text-[30px] leading-none tracking-tight tabular-nums text-cyan-600 dark:text-cyan-400">
-                  $<AnimatedNumber value={est.costSavings} play={seen} />
+                  $<AnimatedNumber value={est.costSavings} play={seen} format={nf.format} />
                 </div>
               </div>
             </div>

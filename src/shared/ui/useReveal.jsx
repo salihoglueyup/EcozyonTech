@@ -2,10 +2,11 @@ import { useRef, useState, useEffect, Children, cloneElement, isValidElement } f
 import { EASING, DURATION, prefersReducedMotion } from '@/core/motion';
 
 /**
- * useReveal — fires once when the element enters the viewport.
- * Returns [ref, isRevealed].
+ * useReveal — fires when the element enters the viewport.
+ * Returns [ref, isRevealed]. `once` (default true) disconnects after the first
+ * reveal; `once: false` keeps observing so the element re-animates on re-enter.
  */
-export function useReveal(threshold = 0.15) {
+export function useReveal(threshold = 0.15, { once = true } = {}) {
   const ref = useRef(null);
   const [revealed, setRevealed] = useState(false);
 
@@ -30,16 +31,22 @@ export function useReveal(threshold = 0.15) {
 
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setRevealed(true);
-          obs.disconnect();
+        if (once) {
+          if (entry.isIntersecting) {
+            setRevealed(true);
+            obs.disconnect();
+          }
+        } else {
+          // Re-trigger mode: track visibility so the element fades back out and
+          // in as it leaves/re-enters the viewport.
+          setRevealed(entry.isIntersecting);
         }
       },
       { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [threshold]);
+  }, [threshold, once]);
 
   return [ref, revealed];
 }
@@ -58,12 +65,14 @@ export function Reveal({
   duration = DURATION.reveal,
   distance = 24,
   scale = null,
+  blur = 0,
+  once = true,
   threshold = 0.15,
   className = '',
   as: Tag = 'div',
   ...rest
 }) {
-  const [ref, revealed] = useReveal(threshold);
+  const [ref, revealed] = useReveal(threshold, { once });
 
   const axis = from === 'left' || from === 'right' ? 'X' : 'Y';
   const sign =
@@ -73,8 +82,9 @@ export function Reveal({
   const style = {
     opacity: revealed ? 1 : 0,
     transform: revealed ? 'none' : hidden,
-    transition: `opacity ${duration}ms ${EASING.out} ${delay}ms, transform ${duration}ms ${EASING.out} ${delay}ms`,
+    transition: `opacity ${duration}ms ${EASING.out} ${delay}ms, transform ${duration}ms ${EASING.out} ${delay}ms${blur ? `, filter ${duration}ms ${EASING.out} ${delay}ms` : ''}`,
     willChange: revealed ? 'auto' : 'opacity, transform',
+    ...(blur ? { filter: revealed ? 'none' : `blur(${blur}px)` } : null),
   };
 
   return (

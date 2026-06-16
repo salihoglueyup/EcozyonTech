@@ -81,7 +81,7 @@ export default function OnboardingTour() {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative w-full max-w-sm rounded-2xl border border-white/70 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] p-6 animate-[fadeUp_.25s_ease-out]"
+        className="relative w-full max-w-sm rounded-2xl border border-white/70 dark:border-slate-700/50 bg-white dark:bg-slate-900 shadow-[0_40px_120px_-30px_rgba(15,23,42,.55)] p-6 animate-enter"
       >
         <div className="flex items-center justify-between mb-3">
           <span className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-cyan-600 dark:text-cyan-400">

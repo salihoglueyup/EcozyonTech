@@ -16,6 +16,7 @@ const MEDAL = ['#F59E0B', '#94A3B8', '#B45309']; // gold / silver / bronze
 export default function LeaderboardPage() {
   const { lang, t } = useApp();
   const g = t.leaderboard;
+  const nf = new Intl.NumberFormat(lang === 'tr' ? 'tr-TR' : 'en-US');
   const [metric, setMetric] = useState('co2');
   const [ref, seen] = useReveal(0.05);
   useDocumentMeta(meta.title[lang], g.intro);
@@ -65,7 +66,7 @@ export default function LeaderboardPage() {
                     </div>
                     <div className="relative text-right shrink-0">
                       <div className="font-display text-[17px] leading-none tabular-nums text-slate-900 dark:text-slate-100">
-                        <AnimatedNumber value={row.value} play={seen} />
+                        <AnimatedNumber value={row.value} play={seen} format={nf.format} />
                       </div>
                       <div className="mt-0.5 text-[10.5px] text-slate-400">{g.units[metric]}</div>
                     </div>

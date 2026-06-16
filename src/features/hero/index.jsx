@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
 import { Modal } from '@/shared/ui/Modal';
+import { Marquee } from '@/shared/ui/Marquee';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
 
 // ── Hero ───────────────────────────────────────────────────────────────────
@@ -130,11 +131,11 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
             {t.hero.partnersTag || (lang === "tr" ? "Pilot ortakları & destek" : "Pilot partners & backers")}
           </div>
           <div className="relative overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
-            <div className="flex items-center gap-10 lg:gap-14 animate-[marquee_42s_linear_infinite] whitespace-nowrap py-2">
-              {(t.hero.partners || []).concat(t.hero.partners || []).map((p, i) => (
+            <Marquee className="py-2">
+              {(t.hero.partners || []).map((p, i) => (
                 <PartnerLogo key={i} name={p} idx={i} />
               ))}
-            </div>
+            </Marquee>
           </div>
         </div>
       </div>
@@ -149,7 +150,7 @@ function FloatChip({ className, delay, color, children }) {
   const ring = color === "cyan" ? "ring-cyan-500/20" : color === "emerald" ? "ring-emerald-500/20" : "ring-slate-900/10";
   return (
     <div
-      className={`absolute ${className} rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl px-3 py-2 ring-1 ${ring} shadow-[0_10px_30px_-15px_rgba(15,23,42,.3)] animate-[float_6s_ease-in-out_infinite]`}
+      className={`absolute ${className} rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/70 dark:bg-white/[.04] backdrop-blur-xl px-3 py-2 ring-1 ${ring} shadow-[0_10px_30px_-15px_rgba(15,23,42,.3)] animate-float`}
       style={{ animationDelay: delay }}
     >
       {children}
@@ -242,7 +243,7 @@ function VideoModal({ t, lang, onClose }) {
       backdropClassName="bg-slate-900/60 backdrop-blur-md"
       labelledBy={titleId}
       describedBy={descId}
-      className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
+      className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-enter"
     >
         {/* Header */}
         <div className="flex items-start justify-between p-5 pb-3 border-b border-slate-900/[.06]">

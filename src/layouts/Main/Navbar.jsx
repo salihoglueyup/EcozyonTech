@@ -102,7 +102,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] lg:hidden">
           <div className="absolute inset-0 bg-slate-900/30 dark:bg-black/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="absolute right-3 top-3 left-3 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-2xl p-5 animate-[fadeUp_.25s_ease]">
+          <div className="absolute right-3 top-3 left-3 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-2xl p-5 animate-enter">
             <div className="flex items-center justify-between mb-4">
               <EcoLogo />
               <button onClick={() => setMobileOpen(false)} aria-label={t.a11y.closeMenu} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 dark:text-slate-400 hover:bg-slate-900/[.04] dark:hover:bg-white/[.08]">
@@ -254,7 +254,7 @@ function NavMenu({ group, lang, pathname, open, setOpen }) {
             role="menu"
             aria-label={group.label[lang] || group.label.en}
             onKeyDown={onMenuKey}
-            className="w-max max-w-[min(86vw,30rem)] rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-[0_18px_44px_-18px_rgba(15,23,42,.4)] p-2 animate-[fadeUp_.18s_ease]"
+            className="w-max max-w-[min(86vw,30rem)] rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-[0_18px_44px_-18px_rgba(15,23,42,.4)] p-2 animate-enter-fast"
           >
             <div className={`grid ${cols} gap-0.5`}>
               {items.map((it) => (
