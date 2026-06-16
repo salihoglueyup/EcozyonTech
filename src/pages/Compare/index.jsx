@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -93,7 +93,7 @@ export default function ComparePage() {
           </div>
           <Link to="/pricing" className="eco-press inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
             {c.cta}
-            <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+            <ArrowRight />
           </Link>
         </div>
       </div>

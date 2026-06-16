@@ -1,6 +1,24 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { PageHeader } from './primitives';
+import { ArrowRight, PageHeader } from './primitives';
+
+describe('ArrowRight', () => {
+  it('is decorative (aria-hidden) with sensible defaults', () => {
+    const { container } = render(<ArrowRight />);
+    const svg = container.querySelector('svg');
+    expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg).toHaveClass('h-3.5', 'w-3.5');
+    expect(svg).toHaveAttribute('stroke-width', '1.6');
+  });
+
+  it('accepts className and strokeWidth overrides', () => {
+    const { container } = render(<ArrowRight className="h-3 w-3" strokeWidth={1.8} />);
+    const svg = container.querySelector('svg');
+    expect(svg).toHaveClass('h-3', 'w-3');
+    expect(svg).not.toHaveClass('h-3.5');
+    expect(svg).toHaveAttribute('stroke-width', '1.8');
+  });
+});
 
 describe('PageHeader', () => {
   it('renders the eyebrow, an h1 title, the gradient accent and the intro', () => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SectionHeader } from '@/shared/ui/primitives';
+import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 
 // ────────────────────────────────────────────────────────────────────────────
 // USE CASES — Personas (tabbed)
@@ -99,7 +99,7 @@ export function UseCases({ t, lang }) {
                   style={{ background: `linear-gradient(120deg, ${p.color}, ${p.color}cc)`, boxShadow: `0 12px 32px -16px ${p.color}aa` }}
                 >
                   {p.cta}
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                  <ArrowRight />
                 </Link>
                 <div className="text-[12.5px] text-slate-600 dark:text-slate-400 font-mono">{p.price}</div>
               </div>

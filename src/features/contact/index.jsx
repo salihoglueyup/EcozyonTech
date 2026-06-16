@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { ArrowRight, Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { decodeCalc } from '@/core/lib/calcShare';
 import { track } from '@/core/lib/telemetry';
@@ -239,7 +239,7 @@ export function Contact({ t, lang }) {
                     ? t.contact.sent
                     : t.contact.submit}
                 {!sending && status !== "success" && (
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                  <ArrowRight />
                 )}
               </button>
             </div>

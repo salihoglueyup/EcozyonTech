@@ -1,4 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
+import { ArrowRight } from '@/shared/ui/primitives';
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
@@ -44,7 +45,7 @@ export default function NotFoundPage() {
           style={{ backgroundImage: GRADIENTS.cta }}
         >
           {tr ? 'Ana sayfaya dön' : 'Back to home'}
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+          <ArrowRight />
         </Link>
 
         {suggestions.length > 0 && (

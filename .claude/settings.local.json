@@ -162,7 +162,9 @@
       "Bash(cp src/layouts/Main/CookieBanner.jsx /tmp/cb.bak)",
       "Bash(sed -i \"s/'linear-gradient\\(120deg, *#0EA5E9 0%, *#10B981 100%\\)'/GRADIENTS.cta/g\" src/layouts/Main/CookieBanner.jsx)",
       "Bash(sed -i \"0,/^import .*/s||import { GRADIENTS } from '@/core/tokens';\\\\n&|\" src/layouts/Main/CookieBanner.jsx)",
-      "Bash(xargs grep -l '<Tag color')"
+      "Bash(xargs grep -l '<Tag color')",
+      "Bash(git commit -q -m '@ *)",
+      "Bash(git commit *)"
     ]
   }
 }

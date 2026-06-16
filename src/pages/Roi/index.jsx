@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Donut, BarMini } from '@/shared/ui/charts';
 import { useReveal } from '@/shared/ui/useReveal';
@@ -148,7 +148,7 @@ export default function RoiPage() {
             className="eco-press inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition"
           >
             {r.recommendCta}
-            <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+            <ArrowRight />
           </Link>
         </div>
       </div>

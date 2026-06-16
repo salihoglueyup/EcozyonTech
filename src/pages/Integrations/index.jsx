@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -85,7 +85,7 @@ export default function IntegrationsPage() {
           <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">{g.ctaText}</p>
           <Link to="/contact?from=integrations" className="eco-press mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
             {g.cta}
-            <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+            <ArrowRight />
           </Link>
         </div>
       </div>

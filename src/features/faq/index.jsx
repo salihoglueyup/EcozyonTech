@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { SectionHeader } from '@/shared/ui/primitives';
+import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 import { Reveal, RevealGroup } from '@/shared/ui/useReveal';
 
 /**
@@ -34,7 +34,7 @@ export function FAQ({ t, faq = t.faq, id = 'faq', eyebrow = 'FAQ', moreTo, moreL
               className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
             >
               {moreLabel}
-              <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+              <ArrowRight />
             </Link>
           </div>
         )}

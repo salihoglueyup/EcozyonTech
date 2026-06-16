@@ -1,7 +1,7 @@
 // Impact Map — 3D globe with layers + interactions
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { SectionHeader } from '@/shared/ui/primitives';
+import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Sparkline } from '@/shared/ui/charts';
 import { CITIES } from '@/core/data/cities';
@@ -378,7 +378,7 @@ function CityDetail({ city, m, onClose }) {
       <Link to="/contact" className={`${study ? 'mt-2' : 'mt-6'} w-full inline-flex items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[12.5px] font-medium text-white shadow-[0_10px_30px_-12px_rgba(14,165,233,.6)]`}
         style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9,#10B981)" }}>
         {m.details.openProfile}
-        <svg viewBox="0 0 14 14" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+        <ArrowRight className="h-3 w-3" />
       </Link>
     </div>
   );

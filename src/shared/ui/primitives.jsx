@@ -72,6 +72,18 @@ export function PageHeader({
   );
 }
 
+// Small right-pointing arrow used on CTAs and "read more" links across the app.
+// Decorative (aria-hidden) — it always sits beside a text label. Size/stroke and
+// any hover transform come via className/strokeWidth. Replaces the inline arrow
+// <svg> that was hand-copied into ~17 CTAs.
+export function ArrowRight({ className = 'h-3.5 w-3.5', strokeWidth = 1.6 }) {
+  return (
+    <svg className={className} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={strokeWidth} aria-hidden="true">
+      <path d="M3 7h8m-3-3 3 3-3 3" />
+    </svg>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

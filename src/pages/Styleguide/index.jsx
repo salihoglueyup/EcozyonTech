@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PageHeader, Tag, GlowOrb } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { Reveal, useReveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
@@ -181,7 +181,7 @@ export default function StyleguidePage() {
             <div className="flex flex-wrap items-center gap-3">
               <button type="button" className="eco-press inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-5 py-2.5 text-[13.5px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
                 {g.primary}
-                <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                <ArrowRight />
               </button>
               <button type="button" className="eco-press inline-flex items-center rounded-full px-5 py-2.5 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06] transition">
                 {g.ghost}

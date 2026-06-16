@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -17,13 +17,9 @@ const EXPLORE = ['impact', 'pricing', 'changelog', 'status', 'press', 'careers']
 // Cumulative network growth (users) — a small trend on the impact quick-link.
 const NETWORK_TREND = networkGrowth('users');
 
-// Small forward-arrow used on cards/links.
+// Small forward-arrow used on cards/links (hover-nudges right).
 function Arrow() {
-  return (
-    <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M3 7h8m-3-3 3 3-3 3" />
-    </svg>
-  );
+  return <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />;
 }
 
 function SectionHead({ title, allTo, allLabel }) {

@@ -1,4 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
+import { ArrowRight } from '@/shared/ui/primitives';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -62,7 +63,7 @@ export default function IntegrationPage() {
             style={{ backgroundImage: GRADIENTS.cta }}
           >
             {g.cta}
-            <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+            <ArrowRight />
           </Link>
         </div>
       </div>

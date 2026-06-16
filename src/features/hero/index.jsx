@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag, GlowOrb } from '@/shared/ui/primitives';
+import { ArrowRight, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
@@ -60,7 +60,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                 style={{ backgroundImage: "linear-gradient(120deg,#0EA5E9 0%,#10B981 100%)" }}
               >
                 {t.hero.primary}
-                <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                <ArrowRight />
               </Link>
               <button onClick={() => setVideoOpen(true)} className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-slate-800 dark:text-slate-200 bg-white/70 dark:bg-white/[.06] backdrop-blur-md border border-white/70 dark:border-white/[.1] ring-1 ring-slate-900/[.06] dark:ring-white/[.06] hover:bg-white dark:hover:bg-white/[.1] transition">
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white">

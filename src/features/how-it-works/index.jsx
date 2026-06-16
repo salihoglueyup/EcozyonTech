@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { SectionHeader } from '@/shared/ui/primitives';
+import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 
 // ────────────────────────────────────────────────────────────────────────────
 // HOW IT WORKS — 3-step flow
@@ -57,7 +57,7 @@ export function HowItWorks({ t, lang }) {
             </div>
             <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 dark:text-slate-100 text-[13.5px] font-medium px-5 py-3 hover:bg-slate-100 transition self-start">
               {h.cta}
-              <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+              <ArrowRight />
             </Link>
           </div>
         </div>

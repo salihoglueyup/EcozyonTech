@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
@@ -168,7 +168,7 @@ export default function CareersPage() {
                   style={{ backgroundImage: GRADIENTS.cta }}
                 >
                   {t.careers.apply}
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                  <ArrowRight />
                 </button>
               </div>
             </div>

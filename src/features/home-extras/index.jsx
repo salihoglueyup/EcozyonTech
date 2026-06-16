@@ -1,4 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
+import { ArrowRight } from '@/shared/ui/primitives';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
@@ -136,7 +137,7 @@ export function CtaBand({ t }) {
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[14px] font-semibold text-slate-900 hover:bg-white/90 transition">
                   {h.ctaPrimary}
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                  <ArrowRight strokeWidth={1.8} />
                 </Link>
                 <Link to="/services" className="inline-flex items-center gap-2 rounded-full bg-white/15 px-6 py-3 text-[14px] font-semibold text-white ring-1 ring-white/40 hover:bg-white/25 transition">
                   {h.ctaSecondary}
@@ -177,7 +178,7 @@ export function FeaturedCase({ t, lang }) {
                   style={{ backgroundImage: GRADIENTS.cta }}
                 >
                   {h.featuredCta}
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 7h8m-3-3 3 3-3 3" /></svg>
+                  <ArrowRight />
                 </Link>
                 <Link to="/cases" className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-slate-700 dark:text-slate-300 bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30">
                   {h.featuredAll}
