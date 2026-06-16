@@ -166,7 +166,8 @@
       "Bash(git commit -q -m '@ *)",
       "Bash(git commit *)",
       "Bash(grep -rln \"menuitem\\\\|haspopup\\\\|NavMenu\\\\|role=\\\\\"menu\\\\\"\\\\|mega\" src/test src/**/*.test.*)",
-      "Bash(grep -rln \"Navbar\\\\|navbar\" src --include=*.test.*)"
+      "Bash(grep -rln \"Navbar\\\\|navbar\" src --include=*.test.*)",
+      "Bash(grep -oP \"id: '[^']+', term: \\\\{ tr: '[^']+'\" src/core/data/glossary.js)"
     ]
   }
 }

@@ -46,7 +46,7 @@ export function website(site, lang = 'tr') {
   };
 }
 
-export function blogPosting({ post, url, site, image, lang = 'tr' }) {
+export function blogPosting({ post, url, site, image, lang = 'tr', terms = [] }) {
   return {
     '@context': CTX,
     '@type': 'BlogPosting',
@@ -61,6 +61,16 @@ export function blogPosting({ post, url, site, image, lang = 'tr' }) {
     image,
     // Single-tag posts: surface the tag as both keyword and section.
     ...(post.tag ? { keywords: post.tag[lang], articleSection: post.tag[lang] } : {}),
+    // Glossary terms the post covers, linked to their anchors (post → term).
+    ...(terms.length
+      ? {
+          mentions: terms.map((t) => ({
+            '@type': 'DefinedTerm',
+            '@id': `${site.url}/glossary#${t.id}`,
+            name: t.term[lang],
+          })),
+        }
+      : {}),
     inLanguage: lang,
   };
 }

@@ -50,10 +50,15 @@ describe('jsonld builders', () => {
       author: { name: 'Dr. Selin Aydın' },
       tag: { tr: 'Rehber', en: 'Guide' },
     };
-    const ld = blogPosting({ post, url: 'u', site, image: 'i', lang: 'en' });
+    const terms = [{ id: 'baseline', term: { tr: 'Baseline', en: 'Baseline' } }];
+    const ld = blogPosting({ post, url: 'u', site, image: 'i', lang: 'en', terms });
     expect(ld.author).toEqual({ '@type': 'Person', name: 'Dr. Selin Aydın' });
     expect(ld.keywords).toBe('Guide');
     expect(ld.articleSection).toBe('Guide');
+    // Curated glossary terms become DefinedTerm mentions linked to anchors.
+    expect(ld.mentions).toEqual([
+      { '@type': 'DefinedTerm', '@id': 'https://ecozyon.tech/glossary#baseline', name: 'Baseline' },
+    ]);
   });
 
   it('definedTermSet maps glossary entries to DefinedTerm nodes', () => {

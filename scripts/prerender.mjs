@@ -12,7 +12,7 @@ import { HELP } from '../src/core/data/help.js';
 import { TIERS, PRICING_FAQ } from '../src/core/data/pricing.js';
 import { buildFeed } from '../src/core/lib/feed.js';
 import { ogCardSvg } from '../src/core/lib/og.js';
-import { GLOSSARY } from '../src/core/data/glossary.js';
+import { GLOSSARY, glossaryByIds } from '../src/core/data/glossary.js';
 import { blogPosting, article, website, faqPage, product, breadcrumbList, collectionPage, definedTermSet, ldScript } from '../src/core/lib/jsonld.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -149,7 +149,7 @@ function structuredData(route, url) {
     nodes.push(website(SITE, 'tr'));
   } else if (route.post) {
     const p = route.post;
-    nodes.push(blogPosting({ post: p, url, site: SITE, image: `${SITE.url}/og/${p.slug}.png`, lang: 'tr' }));
+    nodes.push(blogPosting({ post: p, url, site: SITE, image: `${SITE.url}/og/${p.slug}.png`, lang: 'tr', terms: glossaryByIds(p.terms || []) }));
     nodes.push(breadcrumbList([HOME_CRUMB, { name: sectionName('blog'), path: '/blog' }, { name: p.title.tr }], SITE));
   } else if (route.caseStudy) {
     const c = route.caseStudy;

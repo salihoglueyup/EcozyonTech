@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { GLOSSARY, glossaryCategories, filterByCategory, searchGlossary, termById } from './glossary';
+import { GLOSSARY, glossaryCategories, filterByCategory, searchGlossary, termById, glossaryByIds } from './glossary';
 
 describe('glossary data', () => {
   it('every term has a unique slug id and bilingual term + definition', () => {
@@ -50,5 +50,17 @@ describe('termById', () => {
   it('finds by id, undefined otherwise', () => {
     expect(termById('scope-3')).toBeTruthy();
     expect(termById('nope')).toBeUndefined();
+  });
+});
+
+describe('glossaryByIds', () => {
+  it('resolves ids to entries in order, dropping unknowns', () => {
+    const got = glossaryByIds(['scope-3', 'nope', 'baseline']);
+    expect(got.map((t) => t.id)).toEqual(['scope-3', 'baseline']);
+  });
+
+  it('returns an empty array for no/empty ids', () => {
+    expect(glossaryByIds()).toEqual([]);
+    expect(glossaryByIds([])).toEqual([]);
   });
 });

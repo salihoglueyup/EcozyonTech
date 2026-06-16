@@ -5,6 +5,7 @@ export const POSTS = [
     date: '2026-04-22',
     author: { name: 'Dr. Selin Aydın', role: { tr: 'Veri Bilimi', en: 'Data Science' } },
     tag: { tr: 'Rehber', en: 'Guide' },
+    terms: ['carbon-budget', 'baseline', 'carbon-footprint', 'co2e'],
     title: {
       tr: 'Karbon bütçesi nedir ve neden kişiselleştirilmeli?',
       en: 'What is a carbon budget, and why personalize it?',
@@ -35,6 +36,7 @@ export const POSTS = [
     date: '2026-03-30',
     author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
     tag: { tr: 'Donanım', en: 'Hardware' },
+    terms: ['wearable', 'met', 'on-device', 'embodied-carbon'],
     title: {
       tr: 'Giyilebilir cihazı 0.4W altında tutmanın notları',
       en: 'Notes on keeping the wearable under 0.4W',
@@ -63,6 +65,7 @@ export const POSTS = [
     date: '2026-02-14',
     author: { name: 'Aylin Demir', role: { tr: 'Topluluk', en: 'Community' } },
     tag: { tr: 'Topluluk', en: 'Community' },
+    terms: ['baseline', 'carbon-footprint', 'co2e'],
     title: {
       tr: 'Topluluk yarışmaları davranışı nasıl 3x hızlandırıyor?',
       en: 'How community challenges accelerate behavior 3x',
@@ -91,6 +94,7 @@ export const POSTS = [
     date: '2026-05-18',
     author: { name: 'Dr. Selin Aydın', role: { tr: 'Veri Bilimi', en: 'Data Science' } },
     tag: { tr: 'AI', en: 'AI' },
+    terms: ['baseline', 'carbon-intensity', 'met', 'on-device'],
     title: {
       tr: 'AI önerileri perde arkası: bağlamdan eyleme',
       en: 'Behind AI nudges: from context to action',
@@ -119,6 +123,7 @@ export const POSTS = [
     date: '2026-05-02',
     author: { name: 'Ece Yılmaz', role: { tr: 'Sürdürülebilirlik', en: 'Sustainability' } },
     tag: { tr: 'Veri', en: 'Data' },
+    terms: ['scope-3', 'scope-1', 'scope-2', 'ghg-protocol'],
     title: {
       tr: 'Scope 3’ü ölçmek: en büyük ve en zor pay',
       en: 'Measuring Scope 3: the biggest, hardest share',
@@ -147,6 +152,7 @@ export const POSTS = [
     date: '2026-04-08',
     author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
     tag: { tr: 'Gizlilik', en: 'Privacy' },
+    terms: ['on-device', 'wearable', 'met'],
     title: {
       tr: 'Cihaz-içi işleme neden gizlilik için kritik?',
       en: 'Why on-device processing is critical for privacy',

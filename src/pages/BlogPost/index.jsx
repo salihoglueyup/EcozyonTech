@@ -4,6 +4,7 @@ import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { postBySlug, readingTime, relatedPosts, postNeighbors, tagSlug } from '@/core/data/posts';
+import { glossaryByIds } from '@/core/data/glossary';
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
 import { recordRecent } from '@/core/lib/recents';
@@ -37,6 +38,7 @@ export default function BlogPostPage() {
   if (!post) return <NotFoundPage />;
 
   const related = relatedPosts(post);
+  const terms = glossaryByIds(post.terms || []);
   const { prev, next } = postNeighbors(post.slug);
   const blocks = post.body[lang];
   // Heading blocks ({ h, id }) double as the table-of-contents entries; the
@@ -131,6 +133,27 @@ export default function BlogPostPage() {
                   <h3 className="mt-2 font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 transition">
                     {r.title[lang]}
                   </h3>
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
+
+        {terms.length > 0 && (
+          <aside className="mt-12 pt-8 border-t border-slate-900/[.08] dark:border-white/[.1]">
+            <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-cyan-700 dark:text-cyan-400 mb-4">
+              {t.blog.glossaryTitle}
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {terms.map((term) => (
+                <Link
+                  key={term.id}
+                  to={`/glossary#${term.id}`}
+                  title={term.definition[lang]}
+                  className="eco-press inline-flex items-center gap-1.5 rounded-full eco-card px-3.5 py-1.5 text-[12.5px] font-medium text-slate-700 dark:text-slate-300 hover:ring-cyan-500/30 transition"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" aria-hidden="true" />
+                  {term.term[lang]}
                 </Link>
               ))}
             </div>

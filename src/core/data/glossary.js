@@ -46,3 +46,8 @@ export function searchGlossary(terms, query, lang = 'tr') {
 
 // A term by id, or undefined.
 export const termById = (id, terms = GLOSSARY) => terms.find((t) => t.id === id);
+
+// Resolve an ordered list of term ids to glossary entries, dropping unknown
+// ids. Used to render a post's curated "related glossary terms".
+export const glossaryByIds = (ids = [], terms = GLOSSARY) =>
+  ids.map((id) => termById(id, terms)).filter(Boolean);
