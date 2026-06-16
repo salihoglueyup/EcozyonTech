@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
-import { useFocusTrap } from '@/shared/ui/useFocusTrap';
+import { Modal } from '@/shared/ui/Modal';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
 
 // ── Hero ───────────────────────────────────────────────────────────────────
@@ -219,20 +219,8 @@ function Typewriter({ text, charMs = 26 }) {
 function VideoModal({ t, lang, onClose }) {
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const dialogRef = useRef(null);
   const titleId = "video-modal-title";
   const descId = "video-modal-desc";
-  useFocusTrap(dialogRef, true);
-
-  useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
 
   useEffect(() => {
     if (!playing) return;
@@ -247,16 +235,15 @@ function VideoModal({ t, lang, onClose }) {
     : ["Pair device", "AI learns", "Take action"];
 
   return (
-    <div className="fixed inset-0 z-[80] grid place-items-center p-4 lg:p-8">
-      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose} aria-hidden="true" />
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descId}
-        className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
-      >
+    <Modal
+      onClose={onClose}
+      z="z-[80]"
+      overlayClassName="grid place-items-center p-4 lg:p-8"
+      backdropClassName="bg-slate-900/60 backdrop-blur-md"
+      labelledBy={titleId}
+      describedBy={descId}
+      className="relative w-full max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/20 shadow-2xl overflow-hidden animate-[fadeUp_.3s_ease]"
+    >
         {/* Header */}
         <div className="flex items-start justify-between p-5 pb-3 border-b border-slate-900/[.06]">
           <div>
@@ -402,8 +389,7 @@ function VideoModal({ t, lang, onClose }) {
           </div>
           <button onClick={onClose} className="text-[12px] text-slate-500 hover:text-slate-900">{t.hero.videoClose} <span className="text-[10px] font-mono ml-1">ESC</span></button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 

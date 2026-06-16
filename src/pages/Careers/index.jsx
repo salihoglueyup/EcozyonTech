@@ -1,10 +1,10 @@
 import { GRADIENTS } from '@/core/tokens';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, EmptyState, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { useFocusTrap } from '@/shared/ui/useFocusTrap';
+import { Modal } from '@/shared/ui/Modal';
 import { useToast } from '@/shared/ui/Toast';
 import { routeByKey, SITE } from '@/core/config/site';
 import { JOBS, jobTeams, filterByTeam, searchJobs, jobById } from '@/core/data/jobs';
@@ -171,8 +171,6 @@ export default function CareersPage() {
 
 function ApplyModal({ job, lang, t, onClose, onShare }) {
   const c = t.careers;
-  const dialogRef = useRef(null);
-  useFocusTrap(dialogRef, true);
   const titleId = useId();
   const descId = useId();
   const role = job.title[lang];
@@ -183,13 +181,6 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
   const [hp, setHp] = useState('');
   const [status, setStatus] = useState('idle'); // idle | sending | success | error | limited
   const [retryAfterSec, setRetryAfterSec] = useState(0);
-
-  // Escape closes the dialog; focus restoration is handled by useFocusTrap.
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -218,16 +209,12 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
   const invalid = status === 'error' || status === 'limited';
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" aria-hidden="true" onClick={onClose} />
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descId}
-        className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
-      >
+    <Modal
+      onClose={onClose}
+      labelledBy={titleId}
+      describedBy={descId}
+      className="relative w-full max-w-lg max-h-[88vh] overflow-y-auto rounded-3xl border border-white/70 dark:border-white/[.08] bg-white dark:bg-slate-900 p-6 lg:p-7 shadow-[0_40px_120px_-40px_rgba(15,23,42,.5)] animate-[fadeUp_.28s_ease-out]"
+    >
         <div className="absolute right-4 top-4 flex items-center gap-1">
           <button
             type="button"
@@ -350,7 +337,6 @@ function ApplyModal({ job, lang, t, onClose, onShare }) {
             </form>
           </>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }
