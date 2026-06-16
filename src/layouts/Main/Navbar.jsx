@@ -1,5 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { EcoLogo } from '@/shared/ui/primitives';
 import { NAV_GROUPS, routesInGroup } from '@/core/config/site';
@@ -147,12 +147,68 @@ export default function Navbar() {
 }
 
 // One navbar mega-menu: a pill trigger that reveals its group's pages on
-// hover, click or keyboard focus. Only one menu is open at a time (state lives
-// in Navbar). Matches the glass/pill design language of the bar.
+// hover, click or keyboard. Only one menu is open at a time (state lives in
+// Navbar). Implements the WAI-ARIA menu-button keyboard pattern: ↓/↑ on the
+// trigger opens and lands focus on the first/last item; ↑↓/Home/End rove
+// between items; Esc closes and restores focus to the trigger; tabbing out
+// closes it. Matches the glass/pill design language of the bar.
 function NavMenu({ group, lang, pathname, open, setOpen }) {
   const items = routesInGroup(group.id, ['nav']);
   const active = items.some((it) => it.path === pathname);
   const cols = items.length > 5 ? 'grid-cols-2' : 'grid-cols-1';
+  const triggerRef = useRef(null);
+  const menuRef = useRef(null);
+  const menuId = useId();
+  // When the menu is opened from the keyboard, remember which edge item to
+  // focus once it has rendered ('first' on ↓, 'last' on ↑).
+  const pendingFocus = useRef(null);
+
+  const menuItems = () =>
+    Array.from(menuRef.current?.querySelectorAll('[role="menuitem"]') ?? []);
+
+  // Apply any pending edge-focus after the menu opens.
+  useEffect(() => {
+    if (open && pendingFocus.current) {
+      const els = menuItems();
+      if (els.length) (pendingFocus.current === 'last' ? els.at(-1) : els[0]).focus();
+    }
+    pendingFocus.current = null;
+  }, [open]);
+
+  const onTriggerKey = (e) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    pendingFocus.current = e.key === 'ArrowUp' ? 'last' : 'first';
+    if (open) {
+      // Already open: focus immediately (the effect only fires on open change).
+      const els = menuItems();
+      if (els.length) (pendingFocus.current === 'last' ? els.at(-1) : els[0]).focus();
+      pendingFocus.current = null;
+    } else {
+      setOpen(group.id);
+    }
+  };
+
+  const onMenuKey = (e) => {
+    const els = menuItems();
+    if (!els.length) return;
+    const i = els.indexOf(document.activeElement);
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); els[(i + 1) % els.length].focus(); break;
+      case 'ArrowUp': e.preventDefault(); els[(i - 1 + els.length) % els.length].focus(); break;
+      case 'Home': e.preventDefault(); els[0].focus(); break;
+      case 'End': e.preventDefault(); els.at(-1).focus(); break;
+      case 'Escape': setOpen(null); triggerRef.current?.focus(); break;
+      default: break;
+    }
+  };
+
+  // Close when focus leaves the whole menu (e.g. tabbing past the last item).
+  const onBlur = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setOpen((cur) => (cur === group.id ? null : cur));
+    }
+  };
 
   const triggerClass = `inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[13px] transition ${
     active || open
@@ -165,12 +221,16 @@ function NavMenu({ group, lang, pathname, open, setOpen }) {
       className="relative"
       onMouseEnter={() => setOpen(group.id)}
       onMouseLeave={() => setOpen((cur) => (cur === group.id ? null : cur))}
+      onBlur={onBlur}
     >
       <button
+        ref={triggerRef}
         type="button"
         aria-haspopup="true"
         aria-expanded={open}
+        aria-controls={menuId}
         onClick={() => setOpen((cur) => (cur === group.id ? null : group.id))}
+        onKeyDown={onTriggerKey}
         className={triggerClass}
       >
         {group.label[lang] || group.label.en}
@@ -189,7 +249,11 @@ function NavMenu({ group, lang, pathname, open, setOpen }) {
       {open && (
         <div className="absolute left-1/2 top-full -translate-x-1/2 pt-2">
           <div
+            ref={menuRef}
+            id={menuId}
             role="menu"
+            aria-label={group.label[lang] || group.label.en}
+            onKeyDown={onMenuKey}
             className="w-max max-w-[min(86vw,30rem)] rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-white/70 dark:border-slate-700/50 shadow-[0_18px_44px_-18px_rgba(15,23,42,.4)] p-2 animate-[fadeUp_.18s_ease]"
           >
             <div className={`grid ${cols} gap-0.5`}>

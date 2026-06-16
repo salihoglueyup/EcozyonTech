@@ -164,7 +164,9 @@
       "Bash(sed -i \"0,/^import .*/s||import { GRADIENTS } from '@/core/tokens';\\\\n&|\" src/layouts/Main/CookieBanner.jsx)",
       "Bash(xargs grep -l '<Tag color')",
       "Bash(git commit -q -m '@ *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(grep -rln \"menuitem\\\\|haspopup\\\\|NavMenu\\\\|role=\\\\\"menu\\\\\"\\\\|mega\" src/test src/**/*.test.*)",
+      "Bash(grep -rln \"Navbar\\\\|navbar\" src --include=*.test.*)"
     ]
   }
 }
