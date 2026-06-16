@@ -54,9 +54,18 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   `ECO_I18N.tr` / `.en` via `import.meta.glob`. Add a namespace = drop a new
   file in `ns/`. A test enforces **deep** (nested) TR/EN key parity — keep
   both in sync.
+- **shared primitives** (`src/shared/ui/primitives.jsx`): `PageHeader`
+  (eyebrow Tag + **h1** + intro — the per-route page title; sibling of
+  `SectionHeader`, which is the feature-section **h2** and takes an optional
+  `as` prop to render h1), `ArrowRight` (the one CTA arrow icon, aria-hidden),
+  `Tag`, `EcoLogo`, etc. Don't re-inline a page header or arrow svg — use
+  these. A test enforces **exactly one `<h1>` per route page** (heading
+  outline + a11y), and an axe pass covers each page + the navbar mega-menu.
 - **design tokens**: brand color lives in `src/core/tokens.js` (consumed by
   Tailwind, the accent system, charts); the `.eco-gradient-text` utility is
-  the brand heading gradient. **content search**: collections self-register
+  the brand heading gradient; `GRADIENTS.cta`/`.panel` are the canonical CTA
+  fill + faint panel tint (no inline `linear-gradient` dupes). **content
+  search**: collections self-register
   in `src/core/content/registry.js` — `buildSearchDocs` derives from it, so a
   new searchable type is "register once" (no edits to search/palette/404).
 - **navigation IA**: routes carry a `group` (product/resources/company/legal) +
