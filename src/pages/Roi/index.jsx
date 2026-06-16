@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Donut, BarMini } from '@/shared/ui/charts';
-import { useReveal } from '@/shared/ui/useReveal';
+import { useInView } from '@/shared/ui/useInView';
 import { useToast } from '@/shared/ui/Toast';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -39,7 +39,7 @@ export default function RoiPage() {
   const est = estimateRoi({ teamSize: team, sector });
   const projection = roiProjection(est.co2Tons);
   const planId = recommendPlan(est.size);
-  const [ref, seen] = useReveal();
+  const [ref, seen] = useInView(0.15);
 
   const share = async () => {
     if (typeof window === 'undefined') return;
@@ -118,7 +118,7 @@ export default function RoiPage() {
             </div>
 
             <div className="mt-6 flex items-center gap-4">
-              <Donut value={est.adoptionPct} size={64} stroke={6} color="#0EA5E9" label={`${r.adoptionLabel} ${est.adoptionPct}%`}>
+              <Donut value={est.adoptionPct} size={64} stroke={6} color="#0EA5E9" play={seen} label={`${r.adoptionLabel} ${est.adoptionPct}%`}>
                 {est.adoptionPct}%
               </Donut>
               <div>

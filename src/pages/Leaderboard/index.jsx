@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { PageHeader } from '@/shared/ui/primitives';
 import { Tabs } from '@/shared/ui/Tabs';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
-import { Reveal, useReveal } from '@/shared/ui/useReveal';
+import { Reveal } from '@/shared/ui/useReveal';
+import { useInView } from '@/shared/ui/useInView';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -18,7 +19,7 @@ export default function LeaderboardPage() {
   const g = t.leaderboard;
   const nf = new Intl.NumberFormat(lang === 'tr' ? 'tr-TR' : 'en-US');
   const [metric, setMetric] = useState('co2');
-  const [ref, seen] = useReveal(0.05);
+  const [ref, seen] = useInView(0.05);
   useDocumentMeta(meta.title[lang], g.intro);
 
   const ranked = rankCities(CITIES, { metric, limit: 12 });

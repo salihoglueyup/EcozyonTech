@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Tag } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Reveal } from '@/shared/ui/useReveal';
 import { Sparkline } from '@/shared/ui/charts';
+import { useInView } from '@/shared/ui/useInView';
 
 // ── Metrics ────────────────────────────────────────────────────────────────
 export function Metrics({ t }) {
@@ -30,13 +31,7 @@ export function Metrics({ t }) {
 }
 
 function MetricCard({ m, idx }) {
-  const [seen, setSeen] = useState(false);
-  const ref = useRef();
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.3 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+  const [ref, seen] = useInView(0.3);
 
   const accentColors = ["#0EA5E9", "#10B981", "#10B981", "#7C3AED"];
   const accent = accentColors[idx % accentColors.length];
@@ -54,7 +49,7 @@ function MetricCard({ m, idx }) {
           <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
           0{idx + 1}
         </div>
-        {m.trend && <Sparkline data={m.trend} color={accent} />}
+        {m.trend && <Sparkline data={m.trend} color={accent} play={seen} />}
       </div>
 
       <div className={`mt-4 font-display text-[44px] leading-none tracking-[-0.03em] text-slate-900 dark:text-slate-100 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>

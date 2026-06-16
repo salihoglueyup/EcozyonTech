@@ -2,6 +2,7 @@ import { GRADIENTS } from '@/core/tokens';
 import { useId, useState } from 'react';
 import { ECO_I18N } from '@/core/i18n/dictionary';
 import { track } from '@/core/lib/telemetry';
+import { Spinner } from '@/shared/ui/Spinner';
 
 // Newsletter subscribe form, posting to /api/newsletter with honeypot +
 // rate-limit handling. Shared between the footer and the end of blog posts,
@@ -103,7 +104,7 @@ export default function NewsletterForm({ lang, placeholder }) {
         }`}
       >
         {status === 'sending' ? (
-          <span className="inline-block h-3 w-3 rounded-full border-2 border-white/40 border-t-white animate-spin" aria-hidden />
+          <Spinner size="h-3 w-3" className="border-white/40 border-t-white" label={lang === 'tr' ? 'Gönderiliyor' : 'Sending'} />
         ) : status === 'error' || status === 'limited' ? (
           '!'
         ) : (

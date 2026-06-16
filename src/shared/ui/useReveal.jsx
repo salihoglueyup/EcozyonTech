@@ -1,54 +1,16 @@
-import { useRef, useState, useEffect, Children, cloneElement, isValidElement } from 'react';
+import { useRef, useEffect, Children, cloneElement, isValidElement } from 'react';
 import { EASING, DURATION, prefersReducedMotion } from '@/core/motion';
+import { useInView } from '@/shared/ui/useInView';
 
 /**
  * useReveal — fires when the element enters the viewport.
  * Returns [ref, isRevealed]. `once` (default true) disconnects after the first
  * reveal; `once: false` keeps observing so the element re-animates on re-enter.
+ * Thin alias over useInView (the shared one-shot in-view + reduced-motion gate),
+ * kept for its reveal-flavoured name and lower default threshold.
  */
 export function useReveal(threshold = 0.15, { once = true } = {}) {
-  const ref = useRef(null);
-  const [revealed, setRevealed] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // Reveal immediately (no animation) for reduced-motion users, or when
-    // IntersectionObserver is unavailable — never leave content stuck at
-    // opacity:0. Set synchronously so there's no post-unmount setState.
-    if (typeof IntersectionObserver === 'undefined' || prefersReducedMotion()) {
-      // Deferred (not sync) to avoid cascading renders; the cancel flag
-      // prevents a setState after a fast unmount.
-      let cancelled = false;
-      queueMicrotask(() => {
-        if (!cancelled) setRevealed(true);
-      });
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (once) {
-          if (entry.isIntersecting) {
-            setRevealed(true);
-            obs.disconnect();
-          }
-        } else {
-          // Re-trigger mode: track visibility so the element fades back out and
-          // in as it leaves/re-enters the viewport.
-          setRevealed(entry.isIntersecting);
-        }
-      },
-      { threshold },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold, once]);
-
-  return [ref, revealed];
+  return useInView(threshold, { once });
 }
 
 /**

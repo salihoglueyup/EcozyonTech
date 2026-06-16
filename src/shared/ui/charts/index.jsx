@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { BRAND } from '@/core/tokens';
+import { prefersReducedMotion } from '@/core/motion';
 import { sparklineGeometry, barGeometry, donutGeometry } from './geometry';
 
 // Reusable SVG chart primitives built on the pure geometry helpers. All are
@@ -20,11 +21,18 @@ export function Sparkline({
   fill = true,
   dot = true,
   label,
+  play,
   className = 'h-6 w-16',
 }) {
   const id = useId();
   const { points, area, last } = sparklineGeometry(data, { width, height });
   if (!points) return null;
+  // Draw-in: with `play` provided (and motion allowed), the line draws left→
+  // right via a normalized (pathLength=1) dash offset 1→0. Omit `play` → static.
+  const animate = play !== undefined && !prefersReducedMotion();
+  const lineDash = animate
+    ? { pathLength: 1, strokeDasharray: 1, strokeDashoffset: play ? 0 : 1, style: { transition: 'stroke-dashoffset 900ms var(--ease-out)' } }
+    : {};
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className={`flex-none ${className}`} {...a11y(label)}>
       {fill && (
@@ -38,7 +46,7 @@ export function Sparkline({
           <polyline points={area} fill={`url(#${id})`} stroke="none" />
         </>
       )}
-      <polyline points={points} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points={points} fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" {...lineDash} />
       {dot && <circle cx={last.x} cy={last.y} r="1.6" fill={color} />}
     </svg>
   );
@@ -67,9 +75,13 @@ export function Donut({
   stroke = 5,
   track = 'rgba(148,163,184,.25)',
   label,
+  play,
   children,
 }) {
   const { r, cx, cy, dash, gap } = donutGeometry(value, { size, stroke });
+  // Draw-in: with `play` provided (and motion allowed), the arc grows from
+  // hidden (offset=dash) to full (offset=0). Omit `play` → static final arc.
+  const animate = play !== undefined && !prefersReducedMotion();
   return (
     <span className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} {...a11y(label)}>
@@ -83,6 +95,8 @@ export function Donut({
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={`${dash} ${gap}`}
+          strokeDashoffset={animate && !play ? dash : 0}
+          style={animate ? { transition: 'stroke-dashoffset 700ms var(--ease-out)' } : undefined}
           transform={`rotate(-90 ${cx} ${cy})`}
         />
       </svg>

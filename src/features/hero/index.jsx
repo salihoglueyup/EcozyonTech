@@ -4,6 +4,7 @@ import { ArrowRight, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
 import { Modal } from '@/shared/ui/Modal';
 import { Marquee } from '@/shared/ui/Marquee';
+import { Typewriter } from '@/shared/ui/Typewriter';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
 
 // ── Hero ───────────────────────────────────────────────────────────────────
@@ -178,43 +179,6 @@ function PartnerLogo({ name, idx }) {
   );
 }
 
-// ── Typewriter (live AI suggestion text) ───────────────────────────────────
-// Mount with a fresh `key` per message so each instance only types out
-// its own `text` once — keeps the effect dependency-clean and matches
-// the parent's existing `key={liveIdx}` rotation.
-function Typewriter({ text, charMs = 26 }) {
-  const reduceMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [shown, setShown] = useState(reduceMotion ? text.length : 0);
-
-  useEffect(() => {
-    if (reduceMotion) return;
-    let i = 0;
-    let last = performance.now();
-    let raf;
-    const step = (now) => {
-      if (now - last >= charMs) {
-        i = Math.min(text.length, i + 1);
-        setShown(i);
-        last = now;
-      }
-      if (i < text.length) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => raf && cancelAnimationFrame(raf);
-  }, [text, charMs, reduceMotion]);
-
-  return (
-    <>
-      {text.slice(0, shown)}
-      {shown < text.length && (
-        <span className="inline-block w-[5px] h-[1em] bg-emerald-500/80 ml-[1px] align-text-bottom animate-pulse" aria-hidden />
-      )}
-    </>
-  );
-}
 
 // ── VideoModal (placeholder for vision film) ───────────────────────────────
 function VideoModal({ t, lang, onClose }) {

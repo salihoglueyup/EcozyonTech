@@ -1,10 +1,10 @@
 import { GRADIENTS } from '@/core/tokens';
 import { ArrowRight } from '@/shared/ui/primitives';
-import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Sparkline } from '@/shared/ui/charts';
 import { Reveal } from '@/shared/ui/useReveal';
+import { useInView } from '@/shared/ui/useInView';
 import { CITIES, networkGrowth } from '@/core/data/cities';
 import { CASES, caseBySlug } from '@/core/data/cases';
 
@@ -27,20 +27,6 @@ const TRENDS = {
   co2: networkGrowth('co2'),
   partners: networkGrowth('partners'),
 };
-
-// One-shot IntersectionObserver → flips true when the node scrolls into view.
-function useInView(threshold = 0.3) {
-  const [seen, setSeen] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold });
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, seen];
-}
 
 // Stat band under the hero — animated network totals from CITIES.
 export function TrustBand({ t }) {
@@ -69,7 +55,7 @@ export function TrustBand({ t }) {
                   style={{ color: tile.accent }}
                 />
                 <div className="mt-1.5 text-[12px] text-slate-500 dark:text-slate-400">{tile.label}</div>
-                <Sparkline data={tile.trend} color={tile.accent} width={120} height={20} dot={false} className="mt-2 h-5 w-24 mx-auto lg:mx-0" />
+                <Sparkline data={tile.trend} color={tile.accent} width={120} height={20} dot={false} play={seen} className="mt-2 h-5 w-24 mx-auto lg:mx-0" />
               </div>
             ))}
           </div>

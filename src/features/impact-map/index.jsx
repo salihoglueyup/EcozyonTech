@@ -1,9 +1,10 @@
 // Impact Map — 3D globe with layers + interactions
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Sparkline } from '@/shared/ui/charts';
+import { useInView } from '@/shared/ui/useInView';
 import { CITIES } from '@/core/data/cities';
 import { caseByCity } from '@/core/data/cases';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
@@ -217,13 +218,7 @@ function ImpactMap({ t }) {
 }
 
 function StatPill({ label, value, accent, live, trend }) {
-  const ref = useRef();
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.3 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+  const [ref, seen] = useInView(0.3);
   // Live counters update continuously — don't tween them, just render.
   return (
     <div ref={ref} className="px-5 py-4 relative">

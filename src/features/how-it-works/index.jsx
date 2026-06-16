@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
+import { useInView } from '@/shared/ui/useInView';
 
 // ────────────────────────────────────────────────────────────────────────────
 // HOW IT WORKS — 3-step flow
@@ -67,13 +68,7 @@ export function HowItWorks({ t, lang }) {
 }
 
 function StepCard({ step, idx }) {
-  const ref = useRef();
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => e.isIntersecting && setSeen(true), { threshold: 0.25 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+  const [ref, seen] = useInView(0.25);
 
   const accents = ["#0EA5E9", "#10B981", "#10B981"];
   const accent = accents[idx];
