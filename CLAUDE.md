@@ -58,9 +58,13 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   (eyebrow Tag + **h1** + intro — the per-route page title; sibling of
   `SectionHeader`, which is the feature-section **h2** and takes an optional
   `as` prop to render h1), `ArrowRight` (the one CTA arrow icon, aria-hidden),
-  `Tag`, `EcoLogo`, etc. Don't re-inline a page header or arrow svg — use
-  these. A test enforces **exactly one `<h1>` per route page** (heading
-  outline + a11y), and an axe pass covers each page + the navbar mega-menu.
+  `SearchInput` (magnifier pill filter — Blog/Careers/Help), `FilterPills`
+  (the All + categories `role=group`/`aria-pressed` toggle row; `allLabel`
+  prepends the id=null pill, `children` add extra pills), `EmptyState` (muted
+  eco-card "no results" box), `Tag`, `EcoLogo`, etc. Don't re-inline these
+  patterns — reuse the primitive. A test enforces **exactly one `<h1>` per
+  route page** (heading outline + a11y), and an axe pass covers each page +
+  the navbar mega-menu.
 - **design tokens**: brand color lives in `src/core/tokens.js` (consumed by
   Tailwind, the accent system, charts); the `.eco-gradient-text` utility is
   the brand heading gradient; `GRADIENTS.cta`/`.panel` are the canonical CTA
