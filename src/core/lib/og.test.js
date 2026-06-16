@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { wrap, ogCardSvg } from './og';
+import { wrap, ogCardSvg, ogMotif } from './og';
 
 describe('wrap', () => {
   it('keeps short text on a single line', () => {
@@ -48,5 +48,25 @@ describe('ogCardSvg', () => {
     expect(y280 && y358).toBe(true);
     // second title line must carry some text (the wrap produced 2 lines)
     expect(svg).toMatch(/y="358"[^>]*>[^<]+</);
+  });
+
+  it('embeds the requested per-type motif', () => {
+    // The integration motif draws connector lines; the default (rings) does not.
+    // (Use `<line ` to avoid matching the <linearGradient> defs.)
+    expect(ogCardSvg({ variant: 'integration' })).toContain('<line x1');
+    expect(ogCardSvg({ variant: 'default' })).not.toContain('<line x1');
+    // The case motif uses ellipse meridians.
+    expect(ogCardSvg({ variant: 'case' })).toContain('<ellipse');
+  });
+});
+
+describe('ogMotif', () => {
+  it('returns a positioned <g> for every known variant and falls back to rings', () => {
+    for (const v of ['post', 'case', 'integration', 'default', 'unknown']) {
+      expect(ogMotif(v)).toContain('translate(950 480)');
+    }
+    // Unknown variants render the same markup as the default rings.
+    expect(ogMotif('unknown')).toBe(ogMotif('default'));
+    expect(ogMotif('post')).not.toBe(ogMotif('default'));
   });
 });

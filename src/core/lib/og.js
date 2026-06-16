@@ -27,12 +27,55 @@ export function wrap(text, width, maxLines) {
   return lines;
 }
 
+// Per-content-type decorative motif in the bottom-right, so blog/case/
+// integration cards read distinctly while sharing the brand frame. Each draws
+// within ~±190px of (950, 480).
+export function ogMotif(variant) {
+  switch (variant) {
+    case 'post': // stacked article lines inside a faint ring
+      return `<g transform="translate(950 480)">
+    <circle r="185" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.16"/>
+    ${[0, 1, 2, 3]
+      .map((i) => `<rect x="-150" y="${-58 + i * 36}" width="${300 - i * 46}" height="11" rx="5.5" fill="url(#accent)" opacity="${0.24 - i * 0.04}"/>`)
+      .join('\n    ')}
+  </g>`;
+    case 'case': // impact globe: meridian + equator ellipses
+      return `<g transform="translate(950 480)">
+    <circle r="152" fill="url(#accent)" opacity="0.08"/>
+    <circle r="152" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.32"/>
+    <ellipse rx="152" ry="58" fill="none" stroke="#0EA5E9" stroke-width="1" opacity="0.28"/>
+    <ellipse rx="58" ry="152" fill="none" stroke="#10B981" stroke-width="1" opacity="0.28"/>
+    <circle cx="60" cy="-90" r="6" fill="#10B981"/>
+  </g>`;
+    case 'integration': // connected nodes (a small graph)
+      return `<g transform="translate(950 480)">
+    <circle r="185" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.14"/>
+    <g stroke="url(#accent)" stroke-width="2" opacity="0.4">
+      <line x1="0" y1="0" x2="-110" y2="-70"/><line x1="0" y1="0" x2="120" y2="-40"/>
+      <line x1="0" y1="0" x2="-70" y2="100"/><line x1="0" y1="0" x2="90" y2="95"/>
+    </g>
+    <g fill="url(#accent)">
+      <circle cx="0" cy="0" r="13"/><circle cx="-110" cy="-70" r="9"/><circle cx="120" cy="-40" r="9"/>
+      <circle cx="-70" cy="100" r="9"/><circle cx="90" cy="95" r="9"/>
+    </g>
+  </g>`;
+    default: // concentric rings
+      return `<g transform="translate(950 480)">
+    <circle r="190" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.35"/>
+    <circle r="150" fill="none" stroke="#0EA5E9" stroke-width="1" opacity="0.25"/>
+    <circle r="105" fill="none" stroke="#10B981" stroke-width="1" opacity="0.3"/>
+    <circle r="60" fill="url(#accent)" opacity="0.18"/>
+  </g>`;
+  }
+}
+
 export function ogCardSvg({
   eyebrow = 'Ecozyon Tech',
   title = '',
   subtitle = '',
   footerLeft = 'ECOZYON.TECH',
   footerRight = '',
+  variant = 'default',
 } = {}) {
   const titleLines = wrap(title, 32, 2);
   const t1 = esc(titleLines[0] || '');
@@ -48,12 +91,7 @@ export function ogCardSvg({
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="630" fill="url(#glow1)"/>
   <rect width="1200" height="630" fill="url(#glow2)"/>
-  <g transform="translate(950 480)">
-    <circle r="190" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.35"/>
-    <circle r="150" fill="none" stroke="#0EA5E9" stroke-width="1" opacity="0.25"/>
-    <circle r="105" fill="none" stroke="#10B981" stroke-width="1" opacity="0.3"/>
-    <circle r="60" fill="url(#accent)" opacity="0.18"/>
-  </g>
+  ${ogMotif(variant)}
   <g transform="translate(80 110)">
     <circle cx="22" cy="22" r="22" fill="url(#accent)"/>
     <path d="M14 22 L20 28 L32 16" stroke="white" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>

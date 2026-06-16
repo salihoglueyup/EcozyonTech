@@ -54,8 +54,11 @@ const postOgSvg = (post) =>
     subtitle: post.excerpt.tr,
     footerLeft: 'ECOZYON.TECH/BLOG',
     footerRight: post.date || today,
+    variant: 'post',
   });
 
+// Index pages echo their detail-card motif so the section reads consistently.
+const ROUTE_VARIANT = { blog: 'post', cases: 'case', integrations: 'integration' };
 const routeOgSvg = (route) =>
   ogCardSvg({
     eyebrow: 'Ecozyon Tech',
@@ -63,6 +66,7 @@ const routeOgSvg = (route) =>
     subtitle: route.desc,
     footerLeft: 'ECOZYON.TECH',
     footerRight: OG_FOOTER,
+    variant: ROUTE_VARIANT[route.key] || 'default',
   });
 
 const caseOgSvg = (cs) =>
@@ -72,6 +76,7 @@ const caseOgSvg = (cs) =>
     subtitle: cs.summary.tr,
     footerLeft: 'ECOZYON.TECH/CASES',
     footerRight: String(cs.year),
+    variant: 'case',
   });
 
 const integrationOgSvg = (it) =>
@@ -81,6 +86,7 @@ const integrationOgSvg = (it) =>
     subtitle: it.tagline.tr,
     footerLeft: 'ECOZYON.TECH/INTEGRATIONS',
     footerRight: it.category.tr,
+    variant: 'integration',
   });
 
 // Build the list of concrete URLs to prerender.
