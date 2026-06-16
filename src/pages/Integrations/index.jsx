@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -21,16 +21,13 @@ export default function IntegrationsPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-3xl mb-10">
-          <Tag color="cyan">// {g.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {g.title}
-            <span className="eco-gradient-text">
-              {g.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{g.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={g.eyebrow}
+          title={g.title}
+          titleAccent={g.titleAccent}
+          intro={g.intro}
+          className="max-w-3xl mb-10"
+        />
 
         <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={g.filterLabel}>
           {[{ id: null, label: { tr: g.filterAll, en: g.filterAll } }, ...CATEGORIES].map((cat) => {

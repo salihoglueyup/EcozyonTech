@@ -1,4 +1,4 @@
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -22,16 +22,13 @@ export default function ChangelogPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-12">
-          <Tag color="cyan">// {c.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {c.title}
-            <span className="eco-gradient-text">
-              {c.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{c.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={c.eyebrow}
+          title={c.title}
+          titleAccent={c.titleAccent}
+          intro={c.intro}
+          className="mb-12"
+        />
 
         <ol className="relative border-l border-slate-900/[.1] dark:border-white/[.12] ml-2">
           {CHANGELOG.map((release, idx) => (

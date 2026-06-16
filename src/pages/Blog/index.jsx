@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -50,15 +50,13 @@ export default function BlogPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="max-w-3xl mb-12">
-          <Tag color="emerald">// {tr ? 'Blog' : 'Blog'}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {tr ? 'Notlar & ' : 'Notes & '}
-            <span className="eco-gradient-text">
-              {tr ? 'içgörüler' : 'insights'}
-            </span>
-          </h1>
-        </div>
+        <PageHeader
+          color="emerald"
+          eyebrow={tr ? 'Blog' : 'Blog'}
+          title={tr ? 'Notlar & ' : 'Notes & '}
+          titleAccent={tr ? 'içgörüler' : 'insights'}
+          className="max-w-3xl mb-12"
+        />
 
         {recents.length > 0 && (
           <div className="mb-6">

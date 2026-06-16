@@ -40,6 +40,38 @@ export function SectionHeader({
   );
 }
 
+// Page-level header: the eyebrow Tag + display **h1** (with optional gradient
+// accent) + optional intro. Sibling of SectionHeader, but uses an <h1> (one per
+// page, for SEO/a11y) and no Reveal (page titles are the LCP, not animated-in).
+// Replaces the hand-copied Tag+h1+intro block duplicated across ~18 route pages.
+// `className` is the wrapping spacing (e.g. "max-w-3xl mb-12"); `introClassName`
+// overrides the intro width. No explicit space before the accent — like the
+// originals, any gap between title and accent comes from the data.
+export function PageHeader({
+  eyebrow,
+  color = 'cyan',
+  title,
+  titleAccent,
+  intro,
+  className = '',
+  introClassName = 'max-w-2xl',
+}) {
+  return (
+    <div className={className}>
+      <Tag color={color}>// {eyebrow}</Tag>
+      <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
+        {title}
+        {titleAccent && <span className="eco-gradient-text">{titleAccent}</span>}
+      </h1>
+      {intro && (
+        <p className={`mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed ${introClassName}`.trim()}>
+          {intro}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

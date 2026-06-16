@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -20,16 +20,13 @@ export default function PressPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-4xl px-6">
-        <div className="max-w-3xl mb-12">
-          <Tag color="cyan">// {p.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {p.title}
-            <span className="eco-gradient-text">
-              {p.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{p.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={p.eyebrow}
+          title={p.title}
+          titleAccent={p.titleAccent}
+          intro={p.intro}
+          className="max-w-3xl mb-12"
+        />
 
         {/* Press releases */}
         <h2 className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{p.releases}</h2>

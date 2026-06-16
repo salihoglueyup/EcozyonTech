@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -20,16 +20,13 @@ export default function CasesPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="max-w-3xl mb-10">
-          <Tag color="cyan">// {t.cases.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {t.cases.title}
-            <span className="eco-gradient-text">
-              {t.cases.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{t.cases.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={t.cases.eyebrow}
+          title={t.cases.title}
+          titleAccent={t.cases.titleAccent}
+          intro={t.cases.intro}
+          className="max-w-3xl mb-10"
+        />
 
         <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={t.cases.filterLabel}>
           {[{ id: null, label: { tr: t.cases.filterAll, en: t.cases.filterAll } }, ...SECTORS].map((sc) => {

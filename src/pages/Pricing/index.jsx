@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -65,18 +65,16 @@ export default function PricingPage() {
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-12">
-          <Tag color="cyan">// {tr ? 'Fiyatlandırma' : 'Pricing'}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {tr ? 'Etkiye göre, ' : 'Priced for '}
-            <span className="eco-gradient-text">
-              {tr ? 'ölçeğe göre' : 'impact, then scale'}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-            {tr
-              ? 'Pilot dönemde bireysel kullanım ücretsiz. Takım ve kurumsal planlar büyüdükçe açılır.'
-              : 'Individual use is free during the pilot. Team and enterprise unlock as you grow.'}
-          </p>
+          <PageHeader
+            eyebrow={tr ? 'Fiyatlandırma' : 'Pricing'}
+            title={tr ? 'Etkiye göre, ' : 'Priced for '}
+            titleAccent={tr ? 'ölçeğe göre' : 'impact, then scale'}
+            intro={
+              tr
+                ? 'Pilot dönemde bireysel kullanım ücretsiz. Takım ve kurumsal planlar büyüdükçe açılır.'
+                : 'Individual use is free during the pilot. Team and enterprise unlock as you grow.'
+            }
+          />
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <div

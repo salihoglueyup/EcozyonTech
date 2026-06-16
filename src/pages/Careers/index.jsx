@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
@@ -76,18 +76,16 @@ export default function CareersPage() {
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-3xl mb-10">
-          <Tag color="cyan">// {tr ? 'Kariyer' : 'Careers'}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {tr ? 'Daha akıllı, ' : 'Build a smarter, '}
-            <span className="eco-gradient-text">
-              {tr ? 'temiz bir gelecek kur' : 'cleaner future'}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-            {tr
-              ? '14 kişilik bir ekibiz — İstanbul, Berlin ve uzaktan. Donanımdan AI’a etki yaratan işler yapıyoruz.'
-              : 'A team of 14 — Istanbul, Berlin and remote. We do impactful work from hardware to AI.'}
-          </p>
+          <PageHeader
+            eyebrow={tr ? 'Kariyer' : 'Careers'}
+            title={tr ? 'Daha akıllı, ' : 'Build a smarter, '}
+            titleAccent={tr ? 'temiz bir gelecek kur' : 'cleaner future'}
+            intro={
+              tr
+                ? '14 kişilik bir ekibiz — İstanbul, Berlin ve uzaktan. Donanımdan AI’a etki yaratan işler yapıyoruz.'
+                : 'A team of 14 — Istanbul, Berlin and remote. We do impactful work from hardware to AI.'
+            }
+          />
           <div className="mt-5 flex flex-wrap gap-1.5">
             {perks.map((p) => (
               <span key={p} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 dark:text-slate-300 font-medium">{p}</span>

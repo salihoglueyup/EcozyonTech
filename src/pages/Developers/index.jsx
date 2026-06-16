@@ -1,4 +1,4 @@
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { useToast } from '@/shared/ui/Toast';
@@ -51,14 +51,12 @@ export default function DevelopersPage() {
       <SectionNav sections={navSections} />
       <div className="mx-auto max-w-3xl px-6">
         <div className="mb-8">
-          <Tag color="cyan">// {d.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {d.title}
-            <span className="eco-gradient-text">
-              {d.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{d.intro}</p>
+          <PageHeader
+            eyebrow={d.eyebrow}
+            title={d.title}
+            titleAccent={d.titleAccent}
+            intro={d.intro}
+          />
           <div className="mt-5 rounded-xl eco-card p-4 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
             <span className="font-mono text-[12px] text-slate-500 dark:text-slate-300">{API_INTRO.baseUrl}</span>
             <p className="mt-2">{API_INTRO.notes[lang]}</p>

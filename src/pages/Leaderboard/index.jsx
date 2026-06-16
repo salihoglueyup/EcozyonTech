@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Tabs } from '@/shared/ui/Tabs';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Reveal, useReveal } from '@/shared/ui/useReveal';
@@ -27,16 +27,13 @@ export default function LeaderboardPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-8">
-          <Tag color="cyan">// {g.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {g.title}
-            <span className="eco-gradient-text">
-              {g.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{g.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={g.eyebrow}
+          title={g.title}
+          titleAccent={g.titleAccent}
+          intro={g.intro}
+          className="mb-8"
+        />
 
         <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
           <span className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">{g.metricLabel}</span>

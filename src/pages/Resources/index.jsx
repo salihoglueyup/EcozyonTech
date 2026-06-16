@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -53,16 +53,13 @@ export default function ResourcesPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="max-w-3xl mb-12">
-          <Tag color="cyan">// {r.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {r.title}
-            <span className="eco-gradient-text">
-              {r.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{r.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={r.eyebrow}
+          title={r.title}
+          titleAccent={r.titleAccent}
+          intro={r.intro}
+          className="max-w-3xl mb-12"
+        />
 
         {/* Quick links */}
         <h2 className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{r.explore}</h2>

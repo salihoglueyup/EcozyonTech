@@ -1,4 +1,4 @@
-import { Tag } from '@/shared/ui/primitives';
+import { PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -47,16 +47,13 @@ export default function StatusPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-10">
-          <Tag color="cyan">// {s.eyebrow}</Tag>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-            {s.title}
-            <span className="eco-gradient-text">
-              {s.titleAccent}
-            </span>
-          </h1>
-          <p className="mt-3 text-[15px] text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">{s.intro}</p>
-        </div>
+        <PageHeader
+          eyebrow={s.eyebrow}
+          title={s.title}
+          titleAccent={s.titleAccent}
+          intro={s.intro}
+          className="mb-10"
+        />
 
         {/* Overall banner */}
         <Reveal>
