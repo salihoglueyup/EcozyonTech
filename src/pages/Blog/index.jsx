@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -86,25 +86,15 @@ export default function BlogPage() {
           label={t.blog.searchLabel}
         />
 
-        <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label={t.blog.filterLabel}>
-          {[{ id: null, label: { tr: t.blog.all, en: t.blog.all } }, ...TAGS].map((tg) => {
-            const on = activeTag === tg.id;
-            return (
-              <button
-                key={tg.id ?? 'all'}
-                type="button"
-                onClick={() => setActiveTag(tg.id)}
-                aria-pressed={on}
-                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
-                  on
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
-                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
-                }`}
-              >
-                {tg.label[lang]}
-              </button>
-            );
-          })}
+        <FilterPills
+          className="mb-8"
+          options={TAGS}
+          allLabel={t.blog.all}
+          value={activeTag}
+          onChange={setActiveTag}
+          lang={lang}
+          label={t.blog.filterLabel}
+        >
           {savedSlugs.length > 0 && (
             <button
               type="button"
@@ -120,7 +110,7 @@ export default function BlogPage() {
               {t.blog.savedFilter}
             </button>
           )}
-        </div>
+        </FilterPills>
 
         <div className="space-y-3">
           {visible.map((p) => (

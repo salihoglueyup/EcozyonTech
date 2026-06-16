@@ -1,6 +1,50 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { ArrowRight, PageHeader, SearchInput, SectionHeader } from './primitives';
+import { render, screen, fireEvent, within } from '@testing-library/react';
+import { ArrowRight, FilterPills, PageHeader, SearchInput, SectionHeader } from './primitives';
+
+describe('FilterPills', () => {
+  const opts = [
+    { id: 'a', label: { tr: 'Tarım', en: 'Agri' } },
+    { id: 'b', label: { tr: 'Enerji', en: 'Energy' } },
+  ];
+
+  it('prepends an All pill, marks the active one, and reports ids on click', () => {
+    const onChange = vi.fn();
+    render(
+      <FilterPills
+        options={opts}
+        allLabel="Hepsi"
+        value={null}
+        onChange={onChange}
+        lang="tr"
+        label="Filter"
+      />,
+    );
+    const group = screen.getByRole('group', { name: 'Filter' });
+    const pills = within(group).getAllByRole('button');
+    expect(pills.map((p) => p.textContent)).toEqual(['Hepsi', 'Tarım', 'Enerji']);
+    // value=null → the All pill is pressed.
+    expect(pills[0]).toHaveAttribute('aria-pressed', 'true');
+    expect(pills[1]).toHaveAttribute('aria-pressed', 'false');
+
+    fireEvent.click(pills[1]);
+    expect(onChange).toHaveBeenCalledWith('a');
+    fireEvent.click(pills[0]);
+    expect(onChange).toHaveBeenCalledWith(null);
+  });
+
+  it('omits the All pill when allLabel is absent and renders children after the pills', () => {
+    render(
+      <FilterPills options={opts} value="b" onChange={() => {}} lang="en" label="F">
+        <button type="button">Saved</button>
+      </FilterPills>,
+    );
+    const pills = within(screen.getByRole('group', { name: 'F' })).getAllByRole('button');
+    expect(pills.map((p) => p.textContent)).toEqual(['Agri', 'Energy', 'Saved']);
+    // value='b' → second pill active (no All pill prepended).
+    expect(pills[1]).toHaveAttribute('aria-pressed', 'true');
+  });
+});
 
 describe('SearchInput', () => {
   it('renders a labelled search box and reports the raw value on change', () => {

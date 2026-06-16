@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -29,26 +29,15 @@ export default function IntegrationsPage() {
           className="max-w-3xl mb-10"
         />
 
-        <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={g.filterLabel}>
-          {[{ id: null, label: { tr: g.filterAll, en: g.filterAll } }, ...CATEGORIES].map((cat) => {
-            const on = active === cat.id;
-            return (
-              <button
-                key={cat.id ?? 'all'}
-                type="button"
-                onClick={() => setActive(cat.id)}
-                aria-pressed={on}
-                className={`eco-press rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
-                  on
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
-                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
-                }`}
-              >
-                {cat.label[lang]}
-              </button>
-            );
-          })}
-        </div>
+        <FilterPills
+          className="mb-5"
+          options={CATEGORIES}
+          allLabel={g.filterAll}
+          value={active}
+          onChange={setActive}
+          lang={lang}
+          label={g.filterLabel}
+        />
 
         <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
           {g.count.replace('{n}', visible.length)}

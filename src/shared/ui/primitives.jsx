@@ -115,6 +115,49 @@ export function SearchInput({
   );
 }
 
+// Horizontal group of single-select filter "pills" (the All + categories
+// toggle row shared by Blog/Careers/Cases/Glossary/Help/Integrations). `value`
+// is the active id (null = All). `options` are `{ id, label }` where label is a
+// string or a `{tr,en}` pair; pass `allLabel` to prepend the id=null "All"
+// pill. `children` render after the mapped pills, inside the same group (e.g.
+// Blog's "saved" toggle). Uses the standard eco-press pill styling.
+export function FilterPills({
+  options,
+  value,
+  onChange,
+  lang,
+  label,
+  allLabel,
+  className = '',
+  children,
+}) {
+  const items = allLabel != null ? [{ id: null, label: allLabel }, ...options] : options;
+  return (
+    <div className={`flex flex-wrap gap-2 ${className}`.trim()} role="group" aria-label={label}>
+      {items.map((opt) => {
+        const on = value === opt.id;
+        const text = typeof opt.label === 'string' ? opt.label : opt.label[lang] || opt.label.en;
+        return (
+          <button
+            key={opt.id ?? 'all'}
+            type="button"
+            onClick={() => onChange(opt.id)}
+            aria-pressed={on}
+            className={`eco-press rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
+              on
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
+                : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
+            }`}
+          >
+            {text}
+          </button>
+        );
+      })}
+      {children}
+    </div>
+  );
+}
+
 export function Tag({ children, color = "emerald" }) {
   const map = {
     emerald: "bg-emerald-50/90 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-emerald-600/15 dark:ring-emerald-400/20",

@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, PageHeader, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { useFocusTrap } from '@/shared/ui/useFocusTrap';
@@ -101,26 +101,15 @@ export default function CareersPage() {
           label={t.careers.searchLabel}
         />
 
-        <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={t.careers.filterLabel}>
-          {[{ id: null, label: { tr: t.careers.filterAll, en: t.careers.filterAll } }, ...TEAMS].map((tm) => {
-            const on = activeTeam === tm.id;
-            return (
-              <button
-                key={tm.id ?? 'all'}
-                type="button"
-                onClick={() => setActiveTeam(tm.id)}
-                aria-pressed={on}
-                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
-                  on
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
-                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
-                }`}
-              >
-                {tm.label[lang]}
-              </button>
-            );
-          })}
-        </div>
+        <FilterPills
+          className="mb-5"
+          options={TEAMS}
+          allLabel={t.careers.filterAll}
+          value={activeTeam}
+          onChange={setActiveTeam}
+          lang={lang}
+          label={t.careers.filterLabel}
+        />
 
         <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
           {t.careers.openRoles.replace('{n}', visible.length)}

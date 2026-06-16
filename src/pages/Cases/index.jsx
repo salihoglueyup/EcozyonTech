@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, FilterPills, PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -28,26 +28,15 @@ export default function CasesPage() {
           className="max-w-3xl mb-10"
         />
 
-        <div className="mb-5 flex flex-wrap gap-2" role="group" aria-label={t.cases.filterLabel}>
-          {[{ id: null, label: { tr: t.cases.filterAll, en: t.cases.filterAll } }, ...SECTORS].map((sc) => {
-            const on = activeSector === sc.id;
-            return (
-              <button
-                key={sc.id ?? 'all'}
-                type="button"
-                onClick={() => setActiveSector(sc.id)}
-                aria-pressed={on}
-                className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
-                  on
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
-                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
-                }`}
-              >
-                {sc.label[lang]}
-              </button>
-            );
-          })}
-        </div>
+        <FilterPills
+          className="mb-5"
+          options={SECTORS}
+          allLabel={t.cases.filterAll}
+          value={activeSector}
+          onChange={setActiveSector}
+          lang={lang}
+          label={t.cases.filterLabel}
+        />
 
         <div className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
           {t.cases.count.replace('{n}', visible.length)}

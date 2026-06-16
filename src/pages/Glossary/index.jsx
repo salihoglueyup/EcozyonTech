@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PageHeader } from '@/shared/ui/primitives';
+import { FilterPills, PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -46,26 +46,15 @@ export default function GlossaryPage() {
           className="w-full rounded-2xl eco-card px-4 py-3.5 text-[14.5px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400"
         />
 
-        <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label={g.filterLabel}>
-          {[{ id: null, label: { tr: g.filterAll, en: g.filterAll } }, ...CATEGORIES].map((cat) => {
-            const on = active === cat.id;
-            return (
-              <button
-                key={cat.id ?? 'all'}
-                type="button"
-                onClick={() => setActive(cat.id)}
-                aria-pressed={on}
-                className={`eco-press rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
-                  on
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
-                    : 'bg-white/70 dark:bg-white/[.06] text-slate-700 dark:text-slate-300 ring-slate-900/[.08] dark:ring-white/[.1] hover:ring-cyan-500/30'
-                }`}
-              >
-                {cat.label[lang]}
-              </button>
-            );
-          })}
-        </div>
+        <FilterPills
+          className="mt-4"
+          options={CATEGORIES}
+          allLabel={g.filterAll}
+          value={active}
+          onChange={setActive}
+          lang={lang}
+          label={g.filterLabel}
+        />
 
         <div className="mt-4 mb-2 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
           {g.count.replace('{n}', visible.length)}
