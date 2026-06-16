@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal } from '@/shared/ui/useReveal';
 
@@ -95,22 +96,41 @@ export function SearchInput({
   onChange,
   placeholder,
   label,
+  clearLabel,
   className = '',
   inputClassName = 'py-2.5 text-[13px]',
 }) {
+  const inputRef = useRef(null);
+  const hasValue = value != null && value !== '';
+  const clear = () => {
+    onChange('');
+    inputRef.current?.focus();
+  };
   return (
     <div className={`relative ${className}`.trim()}>
       <svg className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
         <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
       </svg>
       <input
+        ref={inputRef}
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Escape' && hasValue) { e.preventDefault(); clear(); } }}
         placeholder={placeholder}
         aria-label={label}
-        className={`w-full rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-10 pr-4 ${inputClassName} text-slate-800 dark:text-slate-200 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400 dark:placeholder:text-slate-500`}
+        className={`w-full rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] pl-10 ${hasValue ? 'pr-9' : 'pr-4'} ${inputClassName} text-slate-800 dark:text-slate-200 outline-none focus:ring-cyan-500/40 placeholder:text-slate-400 dark:placeholder:text-slate-500`}
       />
+      {hasValue && (
+        <button
+          type="button"
+          onClick={clear}
+          aria-label={clearLabel}
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-900/[.05] dark:hover:bg-white/[.08] transition"
+        >
+          <svg viewBox="0 0 14 14" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" strokeLinecap="round" /></svg>
+        </button>
+      )}
     </div>
   );
 }
@@ -132,9 +152,29 @@ export function FilterPills({
   children,
 }) {
   const items = allLabel != null ? [{ id: null, label: allLabel }, ...options] : options;
+  const ref = useRef(null);
+  // Roving tabindex: the active pill (or the first) is the group's single tab
+  // stop; arrow keys move focus between pills (toolbar-style, like Tabs.jsx).
+  const rovingIdx = Math.max(0, items.findIndex((o) => o.id === value));
+
+  const onKeyDown = (e) => {
+    const btns = Array.from(ref.current?.querySelectorAll('button') ?? []);
+    const i = btns.indexOf(document.activeElement);
+    if (i < 0 || !btns.length) return;
+    let next = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % btns.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + btns.length) % btns.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = btns.length - 1;
+    if (next != null) {
+      e.preventDefault();
+      btns[next].focus();
+    }
+  };
+
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`.trim()} role="group" aria-label={label}>
-      {items.map((opt) => {
+    <div ref={ref} onKeyDown={onKeyDown} className={`flex flex-wrap gap-2 ${className}`.trim()} role="group" aria-label={label}>
+      {items.map((opt, idx) => {
         const on = value === opt.id;
         const text = typeof opt.label === 'string' ? opt.label : opt.label[lang] || opt.label.en;
         return (
@@ -143,6 +183,7 @@ export function FilterPills({
             type="button"
             onClick={() => onChange(opt.id)}
             aria-pressed={on}
+            tabIndex={idx === rovingIdx ? 0 : -1}
             className={`eco-press rounded-full px-3.5 py-1.5 text-[12.5px] font-medium ring-1 transition ${
               on
                 ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 ring-slate-900 dark:ring-white'
@@ -162,10 +203,12 @@ export function FilterPills({
 // list comes up empty (Careers/Help/Glossary). Shared styling is the card +
 // muted text; `className` controls shape/padding/alignment (default matches the
 // Careers/Help box; Glossary passes a tighter `rounded-xl p-6`).
-export function EmptyState({ children, className = 'rounded-2xl p-8 text-center' }) {
+export function EmptyState({ children, icon, action, className = 'rounded-2xl p-8 text-center' }) {
   return (
     <div className={`eco-card text-[13.5px] text-slate-500 dark:text-slate-400 ${className}`.trim()}>
+      {icon && <div className="mx-auto mb-3 flex h-8 w-8 items-center justify-center text-slate-400">{icon}</div>}
       {children}
+      {action && <div className="mt-4">{action}</div>}
     </div>
   );
 }
@@ -185,10 +228,14 @@ export function ResultCount({ children, className = 'mb-4' }) {
 // down for /status, live/beta/soon for integrations). The dot is decorative
 // (aria-hidden) — its colour just echoes the label. `className` tunes the text
 // size (default `text-[12.5px]`; pass '' to inherit), `dotClassName` the dot.
-export function StatusBadge({ accent, label, className = 'text-[12.5px]', dotClassName = 'h-2 w-2' }) {
+export function StatusBadge({ accent, label, pulse = false, className = 'text-[12.5px]', dotClassName = 'h-2 w-2' }) {
   return (
     <span className={`inline-flex items-center gap-1.5 font-semibold ${className}`.trim()} style={{ color: accent }}>
-      <span className={`${dotClassName} rounded-full`} style={{ backgroundColor: accent }} aria-hidden="true" />
+      <span className={`relative inline-flex ${dotClassName} rounded-full`} style={{ backgroundColor: accent }} aria-hidden="true">
+        {pulse && (
+          <span className="absolute inset-0 rounded-full animate-ping motion-reduce:animate-none opacity-70" style={{ backgroundColor: accent }} />
+        )}
+      </span>
       {label}
     </span>
   );

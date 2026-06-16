@@ -47,6 +47,7 @@ export default function HelpPage() {
           onChange={setQuery}
           placeholder={t.help.searchP}
           label={t.help.searchLabel}
+          clearLabel={t.help.searchClear}
           inputClassName="py-3 text-[14px]"
         />
 
@@ -64,7 +65,20 @@ export default function HelpPage() {
 
         <div className="space-y-2">
           {visible.length === 0 && (
-            <EmptyState>{t.help.empty}</EmptyState>
+            <EmptyState
+              icon={<svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m20 20-4.5-4.5" strokeLinecap="round" /></svg>}
+              action={
+                <button
+                  type="button"
+                  onClick={() => { setActiveCat(null); setQuery(''); }}
+                  className="eco-press inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.05] dark:bg-white/[.08] px-3.5 py-1.5 text-[12.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.08] dark:hover:bg-white/[.12] transition"
+                >
+                  {t.help.clearFilters}
+                </button>
+              }
+            >
+              {t.help.empty}
+            </EmptyState>
           )}
           {visible.map((entry) => (
             <HelpItem key={entry.id} entry={entry} lang={lang} defaultOpen={entry.id === hashId} />

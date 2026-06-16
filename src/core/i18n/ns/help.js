@@ -8,10 +8,12 @@ export default {
     "intro": "Ürün, cihaz, gizlilik, fiyatlandırma ve entegrasyon hakkında sık sorulan sorular.",
     "searchP": "Sorularda ara…",
     "searchLabel": "Sorularda ara",
+    "searchClear": "Aramayı temizle",
     "filterAll": "Tümü",
     "filterLabel": "Kategoriye göre filtrele",
     "count": "{n} soru",
     "empty": "Aramana uygun soru bulunamadı.",
+    "clearFilters": "Filtreleri temizle",
     "more": "Aradığını bulamadın mı?",
     "contact": "Bize yaz"
   },
@@ -22,10 +24,12 @@ export default {
     "intro": "Frequently asked questions about the product, device, privacy, pricing and integration.",
     "searchP": "Search questions…",
     "searchLabel": "Search questions",
+    "searchClear": "Clear search",
     "filterAll": "All",
     "filterLabel": "Filter by category",
     "count": "{n} questions",
     "empty": "No questions match your search.",
+    "clearFilters": "Clear filters",
     "more": "Can't find what you need?",
     "contact": "Get in touch"
   }

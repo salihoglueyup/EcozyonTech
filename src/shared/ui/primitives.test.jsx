@@ -19,6 +19,15 @@ describe('StatusBadge', () => {
     expect(screen.getByText('Beta')).toHaveClass('text-[11px]');
     expect(container.querySelector('span[aria-hidden="true"]')).toHaveClass('h-1.5', 'w-1.5');
   });
+
+  it('adds a reduced-motion-aware pulse ring only when pulse is set', () => {
+    const { container, rerender } = render(<StatusBadge accent="#10B981" label="Live" pulse />);
+    const ping = container.querySelector('.animate-ping');
+    expect(ping).toBeTruthy();
+    expect(ping).toHaveClass('motion-reduce:animate-none');
+    rerender(<StatusBadge accent="#10B981" label="Live" />);
+    expect(container.querySelector('.animate-ping')).toBeNull();
+  });
 });
 
 describe('ResultCount', () => {
@@ -49,6 +58,18 @@ describe('EmptyState', () => {
     const { container } = render(<EmptyState className="rounded-xl p-6">x</EmptyState>);
     expect(container.firstChild).toHaveClass('eco-card', 'rounded-xl', 'p-6');
     expect(container.firstChild).not.toHaveClass('text-center');
+  });
+
+  it('renders optional icon and action slots (absent by default)', () => {
+    const { container, rerender } = render(<EmptyState>nothing</EmptyState>);
+    expect(container.querySelector('[data-testid="ic"]')).toBeNull();
+    rerender(
+      <EmptyState icon={<svg data-testid="ic" />} action={<button type="button">Clear</button>}>
+        nothing
+      </EmptyState>,
+    );
+    expect(container.querySelector('[data-testid="ic"]')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Clear' })).toBeInTheDocument();
   });
 });
 
@@ -94,6 +115,27 @@ describe('FilterPills', () => {
     // value='b' → second pill active (no All pill prepended).
     expect(pills[1]).toHaveAttribute('aria-pressed', 'true');
   });
+
+  it('is a single tab stop with roving tabindex + arrow/Home/End navigation', () => {
+    render(
+      <FilterPills options={opts} allLabel="Hepsi" value="a" onChange={() => {}} lang="tr" label="Filter" />,
+    );
+    const pills = within(screen.getByRole('group', { name: 'Filter' })).getAllByRole('button');
+    // value='a' → the 'Tarım' pill (index 1) is the only tab stop.
+    expect(pills[1]).toHaveAttribute('tabindex', '0');
+    expect(pills[0]).toHaveAttribute('tabindex', '-1');
+    expect(pills[2]).toHaveAttribute('tabindex', '-1');
+
+    pills[1].focus();
+    fireEvent.keyDown(pills[1], { key: 'ArrowRight' });
+    expect(document.activeElement).toBe(pills[2]);
+    fireEvent.keyDown(pills[2], { key: 'ArrowRight' }); // wraps to first
+    expect(document.activeElement).toBe(pills[0]);
+    fireEvent.keyDown(pills[0], { key: 'End' });
+    expect(document.activeElement).toBe(pills[2]);
+    fireEvent.keyDown(pills[2], { key: 'Home' });
+    expect(document.activeElement).toBe(pills[0]);
+  });
 });
 
 describe('SearchInput', () => {
@@ -112,6 +154,22 @@ describe('SearchInput', () => {
     );
     expect(container.firstChild).toHaveClass('relative', 'mb-5', 'max-w-sm');
     expect(screen.getByRole('searchbox')).toHaveClass('py-3', 'text-[14px]');
+  });
+
+  it('shows a clear button only when non-empty, clearing on click and Escape', () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <SearchInput value="" onChange={onChange} label="Search" clearLabel="Clear search" />,
+    );
+    expect(screen.queryByRole('button', { name: 'Clear search' })).toBeNull();
+
+    rerender(<SearchInput value="solar" onChange={onChange} label="Search" clearLabel="Clear search" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+    expect(onChange).toHaveBeenCalledWith('');
+
+    onChange.mockClear();
+    fireEvent.keyDown(screen.getByRole('searchbox'), { key: 'Escape' });
+    expect(onChange).toHaveBeenCalledWith('');
   });
 });
 

@@ -18,7 +18,7 @@ const meta = routeByKey('status');
 // Small status dot + label, reused for the banner, components and incidents.
 function StatusPill({ status, lang }) {
   const m = statusMeta(status);
-  return <StatusBadge accent={m.accent} label={m.label[lang]} />;
+  return <StatusBadge accent={m.accent} label={m.label[lang]} pulse={status === 'operational'} />;
 }
 
 export default function StatusPage() {

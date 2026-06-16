@@ -84,6 +84,7 @@ export default function BlogPage() {
           onChange={setQuery}
           placeholder={t.blog.searchP}
           label={t.blog.searchLabel}
+          clearLabel={t.blog.searchClear}
         />
 
         <FilterPills
