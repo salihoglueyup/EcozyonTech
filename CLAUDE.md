@@ -62,7 +62,8 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   (the All + categories `role=group`/`aria-pressed` toggle row; `allLabel`
   prepends the id=null pill, `children` add extra pills), `EmptyState` (muted
   eco-card "no results" box), `ResultCount` (the aria-live "N results" line),
-  `Tag`, `EcoLogo`, etc. Don't re-inline these patterns — reuse the primitive.
+  `StatusBadge` (accent-tinted status dot + label), `Tag`, `EcoLogo`, etc.
+  Don't re-inline these patterns — reuse the primitive.
   `Modal` (`shared/ui/Modal.jsx`) is the accessible dialog shell (overlay +
   backdrop + focus-trap + Esc + scroll-lock; Careers apply + hero video use
   it — CommandPalette/OnboardingTour keep bespoke shells). `useFilteredList`
