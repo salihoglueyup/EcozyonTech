@@ -111,7 +111,15 @@ Routes: `/` `/services` `/impact` `/about` `/contact` + `*` → real NotFound pa
   for it on purpose (see eslint.config.js override) — don't "fix" its
   internals.
 - **3D is lazy** (`LazyGlobes`): Three.js is its own dynamic chunk; renders a
-  Suspense fallback on the server / before load. Initial JS ~39 kB.
+  Suspense fallback on the server / before load. Initial JS ~38 kB gz
+  (entry budget 48 kB in `bundleBudget.js`). The **CommandPalette + OnboardingTour
+  are also lazy** — MainLayout mounts them on `requestIdleCallback` behind
+  Suspense, because CommandPalette eagerly pulls the whole content search
+  registry; keeping it out of the entry chunk is what holds the ~38 kB line.
+- **OG cards** (`src/core/lib/og.js`): `ogCardSvg({ variant })` picks a
+  per-type bottom-right motif via `ogMotif` (post=article lines, case=impact
+  globe, integration=node graph, default=rings); the prerender passes the
+  variant per card.
 - **JSX automatic runtime** everywhere (no `import React`). Vitest must match:
   `esbuild.jsx: 'automatic'` in vite.config.js — do not remove.
 
