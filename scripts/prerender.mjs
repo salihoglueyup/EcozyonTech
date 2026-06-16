@@ -12,7 +12,8 @@ import { HELP } from '../src/core/data/help.js';
 import { TIERS, PRICING_FAQ } from '../src/core/data/pricing.js';
 import { buildFeed } from '../src/core/lib/feed.js';
 import { ogCardSvg } from '../src/core/lib/og.js';
-import { blogPosting, article, website, faqPage, product, breadcrumbList, ldScript } from '../src/core/lib/jsonld.js';
+import { GLOSSARY } from '../src/core/data/glossary.js';
+import { blogPosting, article, website, faqPage, product, breadcrumbList, collectionPage, definedTermSet, ldScript } from '../src/core/lib/jsonld.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -165,6 +166,14 @@ function structuredData(route, url) {
       nodes.push(faqPage(PRICING_FAQ, 'tr'));
     } else if (route.key === 'help') {
       nodes.push(faqPage(HELP, 'tr'));
+    } else if (route.key === 'glossary') {
+      nodes.push(definedTermSet({ name: route.navTitle, description: route.desc, url, terms: GLOSSARY, site: SITE, lang: 'tr' }));
+    } else if (route.key === 'blog') {
+      nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: POSTS.map((p) => ({ name: p.title.tr, path: `/blog/${p.slug}` })), site: SITE, lang: 'tr' }));
+    } else if (route.key === 'cases') {
+      nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: CASES.map((c) => ({ name: c.client.tr, path: `/cases/${c.slug}` })), site: SITE, lang: 'tr' }));
+    } else if (route.key === 'integrations') {
+      nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: INTEGRATIONS.map((it) => ({ name: it.name, path: `/integrations/${it.slug}` })), site: SITE, lang: 'tr' }));
     }
     nodes.push(breadcrumbList([HOME_CRUMB, { name: route.navTitle }], SITE));
   }

@@ -55,9 +55,12 @@ export function blogPosting({ post, url, site, image, lang = 'tr' }) {
     datePublished: post.date,
     dateModified: post.date,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    author: orgRef(site),
+    // The real byline when present (richer than the org); falls back to the org.
+    author: post.author ? { '@type': 'Person', name: post.author.name } : orgRef(site),
     publisher: publisher(site),
     image,
+    // Single-tag posts: surface the tag as both keyword and section.
+    ...(post.tag ? { keywords: post.tag[lang], articleSection: post.tag[lang] } : {}),
     inLanguage: lang,
   };
 }
@@ -143,6 +146,27 @@ export function collectionPage({ name, description, url, items, site, lang = 'tr
         url: abs(site, it.path),
       })),
     },
+  };
+}
+
+// DefinedTermSet + a DefinedTerm per glossary entry — lets search engines model
+// the glossary as a structured set of term/definition pairs (each addressable
+// via the page's #id anchor).
+export function definedTermSet({ name, description, url, terms, site, lang = 'tr' }) {
+  return {
+    '@context': CTX,
+    '@type': 'DefinedTermSet',
+    name,
+    description,
+    url,
+    inLanguage: lang,
+    publisher: orgRef(site),
+    hasDefinedTerm: terms.map((t) => ({
+      '@type': 'DefinedTerm',
+      '@id': `${url}#${t.id}`,
+      name: t.term[lang],
+      description: t.definition[lang],
+    })),
   };
 }
 

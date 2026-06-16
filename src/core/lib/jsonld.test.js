@@ -8,6 +8,7 @@ import {
   faqPage,
   breadcrumbList,
   collectionPage,
+  definedTermSet,
   ldScript,
 } from './jsonld';
 
@@ -36,6 +37,37 @@ describe('jsonld builders', () => {
     expect(ld.headline).toBe('Title');
     expect(ld.datePublished).toBe('2026-01-02');
     expect(ld.mainEntityOfPage['@id']).toContain('/blog/x');
+    // No byline/tag → author falls back to the org, no keywords.
+    expect(ld.author['@type']).toBe('Organization');
+    expect(ld.keywords).toBeUndefined();
+  });
+
+  it('blogPosting uses a Person byline and tag keywords when present', () => {
+    const post = {
+      title: { tr: 'B', en: 'Title' },
+      excerpt: { tr: 'TR', en: 'EN' },
+      date: '2026-01-02',
+      author: { name: 'Dr. Selin Aydın' },
+      tag: { tr: 'Rehber', en: 'Guide' },
+    };
+    const ld = blogPosting({ post, url: 'u', site, image: 'i', lang: 'en' });
+    expect(ld.author).toEqual({ '@type': 'Person', name: 'Dr. Selin Aydın' });
+    expect(ld.keywords).toBe('Guide');
+    expect(ld.articleSection).toBe('Guide');
+  });
+
+  it('definedTermSet maps glossary entries to DefinedTerm nodes', () => {
+    const terms = [
+      { id: 'co2e', term: { tr: 'CO₂e', en: 'CO₂e' }, definition: { tr: 'TR tanım', en: 'EN definition' } },
+    ];
+    const ld = definedTermSet({ name: 'Glossary', description: 'd', url: 'https://ecozyon.tech/glossary', terms, site, lang: 'en' });
+    expect(ld['@type']).toBe('DefinedTermSet');
+    expect(ld.hasDefinedTerm).toHaveLength(1);
+    const term = ld.hasDefinedTerm[0];
+    expect(term['@type']).toBe('DefinedTerm');
+    expect(term['@id']).toBe('https://ecozyon.tech/glossary#co2e');
+    expect(term.name).toBe('CO₂e');
+    expect(term.description).toBe('EN definition');
   });
 
   it('article wraps a generic headline/description', () => {
