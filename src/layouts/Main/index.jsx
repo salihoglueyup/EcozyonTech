@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CookieBanner from './CookieBanner';
 import { useApp } from '@/app/providers/AppProvider';
 import { ErrorBoundary } from '@/shared/ui/ErrorBoundary';
-import CommandPalette from '@/shared/ui/CommandPalette';
-import OnboardingTour from '@/shared/ui/OnboardingTour';
+// Non-critical overlays: split out of the entry chunk and mounted once the page
+// is idle (the ⌘K palette listens globally, the tour only shows first-visit) so
+// neither competes with first paint.
+const CommandPalette = lazy(() => import('@/shared/ui/CommandPalette'));
+const OnboardingTour = lazy(() => import('@/shared/ui/OnboardingTour'));
 import BackToTop from '@/shared/ui/BackToTop';
 import { DevTweaks } from '@/features/dev-tweaks/DevTweaks';
 import VitalsHud from '@/shared/ui/VitalsHud';
@@ -87,6 +90,15 @@ export default function MainLayout() {
   const { bgColor, t } = useApp();
   const { pathname } = useLocation();
   useRoutePrefetch();
+  // Mount the deferred overlays once the page is idle, so their chunks load
+  // after first paint instead of competing with it.
+  const [overlaysReady, setOverlaysReady] = useState(false);
+  useEffect(() => {
+    const ric = window.requestIdleCallback || ((cb) => setTimeout(cb, 200));
+    const cic = window.cancelIdleCallback || clearTimeout;
+    const id = ric(() => setOverlaysReady(true));
+    return () => cic(id);
+  }, []);
   return (
     <div
       className="min-h-screen text-slate-900 dark:text-slate-100 font-body transition-colors duration-300"
@@ -116,8 +128,12 @@ export default function MainLayout() {
         <Footer />
       </div>
 
-      <CommandPalette />
-      <OnboardingTour />
+      {overlaysReady && (
+        <Suspense fallback={null}>
+          <CommandPalette />
+          <OnboardingTour />
+        </Suspense>
+      )}
       <BackToTop label={t.a11y.backToTop} />
       {import.meta.env.DEV && <DevTweaks />}
       {import.meta.env.DEV && <VitalsHud />}

@@ -36,7 +36,7 @@ export const allWithinBudget = (results) => results.every((r) => r.ok);
 // catch real regressions without flaking. Three.js + WorldGlobe are lazy
 // chunks (only loaded on globe pages), so they get their own larger budgets.
 export const DEFAULT_BUDGETS = [
-  { label: 'entry (index)', match: (n) => n.startsWith('index-'), maxKB: 60 },
+  { label: 'entry (index)', match: (n) => n.startsWith('index-'), maxKB: 48 },
   { label: 'vendor', match: (n) => n.startsWith('vendor-'), maxKB: 90 },
   { label: 'three (lazy)', match: (n) => n.startsWith('three-'), maxKB: 200 },
   { label: 'WorldGlobe (lazy)', match: (n) => n.startsWith('WorldGlobe-'), maxKB: 60 },

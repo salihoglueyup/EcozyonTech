@@ -168,7 +168,8 @@
       "Bash(grep -rln \"menuitem\\\\|haspopup\\\\|NavMenu\\\\|role=\\\\\"menu\\\\\"\\\\|mega\" src/test src/**/*.test.*)",
       "Bash(grep -rln \"Navbar\\\\|navbar\" src --include=*.test.*)",
       "Bash(grep -oP \"id: '[^']+', term: \\\\{ tr: '[^']+'\" src/core/data/glossary.js)",
-      "Bash(awk '{print $5, $9}')"
+      "Bash(awk '{print $5, $9}')",
+      "Bash(sort -t'│' -k2 -h)"
     ]
   }
 }
