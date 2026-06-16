@@ -169,7 +169,10 @@
       "Bash(grep -rln \"Navbar\\\\|navbar\" src --include=*.test.*)",
       "Bash(grep -oP \"id: '[^']+', term: \\\\{ tr: '[^']+'\" src/core/data/glossary.js)",
       "Bash(awk '{print $5, $9}')",
-      "Bash(sort -t'│' -k2 -h)"
+      "Bash(sort -t'│' -k2 -h)",
+      "Bash(grep -rln \"cmdk\\\\|Meta+k\\\\|Control+k\\\\|command.?palette\\\\|⌘\" e2e/)",
+      "Bash(ls e2e/)",
+      "Bash(npm i *)"
     ]
   }
 }
