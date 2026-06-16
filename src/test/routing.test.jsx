@@ -36,7 +36,10 @@ describe('routing', () => {
 
   it('exposes a skip link and a main landmark for a11y', () => {
     const { container } = renderAt('/');
-    expect(screen.getByText('Ana içeriğe geç')).toHaveAttribute('href', '#main');
+    // Language-agnostic: a non-empty anchor that targets the main landmark.
+    const skip = container.querySelector('a[href="#main"]');
+    expect(skip).toBeTruthy();
+    expect(skip.textContent.trim().length).toBeGreaterThan(0);
     expect(container.querySelector('main#main')).toBeTruthy();
   });
 });

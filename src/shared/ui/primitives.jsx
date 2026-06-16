@@ -16,11 +16,12 @@ export function SectionHeader({
   center = false,
   className = '',
   subClassName = 'max-w-2xl',
+  as: Heading = 'h2',
 }) {
   return (
     <Reveal className={center ? `text-center ${className}`.trim() : className}>
       <Tag color={color}>// {eyebrow}</Tag>
-      <h2 className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
+      <Heading className="mt-4 font-display text-[clamp(2rem,4vw,3.4rem)] leading-[1.04] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
         {title}
         {titleAccent && (
           <>
@@ -30,7 +31,7 @@ export function SectionHeader({
             </span>
           </>
         )}
-      </h2>
+      </Heading>
       {sub && (
         <p className={`mt-3 text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed ${center ? 'mx-auto ' : ''}${subClassName}`}>
           {sub}

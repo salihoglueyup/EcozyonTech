@@ -1,17 +1,24 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { MemoryRouter } from 'react-router-dom';
 import { AppProvider } from '@/app/providers/AppProvider';
 import Navbar from '@/layouts/Main/Navbar';
 
-function setup() {
-  render(
+expect.extend(toHaveNoViolations);
+
+function renderNavbar() {
+  return render(
     <AppProvider>
       <MemoryRouter initialEntries={['/']}>
         <Navbar />
       </MemoryRouter>
     </AppProvider>,
   );
+}
+
+function setup() {
+  renderNavbar();
   // The mega-menu triggers are the buttons that own a popup.
   const triggers = screen
     .getAllByRole('button')
@@ -80,5 +87,16 @@ describe('Navbar mega-menu keyboard a11y', () => {
     fireEvent.keyDown(items[0], { key: 'Escape' });
     expect(screen.queryByRole('menu')).toBeNull();
     expect(document.activeElement).toBe(trigger);
+  });
+
+  it('has no axe violations with a mega-menu open', async () => {
+    const { container } = renderNavbar();
+    const trigger = screen
+      .getAllByRole('button')
+      .find((b) => b.getAttribute('aria-haspopup') === 'true');
+    fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+    await screen.findByRole('menu');
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });

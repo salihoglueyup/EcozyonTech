@@ -1,6 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ArrowRight, PageHeader } from './primitives';
+import { ArrowRight, PageHeader, SectionHeader } from './primitives';
+
+describe('SectionHeader', () => {
+  it('renders an h2 by default', () => {
+    render(<SectionHeader eyebrow="x" title="Section" />);
+    expect(screen.getByRole('heading', { level: 2, name: 'Section' })).toBeInTheDocument();
+  });
+
+  it('can render as an h1 via the `as` prop (page-primary heading)', () => {
+    render(<SectionHeader as="h1" eyebrow="x" title="Page" />);
+    expect(screen.getByRole('heading', { level: 1, name: 'Page' })).toBeInTheDocument();
+  });
+});
 
 describe('ArrowRight', () => {
   it('is decorative (aria-hidden) with sensible defaults', () => {

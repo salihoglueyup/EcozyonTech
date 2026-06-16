@@ -78,3 +78,14 @@ describe('accessibility (axe)', () => {
     });
   }
 });
+
+// Heading-structure invariant: every route page owns exactly one <h1> (its
+// title). Guards the shared PageHeader migration and a clean document outline.
+describe('heading structure', () => {
+  for (const [name, ui] of PAGES) {
+    it(`${name} page renders exactly one h1`, () => {
+      const { container } = renderPage(ui);
+      expect(container.querySelectorAll('h1')).toHaveLength(1);
+    });
+  }
+});

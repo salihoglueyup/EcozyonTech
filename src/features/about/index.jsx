@@ -12,6 +12,7 @@ export function AboutBento({ t, lang }) {
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-10">
           <SectionHeader
+            as="h1"
             color="emerald"
             eyebrow={`06 · ${t.about.eyebrow}`}
             title={t.about.title}
@@ -102,9 +103,9 @@ function Timeline({ timeline }) {
   return (
     <div className="mt-16 lg:mt-20">
       <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-2">// {timeline.eyebrow}</div>
-      <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
+      <h2 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
         {timeline.title}
-      </h3>
+      </h2>
       <ol className="relative border-l border-slate-900/[.10] ml-3 space-y-8">
         {timeline.items.map((it, i) => (
           <li key={i} className="relative pl-8">
@@ -139,9 +140,9 @@ function TeamGrid({ t }) {
     <div className="mt-14 lg:mt-16">
       <Reveal>
         <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700 mb-2">// {team.eyebrow}</div>
-        <h3 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
+        <h2 className="font-display text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight tracking-[-0.02em] text-slate-900 dark:text-slate-100 mb-8">
           {team.title}
-        </h3>
+        </h2>
       </Reveal>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <RevealGroup step={80}>

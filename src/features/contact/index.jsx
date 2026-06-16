@@ -155,9 +155,9 @@ export function Contact({ t, lang }) {
         <div className="text-center max-w-2xl mx-auto">
           <Reveal>
           <Tag color="emerald">// 07 · {t.contact.eyebrow}</Tag>
-          <h2 className="mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
+          <h1 className="mt-4 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
             {t.contact.title}
-          </h2>
+          </h1>
           </Reveal>
         </div>
 
@@ -260,9 +260,9 @@ export function Contact({ t, lang }) {
           {/* RIGHT: what happens next timeline */}
           <aside className="rounded-3xl border border-white/70 dark:border-white/[.08] bg-gradient-to-br from-emerald-50/60 via-white/70 to-cyan-50/40 dark:from-emerald-500/[.06] dark:via-slate-900/50 dark:to-cyan-500/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] p-7 lg:p-8">
             <div className="text-[11px] uppercase tracking-[.14em] font-semibold text-emerald-700">{t.contact.nextTitle}</div>
-            <h3 className="mt-2 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+            <h2 className="mt-2 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
               {lang === "tr" ? "24 saat — demo — pilot" : "24 hours — demo — pilot"}
-            </h3>
+            </h2>
 
             <div className="mt-5 relative">
               <span aria-hidden="true" className="absolute left-[14px] top-3 bottom-3 w-px bg-slate-900/[.08]" />
