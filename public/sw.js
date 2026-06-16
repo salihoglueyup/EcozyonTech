@@ -3,8 +3,18 @@
  *  - navigations: network-first, fall back to cached page, then /offline.html
  *  - same-origin GET assets: cache-first, populate cache on first fetch
  * Bump CACHE to invalidate everything on the next activate. */
-const CACHE = 'ecozyon-v1';
-const PRECACHE = ['/', '/offline.html', '/manifest.webmanifest', '/icon.svg', '/favicon.svg'];
+const CACHE = 'ecozyon-v2';
+const PRECACHE = [
+  '/',
+  '/offline.html',
+  '/manifest.webmanifest',
+  '/icon.svg',
+  '/favicon.svg',
+  // Self-hosted latin base fonts (same-origin now) so the offline shell and the
+  // first offline-viewed page render in-brand; latin-ext is runtime-cached.
+  '/fonts/inter-latin.woff2',
+  '/fonts/space-grotesk-latin.woff2',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -28,7 +38,7 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return; // never touch cross-origin (fonts, etc.)
+  if (url.origin !== self.location.origin) return; // never touch cross-origin (analytics, embeds…)
 
   // Page navigations: try the network, fall back to cache, then offline shell.
   if (request.mode === 'navigate') {

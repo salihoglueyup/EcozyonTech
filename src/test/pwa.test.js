@@ -57,4 +57,11 @@ describe('service worker', () => {
     expect(sw).toMatch(/origin !== self\.location\.origin/);
     expect(sw).toMatch(/method !== ['"]GET['"]/);
   });
+
+  it('precaches the self-hosted latin base fonts, and they exist', () => {
+    for (const font of ['/fonts/inter-latin.woff2', '/fonts/space-grotesk-latin.woff2']) {
+      expect(sw).toContain(font);
+      expect(() => readFileSync(join(root, 'public', font))).not.toThrow();
+    }
+  });
 });

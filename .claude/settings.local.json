@@ -172,7 +172,8 @@
       "Bash(sort -t'│' -k2 -h)",
       "Bash(grep -rln \"cmdk\\\\|Meta+k\\\\|Control+k\\\\|command.?palette\\\\|⌘\" e2e/)",
       "Bash(ls e2e/)",
-      "Bash(npm i *)"
+      "Bash(npm i *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4173/)"
     ]
   }
 }
