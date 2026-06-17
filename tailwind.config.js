@@ -44,6 +44,11 @@ export default {
           '30%, 50%, 70%': { transform: 'translateX(-3px)' },
           '40%, 60%': { transform: 'translateX(3px)' },
         },
+        // Stroke-draw for SuccessCheck (path uses pathLength=1, dasharray=1).
+        drawCheck: {
+          from: { strokeDashoffset: '1' },
+          to: { strokeDashoffset: '0' },
+        },
       },
       animation: {
         fadeUp: 'fadeUp .5s ease both',
@@ -54,6 +59,7 @@ export default {
         float: 'float 6s ease-in-out infinite',
         marquee: 'marquee 42s linear infinite',
         shake: 'shake .32s ease',
+        drawCheck: 'drawCheck 420ms var(--ease-out) forwards',
       },
     },
   },

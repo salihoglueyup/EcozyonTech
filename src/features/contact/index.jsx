@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, Tag } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
+import { SuccessCheck } from '@/shared/ui/SuccessCheck';
 import { decodeCalc } from '@/core/lib/calcShare';
 import { track } from '@/core/lib/telemetry';
 import { estimateAnnualCO2, formatCO2 } from '@/core/lib/co2';
@@ -241,6 +242,7 @@ export function Contact({ t, lang }) {
                 {!sending && status !== "success" && (
                   <ArrowRight />
                 )}
+                {status === "success" && <SuccessCheck className="h-4 w-4" />}
               </button>
             </div>
 

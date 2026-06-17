@@ -129,7 +129,7 @@ export default function RoiPage() {
 
             <div className="mt-6">
               <div className="mb-2 text-[11px] uppercase tracking-[.12em] font-semibold text-slate-400">{r.projectionLabel}</div>
-              <BarMini data={projection} color="#10B981" width={240} height={44} className="h-11 w-full" label={r.projectionLabel} />
+              <BarMini data={projection} color="#10B981" width={240} height={44} play={seen} className="h-11 w-full" label={r.projectionLabel} />
             </div>
           </div>
         </div>

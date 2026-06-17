@@ -3,6 +3,7 @@ import { useId, useState } from 'react';
 import { ECO_I18N } from '@/core/i18n/dictionary';
 import { track } from '@/core/lib/telemetry';
 import { Spinner } from '@/shared/ui/Spinner';
+import { SuccessCheck } from '@/shared/ui/SuccessCheck';
 
 // Newsletter subscribe form, posting to /api/newsletter with honeypot +
 // rate-limit handling. Shared between the footer and the end of blog posts,
@@ -53,9 +54,7 @@ export default function NewsletterForm({ lang, placeholder }) {
           className="inline-flex items-center justify-center h-4 w-4 rounded-full text-white"
           style={{ backgroundImage: GRADIENTS.cta }}
         >
-          <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="2.2">
-            <path d="M2 6.4l2.8 2.6L10 3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <SuccessCheck className="h-2.5 w-2.5" strokeWidth={2.6} />
         </span>
         {lang === 'tr' ? 'Abone oldun, teşekkürler!' : 'Subscribed, thank you!'}
       </div>

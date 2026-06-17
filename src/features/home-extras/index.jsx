@@ -5,6 +5,7 @@ import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Sparkline } from '@/shared/ui/charts';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useInView } from '@/shared/ui/useInView';
+import { RevealText } from '@/shared/ui/RevealText';
 import { CITIES, networkGrowth } from '@/core/data/cities';
 import { CASES, caseBySlug } from '@/core/data/cases';
 
@@ -118,7 +119,7 @@ export function CtaBand({ t }) {
           >
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, #fff 0, transparent 40%), radial-gradient(circle at 80% 80%, #fff 0, transparent 40%)' }} aria-hidden="true" />
             <div className="relative">
-              <h2 className="font-display text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.06] tracking-[-0.02em] text-white max-w-2xl mx-auto">{h.ctaTitle}</h2>
+              <RevealText as="h2" text={h.ctaTitle} className="font-display text-[clamp(1.8rem,3.6vw,2.8rem)] leading-[1.06] tracking-[-0.02em] text-white max-w-2xl mx-auto" />
               <p className="mt-4 text-[15px] text-white/85 max-w-xl mx-auto leading-relaxed">{h.ctaText}</p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[14px] font-semibold text-slate-900 hover:bg-white/90 transition">

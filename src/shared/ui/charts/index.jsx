@@ -53,14 +53,33 @@ export function Sparkline({
 }
 
 // BarMini — a small bar chart; bars fade in from left to right for a subtle
-// sense of progression.
-export function BarMini({ data, color = BRAND.emerald, width = 80, height = 32, gap = 2, label, className = 'h-8 w-20' }) {
+// sense of progression. With `play` (and motion allowed) the bars also grow up
+// from the baseline in a left→right cascade on reveal; omit it for the static
+// render.
+export function BarMini({ data, color = BRAND.emerald, width = 80, height = 32, gap = 2, label, play, className = 'h-8 w-20' }) {
   const bars = barGeometry(data, { width, height, gap });
   if (!bars.length) return null;
+  const animate = play !== undefined && !prefersReducedMotion();
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className={`flex-none ${className}`} {...a11y(label)}>
       {bars.map((b, i) => (
-        <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} rx="1" fill={color} opacity={round(0.4 + (0.6 * (i + 1)) / bars.length)} />
+        <rect
+          key={i}
+          x={b.x}
+          y={b.y}
+          width={b.w}
+          height={b.h}
+          rx="1"
+          fill={color}
+          opacity={round(0.4 + (0.6 * (i + 1)) / bars.length)}
+          style={animate ? {
+            transformBox: 'fill-box',
+            transformOrigin: 'bottom',
+            transform: play ? 'scaleY(1)' : 'scaleY(0)',
+            transition: 'transform 600ms var(--ease-out)',
+            transitionDelay: `${i * 60}ms`,
+          } : undefined}
+        />
       ))}
     </svg>
   );

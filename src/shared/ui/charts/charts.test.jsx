@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import { Donut, Sparkline } from './index';
+import { Donut, Sparkline, BarMini } from './index';
 
 // matchMedia is stubbed to matches:false in the test setup, so
 // prefersReducedMotion() is false here and the draw-in path is exercised.
@@ -30,5 +30,20 @@ describe('chart draw-in', () => {
     const line = lineOf(container);
     expect(line.getAttribute('pathLength')).toBe('1');
     expect(line.getAttribute('stroke-dashoffset')).toBe('1');
+  });
+
+  it('BarMini: no inline transform when play is omitted (static)', () => {
+    const { container } = render(<BarMini data={[1, 3, 2, 5]} />);
+    container.querySelectorAll('rect').forEach((r) => {
+      expect(r.style.transform).toBe('');
+    });
+  });
+
+  it('BarMini: bars hidden (scaleY 0) when play=false, grown (scaleY 1) when play=true', () => {
+    const { container, rerender } = render(<BarMini data={[1, 3, 2, 5]} play={false} />);
+    const rects = () => container.querySelectorAll('rect');
+    rects().forEach((r) => expect(r.style.transform).toBe('scaleY(0)'));
+    rerender(<BarMini data={[1, 3, 2, 5]} play />);
+    rects().forEach((r) => expect(r.style.transform).toBe('scaleY(1)'));
   });
 });
