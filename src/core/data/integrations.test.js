@@ -24,6 +24,22 @@ describe('integrations data', () => {
       expect(i.features.en.length).toBe(i.features.tr.length);
     }
   });
+
+  it('includes the new wearable integrations', () => {
+    const slugs = new Set(INTEGRATIONS.map((i) => i.slug));
+    for (const s of ['fitbit', 'samsung-health', 'oura', 'whoop', 'polar']) {
+      expect(slugs.has(s), `missing ${s}`).toBe(true);
+    }
+  });
+
+  it('any sync field is bilingual', () => {
+    for (const i of INTEGRATIONS) {
+      if (i.sync) {
+        expect(i.sync, `${i.slug}.sync`).toHaveProperty('tr');
+        expect(i.sync, `${i.slug}.sync`).toHaveProperty('en');
+      }
+    }
+  });
 });
 
 describe('statusMeta', () => {

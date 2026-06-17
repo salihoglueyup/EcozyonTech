@@ -34,6 +34,12 @@ export default function IntegrationPage() {
               <StatusBadge accent={sm.accent} label={sm.label[lang]} className="" dotClassName="h-1.5 w-1.5" />
               <span className="text-slate-400">·</span>
               <span className="text-slate-500 dark:text-slate-400">{item.category[lang]}</span>
+              {item.sync && (
+                <>
+                  <span className="text-slate-400">·</span>
+                  <span className="text-slate-500 dark:text-slate-400">{g.sync}: {item.sync[lang]}</span>
+                </>
+              )}
             </div>
           </div>
         </div>

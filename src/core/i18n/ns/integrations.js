@@ -11,6 +11,7 @@ export default {
     "count": "{n} entegrasyon",
     "back": "Tüm entegrasyonlar",
     "features": "Öne çıkanlar",
+    "sync": "Senkron",
     "ctaTitle": "Aradığın entegrasyon yok mu?",
     "ctaText": "İhtiyacını yaz, yol haritasına alalım.",
     "cta": "Entegrasyon iste"
@@ -25,6 +26,7 @@ export default {
     "count": "{n} integrations",
     "back": "All integrations",
     "features": "Highlights",
+    "sync": "Sync",
     "ctaTitle": "Don't see the integration you need?",
     "ctaText": "Tell us what you need and we'll add it to the roadmap.",
     "cta": "Request an integration"

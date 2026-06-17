@@ -18,6 +18,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Sağlık', en: 'Health' },
     status: 'connected',
     accent: '#EF4444',
+    sync: { tr: 'Gerçek zamanlı', en: 'Real-time' },
     tagline: { tr: 'Aktivite ve hareket verisi senkronu', en: 'Activity and movement data sync' },
     description: {
       tr: ['Apple Health üzerinden adım, egzersiz ve hareket verisini güvenli biçimde içe aktararak günlük karbon içgörülerini zenginleştirir.', 'Veriler cihazda işlenir; yalnızca toplulaştırılmış metrikler paylaşılır.'],
@@ -34,6 +35,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Sağlık', en: 'Health' },
     status: 'connected',
     accent: '#4285F4',
+    sync: { tr: 'Gerçek zamanlı', en: 'Real-time' },
     tagline: { tr: 'Android ekosistemi için aktivite senkronu', en: 'Activity sync for the Android ecosystem' },
     description: {
       tr: ['Google Fit ile Android cihazlardan aktivite ve kalp atışı verisini bağlar, ulaşım modlarını otomatik sınıflandırır.', 'Bağlantı OAuth ile yetkilendirilir.'],
@@ -50,6 +52,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Veri', en: 'Data' },
     status: 'connected',
     accent: '#FC4C02',
+    sync: { tr: 'Anlık (webhook)', en: 'Instant (webhook)' },
     tagline: { tr: 'Bisiklet ve koşu aktivitelerinden tasarruf', en: 'Savings from cycling and running activities' },
     description: {
       tr: ['Strava aktivitelerini bağlayarak araç yerine tercih edilen bisiklet/koşu kilometrelerini karbon tasarrufuna çevirir.', 'Webhook ile yeni aktiviteler anında işlenir.'],
@@ -66,6 +69,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Sağlık', en: 'Health' },
     status: 'beta',
     accent: '#007CC3',
+    sync: { tr: 'Günde birkaç kez', en: 'A few times daily' },
     tagline: { tr: 'Garmin giyilebilir cihaz desteği', en: 'Garmin wearable support' },
     description: {
       tr: ['Garmin Connect ile çok günlük aktivite ve uyku verisini bağlar; beta aşamasında sınırlı cihaz desteği sunar.', 'Geri bildirimle kapsam genişletiliyor.'],
@@ -82,6 +86,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Veri', en: 'Data' },
     status: 'beta',
     accent: '#00C4B3',
+    sync: { tr: 'Günlük', en: 'Daily' },
     tagline: { tr: 'Sağlık cihazlarından bağlamsal veri', en: 'Contextual data from health devices' },
     description: {
       tr: ['Withings cihazlarından bağlamsal sağlık metriklerini ekleyerek öneri motorunun isabetini artırır.', 'Beta sürümünde temel metrikler desteklenir.'],
@@ -93,11 +98,97 @@ export const INTEGRATIONS = [
     },
   },
   {
+    slug: 'fitbit',
+    name: 'Fitbit',
+    category: { tr: 'Sağlık', en: 'Health' },
+    status: 'connected',
+    accent: '#00B0B9',
+    sync: { tr: 'Gerçek zamanlı', en: 'Real-time' },
+    tagline: { tr: 'Fitbit cihazlarından adım ve aktivite', en: 'Steps and activity from Fitbit devices' },
+    description: {
+      tr: ['Fitbit hesabını bağlayarak adım, egzersiz ve uyku verisini içe aktarır; günlük emisyon içgörülerini zenginleştirir.', 'Bağlantı OAuth ile yetkilendirilir ve istediğin an iptal edilebilir.'],
+      en: ['Connect your Fitbit account to import steps, workouts and sleep, enriching daily emission insights.', 'The connection is authorized via OAuth and can be revoked anytime.'],
+    },
+    features: {
+      tr: ['OAuth yetkilendirme', 'Uyku & aktivite senkronu', 'Geçmiş veri içe aktarma'],
+      en: ['OAuth authorization', 'Sleep & activity sync', 'Historical import'],
+    },
+  },
+  {
+    slug: 'samsung-health',
+    name: 'Samsung Health',
+    category: { tr: 'Sağlık', en: 'Health' },
+    status: 'connected',
+    accent: '#1428A0',
+    sync: { tr: 'Gerçek zamanlı', en: 'Real-time' },
+    tagline: { tr: 'Galaxy ekosistemi için aktivite senkronu', en: 'Activity sync for the Galaxy ecosystem' },
+    description: {
+      tr: ['Samsung Health ile Galaxy cihazlardan aktivite ve ulaşım verisini bağlar; ulaşım modlarını otomatik sınıflandırır.', 'Veriler cihazda işlenir, yalnızca toplulaştırılmış metrikler paylaşılır.'],
+      en: ['Connects activity and transport data from Galaxy devices via Samsung Health and auto-classifies transport modes.', 'Data is processed on-device; only aggregated metrics are shared.'],
+    },
+    features: {
+      tr: ['Otomatik aktivite senkronu', 'Ulaşım modu sınıflandırma', 'Cihaz-içi işleme'],
+      en: ['Automatic activity sync', 'Transport-mode classification', 'On-device processing'],
+    },
+  },
+  {
+    slug: 'oura',
+    name: 'Oura',
+    category: { tr: 'Sağlık', en: 'Health' },
+    status: 'beta',
+    accent: '#6E56CF',
+    sync: { tr: 'Günlük', en: 'Daily' },
+    tagline: { tr: 'Oura Ring’den bağlamsal sağlık verisi', en: 'Contextual health data from the Oura Ring' },
+    description: {
+      tr: ['Oura Ring’in uyku ve toparlanma sinyallerini ekleyerek öneri zamanlamasını iyileştirir; beta aşamasında temel metrikler desteklenir.', 'Yalnızca seçtiğin metrikler paylaşılır.'],
+      en: ['Adds the Oura Ring’s sleep and recovery signals to improve nudge timing; core metrics supported in beta.', 'Only the metrics you choose are shared.'],
+    },
+    features: {
+      tr: ['Uyku & toparlanma', 'Seçmeli paylaşım', 'Güvenli token saklama'],
+      en: ['Sleep & recovery', 'Selective sharing', 'Secure token storage'],
+    },
+  },
+  {
+    slug: 'whoop',
+    name: 'WHOOP',
+    category: { tr: 'Veri', en: 'Data' },
+    status: 'beta',
+    accent: '#E11D2A',
+    sync: { tr: 'Günlük', en: 'Daily' },
+    tagline: { tr: 'Efor ve toparlanma verisinden bağlam', en: 'Context from strain and recovery data' },
+    description: {
+      tr: ['WHOOP’un efor ve toparlanma metriklerini bağlayarak aktivite yoğunluğunu daha doğru tahmin eder.', 'Beta sürümünde günlük özet veriler desteklenir.'],
+      en: ['Connects WHOOP’s strain and recovery metrics to estimate activity intensity more accurately.', 'Daily summary data is supported in beta.'],
+    },
+    features: {
+      tr: ['Efor & toparlanma', 'Günlük özet senkronu', 'Seçmeli paylaşım'],
+      en: ['Strain & recovery', 'Daily summary sync', 'Selective sharing'],
+    },
+  },
+  {
+    slug: 'polar',
+    name: 'Polar',
+    category: { tr: 'Sağlık', en: 'Health' },
+    status: 'soon',
+    accent: '#C8102E',
+    sync: { tr: 'Planlanıyor', en: 'Planned' },
+    tagline: { tr: 'Polar antrenman verisi entegrasyonu', en: 'Polar training data integration' },
+    description: {
+      tr: ['Polar Flow ile antrenman ve aktivite verisini bağlama entegrasyonu yol haritasında; sporcular için planlanıyor.', 'İlgileniyorsan bekleme listesine yazılabilirsin.'],
+      en: ['An integration to connect training and activity data via Polar Flow is on the roadmap, planned for athletes.', 'You can join the waitlist if interested.'],
+    },
+    features: {
+      tr: ['Antrenman senkronu', 'Aktivite geçmişi', 'Genişleyen cihaz listesi'],
+      en: ['Training sync', 'Activity history', 'Growing device list'],
+    },
+  },
+  {
     slug: 'slack',
     name: 'Slack',
     category: { tr: 'İletişim', en: 'Communication' },
     status: 'connected',
     accent: '#4A154B',
+    sync: { tr: 'Haftalık', en: 'Weekly' },
     tagline: { tr: 'Takım liderlik tablosu ve özetler', en: 'Team leaderboards and digests' },
     description: {
       tr: ['Slack ile haftalık takım özetlerini ve liderlik tablosunu doğrudan kanala taşır; kurumsal katılımı artırır.', 'Yönetici, hangi kanala ne gönderileceğini belirler.'],
@@ -114,6 +205,7 @@ export const INTEGRATIONS = [
     category: { tr: 'İletişim', en: 'Communication' },
     status: 'soon',
     accent: '#6264A7',
+    sync: { tr: 'Planlanıyor', en: 'Planned' },
     tagline: { tr: 'Kurumsal Teams entegrasyonu', en: 'Enterprise Teams integration' },
     description: {
       tr: ['Microsoft Teams için kurumsal özet ve bildirim entegrasyonu yol haritasında; kurumsal müşteriler için planlanıyor.', 'İlgileniyorsan bekleme listesine yazılabilirsin.'],
@@ -130,6 +222,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Geliştirici', en: 'Developer' },
     status: 'connected',
     accent: '#0EA5E9',
+    sync: { tr: 'Olay bazlı', en: 'Event-based' },
     tagline: { tr: 'Olayları kendi sistemlerine gönder', en: 'Push events to your own systems' },
     description: {
       tr: ['Karbon eşikleri, rozetler ve haftalık özetler için kendi uç noktana imzalı webhook olayları gönderir.', 'Yeniden deneme ve imza doğrulama dahildir.'],
@@ -146,6 +239,7 @@ export const INTEGRATIONS = [
     category: { tr: 'Geliştirici', en: 'Developer' },
     status: 'connected',
     accent: '#10B981',
+    sync: { tr: 'İstek bazlı', en: 'On request' },
     tagline: { tr: 'Programatik erişim için açık API', en: 'Open API for programmatic access' },
     description: {
       tr: ['Token tabanlı REST API ile metriklere, ekip verisine ve raporlara programatik erişim sağlar.', 'Geliştirici dokümanı uçları örneklerle anlatır.'],
