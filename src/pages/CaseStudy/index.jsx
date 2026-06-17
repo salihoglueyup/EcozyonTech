@@ -38,6 +38,25 @@ export default function CaseStudyPage() {
         </h1>
         <p className="mt-3 text-[16px] text-slate-600 dark:text-slate-300 leading-relaxed">{item.summary[lang]}</p>
 
+        {/* Rollout facts — duration + deployment team size */}
+        {(item.durationMonths || item.teamSize) && (
+          <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] text-slate-500 dark:text-slate-400">
+            {item.durationMonths && (
+              <span className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M8 4.5V8l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <span className="tabular-nums">{item.durationMonths}</span> {c.durationUnit}
+              </span>
+            )}
+            {item.durationMonths && item.teamSize && <span className="text-slate-300 dark:text-slate-600">·</span>}
+            {item.teamSize && (
+              <span className="inline-flex items-center gap-1.5">
+                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="6" cy="6" r="2.4" /><path d="M2 13c0-2.2 1.8-3.6 4-3.6S10 10.8 10 13M11 5.2a2.2 2.2 0 0 1 0 4.2M14 13c0-1.8-1-3-2.6-3.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <span className="tabular-nums">{item.teamSize}</span>{c.teamLabel}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Result metric tiles */}
         <div className="mt-8 grid grid-cols-3 gap-3">
           {item.results.map((r) => (

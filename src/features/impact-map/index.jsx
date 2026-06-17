@@ -211,6 +211,22 @@ function ImpactMap({ t }) {
               )}
             </aside>
           </div>
+
+          {/* Map key — explains the visual encoding (colors + dot size) */}
+          <div className="border-t border-slate-900/[.06] dark:border-white/[.06] bg-white/40 px-5 py-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-slate-500 dark:text-slate-400">
+            <span className="text-[10px] uppercase tracking-[.14em] font-semibold text-slate-400">{m.legend.title}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ backgroundColor: m.layers.active.color }} aria-hidden="true" />{m.layers.active.label}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ backgroundColor: m.layers.partners.color }} aria-hidden="true" />{m.layers.partners.label}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-slate-400" aria-hidden="true" />{m.legend.capitals}</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex items-center gap-0.5" aria-hidden="true">
+                <span className="h-1 w-1 rounded-full bg-slate-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-slate-400" />
+              </span>
+              {m.legend.size}
+            </span>
+          </div>
         </div>
       </div>
     </section>

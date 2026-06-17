@@ -10,6 +10,8 @@ export const CASES = [
     city: 'İstanbul',
     accent: '#0EA5E9',
     year: 2024,
+    durationMonths: 12,
+    teamSize: 14,
     client: { tr: 'İstanbul Büyükşehir pilotu', en: 'Istanbul Metropolitan pilot' },
     sector: { tr: 'Kamu · Belediye', en: 'Public · Municipality' },
     summary: {
@@ -55,6 +57,8 @@ export const CASES = [
     city: 'Berlin',
     accent: '#10B981',
     year: 2024,
+    durationMonths: 9,
+    teamSize: 8,
     client: { tr: 'Berlin mobilite ittifakı', en: 'Berlin mobility alliance' },
     sector: { tr: 'Ulaşım · Kurumsal', en: 'Mobility · Corporate' },
     summary: {
@@ -100,6 +104,8 @@ export const CASES = [
     city: 'Copenhagen',
     accent: '#0EA5E9',
     year: 2024,
+    durationMonths: 10,
+    teamSize: 7,
     client: { tr: 'Kopenhag mahalle programı', en: 'Copenhagen districts program' },
     sector: { tr: 'Kamu · Topluluk', en: 'Public · Community' },
     summary: {
@@ -145,6 +151,8 @@ export const CASES = [
     city: 'New York',
     accent: '#7C3AED',
     year: 2024,
+    durationMonths: 8,
+    teamSize: 10,
     client: { tr: 'New York kuleleri konsorsiyumu', en: 'New York towers consortium' },
     sector: { tr: 'Gayrimenkul · Kurumsal', en: 'Real estate · Corporate' },
     summary: {
@@ -190,6 +198,8 @@ export const CASES = [
     city: 'Dubai',
     accent: '#F59E0B',
     year: 2024,
+    durationMonths: 7,
+    teamSize: 6,
     client: { tr: 'Dubai güneş kampüsü', en: 'Dubai solar campus' },
     sector: { tr: 'Enerji · Kurumsal', en: 'Energy · Corporate' },
     summary: {
@@ -235,6 +245,8 @@ export const CASES = [
     city: 'Singapore',
     accent: '#10B981',
     year: 2024,
+    durationMonths: 11,
+    teamSize: 9,
     client: { tr: 'Singapur akıllı şebeke pilotu', en: 'Singapore smart-grid pilot' },
     sector: { tr: 'Enerji · Kamu-özel', en: 'Energy · Public-private' },
     summary: {
@@ -280,6 +292,8 @@ export const CASES = [
     city: 'Zurich',
     accent: '#0EA5E9',
     year: 2024,
+    durationMonths: 6,
+    teamSize: 6,
     client: { tr: 'Zürih finans bölgesi', en: 'Zurich finance district' },
     sector: { tr: 'Finans · Kurumsal', en: 'Finance · Corporate' },
     summary: {

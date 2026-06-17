@@ -11,7 +11,8 @@ export default {
     "filterAll": "Tümü",
     "filterLabel": "Kategoriye göre filtrele",
     "count": "{n} terim",
-    "empty": "Aramana uygun terim bulunamadı."
+    "empty": "Aramana uygun terim bulunamadı.",
+    "related": "İlgili terimler"
   },
   "en": {
     "eyebrow": "Knowledge Base",
@@ -23,6 +24,7 @@ export default {
     "filterAll": "All",
     "filterLabel": "Filter by category",
     "count": "{n} terms",
-    "empty": "No terms match your search."
+    "empty": "No terms match your search.",
+    "related": "Related terms"
   }
 };

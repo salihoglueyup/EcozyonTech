@@ -53,6 +53,23 @@ describe('termById', () => {
   });
 });
 
+describe('related cross-links', () => {
+  it('every related id resolves to a real term (no dangling links)', () => {
+    for (const t of GLOSSARY) {
+      if (!t.related) continue;
+      expect(Array.isArray(t.related), `${t.id}.related`).toBe(true);
+      for (const id of t.related) {
+        expect(termById(id), `${t.id} → missing related '${id}'`).toBeTruthy();
+        expect(id, `${t.id} should not relate to itself`).not.toBe(t.id);
+      }
+    }
+  });
+
+  it('at least a few terms carry related links', () => {
+    expect(GLOSSARY.filter((t) => t.related?.length).length).toBeGreaterThanOrEqual(5);
+  });
+});
+
 describe('glossaryByIds', () => {
   it('resolves ids to entries in order, dropping unknowns', () => {
     const got = glossaryByIds(['scope-3', 'nope', 'baseline']);

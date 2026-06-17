@@ -5,7 +5,7 @@ import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { GLOSSARY, glossaryCategories, filterByCategory, searchGlossary } from '@/core/data/glossary';
+import { GLOSSARY, glossaryCategories, filterByCategory, searchGlossary, glossaryByIds } from '@/core/data/glossary';
 
 const meta = routeByKey('glossary');
 const CATEGORIES = glossaryCategories();
@@ -28,6 +28,20 @@ export default function GlossaryPage() {
     const el = document.getElementById(hashId);
     if (el) el.scrollIntoView();
   }, [hashId]);
+
+  // Jump to a related term: clear the active filter + search first so the
+  // target is never hidden behind a category/search filter, then scroll to it.
+  const jumpTo = (id) => {
+    setActive(null);
+    setQuery('');
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${id}`);
+      }
+    });
+  };
 
 
   return (
@@ -76,6 +90,21 @@ export default function GlossaryPage() {
                     <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-2 py-0.5 text-[10.5px] font-medium text-slate-500 dark:text-slate-400">{term.category[lang]}</span>
                   </div>
                   <p className="mt-1.5 text-[14px] text-slate-600 dark:text-slate-300 leading-relaxed">{term.definition[lang]}</p>
+                  {glossaryByIds(term.related).length > 0 && (
+                    <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+                      <span className="text-[10.5px] uppercase tracking-[.12em] font-semibold text-slate-400">{g.related}</span>
+                      {glossaryByIds(term.related).map((r) => (
+                        <button
+                          key={r.id}
+                          type="button"
+                          onClick={() => jumpTo(r.id)}
+                          className="eco-press rounded-full bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 ring-1 ring-cyan-500/15 px-2.5 py-0.5 text-[11.5px] font-medium hover:bg-cyan-500/15 transition"
+                        >
+                          {r.term[lang]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </Reveal>
               </div>
             ))}

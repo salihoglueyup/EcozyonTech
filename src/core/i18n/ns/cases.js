@@ -16,6 +16,8 @@ export default {
     "results": "Sonuçlar",
     "onMap": "Haritada gör",
     "related": "İlgili vakalar",
+    "durationUnit": "ay",
+    "teamLabel": " kişilik ekip",
     "cta": "Sizin de bir hikâyeniz olsun",
     "ctaNote": "Pilot ve iş birliği için bizimle konuşun."
   },
@@ -34,6 +36,8 @@ export default {
     "results": "Results",
     "onMap": "See on map",
     "related": "Related case studies",
+    "durationUnit": "months",
+    "teamLabel": "-person team",
     "cta": "Let's write your story",
     "ctaNote": "Talk to us about a pilot or partnership."
   }

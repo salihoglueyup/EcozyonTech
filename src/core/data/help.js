@@ -119,6 +119,53 @@ export const HELP = [
       en: 'Yes — the Enterprise plan provides SSO and SCIM-based user management.',
     },
   },
+  {
+    id: 'getting-started',
+    category: { tr: 'Başlangıç', en: 'Getting started' },
+    featured: true,
+    q: { tr: 'Nasıl başlarım?', en: 'How do I get started?' },
+    a: {
+      tr: 'Cihazı kutudan çıkar, bileğine tak ve mobil uygulamayı indir. Eşleştirme tek dokunuşla tamamlanır; ilk gün veri toplamaya başlar.',
+      en: 'Unbox the device, put it on your wrist and download the mobile app. Pairing takes one tap; it starts collecting data on day one.',
+    },
+  },
+  {
+    id: 'baseline-week',
+    category: { tr: 'Başlangıç', en: 'Getting started' },
+    q: { tr: 'İlk hafta neden önemli?', en: 'Why does the first week matter?' },
+    a: {
+      tr: 'İlk 7 gün kişisel baseline’ını oluşturur — öneriler bu referansa göre kişiselleşir. Bu sürede normal rutinini sürdürmen yeterli.',
+      en: 'The first 7 days build your personal baseline — suggestions personalize against this reference. Just keep your normal routine during that time.',
+    },
+  },
+  {
+    id: 'lost-device',
+    category: { tr: 'Sorun giderme', en: 'Troubleshooting' },
+    q: { tr: 'Cihazımı kaybedersem ne olur?', en: 'What if I lose my device?' },
+    a: {
+      tr: 'Verilerin hesabında güvende kalır. Yönetici panelinden cihazı devre dışı bırakabilir, yeni cihazı baseline’ını koruyarak eşleştirebilirsin.',
+      en: 'Your data stays safe in your account. You can deactivate the device from the dashboard and pair a new one while keeping your baseline.',
+    },
+  },
+  {
+    id: 'data-not-syncing',
+    category: { tr: 'Sorun giderme', en: 'Troubleshooting' },
+    featured: true,
+    q: { tr: 'Verilerim senkronize olmuyor, ne yapmalıyım?', en: 'My data isn’t syncing — what should I do?' },
+    a: {
+      tr: 'Önce Bluetooth’un açık ve uygulamanın güncel olduğundan emin ol. Cihaz çevrimdışıyken ölçümü yerelde tutar ve bağlantı gelince otomatik eşitler.',
+      en: 'First make sure Bluetooth is on and the app is up to date. The device stores readings locally while offline and syncs automatically once reconnected.',
+    },
+  },
+  {
+    id: 'reset-device',
+    category: { tr: 'Sorun giderme', en: 'Troubleshooting' },
+    q: { tr: 'Cihazı nasıl sıfırlarım?', en: 'How do I reset the device?' },
+    a: {
+      tr: 'Uygulamadaki Cihaz ayarlarından “Fabrika ayarlarına dön”ü seç ya da düğmeyi 10 saniye basılı tut. Baseline’ını korumak istiyorsan önce yedeklemeyi aç.',
+      en: 'Choose “Factory reset” under Device settings in the app, or hold the button for 10 seconds. Enable backup first if you want to keep your baseline.',
+    },
+  },
 ];
 
 // Distinct categories with a stable id (category.en) + bilingual label, in

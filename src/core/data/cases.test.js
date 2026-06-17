@@ -20,6 +20,15 @@ describe('CASES data', () => {
     }
   });
 
+  it('every case carries positive rollout metadata (durationMonths + teamSize)', () => {
+    for (const c of CASES) {
+      expect(Number.isInteger(c.durationMonths), `${c.slug}.durationMonths`).toBe(true);
+      expect(c.durationMonths, `${c.slug}.durationMonths`).toBeGreaterThan(0);
+      expect(Number.isInteger(c.teamSize), `${c.slug}.teamSize`).toBe(true);
+      expect(c.teamSize, `${c.slug}.teamSize`).toBeGreaterThan(0);
+    }
+  });
+
   it('results are metric tiles with bilingual labels', () => {
     for (const c of CASES) {
       expect(c.results.length).toBeGreaterThanOrEqual(2);

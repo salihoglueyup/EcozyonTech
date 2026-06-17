@@ -60,7 +60,12 @@ export default {
       "readCase": "Vaka çalışmasını oku"
     },
     "helpDrag": "Sürükle ile döndür",
-    "helpClick": "Bir nokta seç"
+    "helpClick": "Bir nokta seç",
+    "legend": {
+      "title": "Harita anahtarı",
+      "size": "Nokta boyutu = kullanıcı sayısı",
+      "capitals": "Başkentler (referans)"
+    }
   },
   "en": {
     "eyebrow": "Impact map",
@@ -121,6 +126,11 @@ export default {
       "readCase": "Read the case study"
     },
     "helpDrag": "Drag to rotate",
-    "helpClick": "Select a point"
+    "helpClick": "Select a point",
+    "legend": {
+      "title": "Map key",
+      "size": "Dot size = number of users",
+      "capitals": "Capitals (reference)"
+    }
   }
 };
