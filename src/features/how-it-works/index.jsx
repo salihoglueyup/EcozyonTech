@@ -22,6 +22,7 @@ export function HowItWorks({ t, lang }) {
             title={h.title}
             titleAccent={h.titleAccent}
             sub={h.sub}
+            shimmer
           />
         </div>
 

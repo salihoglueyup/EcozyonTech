@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal } from '@/shared/ui/useReveal';
+import { useInView } from '@/shared/ui/useInView';
 
 // Shared visual primitives used across every feature section.
 
@@ -15,10 +16,13 @@ export function SectionHeader({
   titleAccent,
   sub,
   center = false,
+  shimmer = false,
   className = '',
   subClassName = 'max-w-2xl',
   as: Heading = 'h2',
 }) {
+  // Opt-in: the gradient accent sweeps a one-shot shimmer when it scrolls in.
+  const [accentRef, accentSeen] = useInView(0.5);
   return (
     <Reveal className={center ? `text-center ${className}`.trim() : className}>
       <Tag color={color}>// {eyebrow}</Tag>
@@ -27,7 +31,10 @@ export function SectionHeader({
         {titleAccent && (
           <>
             {' '}
-            <span className="eco-gradient-text">
+            <span
+              ref={shimmer ? accentRef : undefined}
+              className={`eco-gradient-text${shimmer && accentSeen ? ' is-shimmer' : ''}`}
+            >
               {titleAccent}
             </span>
           </>

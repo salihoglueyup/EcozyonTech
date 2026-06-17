@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent, within, act } from '@testing-library/react';
 import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, SectionHeader, StatusBadge } from './primitives';
 
 describe('StatusBadge', () => {
@@ -182,6 +182,38 @@ describe('SectionHeader', () => {
   it('can render as an h1 via the `as` prop (page-primary heading)', () => {
     render(<SectionHeader as="h1" eyebrow="x" title="Page" />);
     expect(screen.getByRole('heading', { level: 1, name: 'Page' })).toBeInTheDocument();
+  });
+
+  it('renders the gradient accent and shimmers it on reveal when shimmer is set', () => {
+    // Drive a capturing IntersectionObserver so we can fire the in-view entry.
+    const cbs = [];
+    class IO {
+      constructor(cb) { cbs.push(cb); }
+      observe() {}
+      disconnect() {}
+    }
+    const prev = globalThis.IntersectionObserver;
+    globalThis.IntersectionObserver = IO;
+    try {
+      const { container } = render(
+        <SectionHeader eyebrow="x" title="Build" titleAccent="greener" shimmer />,
+      );
+      const accent = container.querySelector('.eco-gradient-text');
+      expect(accent).toHaveTextContent('greener');
+      expect(accent.className).not.toContain('is-shimmer');
+      // Fire every observer (Reveal wrapper + the accent gate) as in-view.
+      act(() => cbs.forEach((cb) => cb([{ isIntersecting: true }])));
+      expect(container.querySelector('.eco-gradient-text').className).toContain('is-shimmer');
+    } finally {
+      globalThis.IntersectionObserver = prev;
+    }
+  });
+
+  it('does not shimmer the accent without the shimmer prop', () => {
+    const { container } = render(
+      <SectionHeader eyebrow="x" title="Build" titleAccent="greener" />,
+    );
+    expect(container.querySelector('.eco-gradient-text').className).not.toContain('is-shimmer');
   });
 });
 

@@ -49,6 +49,16 @@ export default {
           from: { strokeDashoffset: '1' },
           to: { strokeDashoffset: '0' },
         },
+        // Toast exit — slides out to the right while fading.
+        leave: {
+          from: { opacity: '1', transform: 'translateX(0)' },
+          to: { opacity: '0', transform: 'translateX(12px)' },
+        },
+        // Toast auto-dismiss countdown bar (duration set inline per toast).
+        countdown: {
+          from: { transform: 'scaleX(1)' },
+          to: { transform: 'scaleX(0)' },
+        },
       },
       animation: {
         fadeUp: 'fadeUp .5s ease both',
@@ -60,6 +70,8 @@ export default {
         marquee: 'marquee 42s linear infinite',
         shake: 'shake .32s ease',
         drawCheck: 'drawCheck 420ms var(--ease-out) forwards',
+        leave: 'leave var(--dur-fast) var(--ease-out) both',
+        countdown: 'countdown 4s linear forwards',
       },
     },
   },

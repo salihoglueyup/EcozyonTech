@@ -1,24 +1,35 @@
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { SuccessCheck } from '@/shared/ui/SuccessCheck';
 
 // ── Context ────────────────────────────────────────────────────────────
 const ToastCtx = createContext(null);
 
 let _id = 0;
 
+// Exit animation length — matches `animate-leave` (var(--dur-fast) = 180ms).
+// Under reduced motion the global rule collapses the transition, so the toast
+// is removed effectively instantly regardless.
+const LEAVE_MS = 200;
+
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const timers = useRef({});
 
+  // Two-phase dismiss: flag the toast `leaving` (plays the exit animation),
+  // then drop it from state after the animation. Auto-dismiss routes here too.
   const dismiss = useCallback((id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
     clearTimeout(timers.current[id]);
-    delete timers.current[id];
+    setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, leaving: true } : t)));
+    timers.current[id] = setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+      delete timers.current[id];
+    }, LEAVE_MS);
   }, []);
 
   const toast = useCallback(
     ({ message, type = 'info', duration = 4000 }) => {
       const id = ++_id;
-      setToasts((prev) => [...prev, { id, message, type }]);
+      setToasts((prev) => [...prev, { id, message, type, duration }]);
       if (duration > 0) {
         timers.current[id] = setTimeout(() => dismiss(id), duration);
       }
@@ -46,11 +57,14 @@ export function useToast() {
 
 // ── Render ──────────────────────────────────────────────────────────────
 const ICONS = {
+  // The ring stays static; the check draws itself in via SuccessCheck.
   success: (
-    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <circle cx="8" cy="8" r="6" />
-      <path d="M5.5 8.5 7 10l3.5-4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <span className="relative inline-flex h-4 w-4 items-center justify-center">
+      <svg viewBox="0 0 16 16" className="absolute inset-0 h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <circle cx="8" cy="8" r="6" />
+      </svg>
+      <SuccessCheck className="h-2.5 w-2.5" strokeWidth={2.6} />
+    </span>
   ),
   error: (
     <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -84,7 +98,8 @@ function ToastContainer({ toasts, dismiss }) {
         <div
           key={t.id}
           role="status"
-          className="pointer-events-auto flex items-start gap-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/70 dark:border-slate-700/50 ring-1 ring-slate-900/[.08] dark:ring-white/[.06] shadow-[0_16px_50px_-20px_rgba(15,23,42,.4)] p-4 animate-enter"
+          data-leaving={t.leaving ? '' : undefined}
+          className={`pointer-events-auto relative overflow-hidden flex items-start gap-3 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/70 dark:border-slate-700/50 ring-1 ring-slate-900/[.08] dark:ring-white/[.06] shadow-[0_16px_50px_-20px_rgba(15,23,42,.4)] p-4 ${t.leaving ? 'animate-leave' : 'animate-enter'}`}
         >
           <span className={`mt-0.5 shrink-0 ${TYPE_STYLES[t.type] || TYPE_STYLES.info}`}>
             {ICONS[t.type] || ICONS.info}
@@ -102,6 +117,13 @@ function ToastContainer({ toasts, dismiss }) {
               <path d="M3 3l6 6M9 3l-6 6" strokeLinecap="round" />
             </svg>
           </button>
+          {t.duration > 0 && !t.leaving && (
+            <span
+              aria-hidden="true"
+              className={`absolute inset-x-0 bottom-0 h-0.5 origin-left animate-countdown ${TYPE_STYLES[t.type] || TYPE_STYLES.info}`}
+              style={{ backgroundColor: 'currentColor', animationDuration: `${t.duration}ms`, opacity: 0.5 }}
+            />
+          )}
         </div>
       ))}
     </div>

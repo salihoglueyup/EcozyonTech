@@ -6,6 +6,8 @@ import { Sparkline } from '@/shared/ui/charts';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useInView } from '@/shared/ui/useInView';
 import { RevealText } from '@/shared/ui/RevealText';
+import { SpotlightCard } from '@/shared/ui/SpotlightCard';
+import { AnimatedIcon } from '@/shared/ui/AnimatedIcon';
 import { CITIES, networkGrowth } from '@/core/data/cities';
 import { CASES, caseBySlug } from '@/core/data/cases';
 
@@ -91,13 +93,15 @@ export function WhyEcozyon({ t }) {
         <div className="grid gap-4 md:grid-cols-3">
           {h.why.map((item, i) => (
             <Reveal key={item.title} delay={i * 80}>
-              <div className="h-full rounded-2xl eco-card p-7">
+              <SpotlightCard className="h-full rounded-2xl eco-card p-7">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
-                  <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.4">{WHY_ICONS[i]}</svg>
+                  <AnimatedIcon stagger={120}>
+                    <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.4">{WHY_ICONS[i]}</svg>
+                  </AnimatedIcon>
                 </span>
                 <h3 className="mt-4 font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">{item.title}</h3>
                 <p className="mt-2 text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
