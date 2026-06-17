@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { POSTS, postTags, filterByTag, searchPosts, relatedPosts, postNeighbors, readingTime, blockText, tagSlug, postTagBySlug } from './posts';
+import { glossaryByIds } from './glossary';
 
 describe('POSTS data', () => {
   it('every post has a bilingual author byline', () => {
@@ -191,5 +192,23 @@ describe('body heading blocks', () => {
   it('searchPosts matches heading text', () => {
     const hits = searchPosts(POSTS, 'baseline yaklaşımı', 'tr');
     expect(hits.map((p) => p.slug)).toContain('carbon-budget-basics');
+  });
+});
+
+describe('post content depth + cross-links', () => {
+  it('every post has at least 3 heading sections in both languages', () => {
+    for (const p of POSTS) {
+      for (const lang of ['tr', 'en']) {
+        const heads = p.body[lang].filter((b) => typeof b === 'object' && b);
+        expect(heads.length, `${p.slug}.${lang}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
+  it('every glossary term id referenced by a post resolves to a real term', () => {
+    for (const p of POSTS) {
+      const ids = p.terms || [];
+      expect(glossaryByIds(ids).length, `${p.slug} terms`).toBe(ids.length);
+    }
   });
 });
