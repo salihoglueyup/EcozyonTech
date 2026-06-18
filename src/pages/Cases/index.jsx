@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput } from '@/shared/ui/primitives';
+import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { CASES, caseSectors } from '@/core/data/cases';
+import { CASES, caseSectors, filterBySector, searchCases } from '@/core/data/cases';
 
 const meta = routeByKey('cases');
 const SECTORS = caseSectors(CASES);
@@ -12,10 +12,13 @@ const SECTORS = caseSectors(CASES);
 export default function CasesPage() {
   const { lang, t } = useApp();
   const tr = lang === 'tr';
-  const [activeSector, setActiveSector] = useState(null);
+  const { active: activeSector, setActive: setActiveSector, query, setQuery, visible } = useFilteredList({
+    items: CASES,
+    filter: filterBySector,
+    search: searchCases,
+    lang,
+  });
   useDocumentMeta(meta.title[lang], t.cases.intro);
-
-  const visible = activeSector ? CASES.filter((c) => c.sector.en === activeSector) : CASES;
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
@@ -26,6 +29,16 @@ export default function CasesPage() {
           titleAccent={t.cases.titleAccent}
           intro={t.cases.intro}
           className="max-w-3xl mb-10"
+        />
+
+        <SearchInput
+          className="mb-5 max-w-sm"
+          value={query}
+          onChange={setQuery}
+          placeholder={t.cases.searchP}
+          label={t.cases.searchLabel}
+          clearLabel={t.cases.searchClear}
+          inputClassName="py-3 text-[14px]"
         />
 
         <FilterPills
@@ -40,6 +53,22 @@ export default function CasesPage() {
 
         <ResultCount>{t.cases.count.replace('{n}', visible.length)}</ResultCount>
 
+        {visible.length === 0 ? (
+          <EmptyState
+            icon={<svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m20 20-4.5-4.5" strokeLinecap="round" /></svg>}
+            action={
+              <button
+                type="button"
+                onClick={() => { setActiveSector(null); setQuery(''); }}
+                className="eco-press inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.05] dark:bg-white/[.08] px-3.5 py-1.5 text-[12.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.08] dark:hover:bg-white/[.12] transition"
+              >
+                {t.cases.clearFilters}
+              </button>
+            }
+          >
+            {t.cases.empty}
+          </EmptyState>
+        ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {visible.map((c) => {
             const headline = c.results[0];
@@ -74,6 +103,7 @@ export default function CasesPage() {
             );
           })}
         </div>
+        )}
 
         <div className="mt-10 text-[13px] text-slate-600 dark:text-slate-400">
           {tr ? 'Hepsini haritada gör: ' : 'See them all on the map: '}

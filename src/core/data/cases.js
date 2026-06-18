@@ -363,3 +363,23 @@ export function caseSectors(cases = CASES) {
   }
   return [...seen.values()];
 }
+
+// Filter by sector id (sector.en); null/undefined returns all — mirrors the
+// integrations/help filters so /cases can compose it with searchCases.
+export const filterBySector = (all, sectorId) =>
+  sectorId ? all.filter((c) => c.sector.en === sectorId) : all;
+
+// Case-insensitive substring search over client + summary + sector + city in
+// the active language. Empty query returns the list unchanged so it composes
+// with filterBySector (AND semantics) — mirrors searchIntegrations/searchHelp.
+export function searchCases(all, query, lang = 'tr') {
+  const q = String(query ?? '').trim().toLowerCase();
+  if (!q) return all;
+  return all.filter((c) => {
+    const hay = [c.client?.[lang], c.summary?.[lang], c.sector?.[lang], c.city]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return hay.includes(q);
+  });
+}

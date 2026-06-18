@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CASES, caseBySlug, caseByCity, caseSectors, relatedCases } from './cases';
+import { CASES, caseBySlug, caseByCity, caseSectors, relatedCases, filterBySector, searchCases } from './cases';
 import { CITIES } from './cities';
 
 describe('CASES data', () => {
@@ -74,6 +74,32 @@ describe('caseByCity', () => {
   it('resolves a partner city and returns undefined for a non-partner one', () => {
     expect(caseByCity('İstanbul')?.slug).toBe('istanbul-metropolitan');
     expect(caseByCity('Ankara')).toBeUndefined();
+  });
+});
+
+describe('filterBySector / searchCases', () => {
+  it('filters by sector id and passes through when null', () => {
+    const sector = CASES[0].sector.en;
+    const filtered = filterBySector(CASES, sector);
+    expect(filtered.every((c) => c.sector.en === sector)).toBe(true);
+    expect(filterBySector(CASES, null)).toEqual(CASES);
+  });
+
+  it('passes the list through unchanged for an empty query', () => {
+    expect(searchCases(CASES, '', 'tr')).toEqual(CASES);
+    expect(searchCases(CASES, '   ', 'en')).toEqual(CASES);
+  });
+
+  it('matches by city name and returns [] for nonsense', () => {
+    const hits = searchCases(CASES, 'berlin', 'tr');
+    expect(hits.some((c) => c.city === 'Berlin')).toBe(true);
+    expect(searchCases(CASES, 'zzzznotathing', 'en')).toEqual([]);
+  });
+
+  it('matches the active-language client/summary text', () => {
+    const c = CASES[0];
+    const term = c.client.en.split(' ')[0];
+    expect(searchCases(CASES, term, 'en').some((x) => x.slug === c.slug)).toBe(true);
   });
 });
 
