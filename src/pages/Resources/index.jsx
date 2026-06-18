@@ -13,7 +13,7 @@ import { Sparkline } from '@/shared/ui/charts';
 const meta = routeByKey('resources');
 // Curated quick-link destinations (each is a real route; title comes from the
 // route's nav label, description from the dictionary).
-const EXPLORE = ['impact', 'pricing', 'changelog', 'status', 'press', 'careers'];
+const EXPLORE = ['impact', 'pricing', 'developers', 'glossary', 'changelog', 'status', 'press', 'careers'];
 // Cumulative network growth (users) — a small trend on the impact quick-link.
 const NETWORK_TREND = networkGrowth('users');
 

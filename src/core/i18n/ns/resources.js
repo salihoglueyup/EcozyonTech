@@ -16,6 +16,8 @@ export default {
     "links": {
       "impact": "Canlı 3D etki haritasında ağ verilerini keşfet.",
       "pricing": "Planları karşılaştır, sana uygun olanı seç.",
+      "developers": "API referansı ve entegrasyon dokümanları.",
+      "glossary": "Sürdürülebilirlik terimlerini sade tanımlarla öğren.",
       "changelog": "Üründe neler değişti, sürüm sürüm gör.",
       "status": "Servislerin canlı durumu ve geçmiş olaylar.",
       "press": "Basın bültenleri ve marka kaynakları.",
@@ -37,6 +39,8 @@ export default {
     "links": {
       "impact": "Explore network data on the live 3D impact map.",
       "pricing": "Compare plans and pick the one that fits.",
+      "developers": "API reference and integration documentation.",
+      "glossary": "Learn sustainability terms in plain definitions.",
       "changelog": "See what changed in the product, release by release.",
       "status": "Live status of services and incident history.",
       "press": "Press releases and brand resources.",

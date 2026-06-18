@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Donut, BarMini } from '@/shared/ui/charts';
 import { useInView } from '@/shared/ui/useInView';
@@ -152,6 +152,8 @@ export default function RoiPage() {
             <ArrowRight />
           </Link>
         </div>
+
+        <RelatedRoutes title={t.related.nextStep} routeKeys={['assessment', 'compare']} lang={lang} />
       </div>
     </section>
   );

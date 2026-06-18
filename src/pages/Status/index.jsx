@@ -1,4 +1,4 @@
-import { PageHeader, StatusBadge } from '@/shared/ui/primitives';
+import { PageHeader, StatusBadge, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -154,6 +154,8 @@ export default function StatusPage() {
             })}
           </ol>
         )}
+
+        <RelatedRoutes title={t.related.related} routeKeys={['changelog', 'developers']} lang={lang} />
       </div>
     </section>
   );

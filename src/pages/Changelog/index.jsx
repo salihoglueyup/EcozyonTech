@@ -1,4 +1,4 @@
-import { PageHeader } from '@/shared/ui/primitives';
+import { PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -71,6 +71,8 @@ export default function ChangelogPage() {
             </li>
           ))}
         </ol>
+
+        <RelatedRoutes title={t.related.related} routeKeys={['status', 'developers']} lang={lang} />
       </div>
     </section>
   );

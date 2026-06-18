@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -107,6 +107,8 @@ export default function ComparePage() {
             <ArrowRight />
           </Link>
         </div>
+
+        <RelatedRoutes title={t.related.nextStep} routeKeys={['roi', 'pricing']} lang={lang} />
       </div>
     </section>
   );

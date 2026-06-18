@@ -1,4 +1,4 @@
-import { PageHeader } from '@/shared/ui/primitives';
+import { PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { useToast } from '@/shared/ui/Toast';
@@ -119,6 +119,8 @@ export default function DevelopersPage() {
             </section>
           ))}
         </div>
+
+        <RelatedRoutes title={t.related.related} routeKeys={['changelog', 'status', 'integrations']} lang={lang} />
       </div>
     </section>
   );

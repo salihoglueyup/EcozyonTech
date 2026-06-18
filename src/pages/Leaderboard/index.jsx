@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { Tabs } from '@/shared/ui/Tabs';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Reveal } from '@/shared/ui/useReveal';
@@ -88,6 +88,8 @@ export default function LeaderboardPage() {
             {g.onMap}
           </Link>
         </div>
+
+        <RelatedRoutes title={t.related.nextStep} routeKeys={['assessment', 'impact']} lang={lang} />
       </div>
     </section>
   );

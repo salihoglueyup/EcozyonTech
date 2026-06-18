@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -271,6 +271,8 @@ export default function PricingPage() {
             ? 'Tüm planlar 14 gün koşulsuz iade. Eğitim kurumlarına %50 indirim.'
             : 'All plans include a 14-day no-questions refund. 50% off for education.'}
         </p>
+
+        <RelatedRoutes title={t.related.nextStep} routeKeys={['roi', 'compare']} lang={lang} />
       </div>
     </section>
 

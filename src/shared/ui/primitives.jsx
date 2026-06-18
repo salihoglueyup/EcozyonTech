@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useInView } from '@/shared/ui/useInView';
+import { routeByKey } from '@/core/config/site';
 
 // Shared visual primitives used across every feature section.
 
@@ -245,6 +246,33 @@ export function StatusBadge({ accent, label, pulse = false, className = 'text-[1
       </span>
       {label}
     </span>
+  );
+}
+
+// Cross-link strip joining a page to related routes. Labels come free from the
+// route table (`routeByKey(key).nav[lang]`) so wiring pages together needs no
+// new per-link i18n — only the section `title`. Uses an h2 (never h1, so the
+// one-h1-per-route rule holds) and the shared eco-card hover style. Skips any
+// unknown key and renders nothing when nothing resolves, so callers stay safe.
+export function RelatedRoutes({ title, routeKeys, lang, className = 'mt-14' }) {
+  const routes = routeKeys.map(routeByKey).filter(Boolean);
+  if (routes.length === 0) return null;
+  return (
+    <div className={className}>
+      <h2 className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{title}</h2>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {routes.map((route, i) => (
+          <Reveal key={route.key} delay={i * 50}>
+            <Link to={route.path} className="group flex items-center justify-between gap-3 rounded-2xl eco-card p-5 hover:ring-cyan-500/30 transition">
+              <span className="font-display text-[16px] tracking-tight text-slate-900 dark:text-slate-100">{route.nav[lang]}</span>
+              <span className="shrink-0 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200">
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </div>
   );
 }
 

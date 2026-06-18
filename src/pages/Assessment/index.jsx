@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useState } from 'react';
-import { Tag } from '@/shared/ui/primitives';
+import { Tag, RelatedRoutes } from '@/shared/ui/primitives';
 import { Donut } from '@/shared/ui/charts';
 import { useApp } from '@/app/providers/AppProvider';
 import { useToast } from '@/shared/ui/Toast';
@@ -169,6 +169,7 @@ export default function AssessmentPage() {
             </div>
           </div>
         ) : (
+          <>
           <div className="rounded-3xl bg-white/70 dark:bg-white/[.04] border border-slate-900/[.08] dark:border-white/[.08] p-6 sm:p-8 shadow-[0_18px_44px_-24px_rgba(15,23,42,.3)]">
             <div className="flex items-center gap-5">
               <Donut value={score} size={88} stroke={9} color={scoreColor(score)} label={a.result.scoreLabel}>
@@ -230,6 +231,9 @@ export default function AssessmentPage() {
               </button>
             </div>
           </div>
+
+          <RelatedRoutes title={t.related.nextStep} routeKeys={['leaderboard', 'roi']} lang={lang} />
+          </>
         )}
       </div>
     </section>
