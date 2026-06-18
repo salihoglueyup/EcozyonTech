@@ -9,6 +9,8 @@ export default {
     "placeholder": "Aramak istediğini yaz…",
     "label": "Sitede ara",
     "count": "{n} sonuç",
+    "all": "Tümü",
+    "filterLabel": "Türe göre filtrele",
     "empty": "“{q}” için sonuç bulunamadı.",
     "prompt": "Aramak için yazmaya başla."
   },
@@ -20,6 +22,8 @@ export default {
     "placeholder": "Type to search…",
     "label": "Search the site",
     "count": "{n} results",
+    "all": "All",
+    "filterLabel": "Filter by type",
     "empty": "No results for “{q}”.",
     "prompt": "Start typing to search."
   }

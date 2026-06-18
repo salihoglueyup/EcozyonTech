@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { PageHeader } from '@/shared/ui/primitives';
+import { PageHeader, FilterPills, ResultCount } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { ROUTES, routeByKey } from '@/core/config/site';
@@ -19,6 +19,10 @@ const TYPE_META = {
   changelog: { icon: '⊙', key: 'changelog' },
   job: { icon: '⊕', key: 'roles' },
 };
+
+// Stable display order for the type-filter pills (mirrors the search tie-break
+// rank in lib/search.js so pills and results read in the same order).
+const TYPE_ORDER = ['page', 'post', 'help', 'term', 'case', 'integration', 'changelog', 'job'];
 
 export default function SearchPage() {
   const { lang, t } = useApp();
@@ -47,6 +51,20 @@ export default function SearchPage() {
   const results = useMemo(() => searchDocs(index, q), [index, q]);
   const query = q.trim();
 
+  // Type-filter pills: only surface types actually present in the current
+  // result set (in the stable TYPE_ORDER), so the row never offers a dead pill.
+  const [type, setType] = useState(null);
+  const typeOptions = useMemo(() => {
+    const present = new Set(results.map((r) => r.type));
+    return TYPE_ORDER.filter((ty) => present.has(ty)).map((ty) => ({
+      id: ty,
+      label: t.cmd[(TYPE_META[ty] || TYPE_META.page).key],
+    }));
+  }, [results, t.cmd]);
+  // Ignore a stale selection when the active type drops out of the new results.
+  const activeType = typeOptions.some((o) => o.id === type) ? type : null;
+  const shown = activeType ? results.filter((r) => r.type === activeType) : results;
+
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
@@ -73,10 +91,20 @@ export default function SearchPage() {
           />
         </div>
 
+        {query && results.length > 0 && typeOptions.length > 1 && (
+          <FilterPills
+            className="mt-5"
+            options={typeOptions}
+            allLabel={s.all}
+            value={activeType}
+            onChange={setType}
+            lang={lang}
+            label={s.filterLabel}
+          />
+        )}
+
         {query && (
-          <div className="mt-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400" aria-live="polite">
-            {s.count.replace('{n}', results.length)}
-          </div>
+          <ResultCount className="mt-4">{s.count.replace('{n}', shown.length)}</ResultCount>
         )}
 
         {!query ? (
@@ -85,7 +113,7 @@ export default function SearchPage() {
           <p className="mt-8 text-[14px] text-slate-500 dark:text-slate-400">{s.empty.replace('{q}', query)}</p>
         ) : (
           <ul className="mt-4 space-y-2">
-            {results.map((r) => {
+            {shown.map((r) => {
               const tm = TYPE_META[r.type] || TYPE_META.page;
               return (
                 <li key={r.id}>
