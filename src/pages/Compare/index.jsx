@@ -10,15 +10,15 @@ const meta = routeByKey('compare');
 const COVERAGE = coverageByColumn();
 
 // A matrix cell: true → check, false → dash, string → text.
-function Cell({ value, featured, lang }) {
+function Cell({ value, featured, lang, yesLabel, noLabel }) {
   if (value === true) {
     return (
-      <svg className={`mx-auto h-4 w-4 ${featured ? 'text-emerald-500' : 'text-slate-400'}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-label="✓">
+      <svg role="img" className={`mx-auto h-4 w-4 ${featured ? 'text-emerald-500' : 'text-slate-400'}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-label={yesLabel}>
         <path d="M3.5 8.5 7 12l5.5-7" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   }
-  if (value === false) return <span className="text-slate-300 dark:text-slate-600" aria-label="—">—</span>;
+  if (value === false) return <span className="text-slate-300 dark:text-slate-600" role="img" aria-label={noLabel}>—</span>;
   return <span className="text-[12px] text-slate-500 dark:text-slate-400">{value[lang]}</span>;
 }
 
@@ -57,7 +57,7 @@ export default function ComparePage() {
             </thead>
             <tbody>
               {ROWS.map((row) => (
-                <tr key={row.feature.en} className="border-b border-slate-900/[.05] dark:border-white/[.06]">
+                <tr key={row.feature.en} className="border-b border-slate-900/[.05] dark:border-white/[.06] hover:bg-slate-900/[.02] dark:hover:bg-white/[.03] transition-colors">
                   <th scope="row" className="py-2.5 pr-4 text-[13px] font-normal text-slate-700 dark:text-slate-300">
                     {row.term ? (
                       <Link to={`/glossary#${row.term}`} title={c.termHint} className="border-b border-dotted border-slate-400 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
@@ -69,7 +69,7 @@ export default function ComparePage() {
                   </th>
                   {row.values.map((v, col) => (
                     <td key={col} className={`py-2.5 px-3 text-center ${COLUMNS[col].featured ? 'bg-emerald-500/[.04] dark:bg-emerald-400/[.04]' : ''}`}>
-                      <Cell value={v} featured={COLUMNS[col].featured} lang={lang} />
+                      <Cell value={v} featured={COLUMNS[col].featured} lang={lang} yesLabel={c.legendYes} noLabel={c.legendNo} />
                     </td>
                   ))}
                 </tr>
@@ -84,6 +84,17 @@ export default function ComparePage() {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-slate-500 dark:text-slate-400">
+          <span className="inline-flex items-center gap-1.5">
+            <svg className="h-3.5 w-3.5 text-emerald-500" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3.5 8.5 7 12l5.5-7" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            {c.legendYes}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">—</span>
+            {c.legendNo}
+          </span>
         </div>
 
         <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>

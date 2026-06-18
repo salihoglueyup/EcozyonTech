@@ -11,7 +11,9 @@ export default {
     "ctaTitle": "Farkı kendin gör",
     "ctaText": "Pilot ücretsiz; kurulum dakikalar sürer.",
     "cta": "Planları gör",
-    "termHint": "Terimi öğren"
+    "termHint": "Terimi öğren",
+    "legendYes": "Dahil",
+    "legendNo": "Yok"
   },
   "en": {
     "eyebrow": "Why Ecozyon?",
@@ -23,6 +25,8 @@ export default {
     "ctaTitle": "See the difference yourself",
     "ctaText": "The pilot is free; setup takes minutes.",
     "cta": "View plans",
-    "termHint": "Learn the term"
+    "termHint": "Learn the term",
+    "legendYes": "Included",
+    "legendNo": "Not included"
   }
 };
