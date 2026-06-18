@@ -60,6 +60,38 @@ export default {
       "status": { "t": "Sistem durumu", "d": "Canlı çalışma süresi ve olay geçmişi." },
       "careers": { "t": "Açık pozisyonlar", "d": "Ekibe katılmanın yolları." },
       "press": { "t": "Basın & medya", "d": "Basın bültenleri ve marka kaynakları." }
+    },
+    "presence": {
+      "title": "Katılacağın ağ",
+      "cities": "şehir",
+      "countries": "ülke",
+      "members": "aktif üye",
+      "co2": "kg CO₂/gün tasarruf",
+      "viewMap": "Etki haritasını gör"
+    },
+    "details": {
+      "title": "İletişim bilgileri",
+      "emailLabel": "Genel e-posta",
+      "pressLabel": "Basın & medya",
+      "pressCta": "Basın odası",
+      "locationLabel": "Konum",
+      "locationValue": "İstanbul, Türkiye",
+      "hoursLabel": "Yanıt saatleri",
+      "hoursValue": "Pzt–Cum · Avrupa, ABD ve MENA · ort. 8 saat"
+    },
+    "faq": {
+      "title": "Yazmadan önce",
+      "items": [
+        { "q": "Ücretsiz pilot var mı?", "a": "Evet — kurumlar için 30 günlük ücretsiz pilot sunuyoruz, kredi kartı gerekmez." },
+        { "q": "Onboarding ne kadar sürer?", "a": "Tipik kurulum bir haftadır; cihaz dağıtımı ve panel kurulumu dahil." },
+        { "q": "Hangi saatlerde destek alıyorum?", "a": "Avrupa, ABD ve MENA çalışma saatlerinde; ortalama yanıt 8 saat." },
+        { "q": "Verilerim nasıl işleniyor?", "a": "Veriler şifreli saklanır ve KVKK/GDPR uyumludur. Ayrıntılar Yasal sayfasında." }
+      ],
+      "legalCta": "Gizlilik & şartlar",
+      "helpCta": "Tüm yardım merkezi"
+    },
+    "social": {
+      "title": "Bizi takip et"
     }
   },
   "en": {
@@ -121,6 +153,38 @@ export default {
       "status": { "t": "System status", "d": "Live uptime and incident history." },
       "careers": { "t": "Open roles", "d": "Ways to join the team." },
       "press": { "t": "Press & media", "d": "Press releases and brand resources." }
+    },
+    "presence": {
+      "title": "The network you'd join",
+      "cities": "cities",
+      "countries": "countries",
+      "members": "active members",
+      "co2": "kg CO₂/day saved",
+      "viewMap": "View the impact map"
+    },
+    "details": {
+      "title": "Contact details",
+      "emailLabel": "General email",
+      "pressLabel": "Press & media",
+      "pressCta": "Newsroom",
+      "locationLabel": "Location",
+      "locationValue": "İstanbul, Türkiye",
+      "hoursLabel": "Response hours",
+      "hoursValue": "Mon–Fri · EU, US & MENA · ~8h avg"
+    },
+    "faq": {
+      "title": "Before you reach out",
+      "items": [
+        { "q": "Is there a free pilot?", "a": "Yes — we offer a 30-day free pilot for organizations, no credit card required." },
+        { "q": "How long does onboarding take?", "a": "Typical setup is one week, including device rollout and dashboard configuration." },
+        { "q": "Which hours do you support?", "a": "Across EU, US and MENA business hours; average response time is 8 hours." },
+        { "q": "How is my data handled?", "a": "Data is stored encrypted and is KVKK/GDPR compliant. Details are on the Legal page." }
+      ],
+      "legalCta": "Privacy & terms",
+      "helpCta": "Full help center"
+    },
+    "social": {
+      "title": "Follow along"
     }
   }
 };
