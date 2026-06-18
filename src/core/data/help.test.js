@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { HELP, helpCategories, filterByCategory, searchHelp, featuredHelp, helpById } from './help';
+import { routeByKey } from '@/core/config/site';
 
 describe('HELP data', () => {
   it('every entry has a unique id and bilingual category/q/a', () => {
@@ -9,6 +10,16 @@ describe('HELP data', () => {
       for (const key of ['category', 'q', 'a']) {
         expect(e[key], `${e.id}.${key}`).toHaveProperty('tr');
         expect(e[key], `${e.id}.${key}`).toHaveProperty('en');
+      }
+    }
+  });
+
+  it('every related `links` id resolves to a real route', () => {
+    for (const e of HELP) {
+      if (!e.links) continue;
+      expect(Array.isArray(e.links), `${e.id}.links`).toBe(true);
+      for (const key of e.links) {
+        expect(routeByKey(key), `${e.id} -> ${key}`).toBeTruthy();
       }
     }
   });

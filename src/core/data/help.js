@@ -1,7 +1,9 @@
 // Help-center FAQ entries — the single source for both the standalone /help
 // page and the curated FAQ section on /services. Each entry has a stable id
-// (the deep-link anchor), a category, a bilingual question/answer, and a
-// `featured` flag for the short Services list.
+// (the deep-link anchor), a category, a bilingual question/answer, a `featured`
+// flag for the short Services list, and an optional `links` array of route keys
+// (rendered as related-page chips under the answer; entries without it are
+// unaffected).
 //
 // Pure helpers (helpCategories / searchHelp / featuredHelp / helpById) mirror
 // the post/job/case helpers and are unit-tested.
@@ -10,6 +12,7 @@ export const HELP = [
     id: 'what-is-ecozyon',
     category: { tr: 'Ürün', en: 'Product' },
     featured: true,
+    links: ['services'],
     q: { tr: 'Ecozyon tam olarak nedir?', en: 'What exactly is Ecozyon?' },
     a: {
       tr: 'Ecozyon Tech, giyilebilir cihaz + AI tabanlı bir sürdürülebilirlik platformudur. Bireysel karbon ayak izini ölçer, azaltma önerileri sunar ve topluluk yarışmalarıyla alışkanlık değişimi sağlar.',
@@ -19,6 +22,7 @@ export const HELP = [
   {
     id: 'how-it-works',
     category: { tr: 'Ürün', en: 'Product' },
+    links: ['services'],
     q: { tr: 'Sistem nasıl çalışıyor?', en: 'How does the system work?' },
     a: {
       tr: 'Cihaz günlük aktiviteni ölçer, kişisel bir baseline oluşturur ve cihaz üstünde çalışan model günlük öneriler üretir. İlerlemeni mobil uygulamadan ve web panelinden takip edersin.',
@@ -48,6 +52,7 @@ export const HELP = [
     id: 'data-safety',
     category: { tr: 'Gizlilik', en: 'Privacy' },
     featured: true,
+    links: ['legal'],
     q: { tr: 'Verilerim güvende mi?', en: 'Is my data safe?' },
     a: {
       tr: 'Evet. Tüm veriler uçtan uca şifrelenir, KVKK ve GDPR uyumludur. Ham verileri üçüncü taraflarla paylaşmıyoruz.',
@@ -57,6 +62,7 @@ export const HELP = [
   {
     id: 'on-device',
     category: { tr: 'Gizlilik', en: 'Privacy' },
+    links: ['legal'],
     q: { tr: 'Veriler cihazda mı işleniyor?', en: 'Is data processed on-device?' },
     a: {
       tr: 'Öneri modelleri mümkün olduğunca cihaz üstünde çalışır; yalnızca toplulaştırılmış sinyaller paylaşılır. Bu, gizliliği bozmadan ölçüm yapmamızı sağlar.',
@@ -66,6 +72,7 @@ export const HELP = [
   {
     id: 'data-deletion',
     category: { tr: 'Gizlilik', en: 'Privacy' },
+    links: ['legal'],
     q: { tr: 'Verilerimi sildirebilir miyim?', en: 'Can I have my data deleted?' },
     a: {
       tr: 'Dilediğin zaman silinmesini talep edebilirsin — hello@ecozyon.tech adresine yazman yeterli.',
@@ -76,6 +83,7 @@ export const HELP = [
     id: 'free-plan',
     category: { tr: 'Fiyatlandırma', en: 'Pricing' },
     featured: true,
+    links: ['pricing'],
     q: { tr: 'Ücretsiz plan ne kadar süreyle geçerli?', en: 'How long is the free plan valid?' },
     a: {
       tr: 'Pilot dönem boyunca bireysel kullanım tamamen ücretsiz. Ek özellikler (takım analitiği, API erişimi) için ücretli planlar mevcuttur.',
@@ -85,6 +93,7 @@ export const HELP = [
   {
     id: 'annual-saving',
     category: { tr: 'Fiyatlandırma', en: 'Pricing' },
+    links: ['pricing'],
     q: { tr: 'Yıllık faturalama ne kadar kazandırır?', en: 'How much does annual billing save?' },
     a: {
       tr: 'Yıllık planda 12 ay yerine 10 ay ödersin — yaklaşık %17 tasarruf.',
@@ -95,6 +104,7 @@ export const HELP = [
     id: 'platforms',
     category: { tr: 'Entegrasyon', en: 'Integration' },
     featured: true,
+    links: ['integrations'],
     q: { tr: 'Hangi platformları destekliyorsunuz?', en: 'Which platforms do you support?' },
     a: {
       tr: 'iOS, Android ve web dashboard. Ayrıca REST API ile mevcut kurumsal sistemlere entegrasyon sağlanır.',
@@ -104,6 +114,7 @@ export const HELP = [
   {
     id: 'api-access',
     category: { tr: 'Entegrasyon', en: 'Integration' },
+    links: ['developers'],
     q: { tr: 'API erişimi nasıl alınır?', en: 'How do I get API access?' },
     a: {
       tr: 'API erişimi Takım ve Kurumsal planlarda açıktır. Anahtarını yönetici panelinden oluşturursun.',
@@ -113,6 +124,7 @@ export const HELP = [
   {
     id: 'sso',
     category: { tr: 'Entegrasyon', en: 'Integration' },
+    links: ['developers'],
     q: { tr: 'SSO / SCIM destekliyor musunuz?', en: 'Do you support SSO / SCIM?' },
     a: {
       tr: 'Evet, Kurumsal planda SSO ve SCIM ile kullanıcı yönetimi sağlanır.',
@@ -151,6 +163,7 @@ export const HELP = [
     id: 'data-not-syncing',
     category: { tr: 'Sorun giderme', en: 'Troubleshooting' },
     featured: true,
+    links: ['status'],
     q: { tr: 'Verilerim senkronize olmuyor, ne yapmalıyım?', en: 'My data isn’t syncing — what should I do?' },
     a: {
       tr: 'Önce Bluetooth’un açık ve uygulamanın güncel olduğundan emin ol. Cihaz çevrimdışıyken ölçümü yerelde tutar ve bağlantı gelince otomatik eşitler.',

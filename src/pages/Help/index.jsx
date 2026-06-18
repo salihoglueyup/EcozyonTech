@@ -82,7 +82,7 @@ export default function HelpPage() {
             </EmptyState>
           )}
           {visible.map((entry) => (
-            <HelpItem key={entry.id} entry={entry} lang={lang} defaultOpen={entry.id === hashId} />
+            <HelpItem key={entry.id} entry={entry} lang={lang} relatedLabel={t.related.related} defaultOpen={entry.id === hashId} />
           ))}
         </div>
 
@@ -102,7 +102,10 @@ export default function HelpPage() {
   );
 }
 
-function HelpItem({ entry, lang, defaultOpen = false }) {
+function HelpItem({ entry, lang, relatedLabel, defaultOpen = false }) {
+  // Optional related-page chips — turn a terminal answer into a next action.
+  // Labels come from the route table, so they need no per-link translation.
+  const related = (entry.links ?? []).map(routeByKey).filter(Boolean);
   return (
     <Disclosure
       summary={entry.q[lang]}
@@ -120,6 +123,21 @@ function HelpItem({ entry, lang, defaultOpen = false }) {
       }
     >
       {entry.a[lang]}
+      {related.length > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-[11px] uppercase tracking-[.12em] font-semibold text-slate-400">{relatedLabel}</span>
+          {related.map((route) => (
+            <Link
+              key={route.key}
+              to={route.path}
+              className="group inline-flex items-center gap-1 rounded-full bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 px-2.5 py-1 text-[12px] font-medium hover:bg-cyan-500/15 transition"
+            >
+              {route.nav[lang]}
+              <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          ))}
+        </div>
+      )}
     </Disclosure>
   );
 }
