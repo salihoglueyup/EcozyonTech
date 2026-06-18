@@ -37,10 +37,14 @@ export default function LeaderboardPage() {
           className="mb-8"
         />
 
-        <div className="mb-6 flex items-center justify-between gap-4 flex-wrap">
+        <div className="mb-2 flex items-center justify-between gap-4 flex-wrap">
           <span className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">{g.metricLabel}</span>
           <Tabs tabs={tabs} value={metric} onChange={setMetric} size="sm" />
         </div>
+
+        <p className="mb-6 text-[12.5px] text-slate-500 dark:text-slate-400 leading-relaxed" aria-live="polite">
+          {g.metricDesc[metric]}
+        </p>
 
         <ol ref={ref} className="space-y-2">
           {ranked.map((row, i) => {

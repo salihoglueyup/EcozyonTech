@@ -12,6 +12,11 @@ export default {
       "efficiency": "Kişi başı verim",
       "users": "Aktif kullanıcı"
     },
+    "metricDesc": {
+      "co2": "Şehrin günlük toplam karbon tasarrufu. Daha yüksek değer = daha fazla önlenen emisyon.",
+      "efficiency": "Aktif kullanıcı başına düşen karbon etkisi — ağın ne kadar verimli çalıştığını gösterir.",
+      "users": "Şehirdeki aktif Ecozyon kullanıcı sayısı."
+    },
     "units": {
       "co2": "kg/gün",
       "users": "kullanıcı",
@@ -30,6 +35,11 @@ export default {
       "co2": "CO₂ saved",
       "efficiency": "Per-user efficiency",
       "users": "Active users"
+    },
+    "metricDesc": {
+      "co2": "Total carbon a city saves per day. Higher = more emissions avoided.",
+      "efficiency": "Carbon impact per active user — how efficiently the network performs.",
+      "users": "Number of active Ecozyon users in the city."
     },
     "units": {
       "co2": "kg/day",
