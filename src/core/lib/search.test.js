@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { fold, buildSearchDocs, scoreDoc, searchDocs } from './search';
+import { fold, buildSearchDocs, scoreDoc, searchDocs, highlightSegments } from './search';
 import { COLLECTIONS } from '@/core/content/registry';
 
 const routes = [
@@ -78,6 +78,41 @@ describe('searchDocs (against real content)', () => {
 
   it('respects the limit', () => {
     expect(searchDocs(docs, 'e', { limit: 2 }).length).toBeLessThanOrEqual(2);
+  });
+});
+
+describe('highlightSegments', () => {
+  // Re-join the segments and assert the original text is always reconstructed.
+  const join = (segs) => segs.map((s) => s.text).join('');
+  const hit = (segs) => segs.filter((s) => s.hit).map((s) => s.text);
+
+  it('returns a single miss segment for an empty/whitespace query', () => {
+    expect(highlightSegments('Carbon budget', '')).toEqual([{ text: 'Carbon budget', hit: false }]);
+    expect(highlightSegments('Carbon budget', '   ')).toEqual([{ text: 'Carbon budget', hit: false }]);
+  });
+
+  it('is null-safe and never loses characters', () => {
+    expect(highlightSegments(undefined, 'x')).toEqual([{ text: '', hit: false }]);
+    expect(join(highlightSegments('Carbon budget basics', 'budget'))).toBe('Carbon budget basics');
+  });
+
+  it('marks the matched term on the original casing', () => {
+    const segs = highlightSegments('Carbon Budget', 'budget');
+    expect(hit(segs)).toEqual(['Budget']);
+  });
+
+  it('is diacritic and case insensitive on the original text', () => {
+    const segs = highlightSegments('İstanbul', 'istanbul');
+    expect(hit(segs)).toEqual(['İstanbul']);
+  });
+
+  it('highlights every term in a multi-term query', () => {
+    const segs = highlightSegments('Carbon budget basics', 'carbon basics');
+    expect(hit(segs)).toEqual(['Carbon', 'basics']);
+  });
+
+  it('leaves text untouched when nothing matches', () => {
+    expect(highlightSegments('Carbon budget', 'zzz')).toEqual([{ text: 'Carbon budget', hit: false }]);
   });
 });
 

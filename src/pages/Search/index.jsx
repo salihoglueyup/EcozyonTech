@@ -4,7 +4,7 @@ import { PageHeader, FilterPills, ResultCount } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { ROUTES, routeByKey } from '@/core/config/site';
-import { buildSearchDocs, searchDocs } from '@/core/lib/search';
+import { buildSearchDocs, searchDocs, highlightSegments } from '@/core/lib/search';
 
 const meta = routeByKey('search');
 
@@ -122,7 +122,15 @@ export default function SearchPage() {
                     className="group flex items-center gap-3 rounded-xl eco-card px-4 py-3 hover:ring-cyan-500/30 transition"
                   >
                     <span className="shrink-0 text-slate-400 group-hover:text-cyan-500" aria-hidden="true">{tm.icon}</span>
-                    <span className="flex-1 truncate text-[14px] font-medium text-slate-800 dark:text-slate-200">{r.title}</span>
+                    <span className="flex-1 truncate text-[14px] font-medium text-slate-800 dark:text-slate-200">
+                      {highlightSegments(r.title, query).map((seg, i) =>
+                        seg.hit ? (
+                          <mark key={i} className="rounded-[2px] bg-cyan-200/60 text-inherit dark:bg-cyan-400/25">{seg.text}</mark>
+                        ) : (
+                          <span key={i}>{seg.text}</span>
+                        ),
+                      )}
+                    </span>
                     {r.hint && <span className="shrink-0 text-[11.5px] text-slate-400">{r.hint}</span>}
                     <span className="shrink-0 text-[10.5px] uppercase tracking-wide text-slate-300 dark:text-slate-500">{t.cmd[tm.key]}</span>
                   </Link>
