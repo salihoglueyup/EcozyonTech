@@ -2,6 +2,7 @@ import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
 import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
+import { useToast } from '@/shared/ui/Toast';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -12,7 +13,18 @@ const meta = routeByKey('press');
 export default function PressPage() {
   const { lang, t } = useApp();
   const p = t.press;
+  const toast = useToast();
   useDocumentMeta(meta.title[lang], p.intro);
+
+  const copyColor = async (hex) => {
+    if (typeof window === 'undefined') return;
+    try {
+      await navigator.clipboard.writeText(hex);
+      toast({ message: p.copied.replace('{hex}', hex), type: 'success' });
+    } catch {
+      toast({ message: p.copyError, type: 'error' });
+    }
+  };
 
   const fmtDate = (iso) =>
     new Date(iso).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -78,13 +90,23 @@ export default function PressPage() {
               <div className="text-[12.5px] text-slate-500 dark:text-slate-400 mb-3">{p.brandColors}</div>
               <div className="flex flex-wrap gap-3">
                 {BRAND_COLORS.map((col) => (
-                  <div key={col.hex} className="flex items-center gap-2.5">
+                  <button
+                    key={col.hex}
+                    type="button"
+                    onClick={() => copyColor(col.hex)}
+                    title={p.copyHint}
+                    aria-label={`${p.copyAria.replace('{name}', col.name)} — ${col.hex}`}
+                    className="eco-press group flex items-center gap-2.5 rounded-lg -m-1 p-1 text-left hover:bg-slate-900/[.04] dark:hover:bg-white/[.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 transition"
+                  >
                     <span className="h-8 w-8 rounded-lg ring-1 ring-black/[.08] dark:ring-white/[.12]" style={{ backgroundColor: col.hex }} aria-hidden="true" />
                     <div className="leading-tight">
                       <div className="text-[12.5px] font-medium text-slate-900 dark:text-slate-100">{col.name}</div>
-                      <div className="text-[11px] tabular-nums text-slate-400">{col.hex}</div>
+                      <div className="flex items-center gap-1 text-[11px] tabular-nums text-slate-400">
+                        {col.hex}
+                        <svg viewBox="0 0 24 24" className="h-3 w-3 opacity-0 group-hover:opacity-100 transition" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a2 2 0 0 1 2-2h10" strokeLinecap="round" /></svg>
+                      </div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>

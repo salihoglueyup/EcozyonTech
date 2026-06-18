@@ -12,7 +12,11 @@ export default {
     "brandColors": "Marka renkleri",
     "contactTitle": "Basın iletişimi",
     "contactText": "Basın talepleri için bizimle iletişime geçin.",
-    "contactCta": "Basın ekibine yaz"
+    "contactCta": "Basın ekibine yaz",
+    "copyHint": "Kopyalamak için tıkla",
+    "copied": "Kopyalandı: {hex}",
+    "copyError": "Kopyalanamadı",
+    "copyAria": "{name} rengini kopyala"
   },
   "en": {
     "eyebrow": "Newsroom",
@@ -25,6 +29,10 @@ export default {
     "brandColors": "Brand colors",
     "contactTitle": "Press contact",
     "contactText": "Get in touch with us for press inquiries.",
-    "contactCta": "Email the press team"
+    "contactCta": "Email the press team",
+    "copyHint": "Click to copy",
+    "copied": "Copied: {hex}",
+    "copyError": "Couldn't copy",
+    "copyAria": "Copy {name} color"
   }
 };
