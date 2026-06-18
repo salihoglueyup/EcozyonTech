@@ -53,7 +53,14 @@ export default {
         "t": "Demo & pilot teklifi",
         "d": "Senin için özelleştirilmiş bir pilot programı."
       }
-    ]
+    ],
+    "channels": {
+      "title": "Doğru yere ulaş",
+      "help": { "t": "Hızlı yanıtlar", "d": "Sık sorulan sorulara anında cevap." },
+      "status": { "t": "Sistem durumu", "d": "Canlı çalışma süresi ve olay geçmişi." },
+      "careers": { "t": "Açık pozisyonlar", "d": "Ekibe katılmanın yolları." },
+      "press": { "t": "Basın & medya", "d": "Basın bültenleri ve marka kaynakları." }
+    }
   },
   "en": {
     "eyebrow": "Contact",
@@ -107,6 +114,13 @@ export default {
         "t": "Demo & pilot offer",
         "d": "A pilot tailored to your context."
       }
-    ]
+    ],
+    "channels": {
+      "title": "Reach the right place",
+      "help": { "t": "Quick answers", "d": "Instant answers to common questions." },
+      "status": { "t": "System status", "d": "Live uptime and incident history." },
+      "careers": { "t": "Open roles", "d": "Ways to join the team." },
+      "press": { "t": "Press & media", "d": "Press releases and brand resources." }
+    }
   }
 };
