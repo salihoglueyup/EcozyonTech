@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PageHeader, FilterPills, ResultCount } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
@@ -65,6 +65,44 @@ export default function SearchPage() {
   const activeType = typeOptions.some((o) => o.id === type) ? type : null;
   const shown = activeType ? results.filter((r) => r.type === activeType) : results;
 
+  // Keyboard navigation: ↓ from the input enters the result list; ↑/↓ roam the
+  // result links (↑ from the first returns to the input), Home/End jump to ends.
+  // Links stay natively focusable (Enter activates), so no extra ARIA contract.
+  const inputRef = useRef(null);
+  const listRef = useRef(null);
+  const focusLink = (i) => {
+    const links = listRef.current?.querySelectorAll('a');
+    if (!links?.length) return;
+    links[(i + links.length) % links.length].focus();
+  };
+  const onInputKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      focusLink(0);
+    }
+  };
+  const onListKeyDown = (e) => {
+    const links = Array.from(listRef.current?.querySelectorAll('a') ?? []);
+    if (!links.length) return;
+    const cur = links.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      focusLink(cur + 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (cur <= 0) inputRef.current?.focus();
+      else focusLink(cur - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      focusLink(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      focusLink(links.length - 1);
+    } else if (e.key === 'Escape') {
+      inputRef.current?.focus();
+    }
+  };
+
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
@@ -81,10 +119,12 @@ export default function SearchPage() {
             <circle cx="7" cy="7" r="4.5" /><path d="m11 11 3 3" strokeLinecap="round" />
           </svg>
           <input
+            ref={inputRef}
             autoFocus
             type="search"
             value={q}
             onChange={(e) => onChange(e.target.value)}
+            onKeyDown={onInputKeyDown}
             placeholder={s.placeholder}
             aria-label={s.label}
             className="w-full bg-transparent py-3.5 text-[15px] text-slate-800 dark:text-slate-200 outline-none placeholder:text-slate-400"
@@ -112,7 +152,7 @@ export default function SearchPage() {
         ) : results.length === 0 ? (
           <p className="mt-8 text-[14px] text-slate-500 dark:text-slate-400">{s.empty.replace('{q}', query)}</p>
         ) : (
-          <ul className="mt-4 space-y-2">
+          <ul ref={listRef} onKeyDown={onListKeyDown} className="mt-4 space-y-2">
             {shown.map((r) => {
               const tm = TYPE_META[r.type] || TYPE_META.page;
               return (
