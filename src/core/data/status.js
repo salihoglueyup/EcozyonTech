@@ -83,3 +83,15 @@ export const uptimeAverage = (components = COMPONENTS) =>
   components.length === 0
     ? 0
     : Math.round((components.reduce((s, c) => s + c.uptime, 0) / components.length) * 100) / 100;
+
+// Whole days since the most recent incident (null when there are none). `now`
+// is injectable so tests stay deterministic; never returns negative.
+export function daysSinceLastIncident(incidents = INCIDENTS, now = new Date()) {
+  if (!incidents || incidents.length === 0) return null;
+  const latest = incidents.reduce((max, i) => {
+    const t = new Date(i.date).getTime();
+    return Number.isFinite(t) && t > max ? t : max;
+  }, -Infinity);
+  if (!Number.isFinite(latest)) return null;
+  return Math.max(0, Math.floor((now.getTime() - latest) / 86400000));
+}

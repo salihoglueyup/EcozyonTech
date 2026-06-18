@@ -12,7 +12,8 @@ export default {
     "incidents": "Geçmiş olaylar",
     "noIncidents": "Son dönemde kayıtlı olay yok.",
     "resolved": "Çözüldü",
-    "ongoing": "Sürüyor"
+    "ongoing": "Sürüyor",
+    "daysSince": "{n} gün kesintisiz"
   },
   "en": {
     "eyebrow": "System Status",
@@ -25,6 +26,7 @@ export default {
     "incidents": "Incident history",
     "noIncidents": "No incidents on record recently.",
     "resolved": "Resolved",
-    "ongoing": "Ongoing"
+    "ongoing": "Ongoing",
+    "daysSince": "{n} days incident-free"
   }
 };

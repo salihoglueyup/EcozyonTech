@@ -6,6 +6,7 @@ import {
   statusMeta,
   overallStatus,
   uptimeAverage,
+  daysSinceLastIncident,
 } from './status';
 
 describe('status data', () => {
@@ -80,5 +81,22 @@ describe('uptimeAverage', () => {
 
   it('is 0 for an empty list', () => {
     expect(uptimeAverage([])).toBe(0);
+  });
+});
+
+describe('daysSinceLastIncident', () => {
+  it('counts whole days from the most recent incident date', () => {
+    const incidents = [{ date: '2026-05-28' }, { date: '2026-03-02' }];
+    expect(daysSinceLastIncident(incidents, new Date('2026-06-18T00:00:00Z'))).toBe(21);
+  });
+
+  it('uses the newest date regardless of list order', () => {
+    const incidents = [{ date: '2026-01-01' }, { date: '2026-06-10' }];
+    expect(daysSinceLastIncident(incidents, new Date('2026-06-18T00:00:00Z'))).toBe(8);
+  });
+
+  it('never goes negative and is null when there are none', () => {
+    expect(daysSinceLastIncident([{ date: '2026-06-20' }], new Date('2026-06-18T00:00:00Z'))).toBe(0);
+    expect(daysSinceLastIncident([])).toBeNull();
   });
 });

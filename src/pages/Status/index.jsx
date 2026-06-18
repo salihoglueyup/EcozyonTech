@@ -10,6 +10,7 @@ import {
   statusMeta,
   overallStatus,
   uptimeAverage,
+  daysSinceLastIncident,
   OVERALL_HEADLINE,
 } from '@/core/data/status';
 
@@ -29,6 +30,7 @@ export default function StatusPage() {
   const overall = overallStatus(COMPONENTS);
   const overallM = statusMeta(overall);
   const avg = uptimeAverage(COMPONENTS);
+  const streak = daysSinceLastIncident(INCIDENTS);
   const updated = new Date().toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', {
     year: 'numeric',
     month: 'long',
@@ -106,7 +108,15 @@ export default function StatusPage() {
         </ul>
 
         {/* Incidents */}
-        <h2 className="mt-12 mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{s.incidents}</h2>
+        <div className="mt-12 mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{s.incidents}</h2>
+          {streak != null && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[12px] font-medium text-emerald-700 dark:text-emerald-400">
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M8 1.5 9.8 5.4l4.2.4-3.2 2.8 1 4.1L8 10.6 4.2 12.7l1-4.1L2 5.8l4.2-.4z" strokeLinejoin="round" /></svg>
+              {s.daysSince.replace('{n}', streak)}
+            </span>
+          )}
+        </div>
         <div className="mb-5 text-right text-[11.5px] text-slate-400">
           {s.updated}: {updated}
         </div>
