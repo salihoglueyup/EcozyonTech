@@ -81,8 +81,16 @@ export default function AssessmentPage() {
         </div>
 
         {/* Progress */}
-        <div className="mb-5" aria-hidden="true">
-          <div className="h-1.5 rounded-full bg-slate-900/[.06] dark:bg-white/[.08] overflow-hidden">
+        <div
+          className="mb-5"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={a.progressLabel}
+          aria-valuetext={done ? a.result.scoreLabel : a.step.replace('{n}', step + 1).replace('{total}', TOTAL)}
+        >
+          <div className="h-1.5 rounded-full bg-slate-900/[.06] dark:bg-white/[.08] overflow-hidden" aria-hidden="true">
             <div
               className="h-full rounded-full transition-[width] duration-500"
               style={{ width: `${progress}%`, backgroundImage: 'linear-gradient(90deg,#0EA5E9,#10B981)' }}
@@ -92,8 +100,13 @@ export default function AssessmentPage() {
 
         {!done ? (
           <div className="rounded-3xl bg-white/70 dark:bg-white/[.04] border border-slate-900/[.08] dark:border-white/[.08] p-6 sm:p-8 shadow-[0_18px_44px_-24px_rgba(15,23,42,.3)]">
-            <div className="text-[11.5px] font-mono text-slate-400 mb-3">
-              {a.step.replace('{n}', step + 1).replace('{total}', TOTAL)}
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <span className="text-[11.5px] font-mono text-slate-400">
+                {a.step.replace('{n}', step + 1).replace('{total}', TOTAL)}
+              </span>
+              <span className="rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide">
+                {a.cat[q.id]}
+              </span>
             </div>
             <fieldset>
               <legend className="text-[18px] font-display font-medium text-slate-900 dark:text-slate-100 mb-5">

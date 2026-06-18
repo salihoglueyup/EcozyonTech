@@ -10,6 +10,7 @@ export default {
     next: 'Devam',
     back: 'Geri',
     step: 'Adım {n}/{total}',
+    progressLabel: 'Test ilerlemesi',
     cat: {
       transport: 'Ulaşım',
       diet: 'Beslenme',
@@ -64,6 +65,7 @@ export default {
     next: 'Next',
     back: 'Back',
     step: 'Step {n}/{total}',
+    progressLabel: 'Quiz progress',
     cat: {
       transport: 'Transport',
       diet: 'Diet',
