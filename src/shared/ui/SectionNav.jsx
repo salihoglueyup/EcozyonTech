@@ -42,7 +42,7 @@ export function useScrollSpy(ids, { rootMargin = '-45% 0px -45% 0px' } = {}) {
  * `alwaysLabels` keeps labels visible (used as a blog table-of-contents,
  * where the rail is a reading aid rather than a minimal dot strip).
  */
-export function SectionNav({ sections, className = '', alwaysLabels = false }) {
+export function SectionNav({ sections, className = '', alwaysLabels = false, progress = null, progressLabel }) {
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
   const active = useScrollSpy(ids);
 
@@ -57,6 +57,26 @@ export function SectionNav({ sections, className = '', alwaysLabels = false }) {
       aria-label="Bölüm navigasyonu"
       className={`hidden xl:flex flex-col gap-3 fixed left-6 top-1/2 -translate-y-1/2 z-40 ${className}`}
     >
+      {progress != null && (
+        <div
+          className="mb-1 flex items-center gap-2"
+          role="progressbar"
+          aria-valuenow={Math.round(progress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={progressLabel}
+        >
+          <span className="h-1 w-9 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700" aria-hidden="true">
+            <span
+              className="block h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 transition-[width] duration-150"
+              style={{ width: `${progress}%` }}
+            />
+          </span>
+          <span className="text-[10px] font-medium tabular-nums text-slate-400" aria-hidden="true">
+            {Math.round(progress)}%
+          </span>
+        </div>
+      )}
       {sections.map((s) => {
         const isActive = s.id === active;
         return (

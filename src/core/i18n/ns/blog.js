@@ -3,6 +3,7 @@
 export default {
   "tr": {
     "readMin": "dk okuma",
+    "readingProgress": "Okuma ilerlemesi",
     "all": "Tümü",
     "filterLabel": "Etikete göre filtrele",
     "empty": "Bu etikette yazı yok.",
@@ -31,6 +32,7 @@ export default {
   },
   "en": {
     "readMin": "min read",
+    "readingProgress": "Reading progress",
     "all": "All",
     "filterLabel": "Filter by tag",
     "empty": "No posts under this tag.",

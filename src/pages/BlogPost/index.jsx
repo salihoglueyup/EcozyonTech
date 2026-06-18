@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
+import { useReadingProgress } from '@/shared/ui/useReadingProgress';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { postBySlug, readingTime, relatedPosts, postNeighbors, tagSlug } from '@/core/data/posts';
@@ -32,6 +33,12 @@ export default function BlogPostPage() {
     if (post) recordRecent(post.slug);
   }, [post]);
 
+  // Article-scoped reading progress for the TOC rail (0–100). Hook runs every
+  // render (before the early return below); the ref is null until the article
+  // mounts, which the hook tolerates.
+  const articleRef = useRef(null);
+  const progress = useReadingProgress(articleRef);
+
   // Unknown slug → render the real 404 page so users get a consistent
   // dead-end UX (the prerender step never emits HTML for unknown slugs,
   // so this only triggers on client navigation / SPA fallback).
@@ -48,8 +55,10 @@ export default function BlogPostPage() {
     .map((b) => ({ id: b.id, label: b.h }));
 
   return (
-    <article className="relative py-20 lg:py-28 pt-32">
-      {headings.length > 0 && <SectionNav sections={headings} alwaysLabels />}
+    <article ref={articleRef} className="relative py-20 lg:py-28 pt-32">
+      {headings.length > 0 && (
+        <SectionNav sections={headings} alwaysLabels progress={progress} progressLabel={t.blog.readingProgress} />
+      )}
       <div className="mx-auto max-w-3xl px-6">
         <Breadcrumbs items={[{ label: 'Blog', to: '/blog' }, { label: post.title[lang] }]} />
         <div className="mt-6 flex items-center gap-3 text-[11px]">
