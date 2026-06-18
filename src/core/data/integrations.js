@@ -272,3 +272,18 @@ export function integrationCategories(all = INTEGRATIONS) {
 // Filter by category id (category.en); null/undefined returns all.
 export const filterByCategory = (all, categoryId) =>
   categoryId ? all.filter((i) => i.category.en === categoryId) : all;
+
+// Case-insensitive substring search over name + tagline + category + features
+// in the active language. Empty query returns the list unchanged so it composes
+// with filterByCategory (AND semantics) — mirrors searchHelp.
+export function searchIntegrations(all, query, lang = 'tr') {
+  const q = String(query ?? '').trim().toLowerCase();
+  if (!q) return all;
+  return all.filter((i) => {
+    const hay = [i.name, i.tagline?.[lang], i.category?.[lang], ...(i.features?.[lang] ?? [])]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return hay.includes(q);
+  });
+}

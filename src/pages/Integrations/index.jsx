@@ -1,11 +1,11 @@
 import { GRADIENTS } from '@/core/tokens';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, FilterPills, PageHeader, ResultCount, StatusBadge } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, StatusBadge } from '@/shared/ui/primitives';
+import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { INTEGRATIONS, integrationCategories, filterByCategory, statusMeta } from '@/core/data/integrations';
+import { INTEGRATIONS, integrationCategories, filterByCategory, searchIntegrations, statusMeta } from '@/core/data/integrations';
 
 const meta = routeByKey('integrations');
 const CATEGORIES = integrationCategories();
@@ -13,10 +13,13 @@ const CATEGORIES = integrationCategories();
 export default function IntegrationsPage() {
   const { lang, t } = useApp();
   const g = t.integrations;
-  const [active, setActive] = useState(null);
+  const { active, setActive, query, setQuery, visible } = useFilteredList({
+    items: INTEGRATIONS,
+    filter: filterByCategory,
+    search: searchIntegrations,
+    lang,
+  });
   useDocumentMeta(meta.title[lang], g.intro);
-
-  const visible = filterByCategory(INTEGRATIONS, active);
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
@@ -27,6 +30,16 @@ export default function IntegrationsPage() {
           titleAccent={g.titleAccent}
           intro={g.intro}
           className="max-w-3xl mb-10"
+        />
+
+        <SearchInput
+          className="mb-5 max-w-sm"
+          value={query}
+          onChange={setQuery}
+          placeholder={g.searchP}
+          label={g.searchLabel}
+          clearLabel={g.searchClear}
+          inputClassName="py-3 text-[14px]"
         />
 
         <FilterPills
@@ -41,6 +54,22 @@ export default function IntegrationsPage() {
 
         <ResultCount>{g.count.replace('{n}', visible.length)}</ResultCount>
 
+        {visible.length === 0 ? (
+          <EmptyState
+            icon={<svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m20 20-4.5-4.5" strokeLinecap="round" /></svg>}
+            action={
+              <button
+                type="button"
+                onClick={() => { setActive(null); setQuery(''); }}
+                className="eco-press inline-flex items-center gap-1.5 rounded-full bg-slate-900/[.05] dark:bg-white/[.08] px-3.5 py-1.5 text-[12.5px] font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.08] dark:hover:bg-white/[.12] transition"
+              >
+                {g.clearFilters}
+              </button>
+            }
+          >
+            {g.empty}
+          </EmptyState>
+        ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((it) => {
             const sm = statusMeta(it.status);
@@ -63,6 +92,7 @@ export default function IntegrationsPage() {
             );
           })}
         </div>
+        )}
 
         <div className="mt-12 rounded-2xl p-7 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
           <h2 className="font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{g.ctaTitle}</h2>

@@ -6,6 +6,7 @@ import {
   integrationBySlug,
   integrationCategories,
   filterByCategory,
+  searchIntegrations,
 } from './integrations';
 
 describe('integrations data', () => {
@@ -75,5 +76,25 @@ describe('integrationCategories / filterByCategory', () => {
     const filtered = filterByCategory(INTEGRATIONS, cat);
     expect(filtered.every((i) => i.category.en === cat)).toBe(true);
     expect(filterByCategory(INTEGRATIONS, null)).toEqual(INTEGRATIONS);
+  });
+});
+
+describe('searchIntegrations', () => {
+  it('passes the list through unchanged for an empty query', () => {
+    expect(searchIntegrations(INTEGRATIONS, '', 'tr')).toEqual(INTEGRATIONS);
+    expect(searchIntegrations(INTEGRATIONS, '   ', 'en')).toEqual(INTEGRATIONS);
+  });
+
+  it('matches by brand name (case-insensitive)', () => {
+    const hits = searchIntegrations(INTEGRATIONS, 'fitbit', 'en');
+    expect(hits.length).toBe(1);
+    expect(hits[0].slug).toBe('fitbit');
+  });
+
+  it('matches in the active language tagline/features and returns [] for nonsense', () => {
+    const it = INTEGRATIONS[0];
+    const term = it.tagline.en.split(' ')[0];
+    expect(searchIntegrations(INTEGRATIONS, term, 'en').some((x) => x.slug === it.slug)).toBe(true);
+    expect(searchIntegrations(INTEGRATIONS, 'zzzznotathing', 'tr')).toEqual([]);
   });
 });
