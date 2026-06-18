@@ -56,7 +56,10 @@ export default function SitemapPage() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {pageGroups.map((g) => (
             <div key={g.id}>
-              <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-3">{g.title}</h2>
+              <h2 className="mb-3 flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">
+                {g.title}
+                <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-1.5 py-0.5 text-[9.5px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
+              </h2>
               <LinkList items={g.items} />
             </div>
           ))}
@@ -65,7 +68,10 @@ export default function SitemapPage() {
         <div className="mt-12 grid gap-8 sm:grid-cols-3 border-t border-slate-900/[.06] dark:border-white/[.06] pt-10">
           {dynamicGroups.map((g) => (
             <div key={g.id}>
-              <h2 className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-3">{g.title}</h2>
+              <h2 className="mb-3 flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">
+                {g.title}
+                <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-1.5 py-0.5 text-[9.5px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
+              </h2>
               <LinkList items={g.items} />
             </div>
           ))}
