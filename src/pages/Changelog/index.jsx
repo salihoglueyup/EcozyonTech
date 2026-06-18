@@ -32,11 +32,18 @@ export default function ChangelogPage() {
 
         <ol className="relative border-l border-slate-900/[.1] dark:border-white/[.12] ml-2">
           {CHANGELOG.map((release, idx) => (
-            <li key={release.version} className="relative pl-8 pb-12 last:pb-0">
+            <li key={release.version} id={`v${release.version}`} className="relative pl-8 pb-12 last:pb-0 scroll-mt-28">
               <span className="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full ring-4 ring-white dark:ring-slate-900" style={{ backgroundColor: idx === 0 ? '#10B981' : '#94A3B8' }} aria-hidden="true" />
               <Reveal>
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">v{release.version}</span>
+                  <a
+                    href={`#v${release.version}`}
+                    aria-label={c.anchorLabel.replace('{v}', `v${release.version}`)}
+                    className="group/anchor inline-flex items-center gap-1.5 rounded-md font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100 tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50"
+                  >
+                    v{release.version}
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-slate-400 opacity-0 group-hover/anchor:opacity-100 group-focus-visible/anchor:opacity-100 transition" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" strokeLinecap="round" strokeLinejoin="round" /><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </a>
                   {idx === 0 && (
                     <span className="rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 text-[10.5px] font-semibold">{c.latest}</span>
                   )}
