@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PageHeader } from '@/shared/ui/primitives';
+import { ArrowRight, PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useToast } from '@/shared/ui/Toast';
 import { useApp } from '@/app/providers/AppProvider';
@@ -127,6 +127,15 @@ export default function PressPage() {
             </Link>
           </div>
         </Reveal>
+
+        {/* A press visitor needs more than an email: the company story, the
+            live impact data behind the claims, and the latest announcements.
+            Labels come from the route table, so no per-link i18n is needed. */}
+        <RelatedRoutes
+          title={t.related.related}
+          routeKeys={['about', 'impact', 'blog']}
+          lang={lang}
+        />
       </div>
     </section>
   );
