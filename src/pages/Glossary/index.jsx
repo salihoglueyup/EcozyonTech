@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { EmptyState, FilterPills, PageHeader, ResultCount } from '@/shared/ui/primitives';
+import { EmptyState, FilterPills, PageHeader, ResultCount, RelatedRoutes } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
@@ -110,6 +110,15 @@ export default function GlossaryPage() {
             ))}
           </div>
         )}
+
+        {/* A glossary is a jumping-off point: send readers from the concepts
+            to where they're applied — the product, the live impact data, and
+            the developer surface. Labels come from the route table (no i18n). */}
+        <RelatedRoutes
+          title={t.related.related}
+          routeKeys={['services', 'impact', 'developers']}
+          lang={lang}
+        />
       </div>
     </section>
   );
