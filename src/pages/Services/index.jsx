@@ -1,6 +1,7 @@
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { ROUTES } from '@/core/config/site';
+import { RelatedRoutes } from '@/shared/ui/primitives';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { HowItWorks } from '@/features/how-it-works';
 import { TechEcosystem } from '@/features/tech-ecosystem';
@@ -43,6 +44,14 @@ export default function ServicesPage() {
       <Calculator t={t} />
       <FAQ t={t} faq={servicesFaq} moreTo="/help" moreLabel={tr ? 'Tüm soruları gör' : 'See all questions'} />
       <DashboardPreview t={t} lang={lang} />
+
+      {/* The product story ends at the dashboard with no commercial next step.
+          Route the convinced reader on: what it costs (pricing), the proof
+          (impact), and a way to talk (contact). Labels come from the route
+          table, so no per-link i18n is needed. */}
+      <div className="mx-auto max-w-7xl px-6 pb-20 lg:pb-28">
+        <RelatedRoutes title={t.related.related} routeKeys={['pricing', 'impact', 'contact']} lang={lang} className="mt-0" />
+      </div>
     </div>
   );
 }
