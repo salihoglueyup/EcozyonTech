@@ -1,7 +1,7 @@
 import { GRADIENTS } from '@/core/tokens';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, RelatedRoutes, ResultCount, SearchInput } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -176,6 +176,15 @@ export default function CareersPage() {
             {tr ? 'Yine de yaz' : 'Reach out anyway'}
           </Link>
         </div>
+
+        {/* Before applying, a candidate wants to know the team behind the work
+            (about), the mission they'd join (impact) and how the team thinks
+            (blog). Labels come from the route table, so no per-link i18n. */}
+        <RelatedRoutes
+          title={t.related.related}
+          routeKeys={['about', 'impact', 'blog']}
+          lang={lang}
+        />
       </div>
 
       {openJob && <ApplyModal job={openJob} lang={lang} t={t} onClose={closeRole} onShare={() => shareRole(openJob)} />}
