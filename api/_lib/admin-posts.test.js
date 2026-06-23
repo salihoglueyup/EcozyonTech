@@ -111,8 +111,10 @@ describe('handleAdminPost PUT/DELETE', () => {
 });
 
 describe('firePublishSideEffects', () => {
-  it('no-ops without DEPLOY_HOOK_URL', async () => {
-    expect(await firePublishSideEffects({ slug: 'x' }, {})).toEqual({});
+  it('skips the deploy hook without DEPLOY_HOOK_URL, still runs social (demo)', async () => {
+    const r = await firePublishSideEffects({ slug: 'x' }, {});
+    expect(r.deploy).toBeUndefined();
+    expect(r.social[0]).toMatchObject({ provider: 'linkedin', demo: true });
   });
   it('fires the deploy hook when configured', async () => {
     let called = '';

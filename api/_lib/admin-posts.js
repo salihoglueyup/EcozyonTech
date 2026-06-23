@@ -5,13 +5,15 @@
 // create/update/remove calls throw db_unconfigured, which we surface as 503.
 import { requireAdmin } from './session.js';
 import { validatePost, listAll, create, update, remove } from './posts-db.js';
+import { publishPost } from './social.js';
 
 const json = (status, body, headers = {}) => ({ status, headers, body });
 
 /**
  * Side effects fired when a post is published: trigger a Vercel Deploy Hook so
- * the next build re-prerenders the new post into static HTML. No-ops without
- * DEPLOY_HOOK_URL (and phase 4 hangs LinkedIn/social off the same seam).
+ * the next build re-prerenders the post into static HTML, and push the post to
+ * the social providers (LinkedIn). Both degrade to a no-op / demo ack without
+ * their secrets, so publishing always succeeds.
  */
 export async function firePublishSideEffects(post, env = process.env, fetchImpl = fetch) {
   const results = {};
@@ -23,16 +25,17 @@ export async function firePublishSideEffects(post, env = process.env, fetchImpl 
       results.deploy = false;
     }
   }
+  results.social = await publishPost(post, env, fetchImpl);
   return results;
 }
 
 async function onPublishIfNeeded(post, env, deps) {
-  if (post.status !== 'published') return;
+  if (post.status !== 'published') return undefined;
   const onPublish = deps.onPublish || firePublishSideEffects;
   try {
-    await onPublish(post, env);
+    return await onPublish(post, env);
   } catch {
-    /* publishing the content must not fail on a side-effect hiccup */
+    return undefined; // publishing the content must not fail on a side-effect hiccup
   }
 }
 
@@ -63,8 +66,8 @@ export async function handleAdminPosts(method, body, cookieHeader = '', env = pr
     } catch (e) {
       return json(503, { ok: false, error: e.message || 'db_error' });
     }
-    await onPublishIfNeeded(post, env, deps);
-    return json(201, { ok: true, post });
+    const published = await onPublishIfNeeded(post, env, deps);
+    return json(201, { ok: true, post, published });
   }
   return json(405, { ok: false, error: 'method_not_allowed' });
 }
@@ -84,8 +87,8 @@ export async function handleAdminPost(method, id, body, cookieHeader = '', env =
       return json(503, { ok: false, error: e.message || 'db_error' });
     }
     if (!post) return json(404, { ok: false, error: 'not_found' });
-    await onPublishIfNeeded(post, env, deps);
-    return json(200, { ok: true, post });
+    const published = await onPublishIfNeeded(post, env, deps);
+    return json(200, { ok: true, post, published });
   }
   if (method === 'DELETE') {
     let removed;
