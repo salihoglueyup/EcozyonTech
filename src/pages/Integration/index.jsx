@@ -1,5 +1,5 @@
 import { GRADIENTS } from '@/core/tokens';
-import { ArrowRight, StatusBadge } from '@/shared/ui/primitives';
+import { ArrowRight, RelatedRoutes, StatusBadge } from '@/shared/ui/primitives';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -69,6 +69,10 @@ export default function IntegrationPage() {
             <ArrowRight />
           </Link>
         </div>
+
+        {/* Onward from a single integration: back to the catalog, the product,
+            or a custom ask. Labels come from the route table. */}
+        <RelatedRoutes title={t.related.related} routeKeys={['integrations', 'services', 'contact']} lang={lang} />
       </div>
     </article>
   );

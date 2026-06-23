@@ -1,6 +1,6 @@
 import { GRADIENTS } from '@/core/tokens';
 import { Link } from 'react-router-dom';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput, StatusBadge } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, RelatedRoutes, ResultCount, SearchInput, StatusBadge } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -102,6 +102,10 @@ export default function IntegrationsPage() {
             <ArrowRight />
           </Link>
         </div>
+
+        {/* After browsing connectors, route on: the API docs to build one, the
+            product, or a way to talk. Labels come from the route table. */}
+        <RelatedRoutes title={t.related.related} routeKeys={['developers', 'services', 'contact']} lang={lang} />
       </div>
     </section>
   );

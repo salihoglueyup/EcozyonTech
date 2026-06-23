@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInput } from '@/shared/ui/primitives';
+import { ArrowRight, EmptyState, FilterPills, PageHeader, RelatedRoutes, ResultCount, SearchInput } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -111,6 +111,11 @@ export default function CasesPage() {
             {tr ? 'Etki Haritası' : 'Impact Map'}
           </Link>
         </div>
+
+        {/* From case proof, route the reader on: the live data behind it, the
+            thinking (blog) and the business case (roi). Labels come from the
+            route table, so no per-link i18n is needed. */}
+        <RelatedRoutes title={t.related.related} routeKeys={['impact', 'blog', 'roi']} lang={lang} />
       </div>
     </section>
   );
