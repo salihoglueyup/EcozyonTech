@@ -285,10 +285,21 @@ function Field({ id, label, children }) {
 function PostEditor({ a, initial, onCancel, onSaved }) {
   const e = a.editor;
   const toast = useToast();
+  const { lang } = useApp();
   const [form, setForm] = useState(initial);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [preview, setPreview] = useState(false);
+  // Auto-derive the slug from the EN title until the editor touches it by hand.
+  // Editing an existing post starts "touched" so we never clobber its slug.
+  const [slugTouched, setSlugTouched] = useState(Boolean(initial.id));
   const set = (patch) => setForm((f) => ({ ...f, ...patch }));
+
+  useEffect(() => {
+    if (slugTouched) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setForm((f) => ({ ...f, slug: slugify(f.title.en) }));
+  }, [form.title.en, slugTouched]);
 
   const setRow = (i, patch) =>
     setForm((f) => ({ ...f, rows: f.rows.map((r, j) => (j === i ? { ...r, ...patch } : r)) }));
@@ -320,6 +331,12 @@ function PostEditor({ a, initial, onCancel, onSaved }) {
         return;
       }
       toast({ message: a.toast.saved, type: 'success' });
+      // Surface the social-publish result (silently dropped before): on publish
+      // the API returns published.social = [{provider,posted,demo,error}].
+      const li = data.published?.social?.find((s) => s.provider === 'linkedin');
+      if (li?.posted) toast({ message: a.toast.linkedinPosted, type: 'success' });
+      else if (li?.demo) toast({ message: a.toast.linkedinDemo, type: 'info' });
+      else if (li) toast({ message: a.toast.linkedinError, type: 'error' });
       onSaved();
     } catch {
       toast({ message: a.toast.saveError, type: 'error' });
@@ -329,6 +346,15 @@ function PostEditor({ a, initial, onCancel, onSaved }) {
   };
 
   const hasErrors = Object.keys(errors).length > 0;
+  // Light client-side gate that complements the server's 422: every required
+  // bilingual field present + at least one non-empty body row.
+  const canSave = Boolean(
+    form.title.tr && form.title.en &&
+      form.excerpt.tr && form.excerpt.en &&
+      form.tag.tr && form.tag.en &&
+      form.author.name.trim() &&
+      form.rows.some((r) => (r.tr || '').trim() || (r.en || '').trim()),
+  );
 
   return (
     <div className="rounded-2xl eco-card p-6">
@@ -344,7 +370,7 @@ function PostEditor({ a, initial, onCancel, onSaved }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id="f-slug" label={`${e.slug} ${errors.slug ? '⚠' : ''}`}>
-          <input id="f-slug" className={inputCls} value={form.slug} onChange={(ev) => set({ slug: ev.target.value })} placeholder={e.slugHint} />
+          <input id="f-slug" className={inputCls} value={form.slug} onChange={(ev) => { set({ slug: ev.target.value }); setSlugTouched(true); }} placeholder={e.slugHint} />
         </Field>
         <Field id="f-date" label={`${e.date} ${errors.date ? '⚠' : ''}`}>
           <input id="f-date" type="date" className={inputCls} value={form.date} onChange={(ev) => set({ date: ev.target.value })} />
@@ -406,11 +432,38 @@ function PostEditor({ a, initial, onCancel, onSaved }) {
         </ul>
       </div>
 
-      <div className="mt-6 flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="rounded-full px-4 py-2 text-[13px] text-slate-600 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06]">{e.cancel}</button>
-        <button type="button" onClick={save} disabled={saving} className="rounded-full bg-slate-900 dark:bg-white px-5 py-2 text-[13px] font-medium text-white dark:text-slate-900 hover:opacity-90 disabled:opacity-60 transition">
-          {saving ? e.saving : e.save}
+      {preview && (
+        <div className="mt-6 rounded-xl ring-1 ring-cyan-500/20 bg-cyan-500/[.03] p-5">
+          <div className="mb-3 text-[11px] uppercase tracking-wide font-semibold text-cyan-700 dark:text-cyan-400">{e.preview}</div>
+          <h3 className="font-display text-[22px] tracking-tight text-slate-900 dark:text-slate-100">{form.title[lang] || '—'}</h3>
+          {form.excerpt[lang] && <p className="mt-2 text-[14px] text-slate-600 dark:text-slate-400">{form.excerpt[lang]}</p>}
+          <div className="mt-4 space-y-4">
+            {bodyFromRows(form.rows)[lang].map((b, i) =>
+              typeof b === 'object' && b ? (
+                <h2 key={i} id={b.id} className="font-display text-[18px] tracking-tight text-slate-900 dark:text-slate-100">{b.h}</h2>
+              ) : (
+                <p key={i} className="text-[15px] text-slate-700 dark:text-slate-300 leading-[1.7]">{b}</p>
+              ),
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-6 flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => setPreview((p) => !p)}
+          aria-pressed={preview}
+          className="rounded-full px-4 py-2 text-[13px] text-slate-600 dark:text-slate-300 ring-1 ring-slate-900/[.1] dark:ring-white/[.1] hover:ring-cyan-500/30 transition"
+        >
+          {e.preview}
         </button>
+        <div className="flex gap-3">
+          <button type="button" onClick={onCancel} className="rounded-full px-4 py-2 text-[13px] text-slate-600 dark:text-slate-300 hover:bg-slate-900/[.05] dark:hover:bg-white/[.06]">{e.cancel}</button>
+          <button type="button" onClick={save} disabled={saving || !canSave} className="rounded-full bg-slate-900 dark:bg-white px-5 py-2 text-[13px] font-medium text-white dark:text-slate-900 hover:opacity-90 disabled:opacity-60 transition">
+            {saving ? e.saving : e.save}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -63,6 +63,9 @@ export default {
       deleted: 'Yazı silindi.',
       saveError: 'Kaydedilemedi.',
       deleteError: 'Silinemedi.',
+      linkedinPosted: 'LinkedIn’de paylaşıldı.',
+      linkedinDemo: 'LinkedIn demo modunda (token yok).',
+      linkedinError: 'LinkedIn paylaşımı başarısız.',
     },
     confirm: {
       deleteTitle: 'Yazıyı sil',
@@ -133,6 +136,9 @@ export default {
       deleted: 'Post deleted.',
       saveError: 'Could not save.',
       deleteError: 'Could not delete.',
+      linkedinPosted: 'Shared on LinkedIn.',
+      linkedinDemo: 'LinkedIn in demo mode (no token).',
+      linkedinError: 'LinkedIn share failed.',
     },
     confirm: {
       deleteTitle: 'Delete post',
