@@ -7,7 +7,8 @@ export default {
     "titleAccent": "değişti",
     "intro": "Ecozyon Tech sürekli gelişiyor. En son eklenenler, iyileştirmeler ve düzeltmeler.",
     "latest": "En son",
-    "anchorLabel": "{v} sürümüne bağlantı"
+    "anchorLabel": "{v} sürümüne bağlantı",
+    "subscribe": "Yeni sürümleri takip et:"
   },
   "en": {
     "eyebrow": "Changelog",
@@ -15,6 +16,7 @@ export default {
     "titleAccent": "changed",
     "intro": "Ecozyon Tech keeps evolving. The latest additions, improvements and fixes.",
     "latest": "Latest",
-    "anchorLabel": "Link to v{v}"
+    "anchorLabel": "Link to v{v}",
+    "subscribe": "Follow new releases:"
   }
 };

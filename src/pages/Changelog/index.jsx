@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
@@ -71,6 +72,15 @@ export default function ChangelogPage() {
             </li>
           ))}
         </ol>
+
+        {/* Surface the already-built RSS feed + blog so readers can follow
+            releases without checking back manually. */}
+        <div className="mt-2 text-[13px] text-slate-600 dark:text-slate-400">
+          {c.subscribe}{' '}
+          <a href="/feed.xml" className="font-medium text-slate-900 dark:text-slate-100 underline underline-offset-4 decoration-emerald-500 decoration-2">RSS</a>
+          <span className="text-slate-300 dark:text-slate-600"> · </span>
+          <Link to="/blog" className="font-medium text-slate-900 dark:text-slate-100 underline underline-offset-4 decoration-emerald-500 decoration-2">Blog</Link>
+        </div>
 
         <RelatedRoutes title={t.related.related} routeKeys={['status', 'developers']} lang={lang} />
       </div>

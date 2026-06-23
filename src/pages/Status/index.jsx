@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { PageHeader, StatusBadge, RelatedRoutes } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
@@ -154,6 +155,18 @@ export default function StatusPage() {
             })}
           </ol>
         )}
+
+        {/* Before there was no way to report an unlisted outage — route it to
+            contact with a from-tag. */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl eco-card p-5">
+          <div>
+            <div className="font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">{s.reportTitle}</div>
+            <p className="mt-1 max-w-md text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{s.reportText}</p>
+          </div>
+          <Link to="/contact?from=status" className="eco-press inline-flex shrink-0 items-center gap-2 rounded-full bg-slate-900 dark:bg-white px-4 py-2 text-[13px] font-medium text-white dark:text-slate-900 hover:opacity-90 transition">
+            {s.reportCta}
+          </Link>
+        </div>
 
         <RelatedRoutes title={t.related.related} routeKeys={['changelog', 'developers']} lang={lang} />
       </div>

@@ -13,7 +13,10 @@ export default {
     "noIncidents": "Son dönemde kayıtlı olay yok.",
     "resolved": "Çözüldü",
     "ongoing": "Sürüyor",
-    "daysSince": "{n} gün kesintisiz"
+    "daysSince": "{n} gün kesintisiz",
+    "reportTitle": "Bir sorun mu yaşıyorsun?",
+    "reportText": "Burada görünmeyen bir kesinti fark ettiysen ekibe bildir; hızla bakarız.",
+    "reportCta": "Sorunu bildir"
   },
   "en": {
     "eyebrow": "System Status",
@@ -27,6 +30,9 @@ export default {
     "noIncidents": "No incidents on record recently.",
     "resolved": "Resolved",
     "ongoing": "Ongoing",
-    "daysSince": "{n} days incident-free"
+    "daysSince": "{n} days incident-free",
+    "reportTitle": "Seeing a problem?",
+    "reportText": "If you notice an outage that isn't listed here, let the team know and we'll look into it fast.",
+    "reportCta": "Report an issue"
   }
 };
