@@ -320,7 +320,7 @@ await writeFile(
 // robots.txt
 await writeFile(
   join(distDir, 'robots.txt'),
-  `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`,
+  `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${SITE.url}/sitemap.xml\n`,
 );
 
 // feed.xml — RSS 2.0 of every blog post (newest-first, as authored).

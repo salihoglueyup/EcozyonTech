@@ -5,12 +5,35 @@ import { handle } from './api/_lib/forms.js'
 import { handleVitals } from './api/_lib/vitals.js'
 import { handleEvent } from './api/_lib/telemetry.js'
 import { handlePosts } from './api/_lib/posts-db.js'
+import { handleLogin, handleCallback, handleMe, handleLogout } from './api/_lib/admin-auth.js'
+import { applyResult, originOf } from './api/admin/_send.js'
 
 // Shared /api middleware: runs the exact serverless logic locally so forms +
 // vitals work without the Vercel CLI. Mounted on both the dev server and the
 // preview server (the latter is what e2e tests run against).
 function apiMiddleware(req, res, next) {
   const route = req.url?.split('?')[0]
+
+  // Admin OAuth routes need real redirects + Set-Cookie, so they bypass the
+  // JSON path below and translate the neutral handler result onto the response.
+  if (route?.startsWith('/api/admin/')) {
+    let raw = ''
+    req.on('data', (c) => (raw += c))
+    req.on('end', async () => {
+      const origin = originOf(req)
+      const query = Object.fromEntries(new URLSearchParams(req.url?.split('?')[1] || ''))
+      const cookie = req.headers.cookie || ''
+      let result
+      if (route === '/api/admin/login') result = handleLogin(process.env, origin)
+      else if (route === '/api/admin/callback') result = await handleCallback(query, cookie, process.env, origin)
+      else if (route === '/api/admin/me') result = handleMe(cookie, process.env)
+      else if (route === '/api/admin/logout') result = handleLogout()
+      else return next()
+      applyResult(res, result)
+    })
+    return
+  }
+
   const KINDS = { '/api/contact': 'contact', '/api/newsletter': 'newsletter', '/api/apply': 'apply' }
   const kind = KINDS[route]
   const isVitals = route === '/api/vitals'

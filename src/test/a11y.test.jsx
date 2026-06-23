@@ -28,6 +28,7 @@ import RoiPage from '@/pages/Roi';
 import IntegrationsPage from '@/pages/Integrations';
 import LegalPage from '@/pages/Legal';
 import AssessmentPage from '@/pages/Assessment';
+import AdminPage from '@/pages/Admin';
 
 expect.extend(toHaveNoViolations);
 
@@ -59,6 +60,7 @@ const PAGES = [
   ['Integrations', <IntegrationsPage />],
   ['Legal', <LegalPage />],
   ['Assessment', <AssessmentPage />],
+  ['Admin', <AdminPage />],
 ];
 
 function renderPage(ui, route = '/') {

@@ -35,5 +35,9 @@ export const ROUTE_LOADERS = [
   { path: 'careers', load: () => import('@/pages/Careers') },
   { path: 'contact', load: () => import('@/pages/Contact') },
   { path: 'legal', load: () => import('@/pages/Legal') },
+  // Admin CMS — intentionally NOT in ROUTES (site.js): reachable + client-routed
+  // but never prerendered, never in the sitemap/nav, and robots-disallowed. Its
+  // own lazy chunk keeps the editor + auth UI out of the public entry bundle.
+  { path: 'admin', load: () => import('@/pages/Admin') },
   { path: '*', load: () => import('@/pages/NotFound') },
 ];
