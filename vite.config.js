@@ -6,6 +6,7 @@ import { handleVitals } from './api/_lib/vitals.js'
 import { handleEvent } from './api/_lib/telemetry.js'
 import { handlePosts } from './api/_lib/posts-db.js'
 import { handleLogin, handleCallback, handleMe, handleLogout } from './api/_lib/admin-auth.js'
+import { handleAdminPosts, handleAdminPost } from './api/_lib/admin-posts.js'
 import { applyResult, originOf } from './api/admin/_send.js'
 
 // Shared /api middleware: runs the exact serverless logic locally so forms +
@@ -24,10 +25,14 @@ function apiMiddleware(req, res, next) {
       const query = Object.fromEntries(new URLSearchParams(req.url?.split('?')[1] || ''))
       const cookie = req.headers.cookie || ''
       let result
+      let body = {}
+      try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
       if (route === '/api/admin/login') result = handleLogin(process.env, origin)
       else if (route === '/api/admin/callback') result = await handleCallback(query, cookie, process.env, origin)
       else if (route === '/api/admin/me') result = handleMe(cookie, process.env)
       else if (route === '/api/admin/logout') result = handleLogout()
+      else if (route === '/api/admin/posts') result = await handleAdminPosts(req.method, body, cookie, process.env)
+      else if (route.startsWith('/api/admin/posts/')) result = await handleAdminPost(req.method, route.slice('/api/admin/posts/'.length), body, cookie, process.env)
       else return next()
       applyResult(res, result)
     })

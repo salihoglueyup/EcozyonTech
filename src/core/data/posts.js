@@ -369,6 +369,21 @@ export const POSTS = [
 
 export const postBySlug = (slug, posts = POSTS) => posts.find((p) => p.slug === slug);
 
+// URL-safe slug, Turkish-aware. Mirrors the server slugify in
+// api/_lib/posts-db.js so admin-authored heading anchors match what the API
+// stores. Kept here (client-safe, dependency-free) so the editor can derive a
+// shared cross-language heading id without importing the DB layer.
+const TR_SLUG_MAP = { ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u', İ: 'i' };
+export function slugify(s) {
+  return String(s ?? '')
+    .replace(/[çğıöşüİ]/g, (c) => TR_SLUG_MAP[c] || c)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 // Merge DB-published posts (fetched at runtime from /api/posts) with the static
 // POSTS: a DB post wins on slug clash, result is newest-first. Pure + client-safe
 // (the DB read happens elsewhere); used by useAllPosts so the public blog shows
