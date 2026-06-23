@@ -13,7 +13,13 @@ export default {
     "cta": "Planları gör",
     "termHint": "Terimi öğren",
     "legendYes": "Dahil",
-    "legendNo": "Yok"
+    "legendNo": "Yok",
+    "diffTitle": "Üç temel fark",
+    "diffs": [
+      { "t": "Tahmin değil, ölçüm", "d": "Giyilebilir cihaz ve entegrasyon verisiyle gerçek ölçüm — elle giriş ve kaba tahminlere güvenmezsiniz." },
+      { "t": "Bağlamı bilen AI", "d": "Genel ipuçları değil; kişisel baseline'ınıza ve davranışınıza göre zamanlı, uygulanabilir öneriler." },
+      { "t": "Bireyden kuruma tek sistem", "d": "Aynı veri modeli kişisel alışkanlıktan kurumsal Scope 1-2-3 raporlamasına kesintisiz ölçeklenir." }
+    ]
   },
   "en": {
     "eyebrow": "Why Ecozyon?",
@@ -27,6 +33,12 @@ export default {
     "cta": "View plans",
     "termHint": "Learn the term",
     "legendYes": "Included",
-    "legendNo": "Not included"
+    "legendNo": "Not included",
+    "diffTitle": "Three core differences",
+    "diffs": [
+      { "t": "Measurement, not guesswork", "d": "Real measurement from wearable + integration data — you don't rely on manual entry and rough estimates." },
+      { "t": "AI that knows the context", "d": "Not generic tips; timely, actionable nudges tailored to your personal baseline and behavior." },
+      { "t": "One system, individual to enterprise", "d": "The same data model scales seamlessly from a personal habit to corporate Scope 1-2-3 reporting." }
+    ]
   }
 };

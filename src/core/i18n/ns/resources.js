@@ -13,6 +13,13 @@ export default {
     "casesAll": "Tüm vakalar",
     "help": "Popüler sorular",
     "helpAll": "Yardım merkezi",
+    "startTitle": "Buradan başla",
+    "startNote": "Ecozyon'da yeniyseniz üç adımda yönelin.",
+    "start": [
+      { "t": "Durumunu ölç", "d": "Kısa değerlendirmeyle nerede olduğunu ve önceliklerini gör." },
+      { "t": "Nasıl çalıştığını anla", "d": "Ölçüm, AI önerileri ve panonun nasıl bir araya geldiğini incele." },
+      { "t": "Planını seç", "d": "Bireyden kuruma, sana uygun planla başla." }
+    ],
     "links": {
       "impact": "Canlı 3D etki haritasında ağ verilerini keşfet.",
       "pricing": "Planları karşılaştır, sana uygun olanı seç.",
@@ -36,6 +43,13 @@ export default {
     "casesAll": "All cases",
     "help": "Popular questions",
     "helpAll": "Help center",
+    "startTitle": "Start here",
+    "startNote": "New to Ecozyon? Get oriented in three steps.",
+    "start": [
+      { "t": "Measure where you are", "d": "Take the short assessment to see your position and priorities." },
+      { "t": "See how it works", "d": "Explore how measurement, AI nudges and the dashboard come together." },
+      { "t": "Pick your plan", "d": "Start with the plan that fits, from individual to enterprise." }
+    ],
     "links": {
       "impact": "Explore network data on the live 3D impact map.",
       "pricing": "Compare plans and pick the one that fits.",

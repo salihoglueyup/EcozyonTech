@@ -57,6 +57,30 @@ export default function ResourcesPage() {
           className="max-w-3xl mb-12"
         />
 
+        {/* Orientation for first-time visitors, before the dense link hub. */}
+        <section className="mb-14">
+          <h2 className="text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{r.startTitle}</h2>
+          <p className="mt-1 mb-4 text-[13px] text-slate-500 dark:text-slate-400">{r.startNote}</p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {['assessment', 'services', 'pricing'].map((key, i) => {
+              const route = routeByKey(key);
+              const s = r.start[i];
+              return (
+                <Reveal key={key} delay={i * 50}>
+                  <Link to={route.path} className="group flex h-full flex-col rounded-2xl eco-card p-5 hover:ring-cyan-500/30 transition">
+                    <div className="flex items-center justify-between">
+                      <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-display text-[13px] font-semibold" aria-hidden="true">{i + 1}</span>
+                      <span className="text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"><Arrow /></span>
+                    </div>
+                    <h3 className="mt-3 font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">{s.t}</h3>
+                    <p className="mt-1.5 flex-1 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{s.d}</p>
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Quick links */}
         <h2 className="mb-4 text-[12px] uppercase tracking-[.14em] font-semibold text-slate-400">{r.explore}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

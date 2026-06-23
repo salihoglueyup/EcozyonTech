@@ -89,6 +89,21 @@ export default function LeaderboardPage() {
           </Link>
         </div>
 
+        {/* Methodology: what the ranking means and why it's fair, so the table
+            reads as credible rather than arbitrary. */}
+        <section className="mt-12">
+          <h2 className="mb-4 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">{g.howTitle}</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {g.how.map((h, i) => (
+              <div key={i} className="rounded-2xl eco-card p-5">
+                <div className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-display text-[14px] font-semibold" aria-hidden="true">{i + 1}</div>
+                <h3 className="mt-3 font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">{h.t}</h3>
+                <p className="mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{h.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <RelatedRoutes title={t.related.nextStep} routeKeys={['assessment', 'impact']} lang={lang} />
       </div>
     </section>

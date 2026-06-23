@@ -23,7 +23,13 @@ export default {
       "efficiency": "kg/kişi"
     },
     "partner": "Partner",
-    "onMap": "Haritada gör"
+    "onMap": "Haritada gör",
+    "howTitle": "Sıralama nasıl çalışır",
+    "how": [
+      { "t": "Ölçülen veri", "d": "Sıralama beyana değil; giyilebilir ve entegrasyon verisinden türetilen gerçek tasarrufa dayanır." },
+      { "t": "Adil ligler", "d": "Şehirler benzer baseline ve büyüklüğe göre gruplanır; küçük bir şehir de zirveye oynayabilir." },
+      { "t": "Günlük güncelleme", "d": "Değerler her gün yenilenir; kişi başı verim metriği büyüklük avantajını dengeler." }
+    ]
   },
   "en": {
     "eyebrow": "Leaderboard",
@@ -47,6 +53,12 @@ export default {
       "efficiency": "kg/user"
     },
     "partner": "Partner",
-    "onMap": "See on map"
+    "onMap": "See on map",
+    "howTitle": "How the ranking works",
+    "how": [
+      { "t": "Measured data", "d": "Rankings come from real savings derived from wearable and integration data — not self-reported claims." },
+      { "t": "Fair leagues", "d": "Cities are grouped by similar baseline and size, so a small city can still compete for the top." },
+      { "t": "Daily updates", "d": "Figures refresh every day; the per-user efficiency metric offsets the advantage of size." }
+    ]
   }
 };

@@ -97,6 +97,21 @@ export default function ComparePage() {
           </span>
         </div>
 
+        {/* Narrate the matrix: the three differences that the dense table adds
+            up to, so a skimmer gets the "why" without reading every row. */}
+        <section className="mt-12">
+          <h2 className="mb-4 font-display text-[20px] tracking-tight text-slate-900 dark:text-slate-100">{c.diffTitle}</h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {c.diffs.map((d, i) => (
+              <div key={i} className="rounded-2xl eco-card p-5">
+                <div className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-display text-[14px] font-semibold" aria-hidden="true">{i + 1}</div>
+                <h3 className="mt-3 font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">{d.t}</h3>
+                <p className="mt-1.5 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">{d.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
           <div>
             <h2 className="font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{c.ctaTitle}</h2>
