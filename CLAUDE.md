@@ -246,6 +246,47 @@ compact adaptation = fainter/thinner borders + smaller/dimmer capitals.
 To regenerate after data/source changes: `npm run build:geo` then commit
 the three JSON files.
 
+## Blog CMS (DB-backed, optional)
+
+The blog gained a real authoring backend (admin can log in and write posts),
+but the public site **stays statically prerendered for SEO**. Everything is
+**DB-optional**: with no env secrets the site behaves exactly as before — the
+blog falls back to the static `src/core/data/posts.js` POSTS, `/admin` shows an
+"unconfigured" sign-in screen, and LinkedIn publishing returns a demo ack. All
+gates pass without any secret (this is the deliver()-style demo-fallback
+philosophy applied throughout).
+
+- **Persistence**: `api/_lib/posts-db.js` (Neon Postgres via
+  `@neondatabase/serverless`, **api-only** import). `posts` table = scalar
+  slug/status/date + jsonb bilingual fields (title/excerpt/tag/author/body/
+  terms); `mapRow` returns the exact POSTS shape, body keeps the structured
+  `[{h,id},"para"]` block array (no raw HTML → safe under the strict CSP).
+  `validatePost` mirrors forms.js validation. `npm run seed:posts` backfills
+  the static posts once.
+- **Public read**: `GET /api/posts` (`handlePosts`); Blog/BlogPost/BlogTag
+  merge DB-published posts with static POSTS **after mount** via
+  `useAllPosts()`/`mergePosts()` (static first → no hydration mismatch).
+  `scripts/prerender.mjs` merges DB published posts at **build** time
+  (DB-optional) so a published post is baked to static HTML on the next build —
+  publishing fires a Vercel **Deploy Hook** to trigger that rebuild.
+- **Auth**: `api/_lib/session.js` — HMAC-signed (`SESSION_SECRET`) httpOnly
+  cookie, **no JWT dep**. `api/_lib/admin-auth.js` runs GitHub OAuth
+  (allowlist = `ADMIN_GITHUB_LOGINS`). `/admin` is a lazy route **intentionally
+  not in ROUTES** → never prerendered, never in sitemap/nav, robots-disallowed.
+- **Write**: `api/_lib/admin-posts.js` (`requireAdmin`-gated CRUD; store fns +
+  onPublish injectable for tests). `/admin` editor = bilingual block editor +
+  live list/delete (shared primitives + Modal).
+- **Social**: `api/_lib/social.js` — `publishToLinkedIn` (UGC Posts API, env
+  member token; demo fallback) via a provider abstraction; X/Bluesky are
+  share-intent links on the post page.
+- **Dev parity**: every `/api/*` (incl. `/api/admin/*`) is mirrored in the
+  `vite.config.js` `apiMiddleware`, so it all works under `npm run dev`/preview
+  without the Vercel CLI.
+- **Env** (all optional): `DATABASE_URL`; `GITHUB_CLIENT_ID/SECRET`,
+  `ADMIN_GITHUB_LOGINS`, `SESSION_SECRET`; `LINKEDIN_ACCESS_TOKEN`,
+  `LINKEDIN_AUTHOR_URN`; `DEPLOY_HOOK_URL`. GitHub OAuth callback =
+  `<origin>/api/admin/callback`.
+
 ## Roadmap (in progress)
 
 All phases complete: P1 testing/CI/ErrorBoundary/404 · P2 serverless backend +
