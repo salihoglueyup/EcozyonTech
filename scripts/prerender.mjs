@@ -102,7 +102,7 @@ const routes = ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).map
   key: r.key,
   title: r.title.tr,
   navTitle: r.nav.tr,
-  desc: SITE.description,
+  desc: r.description?.tr || SITE.description,
   lastmod: today,
 }));
 for (const p of BLOG_POSTS) {

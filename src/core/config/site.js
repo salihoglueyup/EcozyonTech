@@ -16,6 +16,11 @@ export const SITE = {
 //    'footer' is footer-only, 'none' is reachable but listed only in the
 //    sitemap (home is covered by the logo, search by ⌘K).
 //  - `featured`: a curated highlight (NotFound "popular pages" chips).
+//  - `description`: per-route, bilingual meta description — the single source
+//    for the prerendered <meta name="description">/og:description (so each route
+//    ships a distinct snippet, not the generic SITE.description) and the runtime
+//    <title>'s sibling. Detail/list routes (blog post, case, integration, tag)
+//    set their description dynamically in the prerender from their own data.
 // Pages pull the document <title> from here via useDocumentMeta.
 export const ROUTES = [
   {
@@ -25,6 +30,10 @@ export const ROUTES = [
     place: 'none',
     nav: { tr: 'Ana Sayfa', en: 'Home' },
     title: { tr: 'Ecozyon Tech — AI ile sürdürülebilirlik', en: 'Ecozyon Tech — Sustainability with AI' },
+    description: {
+      tr: 'Giyilebilir teknoloji ve akıllı AI ile bireysel ve kurumsal sürdürülebilirliği ölçülebilir, uygulanabilir alışkanlıklara dönüştürüyoruz.',
+      en: 'We turn individual and corporate sustainability into measurable, practical habits with wearable technology and smart AI.',
+    },
   },
   {
     path: '/services',
@@ -34,6 +43,10 @@ export const ROUTES = [
     featured: true,
     nav: { tr: 'Hizmetler', en: 'Services' },
     title: { tr: 'Çözümler — Ecozyon Tech', en: 'Solutions — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech çözümleri: nasıl çalışır, teknoloji ekosistemi, kullanım senaryoları ve canlı dashboard.',
+      en: 'Ecozyon Tech solutions: how it works, the technology ecosystem, use cases and a live dashboard.',
+    },
   },
   {
     path: '/pricing',
@@ -43,6 +56,10 @@ export const ROUTES = [
     featured: true,
     nav: { tr: 'Fiyatlandırma', en: 'Pricing' },
     title: { tr: 'Fiyatlandırma — Ecozyon Tech', en: 'Pricing — Ecozyon Tech' },
+    description: {
+      tr: 'Şeffaf, ölçeklenebilir planlar — bireyden kuruma. Aylık/yıllık fiyatlandırma ve sık sorulan sorular.',
+      en: 'Transparent, scalable plans — from individual to enterprise. Monthly/annual pricing and FAQs.',
+    },
   },
   {
     path: '/impact',
@@ -52,6 +69,10 @@ export const ROUTES = [
     featured: true,
     nav: { tr: 'Etki Haritası', en: 'Impact Map' },
     title: { tr: 'Etki Haritası — Ecozyon Tech', en: 'Impact Map — Ecozyon Tech' },
+    description: {
+      tr: 'Şehir şehir gerçek etki: kullanıcılar, önlenen CO₂ ve yenilenebilir kullanımı interaktif 3B dünya üzerinde.',
+      en: 'Real impact city by city: users, CO₂ avoided and renewable use on an interactive 3D globe.',
+    },
   },
   {
     path: '/compare',
@@ -60,6 +81,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Karşılaştırma', en: 'Compare' },
     title: { tr: 'Neden Ecozyon? — Ecozyon Tech', en: 'Why Ecozyon? — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech’i klasik sürdürülebilirlik araçlarıyla karşılaştırın: ölçüm, donanım, kişiselleştirme ve etki.',
+      en: 'Compare Ecozyon Tech with classic sustainability tools: measurement, hardware, personalization and impact.',
+    },
   },
   {
     path: '/roi',
@@ -68,6 +93,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'ROI Hesaplayıcı', en: 'ROI Calculator' },
     title: { tr: 'Kurumsal ROI Hesaplayıcı — Ecozyon Tech', en: 'Business ROI Calculator — Ecozyon Tech' },
+    description: {
+      tr: 'Kurumsal yatırım getirinizi hesaplayın: ekip büyüklüğü ve hedeflerinize göre tasarruf, önlenen emisyon ve geri dönüş süresi.',
+      en: 'Estimate your business ROI: savings, emissions avoided and payback based on your team size and goals.',
+    },
   },
   {
     path: '/integrations',
@@ -76,6 +105,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Entegrasyonlar', en: 'Integrations' },
     title: { tr: 'Entegrasyonlar — Ecozyon Tech', en: 'Integrations — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech’i kullandığınız araçlara bağlayın: İK, enerji, BI ve daha fazlası için hazır entegrasyonlar.',
+      en: 'Connect Ecozyon Tech to the tools you use: ready-made integrations for HR, energy, BI and more.',
+    },
   },
   {
     path: '/assessment',
@@ -84,6 +117,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Değerlendirme', en: 'Assessment' },
     title: { tr: 'Sürdürülebilirlik Değerlendirmesi — Ecozyon Tech', en: 'Sustainability Assessment — Ecozyon Tech' },
+    description: {
+      tr: 'Birkaç soruda sürdürülebilirlik olgunluğunuzu ölçün ve size uygun başlangıç adımlarını alın.',
+      en: 'Gauge your sustainability maturity in a few questions and get tailored first steps.',
+    },
   },
   {
     path: '/leaderboard',
@@ -92,6 +129,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Liderlik Tablosu', en: 'Leaderboard' },
     title: { tr: 'Liderlik Tablosu — Ecozyon Tech', en: 'Leaderboard — Ecozyon Tech' },
+    description: {
+      tr: 'Şehirler ve takımlar önlenen CO₂’ye göre nasıl sıralanıyor? Topluluk etkisini canlı liderlik tablosunda görün.',
+      en: 'See how cities and teams rank by CO₂ avoided — community impact on a live leaderboard.',
+    },
   },
   {
     path: '/blog',
@@ -100,6 +141,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Blog', en: 'Blog' },
     title: { tr: 'Blog — Ecozyon Tech', en: 'Blog — Ecozyon Tech' },
+    description: {
+      tr: 'Sürdürülebilirlik, donanım ve davranış değişimi üzerine notlar ve içgörüler.',
+      en: 'Notes and insights on sustainability, hardware and behavior change.',
+    },
   },
   {
     path: '/cases',
@@ -108,6 +153,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Vaka Çalışmaları', en: 'Case Studies' },
     title: { tr: 'Vaka Çalışmaları — Ecozyon Tech', en: 'Case Studies — Ecozyon Tech' },
+    description: {
+      tr: 'Gerçek kurumların ölçülen sonuçları: önlenen emisyon, tasarruf ve davranış değişimi vaka çalışmalarıyla.',
+      en: 'Measured results from real organizations: emissions avoided, savings and behavior change, case by case.',
+    },
   },
   {
     path: '/glossary',
@@ -116,6 +165,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Sözlük', en: 'Glossary' },
     title: { tr: 'Sürdürülebilirlik Sözlüğü — Ecozyon Tech', en: 'Sustainability Glossary — Ecozyon Tech' },
+    description: {
+      tr: 'Karbon bütçesinden Scope 3’e: sürdürülebilirlik terimlerinin sade, aranabilir bir sözlüğü.',
+      en: 'From carbon budget to Scope 3: a plain, searchable glossary of sustainability terms.',
+    },
   },
   {
     path: '/help',
@@ -124,6 +177,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Yardım', en: 'Help' },
     title: { tr: 'Yardım Merkezi — Ecozyon Tech', en: 'Help Center — Ecozyon Tech' },
+    description: {
+      tr: 'Kurulum, cihaz, veri ve faturalandırma hakkında sık sorulan soruların yanıtları.',
+      en: 'Answers to common questions about setup, devices, data and billing.',
+    },
   },
   {
     path: '/developers',
@@ -132,6 +189,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Geliştiriciler', en: 'Developers' },
     title: { tr: 'API Referansı — Ecozyon Tech', en: 'API Reference — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech API’si: kimlik doğrulama, uç noktalar ve örneklerle entegrasyon geliştirin.',
+      en: 'The Ecozyon Tech API: build integrations with authentication, endpoints and examples.',
+    },
   },
   {
     path: '/changelog',
@@ -140,6 +201,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Sürüm Notları', en: 'Changelog' },
     title: { tr: 'Sürüm Notları — Ecozyon Tech', en: 'Changelog — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech’te yeni neler var: ürün güncellemeleri, iyileştirmeler ve düzeltmeler sürüm sürüm.',
+      en: 'What’s new in Ecozyon Tech: product updates, improvements and fixes, release by release.',
+    },
   },
   {
     path: '/status',
@@ -148,6 +213,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Sistem Durumu', en: 'Status' },
     title: { tr: 'Sistem Durumu — Ecozyon Tech', en: 'System Status — Ecozyon Tech' },
+    description: {
+      tr: 'Servislerin canlı çalışma durumu, geçmiş olaylar ve bakım bildirimleri.',
+      en: 'Live uptime of our services, past incidents and maintenance notices.',
+    },
   },
   {
     path: '/resources',
@@ -156,6 +225,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Kaynaklar', en: 'Resources' },
     title: { tr: 'Kaynaklar — Ecozyon Tech', en: 'Resources — Ecozyon Tech' },
+    description: {
+      tr: 'Tek noktadan tüm içerik: blog, vaka çalışmaları, sözlük, yardım ve geliştirici kaynakları.',
+      en: 'Everything in one place: blog, case studies, glossary, help and developer resources.',
+    },
   },
   {
     path: '/about',
@@ -165,6 +238,10 @@ export const ROUTES = [
     featured: true,
     nav: { tr: 'Hakkımızda', en: 'About' },
     title: { tr: 'Hakkımızda — Ecozyon Tech', en: 'About — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech’in hikâyesi, misyonu ve ekibi — sürdürülebilirliği herkes için ölçülebilir kılma yolculuğu.',
+      en: 'The story, mission and team behind Ecozyon Tech — making sustainability measurable for everyone.',
+    },
   },
   {
     path: '/careers',
@@ -173,6 +250,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Kariyer', en: 'Careers' },
     title: { tr: 'Kariyer — Ecozyon Tech', en: 'Careers — Ecozyon Tech' },
+    description: {
+      tr: 'Sürdürülebilir bir geleceği inşa eden ekibe katılın. Açık pozisyonları görün ve başvurun.',
+      en: 'Join the team building a sustainable future. See open roles and apply.',
+    },
   },
   {
     path: '/press',
@@ -181,6 +262,10 @@ export const ROUTES = [
     place: 'nav',
     nav: { tr: 'Basın', en: 'Press' },
     title: { tr: 'Basın Odası — Ecozyon Tech', en: 'Newsroom — Ecozyon Tech' },
+    description: {
+      tr: 'Basın bültenleri, medya yansımaları, marka varlıkları ve basın iletişimi tek yerde.',
+      en: 'Press releases, media coverage, brand assets and press contact in one place.',
+    },
   },
   {
     path: '/contact',
@@ -190,6 +275,10 @@ export const ROUTES = [
     featured: true,
     nav: { tr: 'İletişim', en: 'Contact' },
     title: { tr: 'İletişim — Ecozyon Tech', en: 'Contact — Ecozyon Tech' },
+    description: {
+      tr: 'Ekibimizle konuşun: satış, destek, basın veya kariyer — doğru kanala birkaç saniyede ulaşın.',
+      en: 'Talk to our team: sales, support, press or careers — reach the right channel in seconds.',
+    },
   },
   {
     path: '/legal',
@@ -198,6 +287,10 @@ export const ROUTES = [
     place: 'footer',
     nav: { tr: 'Yasal', en: 'Legal' },
     title: { tr: 'Yasal — Gizlilik & Şartlar — Ecozyon Tech', en: 'Legal — Privacy & Terms — Ecozyon Tech' },
+    description: {
+      tr: 'Gizlilik politikası, kullanım şartları ve veri işleme uygulamalarımız.',
+      en: 'Our privacy policy, terms of use and data-processing practices.',
+    },
   },
   {
     path: '/accessibility',
@@ -206,6 +299,10 @@ export const ROUTES = [
     place: 'footer',
     nav: { tr: 'Erişilebilirlik', en: 'Accessibility' },
     title: { tr: 'Erişilebilirlik Beyanı — Ecozyon Tech', en: 'Accessibility Statement — Ecozyon Tech' },
+    description: {
+      tr: 'Erişilebilirlik taahhüdümüz: WCAG uyumu, desteklenen teknolojiler ve geri bildirim yolları.',
+      en: 'Our accessibility commitment: WCAG conformance, supported assistive tech and how to give feedback.',
+    },
   },
   {
     path: '/sitemap',
@@ -214,6 +311,10 @@ export const ROUTES = [
     place: 'footer',
     nav: { tr: 'Site Haritası', en: 'Sitemap' },
     title: { tr: 'Site Haritası — Ecozyon Tech', en: 'Sitemap — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech’teki tüm sayfaların tek listede gezinilebilir bir haritası.',
+      en: 'A browsable map of every page on Ecozyon Tech in one list.',
+    },
   },
   {
     path: '/styleguide',
@@ -222,6 +323,10 @@ export const ROUTES = [
     place: 'footer',
     nav: { tr: 'Tasarım Sistemi', en: 'Design System' },
     title: { tr: 'Tasarım Sistemi — Ecozyon Tech', en: 'Design System — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech tasarım sistemi: renkler, tipografi, bileşenler ve etkileşim örnekleri.',
+      en: 'The Ecozyon Tech design system: colors, typography, components and interaction examples.',
+    },
   },
   {
     path: '/search',
@@ -230,6 +335,10 @@ export const ROUTES = [
     place: 'none',
     nav: { tr: 'Arama', en: 'Search' },
     title: { tr: 'Arama — Ecozyon Tech', en: 'Search — Ecozyon Tech' },
+    description: {
+      tr: 'Ecozyon Tech genelinde arayın: sayfalar, blog yazıları, vaka çalışmaları, sözlük ve daha fazlası.',
+      en: 'Search across Ecozyon Tech: pages, blog posts, case studies, glossary and more.',
+    },
   },
 ];
 
