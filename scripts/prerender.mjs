@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
 import { ROUTES, SITE, routeByKey } from '../src/core/config/site.js';
 import { POSTS, postTags, tagSlug } from '../src/core/data/posts.js';
+import { listPublished, dedupBySlug } from '../api/_lib/posts-db.js';
 import { CASES } from '../src/core/data/cases.js';
 import { INTEGRATIONS } from '../src/core/data/integrations.js';
 import { HELP } from '../src/core/data/help.js';
@@ -23,6 +24,12 @@ const { render } = await import(
   pathToFileURL(join(root, 'dist-server', 'entry-server.js')).href
 );
 const template = await readFile(join(distDir, 'index.html'), 'utf8');
+
+// Blog posts to prerender = DB-published posts merged with the static POSTS
+// (DB wins on slug clash, newest-first). DB-OPTIONAL: with no DATABASE_URL,
+// listPublished() returns [] so BLOG_POSTS === POSTS and the output is byte-for-
+// byte what it was before the CMS existed — the build never requires a database.
+const BLOG_POSTS = dedupBySlug(await listPublished().catch(() => []), POSTS);
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -98,7 +105,7 @@ const routes = ROUTES.filter((r) => r.path !== '*' && !r.path.includes(':')).map
   desc: SITE.description,
   lastmod: today,
 }));
-for (const p of POSTS) {
+for (const p of BLOG_POSTS) {
   routes.push({
     path: `/blog/${p.slug}`,
     title: `${p.title.tr} — Ecozyon Tech`,
@@ -107,7 +114,7 @@ for (const p of POSTS) {
     post: p, // carry the post so we can emit BlogPosting JSON-LD
   });
 }
-for (const tg of postTags(POSTS)) {
+for (const tg of postTags(BLOG_POSTS)) {
   routes.push({
     path: `/blog/tag/${tagSlug(tg.id)}`,
     title: `${tg.label.tr} — Blog — Ecozyon Tech`,
@@ -175,7 +182,7 @@ function structuredData(route, url) {
     } else if (route.key === 'glossary') {
       nodes.push(definedTermSet({ name: route.navTitle, description: route.desc, url, terms: GLOSSARY, site: SITE, lang: 'tr' }));
     } else if (route.key === 'blog') {
-      nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: POSTS.map((p) => ({ name: p.title.tr, path: `/blog/${p.slug}` })), site: SITE, lang: 'tr' }));
+      nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: BLOG_POSTS.map((p) => ({ name: p.title.tr, path: `/blog/${p.slug}` })), site: SITE, lang: 'tr' }));
     } else if (route.key === 'cases') {
       nodes.push(collectionPage({ name: route.navTitle, description: route.desc, url, items: CASES.map((c) => ({ name: c.client.tr, path: `/cases/${c.slug}` })), site: SITE, lang: 'tr' }));
     } else if (route.key === 'integrations') {
@@ -238,7 +245,7 @@ function headFor(route) {
 // by route-<key>.
 await mkdir(join(distDir, 'og'), { recursive: true });
 let ogCount = 0;
-for (const p of POSTS) {
+for (const p of BLOG_POSTS) {
   await writeFile(join(distDir, 'og', `${p.slug}.png`), svgToPng(postOgSvg(p)));
   ogCount++;
 }
@@ -317,6 +324,6 @@ await writeFile(
 );
 
 // feed.xml — RSS 2.0 of every blog post (newest-first, as authored).
-await writeFile(join(distDir, 'feed.xml'), buildFeed({ posts: POSTS, site: SITE, lang: 'tr' }));
+await writeFile(join(distDir, 'feed.xml'), buildFeed({ posts: BLOG_POSTS, site: SITE, lang: 'tr' }));
 
 console.log(`✓ prerendered ${count} routes + ${ogCount} OG cards + sitemap.xml + robots.txt + feed.xml`);

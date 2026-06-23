@@ -5,6 +5,7 @@ import { useReadingProgress } from '@/shared/ui/useReadingProgress';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { postBySlug, readingTime, relatedPosts, postNeighbors, tagSlug } from '@/core/data/posts';
+import { useAllPosts } from '@/core/hooks/useAllPosts';
 import { glossaryByIds } from '@/core/data/glossary';
 import { SITE } from '@/core/config/site';
 import { shareLinks } from '@/core/lib/share';
@@ -21,7 +22,11 @@ export default function BlogPostPage() {
   const { slug } = useParams();
   const { lang, t } = useApp();
   const tr = lang === 'tr';
-  const post = postBySlug(slug);
+  // Look the post up in the merged list (static + DB-published). `loaded` lets
+  // us hold off the 404 until DB posts have arrived (a freshly-published post
+  // is reachable before the next prerender bakes its static page).
+  const [allPosts, loaded] = useAllPosts();
+  const post = postBySlug(slug, allPosts);
 
   useDocumentMeta(
     post ? `${post.title[lang]} — Ecozyon Tech` : 'Yazı bulunamadı — Ecozyon Tech',
@@ -42,11 +47,11 @@ export default function BlogPostPage() {
   // Unknown slug → render the real 404 page so users get a consistent
   // dead-end UX (the prerender step never emits HTML for unknown slugs,
   // so this only triggers on client navigation / SPA fallback).
-  if (!post) return <NotFoundPage />;
+  if (!post) return loaded ? <NotFoundPage /> : null;
 
-  const related = relatedPosts(post);
+  const related = relatedPosts(post, allPosts);
   const terms = glossaryByIds(post.terms || []);
-  const { prev, next } = postNeighbors(post.slug);
+  const { prev, next } = postNeighbors(post.slug, allPosts);
   const blocks = post.body[lang];
   // Heading blocks ({ h, id }) double as the table-of-contents entries; the
   // SectionNav rail tracks scroll position and anchors to these ids.

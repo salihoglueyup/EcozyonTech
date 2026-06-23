@@ -4,12 +4,12 @@ import { FilterPills, PageHeader, SearchInput } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
-import { POSTS, postBySlug, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
+import { postBySlug, readingTime, postTags, filterByTag, searchPosts } from '@/core/data/posts';
+import { useAllPosts } from '@/core/hooks/useAllPosts';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
 
 const meta = routeByKey('blog');
-const TAGS = postTags(POSTS);
 const COVER_GRADIENTS = [
   'linear-gradient(135deg,#0EA5E9 0%,#10B981 100%)',
   'linear-gradient(135deg,#10B981 0%,#7C3AED 100%)',
@@ -25,6 +25,12 @@ export default function BlogPage() {
   const [query, setQuery] = useState('');
   const [savedOnly, setSavedOnly] = useState(false);
 
+  // Static POSTS first (matches the prerendered HTML), then merged with the
+  // DB-published posts after mount. Tags + the list derive from this so CMS
+  // posts and any new tags appear once the fetch settles.
+  const [allPosts] = useAllPosts();
+  const TAGS = postTags(allPosts);
+
   // Recently-viewed and saved slugs, resolved client-side after mount
   // (localStorage is empty during prerender, so the server emits nothing and
   // the first client render matches — no hydration mismatch).
@@ -32,12 +38,12 @@ export default function BlogPage() {
   const [savedSlugs, setSavedSlugs] = useState([]);
   useEffect(() => {
     /* eslint-disable react-hooks/set-state-in-effect */
-    setRecents(readRecents().map(postBySlug).filter(Boolean));
+    setRecents(readRecents().map((s) => postBySlug(s, allPosts)).filter(Boolean));
     setSavedSlugs(readSaved());
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, []);
+  }, [allPosts]);
 
-  const tagged = filterByTag(POSTS, activeTag);
+  const tagged = filterByTag(allPosts, activeTag);
   const scoped = savedOnly ? tagged.filter((p) => isSaved(savedSlugs, p.slug)) : tagged;
   const visible = searchPosts(scoped, query, lang);
   useDocumentMeta(

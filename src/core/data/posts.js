@@ -367,7 +367,18 @@ export const POSTS = [
   },
 ];
 
-export const postBySlug = (slug) => POSTS.find((p) => p.slug === slug);
+export const postBySlug = (slug, posts = POSTS) => posts.find((p) => p.slug === slug);
+
+// Merge DB-published posts (fetched at runtime from /api/posts) with the static
+// POSTS: a DB post wins on slug clash, result is newest-first. Pure + client-safe
+// (the DB read happens elsewhere); used by useAllPosts so the public blog shows
+// CMS posts after mount without breaking the static-prerender first render.
+export function mergePosts(remote = [], statics = POSTS) {
+  const bySlug = new Map();
+  for (const p of remote) bySlug.set(p.slug, p);
+  for (const p of statics) if (!bySlug.has(p.slug)) bySlug.set(p.slug, p);
+  return [...bySlug.values()].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+}
 
 // Adjacent posts in list order (POSTS is newest-first): prev = the newer
 // neighbor, next = the older one. Either is null at the ends.

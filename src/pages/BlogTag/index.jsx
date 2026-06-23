@@ -2,20 +2,25 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import { Tag } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
-import { POSTS, filterByTag, postTagBySlug, readingTime } from '@/core/data/posts';
+import { filterByTag, postTagBySlug, readingTime } from '@/core/data/posts';
+import { useAllPosts } from '@/core/hooks/useAllPosts';
 import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
 
 export default function BlogTagPage() {
   const { tag: slug } = useParams();
   const { lang, t } = useApp();
-  const tg = postTagBySlug(slug);
+  // Resolve the tag against the merged list so DB-only tags work too; defer the
+  // redirect until the remote fetch settles (`loaded`) to avoid bouncing a
+  // valid DB tag before its posts arrive.
+  const [allPosts, loaded] = useAllPosts();
+  const tg = postTagBySlug(slug, allPosts);
   useDocumentMeta(
     tg ? `${tg.label[lang]} — Blog — Ecozyon Tech` : 'Blog — Ecozyon Tech',
     tg ? t.blog.tagHeading.replace('{tag}', tg.label[lang]) : '',
   );
-  if (!tg) return <Navigate to="/blog" replace />;
+  if (!tg) return loaded ? <Navigate to="/blog" replace /> : null;
 
-  const posts = filterByTag(POSTS, tg.id);
+  const posts = filterByTag(allPosts, tg.id);
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
