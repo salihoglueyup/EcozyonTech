@@ -11,26 +11,15 @@ execSync('npm run build:spa', { stdio: 'inherit' });
 // Paths
 const distDir = path.resolve('dist');
 const distAssets = path.join(distDir, 'assets');
-const wpThemeDir = path.resolve('wp-theme');
-const wpAssets = path.join(wpThemeDir, 'assets');
+const rootDir = path.resolve('.');
 
-// 2. Prepare wp-theme/assets directory
-console.log('📂 Copying assets to wp-theme...');
-if (fs.existsSync(wpAssets)) {
-  fs.rmSync(wpAssets, { recursive: true, force: true });
-}
-fs.mkdirSync(wpAssets, { recursive: true });
-
-// Copy all assets
-fs.cpSync(distAssets, wpAssets, { recursive: true });
-
-// 3. Scan for JS and CSS files to enqueue
-const files = fs.readdirSync(wpAssets);
+// 2. Scan for JS and CSS files in dist/assets
+const files = fs.readdirSync(distAssets);
 const jsFiles = files.filter(f => f.endsWith('.js'));
 const cssFiles = files.filter(f => f.endsWith('.css'));
 
-// 4. Generate functions.php
-console.log('⚙️ Generating functions.php...');
+// 3. Generate functions.php in the root directory
+console.log('⚙️ Generating functions.php in root directory...');
 let functionsPhp = `<?php
 /**
  * Ecozyon Tech Theme Functions
@@ -44,13 +33,12 @@ function ecozyon_enqueue_assets() {
 
 // Enqueue CSS
 cssFiles.forEach((file, index) => {
-    functionsPhp += `    wp_enqueue_style('ecozyon-style-${index}', $theme_dir . '/assets/${file}', array(), null);\n`;
+    functionsPhp += `    wp_enqueue_style('ecozyon-style-${index}', $theme_dir . '/dist/assets/${file}', array(), null);\n`;
 });
 
 // Enqueue JS
 jsFiles.forEach((file, index) => {
-    // Need type="module" for Vite builds, so we'll add a filter below
-    functionsPhp += `    wp_enqueue_script('ecozyon-script-${index}', $theme_dir . '/assets/${file}', array(), null, true);\n`;
+    functionsPhp += `    wp_enqueue_script('ecozyon-script-${index}', $theme_dir . '/dist/assets/${file}', array(), null, true);\n`;
 });
 
 functionsPhp += `}
@@ -66,7 +54,7 @@ function ecozyon_add_type_attribute($tag, $handle, $src) {
 add_filter('script_loader_tag', 'ecozyon_add_type_attribute', 10, 3);
 `;
 
-fs.writeFileSync(path.join(wpThemeDir, 'functions.php'), functionsPhp);
+fs.writeFileSync(path.join(rootDir, 'functions.php'), functionsPhp);
 
 console.log('✅ WordPress theme generation complete!');
-console.log('📁 The "wp-theme" directory is ready for deployment.');
+console.log('📁 The repository root is now a valid WordPress theme.');
