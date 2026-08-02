@@ -1,6 +1,6 @@
 
 // Ecozyon Tech — fictional but consistent city dataset for the impact map
-// Each entry: lat, lon, country, users (active wearables), co2 (kg saved/day),
+// Each entry: lat, lon, country, users (active endpoints), co2 (kg saved/day),
 // solar (% solar contribution), partner (HQ/pilot partner?), since (joined year)
 
 export const CITIES = [

@@ -47,13 +47,15 @@ export default function GlossaryPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <PageHeader
-          eyebrow={g.eyebrow}
-          title={g.title}
-          titleAccent={g.titleAccent}
-          intro={g.intro}
-          className="mb-8"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={g.eyebrow}
+            title={g.title}
+            titleAccent={g.titleAccent}
+            intro={g.intro}
+            className="mb-8"
+          />
+        </Reveal>
 
         <input
           type="search"

@@ -49,19 +49,6 @@ export const ROUTES = [
     },
   },
   {
-    path: '/pricing',
-    key: 'pricing',
-    group: 'product',
-    place: 'nav',
-    featured: true,
-    nav: { tr: 'Fiyatlandırma', en: 'Pricing' },
-    title: { tr: 'Fiyatlandırma — Ecozyon Tech', en: 'Pricing — Ecozyon Tech' },
-    description: {
-      tr: 'Şeffaf, ölçeklenebilir planlar — bireyden kuruma. Aylık/yıllık fiyatlandırma ve sık sorulan sorular.',
-      en: 'Transparent, scalable plans — from individual to enterprise. Monthly/annual pricing and FAQs.',
-    },
-  },
-  {
     path: '/impact',
     key: 'impact',
     group: 'product',
@@ -72,18 +59,6 @@ export const ROUTES = [
     description: {
       tr: 'Şehir şehir gerçek etki: kullanıcılar, önlenen CO₂ ve yenilenebilir kullanımı interaktif 3B dünya üzerinde.',
       en: 'Real impact city by city: users, CO₂ avoided and renewable use on an interactive 3D globe.',
-    },
-  },
-  {
-    path: '/compare',
-    key: 'compare',
-    group: 'product',
-    place: 'nav',
-    nav: { tr: 'Karşılaştırma', en: 'Compare' },
-    title: { tr: 'Neden Ecozyon? — Ecozyon Tech', en: 'Why Ecozyon? — Ecozyon Tech' },
-    description: {
-      tr: 'Ecozyon Tech’i klasik sürdürülebilirlik araçlarıyla karşılaştırın: ölçüm, donanım, kişiselleştirme ve etki.',
-      en: 'Compare Ecozyon Tech with classic sustainability tools: measurement, hardware, personalization and impact.',
     },
   },
   {
@@ -99,18 +74,6 @@ export const ROUTES = [
     },
   },
   {
-    path: '/integrations',
-    key: 'integrations',
-    group: 'product',
-    place: 'nav',
-    nav: { tr: 'Entegrasyonlar', en: 'Integrations' },
-    title: { tr: 'Entegrasyonlar — Ecozyon Tech', en: 'Integrations — Ecozyon Tech' },
-    description: {
-      tr: 'Ecozyon Tech’i kullandığınız araçlara bağlayın: İK, enerji, BI ve daha fazlası için hazır entegrasyonlar.',
-      en: 'Connect Ecozyon Tech to the tools you use: ready-made integrations for HR, energy, BI and more.',
-    },
-  },
-  {
     path: '/assessment',
     key: 'assessment',
     group: 'product',
@@ -120,18 +83,6 @@ export const ROUTES = [
     description: {
       tr: 'Birkaç soruda sürdürülebilirlik olgunluğunuzu ölçün ve size uygun başlangıç adımlarını alın.',
       en: 'Gauge your sustainability maturity in a few questions and get tailored first steps.',
-    },
-  },
-  {
-    path: '/leaderboard',
-    key: 'leaderboard',
-    group: 'product',
-    place: 'nav',
-    nav: { tr: 'Liderlik Tablosu', en: 'Leaderboard' },
-    title: { tr: 'Liderlik Tablosu — Ecozyon Tech', en: 'Leaderboard — Ecozyon Tech' },
-    description: {
-      tr: 'Şehirler ve takımlar önlenen CO₂’ye göre nasıl sıralanıyor? Topluluk etkisini canlı liderlik tablosunda görün.',
-      en: 'See how cities and teams rank by CO₂ avoided — community impact on a live leaderboard.',
     },
   },
   {
@@ -204,30 +155,6 @@ export const ROUTES = [
     description: {
       tr: 'Ecozyon Tech’te yeni neler var: ürün güncellemeleri, iyileştirmeler ve düzeltmeler sürüm sürüm.',
       en: 'What’s new in Ecozyon Tech: product updates, improvements and fixes, release by release.',
-    },
-  },
-  {
-    path: '/status',
-    key: 'status',
-    group: 'resources',
-    place: 'nav',
-    nav: { tr: 'Sistem Durumu', en: 'Status' },
-    title: { tr: 'Sistem Durumu — Ecozyon Tech', en: 'System Status — Ecozyon Tech' },
-    description: {
-      tr: 'Servislerin canlı çalışma durumu, geçmiş olaylar ve bakım bildirimleri.',
-      en: 'Live uptime of our services, past incidents and maintenance notices.',
-    },
-  },
-  {
-    path: '/resources',
-    key: 'resources',
-    group: 'resources',
-    place: 'nav',
-    nav: { tr: 'Kaynaklar', en: 'Resources' },
-    title: { tr: 'Kaynaklar — Ecozyon Tech', en: 'Resources — Ecozyon Tech' },
-    description: {
-      tr: 'Tek noktadan tüm içerik: blog, vaka çalışmaları, sözlük, yardım ve geliştirici kaynakları.',
-      en: 'Everything in one place: blog, case studies, glossary, help and developer resources.',
     },
   },
   {

@@ -147,6 +147,66 @@ import React, { useEffect, useRef } from 'react';
     const glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.14, 48, 48), glowMat);
     root.add(glow);
 
+    // --- Premium 3D Features (Impact Page only, hidden if compact) ---
+    const featureVisible = () => !state.compact;
+
+    // ── Cloud Layer (Volumetric geometric feel) ─────────────────────────────
+    const cloudMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: state.theme === "dark" ? 0.03 : 0.06,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      wireframe: true
+    });
+    // Icosahedron for a low-poly geometric tech-cloud look
+    const cloudGeo = new THREE.IcosahedronGeometry(R * 1.05, 5);
+    const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+    root.add(cloudMesh);
+
+    // ── Orbit / Satellites Layer ────────────────────────────────────────────
+    const orbitGroup = new THREE.Group();
+    root.add(orbitGroup);
+    const satellites = [];
+    {
+      const orbitColors = [state.cyan, state.emerald, 0xF59E0B];
+      for (let i = 0; i < 3; i++) {
+        const rOrbit = R * (1.15 + i * 0.08);
+        const oGeo = new THREE.TorusGeometry(rOrbit, 0.0015, 8, 64);
+        const oMat = new THREE.MeshBasicMaterial({ color: orbitColors[i], transparent: true, opacity: 0.15 });
+        const orbit = new THREE.Mesh(oGeo, oMat);
+        orbit.rotation.x = Math.PI / 2 + (Math.random() - 0.5) * 1.5;
+        orbit.rotation.y = (Math.random() - 0.5) * 1.5;
+        orbitGroup.add(orbit);
+
+        // Satellite payload
+        const sGeo = new THREE.BoxGeometry(0.015, 0.015, 0.03);
+        const sMat = new THREE.MeshBasicMaterial({ color: orbitColors[i] });
+        const sat = new THREE.Mesh(sGeo, sMat);
+        orbit.add(sat); 
+        satellites.push({ mesh: sat, distance: rOrbit, speed: 0.2 + Math.random() * 0.3, angle: Math.random() * Math.PI * 2 });
+      }
+    }
+
+    // ── Ripples Layer ───────────────────────────────────────────────────────
+    const rippleGroup = new THREE.Group();
+    root.add(rippleGroup);
+    const activeRipples = [];
+    function spawnRipple(x, y, z, color) {
+      if (state.compact) return;
+      const rGeo = new THREE.RingGeometry(0.01, 0.02, 32);
+      const rMat = new THREE.MeshBasicMaterial({ 
+        color: color, transparent: true, opacity: 0.8, 
+        side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending 
+      });
+      const ripple = new THREE.Mesh(rGeo, rMat);
+      ripple.position.set(x, y, z);
+      ripple.lookAt(new THREE.Vector3(0, 0, 0));
+      rippleGroup.add(ripple);
+      activeRipples.push({ mesh: ripple, age: 0, maxAge: 1.5 });
+    }
+    // ------------------------------------------------------------------------
+
     // ── Country borders (merged line segments, opt-in) ──────────────────────
     const borderGroup = new THREE.Group();
     root.add(borderGroup);
@@ -602,6 +662,37 @@ import React, { useEffect, useRef } from 'react';
         });
       }
 
+      // Premium layers (Clouds, Satellites, Ripples)
+      cloudMesh.visible = featureVisible();
+      if (cloudMesh.visible) {
+        cloudMesh.rotation.y += auto.rot * 1.5 * motion;
+        cloudMesh.rotation.x += auto.rot * 0.5 * motion;
+      }
+      
+      orbitGroup.visible = featureVisible();
+      if (orbitGroup.visible) {
+        satellites.forEach(sat => {
+          sat.angle += sat.speed * 0.01 * motion;
+          sat.mesh.position.set(Math.cos(sat.angle) * sat.distance, Math.sin(sat.angle) * sat.distance, 0);
+        });
+      }
+
+      for (let i = activeRipples.length - 1; i >= 0; i--) {
+        const r = activeRipples[i];
+        r.age += 0.016 * motion; // approx 60fps dt
+        if (r.age >= r.maxAge) {
+          rippleGroup.remove(r.mesh);
+          r.mesh.geometry.dispose();
+          r.mesh.material.dispose();
+          activeRipples.splice(i, 1);
+        } else {
+          const progress = r.age / r.maxAge;
+          const scale = 1 + progress * 20;
+          r.mesh.scale.setScalar(scale);
+          r.mesh.material.opacity = 0.8 * (1 - Math.pow(progress, 1.5));
+        }
+      }
+
       // Terminator visibility
       terminator.material.opacity = state.showTerminator ? 0.45 : 0;
       nightHemi.material.opacity = state.showTerminator ? 0.28 : 0;
@@ -630,6 +721,10 @@ import React, { useEffect, useRef } from 'react';
       rotTarget.y = root.rotation.y + shortestYawDelta(yaw, root.rotation.y);
       rotTarget.x = pitch;
       rotTarget.active = true;
+
+      // Spawn ripple effect on city select
+      const [cx, cy, cz] = latLonToXYZ(city.lat, city.lon, R * 1.015);
+      spawnRipple(cx, cy, cz, city.partner ? state.cyan : state.emerald);
     }
 
     function dispose() {

@@ -53,8 +53,8 @@ export function HowItWorks({ t, lang }) {
               </div>
               <div className="mt-2 text-[13.5px] text-slate-300">
                 {lang === "tr"
-                  ? "Erken kullanıcılarımıza özel cihaz + 12 ay Pro abonelik."
-                  : "Free hardware + 12-month Pro plan for early users."}
+                  ? "Erken kullanıcılar için ücretsiz kurulum + 12 aylık Pro planı."
+                  : "Free setup + 12-month Pro plan for early users."}
               </div>
             </div>
             <Link to="/contact" className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 dark:text-slate-100 text-[13.5px] font-medium px-5 py-3 hover:bg-slate-100 transition self-start">
@@ -77,7 +77,7 @@ function StepCard({ step, idx }) {
   return (
     <div
       ref={ref}
-      className={`relative z-10 rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/75 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] dark:ring-white/[.06] p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+      className={`eco-card relative z-10 rounded-3xl p-6 lg:p-7 transition-all duration-700 ${seen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
       style={{ transitionDelay: `${idx * 120}ms` }}
     >
       {/* Step number badge */}

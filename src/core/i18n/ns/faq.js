@@ -6,11 +6,11 @@ export default {
     "items": [
       {
         "q": "Ecozyon tam olarak nedir?",
-        "a": "Ecozyon Tech, giyilebilir cihaz + AI tabanlı bir sürdürülebilirlik platformudur. Bireysel karbon ayak izini ölçer, azaltma önerileri sunar ve topluluk yarışmalarıyla alışkanlık değişimi sağlar."
+        "a": "Ecozyon Tech, veri entegrasyonu + AI tabanlı bir sürdürülebilirlik platformudur. Bireysel ve kurumsal karbon ayak izini ölçer, azaltma önerileri sunar ve topluluk yarışmalarıyla alışkanlık değişimi sağlar."
       },
       {
-        "q": "Cihaz ne kadar enerji tüketiyor?",
-        "a": "Referans tasarım 0.4W altında çalışır — bir akıllı saatin çeyreği kadar. Kablosuz şarjla haftada bir şarj yeterlidir."
+        "q": "Sistem performansımı etkiler mi?",
+        "a": "Bulut tabanlı API mimarimiz ve optimize edilmiş modellerimiz cihazlarınızın veya sunucularınızın işlem gücünü yormaz, arka planda hafifçe çalışır."
       },
       {
         "q": "Verilerim güvende mi?",
@@ -31,11 +31,11 @@ export default {
     "items": [
       {
         "q": "What exactly is Ecozyon?",
-        "a": "Ecozyon Tech is a wearable + AI-powered sustainability platform. It measures your personal carbon footprint, suggests reductions and drives habit change through community challenges."
+        "a": "Ecozyon Tech is a data integration + AI-powered sustainability platform. It measures carbon footprints, suggests reductions, and drives habit change through community challenges."
       },
       {
-        "q": "How much power does the device use?",
-        "a": "The reference design operates below 0.4W — a quarter of a smartwatch. Wireless charging once a week is enough."
+        "q": "Does the system affect performance?",
+        "a": "Our cloud-based APIs and optimized models run seamlessly in the background without draining your device or server resources."
       },
       {
         "q": "Is my data safe?",

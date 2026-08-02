@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
 
 // ────────────────────────────────────────────────────────────────────────────
 // USE CASES — Personas (tabbed)
@@ -17,7 +18,7 @@ export function UseCases({ t, lang }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-3xl mb-10">
+        <Reveal className="max-w-3xl mb-10">
           <SectionHeader
             color="cyan"
             eyebrow={`04 · ${u.eyebrow}`}
@@ -25,7 +26,7 @@ export function UseCases({ t, lang }) {
             titleAccent={u.titleAccent}
             sub={u.sub}
           />
-        </div>
+        </Reveal>
 
         {/* Persona tab pills */}
         <div className="flex flex-wrap items-center gap-2 mb-6">
@@ -59,7 +60,7 @@ export function UseCases({ t, lang }) {
         </div>
 
         {/* Active persona content panel */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 dark:bg-white/[.04] backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_24px_70px_-40px_rgba(15,23,42,.3)]">
+        <Reveal delay={100} className="eco-card relative overflow-hidden rounded-3xl shadow-[0_24px_70px_-40px_rgba(15,23,42,.3)]">
           <div className="absolute inset-0 opacity-50 pointer-events-none" style={{ background: `radial-gradient(circle at 100% 0%, ${p.color}22, transparent 50%)` }} />
 
           <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_1fr]">
@@ -128,7 +129,7 @@ export function UseCases({ t, lang }) {
               <div className="mt-1 font-mono text-[14px] text-slate-900 dark:text-slate-100">{p.id === "individual" ? "Q2 2026" : p.id === "team" ? "Q3 2026" : "Q4 2026"}</div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

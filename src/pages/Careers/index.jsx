@@ -3,12 +3,15 @@ import { useCallback, useEffect, useId, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, EmptyState, FilterPills, PageHeader, RelatedRoutes, ResultCount, SearchInput } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
+import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { Modal } from '@/shared/ui/Modal';
 import { useToast } from '@/shared/ui/Toast';
 import { routeByKey, SITE } from '@/core/config/site';
 import { JOBS, jobTeams, filterByTeam, searchJobs, jobById } from '@/core/data/jobs';
+import { useAllJobs } from '@/core/hooks/useAllJobs';
+import { CultureGrid } from '@/features/culture-grid';
 
 const meta = routeByKey('careers');
 const TEAMS = jobTeams(JOBS);
@@ -19,8 +22,10 @@ export default function CareersPage() {
   const toast = useToast();
   const [params, setParams] = useSearchParams();
   const [openJob, setOpenJob] = useState(null);
+  const [allJobs] = useAllJobs();
+  const TEAMS = jobTeams(allJobs);
   const { active: activeTeam, setActive: setActiveTeam, query, setQuery, visible } = useFilteredList({
-    items: JOBS,
+    items: allJobs,
     filter: filterByTeam,
     search: searchJobs,
     lang,
@@ -48,8 +53,8 @@ export default function CareersPage() {
   const jobParam = params.get('job');
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOpenJob(jobById(jobParam) || null);
-  }, [jobParam]);
+    setOpenJob(jobById(jobParam, allJobs) || null);
+  }, [jobParam, allJobs]);
 
   const shareRole = useCallback(
     async (job) => {
@@ -71,21 +76,21 @@ export default function CareersPage() {
   );
 
   const perks = tr
-    ? ['Uzaktan-öncelikli', 'Donanım + yazılım', 'Öğrenme bütçesi', 'Etki odaklı misyon']
-    : ['Remote-first', 'Hardware + software', 'Learning budget', 'Impact-driven mission'];
+    ? ['Uzaktan-öncelikli', 'Yapay Zeka + Veri', 'Öğrenme bütçesi', 'Etki odaklı misyon']
+    : ['Remote-first', 'AI + Data', 'Learning budget', 'Impact-driven mission'];
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="max-w-3xl mb-10">
+        <Reveal className="max-w-3xl mb-10">
           <PageHeader
             eyebrow={tr ? 'Kariyer' : 'Careers'}
             title={tr ? 'Daha akıllı, ' : 'Build a smarter, '}
             titleAccent={tr ? 'temiz bir gelecek kur' : 'cleaner future'}
             intro={
               tr
-                ? '14 kişilik bir ekibiz — İstanbul, Berlin ve uzaktan. Donanımdan AI’a etki yaratan işler yapıyoruz.'
-                : 'A team of 14 — Istanbul, Berlin and remote. We do impactful work from hardware to AI.'
+                ? '3 kurucu ortaklı bir ekibiz — İstanbul merkezli. Veriden AI’a etki yaratan işler yapıyoruz.'
+                : 'A team of 3 founders — based in Istanbul. We do impactful work from data to AI.'
             }
           />
           <div className="mt-5 flex flex-wrap gap-1.5">
@@ -93,6 +98,11 @@ export default function CareersPage() {
               <span key={p} className="rounded-full bg-slate-900/[.05] px-2.5 py-1 text-[12px] text-slate-700 dark:text-slate-300 font-medium">{p}</span>
             ))}
           </div>
+        </Reveal>
+
+        {/* New Culture Grid Section */}
+        <div className="mb-16">
+          <CultureGrid />
         </div>
 
         <SearchInput
@@ -133,40 +143,42 @@ export default function CareersPage() {
               {t.careers.noResults}
             </EmptyState>
           )}
-          {visible.map((j) => (
-            <div key={j.id} className="rounded-2xl eco-card p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 text-[11px]">
-                  <span className="inline-flex items-center rounded-full bg-cyan-50 text-cyan-700 ring-1 ring-cyan-500/15 px-2 py-0.5 font-semibold">{j.team[lang]}</span>
-                  <span className="text-slate-500 dark:text-slate-400">{j.type[lang]}</span>
+          {visible.map((j, i) => (
+            <Reveal key={j.id} delay={i * 50}>
+              <div className="rounded-2xl eco-card p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center gap-4 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 text-[11px]">
+                    <span className="inline-flex items-center rounded-full bg-cyan-50 dark:bg-cyan-500/[.12] text-cyan-700 dark:text-cyan-400 ring-1 ring-cyan-500/15 px-2 py-0.5 font-semibold">{j.team[lang]}</span>
+                    <span className="text-slate-500 dark:text-slate-400">{j.type[lang]}</span>
+                  </div>
+                  <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{j.title[lang]}</h2>
+                  <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{j.desc[lang]}</p>
                 </div>
-                <h2 className="mt-2 font-display text-[19px] tracking-tight text-slate-900 dark:text-slate-100">{j.title[lang]}</h2>
-                <p className="mt-1 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed">{j.desc[lang]}</p>
+                <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                  <button
+                    type="button"
+                    onClick={() => shareRole(j)}
+                    aria-label={t.careers.share}
+                    title={t.careers.share}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:ring-cyan-500/30 transition"
+                  >
+                    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                      <circle cx="12" cy="3.5" r="1.8" /><circle cx="4" cy="8" r="1.8" /><circle cx="12" cy="12.5" r="1.8" />
+                      <path d="M5.6 7.1 10.4 4.4M5.6 8.9l4.8 2.7" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openRole(j)}
+                    className="eco-press inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
+                    style={{ backgroundImage: GRADIENTS.cta }}
+                  >
+                    {t.careers.apply}
+                    <ArrowRight />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2 shrink-0 self-start">
-                <button
-                  type="button"
-                  onClick={() => shareRole(j)}
-                  aria-label={t.careers.share}
-                  title={t.careers.share}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/70 dark:bg-white/[.06] ring-1 ring-slate-900/[.08] dark:ring-white/[.1] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:ring-cyan-500/30 transition"
-                >
-                  <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                    <circle cx="12" cy="3.5" r="1.8" /><circle cx="4" cy="8" r="1.8" /><circle cx="12" cy="12.5" r="1.8" />
-                    <path d="M5.6 7.1 10.4 4.4M5.6 8.9l4.8 2.7" strokeLinecap="round" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => openRole(j)}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] font-medium text-white"
-                  style={{ backgroundImage: GRADIENTS.cta }}
-                >
-                  {t.careers.apply}
-                  <ArrowRight />
-                </button>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 

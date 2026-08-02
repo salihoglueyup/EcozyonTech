@@ -8,6 +8,8 @@ import { postBySlug, readingTime, postTags, filterByTag, searchPosts } from '@/c
 import { useAllPosts } from '@/core/hooks/useAllPosts';
 import { readRecents } from '@/core/lib/recents';
 import { readSaved, isSaved } from '@/core/lib/saved';
+import { Reveal } from '@/shared/ui/useReveal';
+import { NewsletterBlock } from '@/features/newsletter-block';
 
 const meta = routeByKey('blog');
 const COVER_GRADIENTS = [
@@ -49,39 +51,43 @@ export default function BlogPage() {
   useDocumentMeta(
     meta.title[lang],
     tr
-      ? 'Sürdürülebilirlik, donanım ve davranış değişimi üzerine yazılar.'
-      : 'Writing on sustainability, hardware and behavior change.',
+      ? 'Sürdürülebilirlik, yapay zeka ve davranış değişimi üzerine yazılar.'
+      : 'Writing on sustainability, AI and behavior change.',
   );
 
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-5xl px-6">
-        <PageHeader
-          color="emerald"
-          eyebrow={tr ? 'Blog' : 'Blog'}
-          title={tr ? 'Notlar & ' : 'Notes & '}
-          titleAccent={tr ? 'içgörüler' : 'insights'}
-          className="max-w-3xl mb-12"
-        />
+        <Reveal>
+          <PageHeader
+            color="emerald"
+            eyebrow={tr ? 'Blog' : 'Blog'}
+            title={tr ? 'Notlar & ' : 'Notes & '}
+            titleAccent={tr ? 'içgörüler' : 'insights'}
+            className="max-w-3xl mb-12"
+          />
+        </Reveal>
 
         {recents.length > 0 && (
-          <div className="mb-6">
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-2.5">
-              {t.blog.recent}
+          <Reveal delay={100}>
+            <div className="mb-6">
+              <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 mb-2.5">
+                {t.blog.recent}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recents.map((p) => (
+                  <Link
+                    key={p.slug}
+                    to={`/blog/${p.slug}`}
+                    className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-white/[.05] ring-1 ring-slate-900/[.07] dark:ring-white/[.08] pl-2.5 pr-3.5 py-1.5 text-[12.5px] text-slate-700 dark:text-slate-300 hover:ring-cyan-500/30 hover:text-slate-900 dark:hover:text-slate-100 transition max-w-[15rem]"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 shrink-0" aria-hidden="true" />
+                    <span className="truncate">{p.title[lang]}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {recents.map((p) => (
-                <Link
-                  key={p.slug}
-                  to={`/blog/${p.slug}`}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/60 dark:bg-white/[.05] ring-1 ring-slate-900/[.07] dark:ring-white/[.08] pl-2.5 pr-3.5 py-1.5 text-[12.5px] text-slate-700 dark:text-slate-300 hover:ring-cyan-500/30 hover:text-slate-900 dark:hover:text-slate-100 transition max-w-[15rem]"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 shrink-0" aria-hidden="true" />
-                  <span className="truncate">{p.title[lang]}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
+          </Reveal>
         )}
 
         <SearchInput
@@ -120,47 +126,48 @@ export default function BlogPage() {
         </FilterPills>
 
         <div className="space-y-3">
-          {visible.map((p) => (
-            <Link
-              key={p.slug}
-              to={`/blog/${p.slug}`}
-              className="group flex flex-col sm:flex-row gap-5 rounded-2xl eco-card p-5 lg:p-6 hover:ring-cyan-500/30 transition"
-            >
-              {/* Cover thumbnail */}
-              <div
-                className="shrink-0 w-full sm:w-44 h-28 sm:h-auto rounded-xl overflow-hidden"
-                style={{
-                  background: COVER_GRADIENTS[visible.indexOf(p) % COVER_GRADIENTS.length],
-                }}
+          {visible.map((p, i) => (
+            <Reveal key={p.slug} delay={i * 50}>
+              <Link
+                to={`/blog/${p.slug}`}
+                className="group flex flex-col sm:flex-row gap-5 rounded-2xl eco-card p-5 lg:p-6 hover:ring-cyan-500/30 transition hover:-translate-y-1 hover:shadow-lg duration-300"
               >
-                <div className="w-full h-full flex items-center justify-center text-white/70">
-                  <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="3" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
+                {/* Cover thumbnail */}
+                <div
+                  className="shrink-0 w-full sm:w-44 h-28 sm:h-auto rounded-xl overflow-hidden"
+                  style={{
+                    background: COVER_GRADIENTS[visible.indexOf(p) % COVER_GRADIENTS.length],
+                  }}
+                >
+                  <div className="w-full h-full flex items-center justify-center text-white/70 group-hover:scale-105 transition-transform duration-500">
+                    <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.2">
+                      <rect x="3" y="3" width="18" height="18" rx="3" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  </div>
                 </div>
-              </div>
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-3 text-[11px]">
-                  <span className="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-500/15 dark:ring-emerald-400/20 px-2 py-0.5 font-semibold">
-                    {p.tag[lang]}
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 text-[11px]">
+                    <span className="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-500/[.12] text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-500/15 dark:ring-emerald-400/20 px-2 py-0.5 font-semibold">
+                      {p.tag[lang]}
+                    </span>
+                    <time className="text-slate-500 font-mono">{p.date}</time>
+                    <span className="text-slate-400 font-mono">· {readingTime(p, lang)} {t.blog.readMin}</span>
+                  </div>
+                  <h2 className="mt-2 font-display text-[18px] lg:text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition">
+                    {p.title[lang]}
+                  </h2>
+                  <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{p.excerpt[lang]}</p>
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-800 dark:text-slate-200">
+                    {tr ? 'Devamını oku' : 'Read more'}
+                    <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
                   </span>
-                  <time className="text-slate-500 font-mono">{p.date}</time>
-                  <span className="text-slate-400 font-mono">· {readingTime(p, lang)} {t.blog.readMin}</span>
                 </div>
-                <h2 className="mt-2 font-display text-[18px] lg:text-[20px] tracking-tight text-slate-900 dark:text-slate-100 leading-snug group-hover:text-cyan-700 dark:group-hover:text-cyan-400 transition">
-                  {p.title[lang]}
-                </h2>
-                <p className="mt-1.5 text-[13.5px] text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">{p.excerpt[lang]}</p>
-                <span className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-slate-800 dark:text-slate-200">
-                  {tr ? 'Devamını oku' : 'Read more'}
-                  <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 6h6m-2-2 2 2-2 2" /></svg>
-                </span>
-              </div>
-            </Link>
+              </Link>
+            </Reveal>
           ))}
           {visible.length === 0 && (
             <p className="py-10 text-center text-[14px] text-slate-500 dark:text-slate-400">
@@ -168,6 +175,8 @@ export default function BlogPage() {
             </p>
           )}
         </div>
+
+        <NewsletterBlock />
       </div>
     </section>
   );

@@ -159,7 +159,7 @@ import React, { useEffect, useRef, useState } from 'react';
     const nodes = [
       { c: 3, r: 4, label: "AI · 0.4W", color: cyan },
       { c: 9, r: 3, label: "Solar +12 kWh", color: emerald },
-      { c: 11, r: 9, label: "Wearable · 8.4K", color: cyan },
+      { c: 11, r: 9, label: "API · 8.4K", color: cyan },
       { c: 4, r: 10, label: "CO₂ -38 kg/h", color: emerald },
     ];
 

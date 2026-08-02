@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useApp } from '@/app/providers/AppProvider';
 import { ArrowRight, Tag, GlowOrb } from '@/shared/ui/primitives';
 import { EcoGlobe } from '@/shared/3d/LazyGlobes';
 import { Modal } from '@/shared/ui/Modal';
@@ -8,7 +9,10 @@ import { Typewriter } from '@/shared/ui/Typewriter';
 import { HeroParticles, HeroDataGrid } from './HeroVariants';
 
 // ── Hero ───────────────────────────────────────────────────────────────────
-export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents, theme }) {
+export function Hero() {
+  const { t, lang, accents, theme, prefs } = useApp();
+  const glowIntensity = prefs.glowIntensity ?? 1;
+  const heroStyle = prefs.heroStyle ?? "globe";
   const [liveIdx, setLiveIdx] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
   useEffect(() => {
@@ -23,16 +27,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
         <GlowOrb className="-top-32 -left-24" color={`rgba(14,165,233,${0.18 * glowIntensity})`} size={620} />
         <GlowOrb className="top-40 -right-40" color={`rgba(16,185,129,${0.18 * glowIntensity})`} size={680} />
         <GlowOrb className="bottom-0 left-1/3" color={`rgba(37,99,235,${0.10 * glowIntensity})`} size={420} />
-        <div
-          className="absolute inset-0 opacity-[.35]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(15,23,42,.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,.05) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
-            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
-          }}
-        />
+        <div className="absolute inset-0 opacity-[.35] eco-hero-grid" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
@@ -101,8 +96,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
           <div className="relative">
             <div className="relative aspect-square w-full max-w-[560px] mx-auto lg:ml-auto lg:mr-0 min-h-[280px]">
               {/* Halo behind */}
-              <div className="absolute inset-6 rounded-full blur-3xl opacity-60"
-                style={{ background: "conic-gradient(from 90deg, rgba(14,165,233,.25), rgba(16,185,129,.22), rgba(14,165,233,.25))" }} />
+              <div className="absolute inset-6 rounded-full blur-3xl opacity-60 eco-hero-glow" />
               <div className="absolute inset-0">
                 {heroStyle === "particles" && <HeroParticles cyan={accents?.cyan} emerald={accents?.emerald} dark={theme === "dark"} />}
                 {heroStyle === "grid" && <HeroDataGrid cyan={accents?.cyan} emerald={accents?.emerald} />}
@@ -119,7 +113,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
                 <div className="text-[12px] text-slate-800 dark:text-slate-200">+38 kg / hr</div>
               </FloatChip>
               <FloatChip className="bottom-[6%] right-[10%]" delay="1.6s" color="slate">
-                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">Wearables</div>
+                <div className="text-[10px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400 font-semibold">Smart APIs</div>
                 <div className="text-[12px] text-slate-800 dark:text-slate-200">8,431 online</div>
               </FloatChip>
             </div>
@@ -129,7 +123,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
         {/* Real partner strip */}
         <div className="mt-16 lg:mt-24 relative">
           <div className="text-[11px] uppercase tracking-[.18em] text-slate-500 font-semibold mb-4 text-center">
-            {t.hero.partnersTag || (lang === "tr" ? "Pilot ortakları & destek" : "Pilot partners & backers")}
+            {t.hero.partnersTag}
           </div>
           <div className="relative overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
             <Marquee className="py-2">
@@ -142,7 +136,7 @@ export function Hero({ t, lang, glowIntensity = 1, heroStyle = "globe", accents,
       </div>
 
       {/* Video modal */}
-      {videoOpen && <VideoModal t={t} lang={lang} onClose={() => setVideoOpen(false)} />}
+      {videoOpen && <VideoModal onClose={() => setVideoOpen(false)} />}
     </section>
   );
 }
@@ -159,29 +153,38 @@ function FloatChip({ className, delay, color, children }) {
   );
 }
 
-// ── PartnerLogo (mini lockup with placeholder mark + name) ─────────────────
+// ── PartnerLogo (real brand logos with grayscale-to-color transition) ───────────────
+const PARTNER_LOGOS = {
+  "UNESCO": "https://upload.wikimedia.org/wikipedia/commons/1/1b/UNESCO_logo.svg",
+  "Nestlé": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Nestl%C3%A9_Logo_2015.svg",
+  "NASA": "https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg",
+  "IBM": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg"
+};
+
 function PartnerLogo({ name, idx }) {
-  const shapes = ["circle", "square", "tri", "ring", "wave"];
-  const colors = ["#0EA5E9", "#10B981", "#7C3AED", "#F59E0B", "#0F172A", "#E11D48"];
-  const sh = shapes[idx % shapes.length];
-  const c = colors[idx % colors.length];
+  const logoUrl = PARTNER_LOGOS[name];
+  
   return (
-    <div className="flex items-center gap-2.5 text-slate-500 hover:text-slate-800 transition opacity-90 hover:opacity-100">
-      <svg viewBox="0 0 28 28" className="h-5 w-5 flex-none" fill="none">
-        {sh === "circle" && <><circle cx="14" cy="14" r="9" fill={c} opacity=".18" /><circle cx="14" cy="14" r="5.5" fill={c} /></>}
-        {sh === "square" && <><rect x="6" y="6" width="16" height="16" rx="4" fill={c} opacity=".18" /><rect x="9" y="9" width="10" height="10" rx="2" fill={c} /></>}
-        {sh === "tri" && <><path d="M14 4 L24 22 L4 22 Z" fill={c} opacity=".18" /><path d="M14 9 L20 21 L8 21 Z" fill={c} /></>}
-        {sh === "ring" && <><circle cx="14" cy="14" r="9" fill="none" stroke={c} strokeWidth="2.4" /><circle cx="14" cy="14" r="3" fill={c} /></>}
-        {sh === "wave" && <><path d="M4 14 Q9 6 14 14 T24 14" stroke={c} strokeWidth="2.4" fill="none" strokeLinecap="round" /><circle cx="24" cy="14" r="2.4" fill={c} /></>}
-      </svg>
-      <span className="text-[14.5px] font-display tracking-tight">{name}</span>
+    <div className="flex items-center justify-center mx-8 group cursor-pointer">
+      {logoUrl ? (
+        <img 
+          src={logoUrl} 
+          alt={name} 
+          className="h-8 md:h-10 w-auto object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 ease-out dark:invert dark:group-hover:invert-0" 
+        />
+      ) : (
+        <span className="text-[18px] md:text-[22px] font-display font-bold tracking-tighter text-slate-400 opacity-60 group-hover:text-slate-900 group-hover:opacity-100 dark:text-slate-500 dark:group-hover:text-white transition-all duration-500 ease-out">
+          {name}
+        </span>
+      )}
     </div>
   );
 }
 
 
 // ── VideoModal (placeholder for vision film) ───────────────────────────────
-function VideoModal({ t, lang, onClose }) {
+function VideoModal({ onClose }) {
+  const { t } = useApp();
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
   const titleId = "video-modal-title";
@@ -195,9 +198,7 @@ function VideoModal({ t, lang, onClose }) {
 
   // Three scenes that cross-fade as the timeline advances
   const scene = progress < 33 ? 0 : progress < 66 ? 1 : 2;
-  const sceneLabels = lang === "tr"
-    ? ["Cihazı kur", "AI öğrenir", "Eyleme dök"]
-    : ["Pair device", "AI learns", "Take action"];
+  const sceneLabels = [t.hero.video.scene0Label, t.hero.video.scene1Label, t.hero.video.scene2Label];
 
   return (
     <Modal
@@ -212,11 +213,11 @@ function VideoModal({ t, lang, onClose }) {
         {/* Header */}
         <div className="flex items-start justify-between p-5 pb-3 border-b border-slate-900/[.06]">
           <div>
-            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700">{lang === "tr" ? "Tanıtım" : "Intro"}</div>
+            <div className="text-[10.5px] uppercase tracking-[.14em] font-semibold text-emerald-700">{t.hero.video.intro}</div>
             <h3 id={titleId} className="mt-1 font-display text-[22px] tracking-tight text-slate-900">{t.hero.videoTitle}</h3>
             <p id={descId} className="text-[12.5px] text-slate-500 mt-0.5">{t.hero.videoSub}</p>
           </div>
-          <button onClick={onClose} aria-label={lang === "tr" ? "Kapat" : "Close"} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.05]">
+          <button onClick={onClose} aria-label={t.hero.video.close} className="h-8 w-8 rounded-full grid place-items-center text-slate-600 hover:bg-slate-900/[.05]">
             <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" strokeLinecap="round"/></svg>
           </button>
         </div>
@@ -250,7 +251,7 @@ function VideoModal({ t, lang, onClose }) {
                   <path d="M195 50 l4 4 8-8" stroke="#10B981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[0]}</div>
-                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "2 dakikada eşleştirme" : "Pair in 2 minutes"}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{t.hero.video.scene0Sub}</div>
               </div>
             </div>
           </SceneFade>
@@ -286,7 +287,7 @@ function VideoModal({ t, lang, onClose }) {
                   )}
                 </svg>
                 <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[1]}</div>
-                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "İlk hafta sonunda kişisel baseline" : "Your baseline in week one"}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{t.hero.video.scene1Sub}</div>
               </div>
             </div>
           </SceneFade>
@@ -302,14 +303,14 @@ function VideoModal({ t, lang, onClose }) {
                     </span>
                     <span className="text-[10.5px] uppercase tracking-[.14em] text-emerald-300 font-semibold">AI tip</span>
                   </div>
-                  <div className="mt-2 text-[14px] text-white">{lang === "tr" ? "Bugün bisikletle gidersen 1.4 kg CO₂ tasarrufu." : "Bike to work today → save 1.4 kg CO₂."}</div>
+                  <div className="mt-2 text-[14px] text-white">{t.hero.video.aiTip}</div>
                   <div className="mt-3 flex items-center gap-2">
                     <button className="rounded-full bg-white text-slate-900 text-[11px] font-semibold px-3 py-1.5">✓ Apply</button>
-                    <span className="text-[11px] text-slate-300">{lang === "tr" ? "Anında uygulanır" : "Applied instantly"}</span>
+                    <span className="text-[11px] text-slate-300">{t.hero.video.applied}</span>
                   </div>
                 </div>
                 <div className="mt-4 font-display text-[28px] tracking-tight">{sceneLabels[2]}</div>
-                <div className="mt-1 text-[13px] text-slate-300">{lang === "tr" ? "Topluluk + AI + sen" : "Community + AI + you"}</div>
+                <div className="mt-1 text-[13px] text-slate-300">{t.hero.video.scene2Sub}</div>
               </div>
             </div>
           </SceneFade>

@@ -5,6 +5,8 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { ROUTES, routeByKey } from '@/core/config/site';
 import { buildSearchDocs, searchDocs, highlightSegments } from '@/core/lib/search';
+import { Reveal } from '@/shared/ui/useReveal';
+
 
 const meta = routeByKey('search');
 
@@ -106,13 +108,15 @@ export default function SearchPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <PageHeader
-          eyebrow={s.eyebrow}
-          title={s.title}
-          titleAccent={s.titleAccent}
-          intro={s.intro}
-          className="mb-8"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={s.eyebrow}
+            title={s.title}
+            titleAccent={s.titleAccent}
+            intro={s.intro}
+            className="mb-8"
+          />
+        </Reveal>
 
         <div className="flex items-center gap-3 rounded-2xl eco-card px-4">
           <svg className="h-4 w-4 shrink-0 text-slate-400" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
@@ -153,27 +157,29 @@ export default function SearchPage() {
           <p className="mt-8 text-[14px] text-slate-500 dark:text-slate-400">{s.empty.replace('{q}', query)}</p>
         ) : (
           <ul ref={listRef} onKeyDown={onListKeyDown} className="mt-4 space-y-2">
-            {shown.map((r) => {
+            {shown.map((r, i) => {
               const tm = TYPE_META[r.type] || TYPE_META.page;
               return (
                 <li key={r.id}>
-                  <Link
-                    to={r.to}
-                    className="group flex items-center gap-3 rounded-xl eco-card px-4 py-3 hover:ring-cyan-500/30 transition"
-                  >
-                    <span className="shrink-0 text-slate-400 group-hover:text-cyan-500" aria-hidden="true">{tm.icon}</span>
-                    <span className="flex-1 truncate text-[14px] font-medium text-slate-800 dark:text-slate-200">
-                      {highlightSegments(r.title, query).map((seg, i) =>
-                        seg.hit ? (
-                          <mark key={i} className="rounded-[2px] bg-cyan-200/60 text-inherit dark:bg-cyan-400/25">{seg.text}</mark>
-                        ) : (
-                          <span key={i}>{seg.text}</span>
-                        ),
-                      )}
-                    </span>
-                    {r.hint && <span className="shrink-0 text-[11.5px] text-slate-400">{r.hint}</span>}
-                    <span className="shrink-0 text-[10.5px] uppercase tracking-wide text-slate-300 dark:text-slate-500">{t.cmd[tm.key]}</span>
-                  </Link>
+                  <Reveal delay={Math.min(i, 8) * 30}>
+                    <Link
+                      to={r.to}
+                      className="group flex items-center gap-3 rounded-xl eco-card px-4 py-3 hover:ring-cyan-500/30 transition"
+                    >
+                      <span className="shrink-0 text-slate-400 group-hover:text-cyan-500" aria-hidden="true">{tm.icon}</span>
+                      <span className="flex-1 truncate text-[14px] font-medium text-slate-800 dark:text-slate-200">
+                        {highlightSegments(r.title, query).map((seg, idx) =>
+                          seg.hit ? (
+                            <mark key={idx} className="rounded-[2px] bg-cyan-200/60 text-inherit dark:bg-cyan-400/25">{seg.text}</mark>
+                          ) : (
+                            <span key={idx}>{seg.text}</span>
+                          ),
+                        )}
+                      </span>
+                      {r.hint && <span className="shrink-0 text-[11.5px] text-slate-400">{r.hint}</span>}
+                      <span className="shrink-0 text-[10.5px] uppercase tracking-wide text-slate-300 dark:text-slate-500">{t.cmd[tm.key]}</span>
+                    </Link>
+                  </Reveal>
                 </li>
               );
             })}

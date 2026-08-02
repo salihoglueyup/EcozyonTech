@@ -1,4 +1,4 @@
-import { handleAdminPosts } from '../_lib/admin-posts.js';
+import { handleAdminPosts } from '../_lib/handlers/admin-posts.js';
 import { applyResult } from './_send.js';
 
 // /api/admin/posts — GET (list incl. drafts) + POST (create). Admin-gated.

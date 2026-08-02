@@ -3,39 +3,39 @@
 export default {
   "tr": {
     "eyebrow": "Teknolojik ekosistem",
-    "title": "İki katmanlı bir mühendislik:",
-    "titleAccent": "veri ve donanım.",
+    "title": "Veri odaklı bir mühendislik:",
+    "titleAccent": "yapay zeka ve bulut.",
     "ai": {
       "tag": "AI-Driven Analytics",
       "title": "Sürekli öğrenen sinir ağları",
-      "desc": "Giyilebilir cihazlardan akan ham veriyi işleyerek kişiselleştirilmiş karbon tasarruf tavsiyeleri üretir. Federated learning ile veriler cihazda kalır.",
+      "desc": "Kullanıcı etkileşimlerinden ve API'lerden akan ham veriyi işleyerek kişiselleştirilmiş karbon tasarruf tavsiyeleri üretir.",
       "bullets": [
-        "Edge inference — gecikmesiz kişisel öneriler",
-        "Federated learning — veri cihazdan ayrılmaz",
+        "Gerçek zamanlı öneriler — sıfır gecikme",
+        "Uçtan uca şifreleme — güvenli veri işleme",
         "Saatlik karbon bütçesi tahminleme modeli",
         "ESG uyumlu kurumsal raporlama API'si"
       ]
     },
-    "wearable": {
-      "tag": "Smart Wearables",
-      "title": "Çevre dostu donanım",
-      "desc": "Biyo-uyumlu, geri dönüştürülmüş malzemelerden üretilmiş sensörler enerji tüketimi, hareket ve karbon verisini sıfır gecikmeyle takip eder.",
+    "integration": {
+      "tag": "Cloud Integration",
+      "title": "Esnek API Entegrasyonu",
+      "desc": "Mevcut sistemlerinize sıfır eforla entegre olur. Gerçek zamanlı karbon hesaplama ve davranış analizi için tasarlandı.",
       "layers": [
         {
-          "name": "Yapay Zeka Çipi",
-          "note": "5nm, 0.4W TDP — saatte 12K inference"
+          "name": "RESTful API",
+          "note": "Milisaniyelik yanıt süreleri"
         },
         {
-          "name": "Biyo-sensör katmanı",
-          "note": "Kalp atışı, hareket, sıcaklık, hava kalitesi"
+          "name": "Webhook Desteği",
+          "note": "Gerçek zamanlı olay bildirimleri"
         },
         {
-          "name": "Geri dönüştürülmüş gövde",
-          "note": "Okyanus plastiği + biyo-polimer karışım"
+          "name": "Mobil SDK",
+          "note": "iOS ve Android native destek"
         },
         {
-          "name": "Solar mikro-hücre",
-          "note": "Günlük şarjın %40'ı güneşten"
+          "name": "Güvenlik Katmanı",
+          "note": "OAuth 2.0 ve uçtan uca şifreleme"
         }
       ],
       "hint": "Katmanları görmek için karta gel"
@@ -91,42 +91,42 @@ export default {
   },
   "en": {
     "eyebrow": "Core technology",
-    "title": "A two-layer engineering stack:",
-    "titleAccent": "data and hardware.",
+    "title": "A data-driven engineering stack:",
+    "titleAccent": "AI and cloud.",
     "ai": {
       "tag": "AI-Driven Analytics",
       "title": "Continuously learning neural nets",
-      "desc": "Raw signals from wearables become personalized carbon-saving suggestions. Federated learning keeps your data on-device.",
+      "desc": "Raw signals from user interactions and APIs become personalized carbon-saving suggestions.",
       "bullets": [
-        "Edge inference — zero-latency suggestions",
-        "Federated learning — data never leaves the device",
+        "Real-time processing — zero-latency suggestions",
+        "End-to-end encryption — secure data handling",
         "Hourly carbon-budget forecasting",
         "ESG-compliant enterprise reporting API"
       ]
     },
-    "wearable": {
-      "tag": "Smart Wearables",
-      "title": "Eco-friendly hardware",
-      "desc": "Bio-compatible, recycled-material sensors track energy use, motion and carbon data with zero latency.",
+    "integration": {
+      "tag": "Cloud Integration",
+      "title": "Seamless API Integration",
+      "desc": "Integrates into your existing systems with zero friction. Built for real-time carbon tracking and behavioral analysis.",
       "layers": [
         {
-          "name": "AI chip",
-          "note": "5nm, 0.4W TDP — 12K inferences/hr"
+          "name": "RESTful API",
+          "note": "Millisecond response times"
         },
         {
-          "name": "Bio-sensor layer",
-          "note": "Heart rate, motion, temp, air quality"
+          "name": "Webhook Support",
+          "note": "Real-time event notifications"
         },
         {
-          "name": "Recycled housing",
-          "note": "Ocean plastic + bio-polymer blend"
+          "name": "Mobile SDK",
+          "note": "Native iOS and Android support"
         },
         {
-          "name": "Solar micro-cell",
-          "note": "40% of daily charge from sun"
+          "name": "Security Layer",
+          "note": "OAuth 2.0 & End-to-end encryption"
         }
       ],
-      "hint": "Hover to peel the layers apart"
+      "hint": "Hover to inspect the layers"
     },
     "community": {
       "tag": "Community & Behavior",

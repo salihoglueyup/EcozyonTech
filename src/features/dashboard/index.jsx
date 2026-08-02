@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { SectionHeader, EcoLogo } from '@/shared/ui/primitives';
 import { Tabs } from '@/shared/ui/Tabs';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
+import { Reveal } from '@/shared/ui/useReveal';
 
 function DashboardPreview({ t, lang }) {
   const [tab, setTab] = useState(0);
@@ -60,7 +61,7 @@ function DashboardPreview({ t, lang }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+        <Reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
           <div className="max-w-2xl">
             <SectionHeader
               color="cyan"
@@ -71,10 +72,10 @@ function DashboardPreview({ t, lang }) {
               subClassName="max-w-lg"
             />
           </div>
-        </div>
+        </Reveal>
 
         {/* Browser-frame style dashboard */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
+        <Reveal delay={100} className="eco-card relative overflow-hidden rounded-3xl shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
           {/* Window chrome */}
           <div className="flex items-center gap-3 px-4 py-2.5 border-b border-slate-900/[.06] bg-gradient-to-b from-white/80 to-white/40">
             <div className="flex gap-1.5">
@@ -186,7 +187,7 @@ function DashboardPreview({ t, lang }) {
               {view === "insights" && <DashInsights lang={lang} />}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -423,7 +424,7 @@ function DashDevices({ t, lang, tab }) {
       </div>
 
       <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white border border-slate-900/[.05] dark:border-white/[.06] p-5">
-        <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "Donanım sağlığı" : "Fleet health"}</div>
+        <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 dark:text-slate-400 font-semibold">{lang === "tr" ? "Sistem sağlığı" : "System health"}</div>
         <div className="mt-3 space-y-3">
           {[
             { label: lang === "tr" ? "Firmware uptime"     : "Firmware uptime",     val: 99.4, color: "#10B981" },

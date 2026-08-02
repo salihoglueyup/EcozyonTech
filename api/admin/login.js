@@ -1,4 +1,4 @@
-import { handleLogin } from '../_lib/admin-auth.js';
+import { handleLogin } from '../_lib/auth/admin.auth.js';
 import { applyResult, originOf } from './_send.js';
 
 // GET /api/admin/login → redirect the browser to GitHub's OAuth consent.

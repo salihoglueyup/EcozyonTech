@@ -1,4 +1,4 @@
-import { handle } from './_lib/forms.js';
+import { handle } from './_lib/handlers/forms.js';
 
 const ipOf = (req) =>
   (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||

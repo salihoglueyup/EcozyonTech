@@ -50,18 +50,20 @@ export default function DevelopersPage() {
     <section className="relative py-20 lg:py-28 pt-32">
       <SectionNav sections={navSections} />
       <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-8">
-          <PageHeader
-            eyebrow={d.eyebrow}
-            title={d.title}
-            titleAccent={d.titleAccent}
-            intro={d.intro}
-          />
-          <div className="mt-5 rounded-xl eco-card p-4 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
-            <span className="font-mono text-[12px] text-slate-500 dark:text-slate-300">{API_INTRO.baseUrl}</span>
-            <p className="mt-2">{API_INTRO.notes[lang]}</p>
+        <Reveal>
+          <div className="mb-8">
+            <PageHeader
+              eyebrow={d.eyebrow}
+              title={d.title}
+              titleAccent={d.titleAccent}
+              intro={d.intro}
+            />
+            <div className="mt-5 rounded-xl eco-card p-4 text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed">
+              <span className="font-mono text-[12px] text-slate-500 dark:text-slate-300">{API_INTRO.baseUrl}</span>
+              <p className="mt-2">{API_INTRO.notes[lang]}</p>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         <div className="space-y-10">
           {ENDPOINTS.map((e) => (

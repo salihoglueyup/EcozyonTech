@@ -338,18 +338,8 @@ export function EcoLogo({ accent = "emerald", to = "/" }) {
   const c = accent === "cyan" ? "#0EA5E9" : "#10B981";
   return (
     <Link to={to} className="flex items-center gap-2.5 group">
-      <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-[10px] bg-slate-900 dark:bg-slate-800 text-white shadow-sm overflow-hidden">
-        <svg viewBox="0 0 32 32" className="h-5 w-5" aria-hidden="true">
-          <defs>
-            <linearGradient id="ec-lg" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stopColor="#0EA5E9" />
-              <stop offset="1" stopColor={c} />
-            </linearGradient>
-          </defs>
-          <circle cx="16" cy="16" r="11" fill="none" stroke="url(#ec-lg)" strokeWidth="1.5" />
-          <path d="M8 16 Q16 8 24 16 T8 16" fill="none" stroke="url(#ec-lg)" strokeWidth="1.5" />
-          <circle cx="22" cy="11" r="1.6" fill="#10B981" />
-        </svg>
+      <span className="relative inline-flex items-center justify-center h-8 w-8 rounded-lg bg-slate-900 dark:bg-slate-800 text-white shadow-sm overflow-hidden">
+        <img src="/assets/logo/logo.jpg" alt="Ecozyon Logo" className="h-full w-full object-cover" />
       </span>
       <span className="font-display text-[15px] tracking-tight text-slate-900 dark:text-slate-100">
         Ecozyon<span className="text-slate-400 dark:text-slate-500 font-normal"> Tech</span>
@@ -357,3 +347,32 @@ export function EcoLogo({ accent = "emerald", to = "/" }) {
     </Link>
   );
 }
+
+// Simple CSS-based Tooltip wrapper for displaying hints
+export function Tooltip({ children, content, position = "top", className = "" }) {
+  const posClasses = {
+    top: "bottom-full left-1/2 -translate-x-1/2 mb-2",
+    bottom: "top-full left-1/2 -translate-x-1/2 mt-2",
+    left: "right-full top-1/2 -translate-y-1/2 mr-2",
+    right: "left-full top-1/2 -translate-y-1/2 ml-2"
+  };
+
+  return (
+    <div className={`group relative inline-flex items-center ${className}`}>
+      {children}
+      <div className={`pointer-events-none absolute z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${posClasses[position]}`}>
+        <div className="rounded-md bg-slate-900 dark:bg-slate-800 text-white text-[11px] font-medium px-2.5 py-1.5 whitespace-nowrap shadow-lg ring-1 ring-white/10">
+          {content}
+        </div>
+        {/* Subtle arrow pointing to element */}
+        <div className={`absolute w-2 h-2 bg-slate-900 dark:bg-slate-800 rotate-45 ${
+          position === 'top' ? 'bottom-[-4px] left-1/2 -translate-x-1/2' :
+          position === 'bottom' ? 'top-[-4px] left-1/2 -translate-x-1/2' :
+          position === 'left' ? 'right-[-4px] top-1/2 -translate-y-1/2' :
+          'left-[-4px] top-1/2 -translate-y-1/2'
+        }`} />
+      </div>
+    </div>
+  );
+}
+

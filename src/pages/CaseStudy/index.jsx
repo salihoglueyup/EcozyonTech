@@ -5,6 +5,7 @@ import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { caseBySlug, relatedCases } from '@/core/data/cases';
 import { Breadcrumbs } from '@/shared/ui/Breadcrumbs';
+import { Reveal } from '@/shared/ui/useReveal';
 
 export default function CaseStudyPage() {
   const { slug } = useParams();
@@ -24,41 +25,43 @@ export default function CaseStudyPage() {
   return (
     <article className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Breadcrumbs items={[{ label: lang === 'tr' ? 'Vaka Çalışmaları' : 'Case Studies', to: '/cases' }, { label: item.client[lang] }]} />
+        <Reveal>
+          <Breadcrumbs items={[{ label: lang === 'tr' ? 'Vaka Çalışmaları' : 'Case Studies', to: '/cases' }, { label: item.client[lang] }]} />
 
-        <div className="mt-5 flex flex-wrap items-center gap-2 text-[11.5px]">
-          <span className="inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold" style={{ backgroundColor: `${item.accent}1f`, color: item.accent }}>{item.city}</span>
-          <span className="inline-flex items-center rounded-full bg-slate-900/[.05] dark:bg-white/[.06] text-slate-600 dark:text-slate-300 px-2.5 py-0.5 font-medium">{item.sector[lang]}</span>
-          <span className="text-slate-400">·</span>
-          <span className="text-slate-500 dark:text-slate-400 tabular-nums">{item.year}</span>
-        </div>
-
-        <h1 className="mt-3 font-display text-[clamp(1.9rem,4vw,3rem)] leading-[1.06] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
-          {item.client[lang]}
-        </h1>
-        <p className="mt-3 text-[16px] text-slate-600 dark:text-slate-300 leading-relaxed">{item.summary[lang]}</p>
-
-        {/* Rollout facts — duration + deployment team size */}
-        {(item.durationMonths || item.teamSize) && (
-          <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] text-slate-500 dark:text-slate-400">
-            {item.durationMonths && (
-              <span className="inline-flex items-center gap-1.5">
-                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M8 4.5V8l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                <span className="tabular-nums">{item.durationMonths}</span> {c.durationUnit}
-              </span>
-            )}
-            {item.durationMonths && item.teamSize && <span className="text-slate-300 dark:text-slate-600">·</span>}
-            {item.teamSize && (
-              <span className="inline-flex items-center gap-1.5">
-                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="6" cy="6" r="2.4" /><path d="M2 13c0-2.2 1.8-3.6 4-3.6S10 10.8 10 13M11 5.2a2.2 2.2 0 0 1 0 4.2M14 13c0-1.8-1-3-2.6-3.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                <span className="tabular-nums">{item.teamSize}</span>{c.teamLabel}
-              </span>
-            )}
+          <div className="mt-5 flex flex-wrap items-center gap-2 text-[11.5px]">
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold" style={{ backgroundColor: `${item.accent}1f`, color: item.accent }}>{item.city}</span>
+            <span className="inline-flex items-center rounded-full bg-slate-900/[.05] dark:bg-white/[.06] text-slate-600 dark:text-slate-300 px-2.5 py-0.5 font-medium">{item.sector[lang]}</span>
+            <span className="text-slate-400">·</span>
+            <span className="text-slate-500 dark:text-slate-400 tabular-nums">{item.year}</span>
           </div>
-        )}
+
+          <h1 className="mt-3 font-display text-[clamp(1.9rem,4vw,3rem)] leading-[1.06] tracking-[-0.02em] text-slate-900 dark:text-slate-100">
+            {item.client[lang]}
+          </h1>
+          <p className="mt-3 text-[16px] text-slate-600 dark:text-slate-300 leading-relaxed">{item.summary[lang]}</p>
+
+          {/* Rollout facts — duration + deployment team size */}
+          {(item.durationMonths || item.teamSize) && (
+            <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] text-slate-500 dark:text-slate-400">
+              {item.durationMonths && (
+                <span className="inline-flex items-center gap-1.5">
+                  <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6" /><path d="M8 4.5V8l2.5 1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  <span className="tabular-nums">{item.durationMonths}</span> {c.durationUnit}
+                </span>
+              )}
+              {item.durationMonths && item.teamSize && <span className="text-slate-300 dark:text-slate-600">·</span>}
+              {item.teamSize && (
+                <span className="inline-flex items-center gap-1.5">
+                  <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="6" cy="6" r="2.4" /><path d="M2 13c0-2.2 1.8-3.6 4-3.6S10 10.8 10 13M11 5.2a2.2 2.2 0 0 1 0 4.2M14 13c0-1.8-1-3-2.6-3.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  <span className="tabular-nums">{item.teamSize}</span>{c.teamLabel}
+                </span>
+              )}
+            </div>
+          )}
+        </Reveal>
 
         {/* Result metric tiles */}
-        <div className="mt-8 grid grid-cols-3 gap-3">
+        <Reveal delay={100} className="mt-8 grid grid-cols-3 gap-3">
           {item.results.map((r) => (
             <div key={r.label.en} className="rounded-2xl eco-card p-4 text-center">
               <div className="font-display text-[clamp(1.4rem,4vw,2rem)] leading-none tracking-tight tabular-nums" style={{ color: item.accent }}>
@@ -68,10 +71,10 @@ export default function CaseStudyPage() {
               <div className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400 leading-tight">{r.label[lang]}</div>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         {/* Challenge + approach */}
-        <div className="mt-10 space-y-8">
+        <Reveal delay={200} className="mt-10 space-y-8">
           {[
             { heading: c.challenge, body: item.challenge[lang] },
             { heading: c.approach, body: item.approach[lang] },
@@ -85,10 +88,11 @@ export default function CaseStudyPage() {
               </div>
             </section>
           ))}
-        </div>
+        </Reveal>
 
         {/* Quote */}
-        <figure className="mt-10 rounded-3xl eco-card p-7 lg:p-8">
+        <Reveal delay={300}>
+          <figure className="mt-10 rounded-3xl eco-card p-7 lg:p-8">
           <blockquote className="font-display text-[19px] leading-[1.5] tracking-tight text-slate-800 dark:text-slate-100">
             “{item.quote.text[lang]}”
           </blockquote>
@@ -113,7 +117,8 @@ export default function CaseStudyPage() {
             {c.cta}
             <ArrowRight />
           </Link>
-        </div>
+          </div>
+        </Reveal>
 
         {/* Related case studies */}
         {related.length > 0 && (

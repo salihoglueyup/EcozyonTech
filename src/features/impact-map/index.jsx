@@ -5,6 +5,7 @@ import { ArrowRight, SectionHeader } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Sparkline } from '@/shared/ui/charts';
 import { useInView } from '@/shared/ui/useInView';
+import { Reveal } from '@/shared/ui/useReveal';
 import { CITIES } from '@/core/data/cities';
 import { caseByCity } from '@/core/data/cases';
 import { WorldGlobe } from '@/shared/3d/LazyGlobes';
@@ -90,7 +91,7 @@ function ImpactMap({ t }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-3xl mb-10">
+        <Reveal className="max-w-3xl mb-10">
           <SectionHeader
             color="emerald"
             eyebrow={`03 · ${m.eyebrow}`}
@@ -98,9 +99,9 @@ function ImpactMap({ t }) {
             titleAccent={m.titleAccent}
             sub={m.sub}
           />
-        </div>
+        </Reveal>
 
-        <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/65 backdrop-blur-2xl ring-1 ring-slate-900/[.05] dark:ring-white/[.06] shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
+        <Reveal delay={100} className="eco-card relative overflow-hidden rounded-3xl shadow-[0_50px_120px_-50px_rgba(15,23,42,.45)]">
           {/* Header strip with stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-slate-900/[.06] border-b border-slate-900/[.06] bg-white/40">
             <StatPill label={m.stats.cities} value={activeCities.length} accent="#10B981" trend={trends.cities} />
@@ -227,7 +228,7 @@ function ImpactMap({ t }) {
               {m.legend.size}
             </span>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

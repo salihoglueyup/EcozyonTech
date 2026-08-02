@@ -1,6 +1,9 @@
 // Tech Ecosystem — AI panel + Wearable exploded view + Community panel
 import React, { useState } from 'react';
 import { SectionHeader, InitialsAvatar } from '@/shared/ui/primitives';
+import { Reveal } from '@/shared/ui/useReveal';
+import { SpotlightCard } from '@/shared/ui/SpotlightCard';
+import { TechMarquee } from '@/features/home-extras/TechMarquee';
 
 function TechEcosystem({ t }) {
   return (
@@ -16,22 +19,24 @@ function TechEcosystem({ t }) {
       </div>
 
       <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-3xl">
+        <Reveal className="max-w-3xl">
           <SectionHeader
             color="emerald"
             eyebrow={`03 · ${t.tech.eyebrow}`}
             title={t.tech.title}
             titleAccent={t.tech.titleAccent}
           />
-        </div>
+        </Reveal>
 
         <div id="ecosystem" className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-5">
           <AIPanel t={t} />
-          <WearablePanel t={t} />
+          <IntegrationPanel t={t} />
         </div>
-        <div className="mt-5">
+        <div className="mt-5 mb-16">
           <CommunityPanel t={t} />
         </div>
+
+        <TechMarquee />
       </div>
     </section>
   );
@@ -41,9 +46,10 @@ function TechEcosystem({ t }) {
 function AIPanel({ t }) {
   const ai = t.tech.ai;
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
-      <div className="flex items-center gap-2">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-700">
+    <Reveal delay={100} className="h-full">
+      <SpotlightCard className="eco-card h-full relative overflow-hidden rounded-3xl p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-700">
           <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
             <circle cx="10" cy="10" r="6.5" />
             <circle cx="10" cy="10" r="3" />
@@ -72,7 +78,8 @@ function AIPanel({ t }) {
 
       {/* Decorative corner glow */}
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full blur-3xl opacity-50" style={{ background: "radial-gradient(circle, rgba(14,165,233,.45), transparent 70%)" }} />
-    </div>
+      </SpotlightCard>
+    </Reveal>
   );
 }
 
@@ -169,29 +176,29 @@ function AIDataFlow() {
   );
 }
 
-// ── Wearable exploded view ─────────────────────────────────────────────────
-function WearablePanel({ t }) {
-  const w = t.tech.wearable;
+// ── Cloud Integration view ─────────────────────────────────────────────────
+function IntegrationPanel({ t }) {
+  const w = t.tech.integration;
   const [hover, setHover] = useState(false);
 
   return (
-    <div
+    <Reveal delay={200}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]"
+      className="h-full"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <SpotlightCard className="h-full relative overflow-hidden rounded-3xl p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-700">
             <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6">
-              <rect x="6" y="3" width="8" height="14" rx="2.5" />
-              <path d="M8 6h4M8 14h4" />
+              <path d="M5.5 10a4.5 4.5 0 1 1 8 1.5 3 3 0 1 1-3 5.5H5.5a4.5 4.5 0 0 1 0-9z" />
             </svg>
           </span>
           <span className="text-[11px] uppercase tracking-[.14em] font-semibold text-emerald-700">{w.tag}</span>
         </div>
         <span className="text-[10px] uppercase tracking-[.14em] text-slate-400 font-medium">
-          {hover ? "exploded" : w.hint}
+          {hover ? "connected" : w.hint}
         </span>
       </div>
 
@@ -199,7 +206,7 @@ function WearablePanel({ t }) {
       <p className="mt-3 text-[14.5px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-md">{w.desc}</p>
 
       <div className="relative mt-6 grid grid-cols-[1.1fr_1fr] gap-6 items-center min-h-[300px]">
-        <ExplodedWearable layers={w.layers} hover={hover} />
+        <CloudIntegrationViz layers={w.layers} hover={hover} />
         <ul className="space-y-1.5">
           {w.layers.map((l, i) => (
             <li
@@ -209,7 +216,7 @@ function WearablePanel({ t }) {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] text-emerald-700 font-semibold">L{i + 1}</span>
+                  <span className="font-mono text-[10px] text-emerald-700 font-semibold">API</span>
                   <span className="text-[13px] font-medium text-slate-800">{l.name}</span>
                 </div>
                 <span className={`inline-block h-1.5 w-1.5 rounded-full ${hover ? "bg-emerald-500" : "bg-slate-300"}`} />
@@ -221,79 +228,44 @@ function WearablePanel({ t }) {
       </div>
 
       <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full blur-3xl opacity-40" style={{ background: "radial-gradient(circle, rgba(16,185,129,.45), transparent 70%)" }} />
-    </div>
+    </SpotlightCard>
+    </Reveal>
   );
 }
 
-function ExplodedWearable({ layers, hover }) {
-  // Four stacked layers; on hover they peel apart vertically + show callout lines
-  const offsets = hover ? [-50, -18, 14, 46] : [-8, -3, 2, 7];
-
+function CloudIntegrationViz({ layers, hover }) {
+  const yOffsets = hover ? [0, 40, 80, 120] : [30, 50, 70, 90];
+  const opacities = hover ? [1, 1, 1, 1] : [0.4, 0.6, 0.8, 1];
+  
   return (
     <div className="relative h-[280px]">
       <svg viewBox="0 0 240 280" className="w-full h-full" style={{ overflow: "visible" }}>
-        {/* connecting callout lines */}
+        {/* Central Cloud Node */}
+        <circle cx="120" cy="140" r="30" fill="#0EA5E9" opacity=".1" />
+        <circle cx="120" cy="140" r="20" fill="none" stroke="#0EA5E9" strokeWidth="1.5" />
+        <path d="M110 140a10 10 0 1 1 20 0a6 6 0 1 1-12 0" stroke="#0EA5E9" strokeWidth="1.5" fill="none" />
+        
+        {/* Connecting Lines and API Nodes */}
         {layers.map((_, i) => (
-          <line
-            key={`call-${i}`}
-            x1="180" y1={140 + offsets[i] + 8}
-            x2="232" y2={140 + offsets[i] + 8}
-            stroke="#10B981"
-            strokeWidth="1"
-            strokeDasharray="2 3"
-            opacity={hover ? 0.6 : 0}
-            style={{ transition: "opacity .4s" }}
-          />
+          <g key={`node-${i}`} style={{ transition: "all .5s cubic-bezier(.22,1,.36,1)", opacity: opacities[i], transform: `translateY(${yOffsets[i] - 60}px)` }}>
+            <line x1="120" y1={140 - (yOffsets[i] - 60)} x2="60" y2="100" stroke="#10B981" strokeWidth="1" strokeDasharray="3 3" opacity={hover ? 0.5 : 0.2} />
+            <rect x="30" y="86" width="60" height="28" rx="6" fill="#10B981" opacity=".1" />
+            <rect x="30" y="86" width="60" height="28" rx="6" fill="none" stroke="#10B981" strokeWidth="1" />
+            <text x="60" y="104" textAnchor="middle" fontSize="9" fill="#10B981" fontWeight="600">NODE {i+1}</text>
+          </g>
         ))}
-
-        {/* L4 — solar micro-cell (back, faint orange-emerald) */}
-        <g style={{ transition: "transform .55s cubic-bezier(.22,1,.36,1)", transform: `translateY(${offsets[3]}px)` }}>
-          <rect x="60" y="120" width="120" height="44" rx="20" fill="#E2E8F0" />
-          <rect x="68" y="128" width="104" height="28" rx="14" fill="#FCD34D" opacity=".5" />
-          {[0,1,2,3,4,5,6].map(i => (
-            <line key={i} x1={75 + i*14} y1="130" x2={75 + i*14} y2="154" stroke="#F59E0B" strokeWidth=".8" opacity=".6" />
-          ))}
-          <text x="64" y="116" fontSize="8" fill="#64748B" fontWeight="600" letterSpacing="1">L4 · SOLAR</text>
-        </g>
-
-        {/* L3 — recycled housing (matte slate) */}
-        <g style={{ transition: "transform .55s cubic-bezier(.22,1,.36,1) .05s", transform: `translateY(${offsets[2]}px)` }}>
-          <rect x="56" y="118" width="128" height="48" rx="22" fill="#0F172A" />
-          <rect x="60" y="122" width="120" height="40" rx="20" fill="#1E293B" />
-          <text x="60" y="114" fontSize="8" fill="#64748B" fontWeight="600" letterSpacing="1">L3 · HOUSING</text>
-        </g>
-
-        {/* L2 — bio-sensor (emerald glow ring) */}
-        <g style={{ transition: "transform .55s cubic-bezier(.22,1,.36,1) .1s", transform: `translateY(${offsets[1]}px)` }}>
-          <rect x="64" y="124" width="112" height="36" rx="18" fill="#10B981" opacity=".15" />
-          <rect x="64" y="124" width="112" height="36" rx="18" fill="none" stroke="#10B981" strokeWidth="1.2" />
-          <circle cx="84" cy="142" r="4" fill="#10B981" />
-          <circle cx="120" cy="142" r="4" fill="#10B981" opacity=".6" />
-          <circle cx="156" cy="142" r="4" fill="#10B981" opacity=".4" />
-          <path d="M70 142 q10 -8 18 0 q10 8 18 0 q10 -8 18 0 q10 8 18 0 q10 -8 18 0" stroke="#10B981" strokeWidth="1" fill="none" opacity={hover ? 1 : .5}>
-            <animate attributeName="opacity" values=".4;1;.4" dur="2s" repeatCount="indefinite" />
-          </path>
-          <text x="68" y="120" fontSize="8" fill="#10B981" fontWeight="600" letterSpacing="1">L2 · BIO-SENSORS</text>
-        </g>
-
-        {/* L1 — AI chip (top) */}
-        <g style={{ transition: "transform .55s cubic-bezier(.22,1,.36,1) .15s", transform: `translateY(${offsets[0]}px)` }}>
-          <rect x="78" y="128" width="84" height="28" rx="6" fill="#0EA5E9" opacity=".1" />
-          <rect x="78" y="128" width="84" height="28" rx="6" fill="none" stroke="#0EA5E9" strokeWidth="1.2" />
-          <rect x="92" y="134" width="56" height="16" rx="2" fill="#0EA5E9" />
-          <text x="120" y="146" textAnchor="middle" fontSize="8" fill="white" fontWeight="700" letterSpacing="2">AI · 5nm</text>
-          {[80,84,88,156,160].map((x,i)=>(<rect key={i} x={x} y="125" width="2" height="3" fill="#0EA5E9" />))}
-          {[80,84,88,156,160].map((x,i)=>(<rect key={i} x={x} y="156" width="2" height="3" fill="#0EA5E9" />))}
-          <text x="82" y="120" fontSize="8" fill="#0EA5E9" fontWeight="600" letterSpacing="1">L1 · AI CHIP</text>
-        </g>
-
-        {/* Strap hints */}
-        <rect x="100" y={hover ? 240 : 200} width="40" height="36" rx="8" fill="#E2E8F0" opacity={hover ? .4 : .9} style={{ transition: "all .55s" }} />
-        <rect x="100" y={hover ? -10 : 36} width="40" height="36" rx="8" fill="#E2E8F0" opacity={hover ? .4 : .9} style={{ transition: "all .55s" }} />
+        
+        {/* Moving data packets */}
+        <circle cx="120" cy="140" r="3" fill="#10B981">
+          <animate attributeName="cx" values="60;120;60" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="cy" values="100;140;100" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+        </circle>
       </svg>
     </div>
   );
 }
+
 
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -304,7 +276,8 @@ function CommunityPanel({ t }) {
   if (!c) return null;
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl ring-1 ring-slate-900/[.04] p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
+    <Reveal delay={300}>
+      <SpotlightCard className="rounded-3xl p-6 lg:p-8 shadow-[0_24px_70px_-40px_rgba(15,23,42,.35)]">
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.4fr] gap-6 lg:gap-10 items-center">
         {/* LEFT: copy */}
         <div>
@@ -381,7 +354,8 @@ function CommunityPanel({ t }) {
 
       {/* Corner glow */}
       <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full blur-3xl opacity-40" style={{ background: "radial-gradient(circle, rgba(124,58,237,.45), transparent 70%)" }} />
-    </div>
+    </SpotlightCard>
+    </Reveal>
   );
 }
 

@@ -5,27 +5,27 @@ export default {
     "eyebrow": "Nasıl çalışır",
     "title": "Üç adımda",
     "titleAccent": "sürdürülebilir alışkanlık.",
-    "sub": "Cihazını bağla, AI günlük rutinini öğrensin, kişisel önerilerle ölçülebilir tasarrufa dönüştür.",
+    "sub": "Sisteme bağlan, AI dijital ayak izini öğrensin ve kişisel önerilerle ölçülebilir tasarrufa dönüştürsün.",
     "steps": [
       {
         "n": "01",
         "tag": "Bağla",
-        "title": "Cihazını kur",
-        "desc": "Ecozyon wearable'ını eşleştir, Apple Health / Google Fit / Samsung'tan veri kanallarını seç. Kurulum 2 dakika.",
+        "title": "Sisteme entegre ol",
+        "desc": "Veri kaynaklarını (kurumsal sistemler, açık bankacılık veya mobil sağlık) API'ler aracılığıyla bağla. Kurulum sadece 2 dakika.",
         "bullets": [
-          "Plug-and-play eşleştirme",
+          "Kolay API entegrasyonu",
           "Hassas izin yönetimi",
-          "Federated learning — veri cihazda kalır"
+          "Güvenli bulut veri transferi"
         ],
         "time": "~2 dk"
       },
       {
         "n": "02",
         "tag": "Topla",
-        "title": "AI rutinini öğrenir",
-        "desc": "Giyilebilir sensörlerin + dijital ayak izin (uçuş, ısınma, alışveriş) gerçek zamanlı işlenir. İlk hafta sonunda kişisel temel çizgin hazır.",
+        "title": "AI veriyi analiz eder",
+        "desc": "Dijital ayak izin (ulaşım, enerji tüketimi, alışveriş) gerçek zamanlı işlenir. İlk hafta sonunda kişisel temel çizgin hazır.",
         "bullets": [
-          "28 farklı sensör/sinyal kaynağı",
+          "Farklı veri sinyali kaynakları",
           "Saatlik karbon bütçesi tahmini",
           "Anomali tespiti"
         ],
@@ -50,27 +50,27 @@ export default {
     "eyebrow": "How it works",
     "title": "Three steps to a",
     "titleAccent": "sustainable habit.",
-    "sub": "Connect a device, let AI learn your routine, and translate it into measurable savings.",
+    "sub": "Connect to the system, let AI learn your digital footprint, and translate it into measurable savings.",
     "steps": [
       {
         "n": "01",
         "tag": "Connect",
-        "title": "Pair your device",
-        "desc": "Pair your Ecozyon wearable, pick your data channels from Apple Health, Google Fit or Samsung. Setup in 2 minutes.",
+        "title": "Integrate API",
+        "desc": "Connect your data channels (corporate systems, open banking, or mobile health) via APIs. Setup in 2 minutes.",
         "bullets": [
-          "Plug-and-play pairing",
+          "Seamless API integration",
           "Granular permission control",
-          "Federated learning — data stays on-device"
+          "Secure cloud data transfer"
         ],
         "time": "~2 min"
       },
       {
         "n": "02",
         "tag": "Collect",
-        "title": "AI learns your routine",
-        "desc": "Wearable sensors + your digital footprint (flights, heating, purchases) processed in real time. Your personal baseline is ready after week one.",
+        "title": "AI analyzes data",
+        "desc": "Your digital footprint (transportation, energy, purchases) is processed in real time. Your personal baseline is ready after week one.",
         "bullets": [
-          "28 sensor + signal sources",
+          "Multiple data signal sources",
           "Hourly carbon-budget forecast",
           "Anomaly detection"
         ],

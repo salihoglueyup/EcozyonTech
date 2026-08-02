@@ -43,10 +43,10 @@ export default function Navbar() {
     <>
       <header className="fixed top-3 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
         <div
-          className={`pointer-events-auto flex items-center gap-2 rounded-full pl-3 sm:pl-4 pr-2 py-2 transition-all duration-300 border border-white/60 dark:border-slate-700/60 ${
+          className={`pointer-events-auto flex items-center gap-2 rounded-full pl-3 sm:pl-4 pr-2 py-2 transition-all duration-300 border ${
             scrolled
-              ? 'bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_8px_28px_-12px_rgba(15,23,42,.18)] dark:shadow-[0_8px_28px_-12px_rgba(0,0,0,.5)]'
-              : 'bg-white/40 dark:bg-slate-900/40 backdrop-blur-md'
+              ? 'border-white/60 dark:border-white/10 bg-white/70 dark:bg-[#0b1220]/70 backdrop-blur-2xl shadow-[0_8px_28px_-12px_rgba(15,23,42,.18)] dark:shadow-[0_8px_28px_-12px_rgba(0,0,0,.8)]'
+              : 'border-white/40 dark:border-white/5 bg-white/40 dark:bg-[#0b1220]/40 backdrop-blur-md'
           }`}
         >
           <EcoLogo />
@@ -289,7 +289,7 @@ function ThemeToggle({ theme, setTheme, t }) {
   return (
     <button
       type="button"
-      onClick={() => { const next = dark ? 'light' : 'dark'; setTheme(next); track('theme_switch', { theme: next }); }}
+      onClick={(e) => { const next = dark ? 'light' : 'dark'; setTheme(next, e); track('theme_switch', { theme: next }); }}
       className="relative inline-flex items-center justify-center h-7 w-7 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-900/[.04] dark:hover:bg-white/[.08] transition"
       aria-label={t.a11y.toggleTheme}
       title={dark ? t.a11y.lightMode : t.a11y.darkMode}

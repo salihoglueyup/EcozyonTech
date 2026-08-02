@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, PageHeader, Tag, GlowOrb } from '@/shared/ui/primitives';
+import { GridPattern } from '@/shared/ui/GridPattern';
 import { Reveal, useReveal } from '@/shared/ui/useReveal';
 import { SectionNav } from '@/shared/ui/SectionNav';
 import { Skeleton, CardSkeleton } from '@/shared/ui/Skeleton';
@@ -83,16 +84,23 @@ export default function StyleguidePage() {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 pt-32">
+    <section className="relative py-20 lg:py-28 pt-32 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20 mask-radial-faded">
+        <GridPattern />
+      </div>
+      <GlowOrb className="-top-40 -right-40" color={accents.cyan} size={600} />
+
       <SectionNav sections={navSections} />
-      <div className="mx-auto max-w-4xl px-6">
-        <PageHeader
-          eyebrow={g.eyebrow}
-          title={g.title}
-          titleAccent={g.titleAccent}
-          intro={g.intro}
-          className="max-w-3xl mb-12"
-        />
+      <div className="relative mx-auto max-w-4xl px-6">
+        <Reveal>
+          <PageHeader
+            eyebrow={g.eyebrow}
+            title={g.title}
+            titleAccent={g.titleAccent}
+            intro={g.intro}
+            className="max-w-3xl mb-12"
+          />
+        </Reveal>
 
         <div className="space-y-12">
           {/* Colors */}

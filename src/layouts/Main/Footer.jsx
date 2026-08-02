@@ -41,8 +41,12 @@ export default function Footer() {
   });
 
   return (
-    <footer className="relative pt-16 pb-10 mt-8 border-t border-slate-900/[.08] dark:border-white/[.08]">
-      <div className="mx-auto max-w-7xl px-6">
+    <footer className="relative pt-20 pb-10 mt-12 bg-gradient-to-b from-transparent to-slate-50 dark:to-[#050810] border-t border-slate-900/[.08] dark:border-white/[.08] overflow-hidden">
+      {/* Decorative top glow */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-cyan-500/10 blur-3xl rounded-full opacity-0 dark:opacity-100 pointer-events-none" />
+
+      <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 lg:col-span-4">
             <EcoLogo />

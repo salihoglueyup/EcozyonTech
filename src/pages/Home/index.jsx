@@ -4,29 +4,31 @@ import { ROUTES, SITE } from '@/core/config/site';
 import { Hero } from '@/features/hero';
 import { Metrics } from '@/features/metrics';
 import { Testimonials } from '@/features/testimonials';
-import { TrustBand, WhyEcozyon, FeaturedCase, CtaBand } from '@/features/home-extras';
+import { TrustBand, FeaturedCase, CtaBand } from '@/features/home-extras';
+
+import { DashboardPreview } from '@/features/home-extras/DashboardPreview';
+import { TechMarquee } from '@/features/home-extras/TechMarquee';
+import { FeatureBento } from '@/features/home-extras/FeatureBento';
+import { DeveloperPreview } from '@/features/home-extras/DeveloperPreview';
 
 const meta = ROUTES.find((r) => r.key === 'home');
 
 export default function HomePage() {
-  const { t, lang, prefs, accents } = useApp();
+  const { t, lang } = useApp();
   useDocumentMeta(meta.title[lang], SITE.description);
+  
   return (
     <>
-      <Hero
-        t={t}
-        lang={lang}
-        glowIntensity={prefs.glowIntensity}
-        heroStyle={prefs.heroStyle}
-        accents={accents}
-        theme={prefs.theme}
-      />
-      <TrustBand t={t} />
-      <WhyEcozyon t={t} />
-      <Metrics t={t} />
-      <FeaturedCase t={t} lang={lang} />
-      <Testimonials t={t} />
-      <CtaBand t={t} />
+      <Hero />
+      <DashboardPreview />
+      <TechMarquee />
+      <FeatureBento />
+      <TrustBand />
+      <DeveloperPreview />
+      <Metrics />
+      <FeaturedCase />
+      <Testimonials />
+      <CtaBand />
     </>
   );
 }

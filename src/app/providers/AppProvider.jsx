@@ -108,7 +108,48 @@ export function AppProvider({ children }) {
       lang,
       setLang: (v) => setTweak('lang', v),
       theme: prefs.theme,
-      setTheme: (v) => setTweak('theme', v),
+      setTheme: (v, e) => {
+        if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          setTweak('theme', v);
+          return;
+        }
+
+        document.documentElement.classList.add('theme-transition');
+        const transition = document.startViewTransition(() => {
+          setTweak('theme', v);
+        });
+
+        transition.finished.then(() => {
+          document.documentElement.classList.remove('theme-transition');
+        });
+
+        if (!e) return;
+
+        transition.ready.then(() => {
+          const x = e.clientX || window.innerWidth / 2;
+          const y = e.clientY || window.innerHeight / 2;
+          const endRadius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+          );
+
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ];
+
+          document.documentElement.animate(
+            {
+              clipPath: v === 'dark' ? clipPath.reverse() : clipPath,
+            },
+            {
+              duration: 500,
+              easing: 'ease-in-out',
+              pseudoElement: v === 'dark' ? '::view-transition-old(root)' : '::view-transition-new(root)',
+            }
+          );
+        });
+      },
       dict,
       t: dict,
       accents,

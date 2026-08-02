@@ -182,6 +182,20 @@
   .page-fade {
     animation: pageFade .26s ease-out;
   }
+
+  /* Hero utility classes */
+  .eco-hero-grid {
+    background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  .dark .eco-hero-grid {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+  .eco-hero-glow {
+    background: conic-gradient(from 90deg, rgba(14, 165, 233, 0.25), rgba(16, 185, 129, 0.22), rgba(14, 165, 233, 0.25));
+  }
 }
 
 /* Cross-document-style route transition (Chromium View Transitions API,
@@ -203,6 +217,25 @@
   animation: vt-fade-in var(--dur-base) ease both;
 }
 
+/* Smart theme transition mask overrides */
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+.theme-transition::view-transition-old(root) {
+  z-index: 1;
+}
+.theme-transition::view-transition-new(root) {
+  z-index: 2;
+}
+.dark.theme-transition::view-transition-old(root) {
+  z-index: 2;
+}
+.dark.theme-transition::view-transition-new(root) {
+  z-index: 1;
+}
+
 /* Respect users who prefer reduced motion: neutralise the marquee/float/
    fade keyframes and long transitions, keep content fully usable. */
 @media (prefers-reduced-motion: reduce) {
@@ -220,6 +253,19 @@
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 1rem));
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }
 
 /* Toast entrance animation */

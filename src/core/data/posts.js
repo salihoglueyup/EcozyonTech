@@ -1,5 +1,262 @@
-// Bilingual insight posts. Data-driven so /blog and /blog/:slug share one source.
 export const POSTS = [
+  {
+    slug: 'reality-lies-within-data',
+    date: '2026-06-20',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Vizyon', en: 'Vision' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['data', 'sustainability', 'ai-engine', 'ai'],
+    title: { 
+      tr: 'Gerçeklik veridedir: Sürdürülebilirliği somutlaştırıyoruz', 
+      en: 'Reality lies within data: Making sustainability measurable' 
+    },
+    excerpt: {
+      tr: 'Sürdürülebilirlik soyut bir kavramdır — biz bu algıyı değiştiriyoruz. Hedefimiz ayak izini tahmin etmek değil, ölçmek.',
+      en: 'Sustainability is an abstract concept — we are changing that perception. Our goal is to measure, not just estimate.'
+    },
+    body: {
+      tr: [
+        { h: 'Tahminler varsayımdır. Gerçeklik veridedir.', id: 'reality-is-data' },
+        'Sürdürülebilirlik genellikle soyut ve karmaşık bir kavram olarak algılanır. Ecozyon Tech olarak bu algıyı değiştiriyoruz.',
+        'Sadece karbon ayak izini tahmin etmekle kalmayıp, yapay zeka destekli yapay zeka çözümleri geliştirerek onu gerçek zamanlı verilerle ölçülebilir ve anlaşılır hale getiren bir sürdürülebilirlik girişimi inşa ediyoruz.',
+        'Böylece bireyler ve kurumlar çevresel etkilerini net bir şekilde görebilir ve daha bilinçli, sürdürülebilir kararlar alabilirler.',
+        'Teknolojiyi, veriyi ve topluluğun gücünü bir araya getirerek daha yaşanabilir bir gelecek için çalışıyoruz. Gerçeklik veridir. Veri Ecozyon Tech\'tir.'
+      ],
+      en: [
+        { h: 'Predictions are assumptions. Reality lies within data.', id: 'reality-is-data' },
+        'Sustainability is often perceived as an abstract and complex concept — at Ecozyon Tech, we are changing that perception.',
+        'We are a sustainability startup developing AI-powered ai-engine technologies with one clear goal: not just to estimate carbon footprints, but to make them measurable and understandable through real-time data.',
+        'This way, individuals and organizations can clearly see their environmental impact and make more conscious, sustainable decisions.',
+        'By bringing together technology, data, and the power of community — we are working toward a more livable future. Reality is data. Data is Ecozyon Tech.'
+      ],
+    },
+  },
+  {
+    slug: 'unesco-nestle-paris-closing',
+    date: '2026-06-17',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['unesco', 'nestle', 'paris', 'youth-impact'],
+    title: { 
+      tr: 'Ecozyon Tech Paris\'te | UNESCO × Nestlé Küresel Gençlik Hibe Programı Kapanış Etkinliği', 
+      en: 'Ecozyon Tech in Paris | UNESCO × Nestlé Global Youth Grant Program Closing Event' 
+    },
+    excerpt: {
+      tr: 'Küresel Gençlik Hibe Programı\'nın kapanış etkinliği için Paris\'te UNESCO Genel Merkezi\'ndeydik.',
+      en: 'We were in Paris at UNESCO Headquarters for the closing event of the Global Youth Grant Program.'
+    },
+    body: {
+      tr: [
+        { h: 'UNESCO Genel Merkezi\'ndeydik', id: 'unesco-headquarters' },
+        'Daha önce, dünya çapında yüzlerce başvuru arasından titiz bir değerlendirme süreciyle seçilen 100 girişimden biri olduğumuzu duyurmuştuk. Bu kez, programın kapanış etkinliği için Paris\'te UNESCO Genel Merkezi\'ndeydik.',
+        'Bu program sadece bir sahne sunmaktan öteye geçti; dünyanın dört bir yanından genç liderler, girişimciler ve sürdürülebilirlik odaklı paydaşlarla gerçek bir etkileşim ve ortak öğrenme alanı yarattı.',
+        { h: 'Ortak Vizyon Sınırları Aşar', id: 'shared-vision' },
+        'Gençlerin güçlendirilmesi, iklim eylemi, inovasyon ve sürdürülebilir girişimcilik üzerine yaptığımız diyaloglar, ortak bir vizyonun sınırları aştığını bir kez daha pekiştirdi.',
+        'Kapanış günü, gençlerin sadece dinleyici değil, karar alma süreçlerinin aktif katılımcıları olduğu vurgusuyla programın etkisini inkar edilemez bir şekilde ortaya koydu.',
+        'Bu yolculuğu mümkün kılan herkese; mentörümüz Banu Arslanoba\'ya, UNESCO ve Nestlé ekiplerine, program koordinatörleri Cristina Vásquez, Isabel Pestaña Heras ve Emma Shockley\'e, Climate Cardinals ekibine ve bu girişime anlam katan tüm paydaşlara içtenlikle teşekkür ederiz.'
+      ],
+      en: [
+        { h: 'At UNESCO Headquarters', id: 'unesco-headquarters' },
+        'We previously shared that Ecozyon Tech was selected as one of 100 ventures chosen through a rigorous evaluation process from hundreds of applications worldwide. This time, we were in Paris at UNESCO Headquarters for the program’s closing event.',
+        'This program offered more than just a stage; it created a genuine space for interaction and shared learning with young leaders, entrepreneurs, and sustainability-focused stakeholders from across the globe.',
+        { h: 'A Shared Vision Transcends Borders', id: 'shared-vision' },
+        'The dialogues we had around youth empowerment, climate action, innovation, and sustainable entrepreneurship reinforced once again that a shared vision transcends borders.',
+        'The closing day brought this spirit to life in the most tangible way. The powerful emphasis on young people not merely as listeners but as active participants in decision-making processes made the program’s impact undeniably clear.',
+        'We sincerely thank everyone who made this journey possible. Special thanks to our mentor Banu Arslanoba, the UNESCO and Nestlé teams, program coordinators Cristina Vásquez, Isabel Pestaña Heras and Emma Shockley, the Climate Cardinals team, and all stakeholders.'
+      ],
+    },
+  },
+  {
+    slug: 'belgian-economic-mission',
+    date: '2026-05-24',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['belgian-mission', 'women-leadership', 'networking'],
+    title: { 
+      tr: 'Belçika Ekonomik Misyonu Etkinliği\'ne Katılım Sağladık', 
+      en: 'Participation in the Belgian Economic Mission Event' 
+    },
+    excerpt: {
+      tr: 'Kadın liderliği ve uluslararası iş birliğini vurgulayan bu seçkin etkinlikte yer almaktan gurur duyduk.',
+      en: 'We were proud to take part in this distinguished event highlighting women\'s leadership and international collaboration.'
+    },
+    body: {
+      tr: [
+        { h: 'Belçika Ekonomik Misyonu', id: 'belgian-economic-mission' },
+        'Ecozyon Tech olarak, Belçika Ekonomik Misyonu kapsamında düzenlenen bu seçkin etkinlikte yer almaktan gurur duyduk.',
+        'Kadın liderliğinin, girişimciliğin ve uluslararası iş birliğinin önemini vurgulayan bu ilham verici buluşmaya katkıda bulunan herkese teşekkür ederiz.'
+      ],
+      en: [
+        { h: 'Belgian Economic Mission', id: 'belgian-economic-mission' },
+        'As Ecozyon Tech, we were proud to take part in this distinguished event held within the scope of the Belgian Economic Mission.',
+        'We would like to thank everyone who contributed to this inspiring gathering, which highlighted the importance of women’s leadership, entrepreneurship, and international collaboration.'
+      ],
+    },
+  },
+  {
+    slug: 'unesco-nestle-top-20',
+    date: '2026-05-20',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['unesco', 'nestle', 'top-20', 'climate-cardinals'],
+    title: { 
+      tr: 'UNESCO x Nestlé Programında İlk 20 Girişim Arasındayız', 
+      en: 'Advanced to Top 20 in the UNESCO x Nestlé Programme' 
+    },
+    excerpt: {
+      tr: 'Yarattığımız etki sayesinde seçilen 100 girişim arasından ilk 20\'ye girmekten gurur duyuyoruz.',
+      en: 'Among 100 selected startups, we are proud to be in the top 20 thanks to the impact we are creating.'
+    },
+    body: {
+      tr: [
+        { h: 'İlk 20\'ye Girdik', id: 'top-20' },
+        'UNESCO x Nestlé programındaki yolculuğumuzun bir sonraki aşamasına geçtiğimizi paylaşmaktan heyecan duyuyoruz. Seçilen 100 girişim arasından, yarattığımız etki sayesinde ilk 20\'de yer almaktan gurur duyuyoruz.',
+        { h: 'Climate Cardinals Atölyeleri', id: 'climate-cardinals' },
+        'Climate Cardinals ile stratejik atölye çalışmalarımıza resmen başladık. Ecozyon Tech\'in karbon ayak izi takip altyapısını güçlendirmek için değerli mentörlük ve teknik destek aldık.',
+        'Bu aşamanın bir parçası olarak; Ekip Yönetimi, Kaynak Yaratma, Bütçeleme ve Raporlama, Etki İletişimi, Sürdürülebilir Sistemler Geliştirme ve Ortaklıklar eğitimlerine katıldık. Tüm paydaşlara teşekkür ederiz.'
+      ],
+      en: [
+        { h: 'Advanced to Top 20', id: 'top-20' },
+        'We are excited to share that we have advanced to the next stage of our journey within the UNESCO x Nestlé programme. Among 100 startups, we are proud to be among the top 20 thanks to the impact we are creating.',
+        { h: 'Climate Cardinals Workshops', id: 'climate-cardinals' },
+        'We have officially started our strategic workshops with Climate Cardinals, receiving valuable mentorship and technical support to strengthen Ecozyon Tech’s carbon footprint tracking infrastructure.',
+        'As part of this phase, we participated in training sessions covering Team Management, Fundraising, Impact Communications, Sustainable Systems Development, and Partnerships. We extend our sincere thanks to all stakeholders.'
+      ],
+    },
+  },
+  {
+    slug: 'unesco-nestle-top-100-turkiye',
+    date: '2026-04-10',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['unesco', 'nestle', 'youth-grant', 'turkiye'],
+    title: { 
+      tr: 'Türkiye\'yi Temsil Eden Tek Girişim: UNESCO ve Nestlé Küresel Gençlik Hibe Programına Seçildik', 
+      en: 'The Only Startup Representing Türkiye: Selected for UNESCO and Nestlé Global Youth Grant Scheme' 
+    },
+    excerpt: {
+      tr: 'Sürdürülebilirlik vizyonumuzu küresel ölçekte ilerletmekten gurur duyuyoruz.',
+      en: 'We are proud to advance our sustainability vision on a global scale.'
+    },
+    body: {
+      tr: [
+        { h: 'Küresel Seçim Süreci', id: 'global-selection' },
+        'Sürdürülebilirlik vizyonumuzu küresel ölçekte ilerletmekten gurur duyuyoruz. UNESCO ve Nestlé ortaklığında yürütülen Küresel Gençlik Hibe Programı kapsamında, dünya çapında yüzlerce başvuru arasından titiz bir süreçle seçilen 100 girişimden biri olduk.',
+        { h: 'Türkiye\'yi Temsil Ediyoruz', id: 'representing-turkiye' },
+        'Bu başarıyı daha da anlamlı kılan şey, programda Türkiye\'yi temsil eden tek girişim olmamızdır.',
+        '"Gençlik Etkisi" (Youth Impact) vizyonuyla yola çıktık; ve yerel inovasyonu küresel ölçekte gerçek etki yaratan çözümlere dönüştürme misyonumuzda her geçen gün daha da güçleniyoruz. Bize inanan herkese minnettarız.'
+      ],
+      en: [
+        { h: 'Global Selection Process', id: 'global-selection' },
+        'We are proud to advance our sustainability vision on a global scale. As part of the Global Youth Grant Scheme, jointly led by UNESCO and Nestlé, Ecozyon Tech has been selected as one of 100 startups chosen through a rigorous process from hundreds of applicants worldwide.',
+        { h: 'Representing Türkiye', id: 'representing-turkiye' },
+        'What makes this achievement even more meaningful is that we are the only startup representing Türkiye in the program.',
+        'We set out with the vision of "Youth Impact"; and every day we grow stronger in our mission to transform local innovation into solutions that create real impact on a global scale. We are grateful to everyone who believed in us.'
+      ],
+    },
+  },
+  {
+    slug: 'halkbank-producing-women',
+    date: '2026-03-15',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['halkbank', 'women-in-tech', 'award'],
+    title: { 
+      tr: '5. Halkbank Üreten Kadınlar Yarışması Ödül Töreni', 
+      en: '5th Halkbank Producing Women Competition Award Ceremony' 
+    },
+    excerpt: {
+      tr: 'Kadınların üretim, teknoloji ve girişimcilikte üstlendiği rol yarının vizyonunu şekillendiriyor.',
+      en: 'The role women undertake in production, technology, and entrepreneurship shapes the vision of tomorrow.'
+    },
+    body: {
+      tr: [
+        { h: 'Kadın Liderliği ve Teknoloji', id: 'women-leadership' },
+        'Kadınların üretim, teknoloji ve girişimcilikte üstlendiği rol sadece bugünün başarılarını değil, yarının vizyonunu da şekillendiriyor. Her yeni fikir, her cesur adım ve her girişim sadece ekonomik büyümenin değil, aynı zamanda anlamlı bir toplumsal dönüşümün de önünü açıyor.',
+        { h: 'Halkbank Ödül Töreni', id: 'award-ceremony' },
+        '5. Halkbank Üreten Kadınlar Yarışması Ödül Töreni, kadın girişimciliğinin ne kadar güçlü ve stratejik olduğunu bir kez daha gösterdi.',
+        'Ecozyon Tech olarak, kadınların hayallerini teknoloji aracılığıyla gerçeğe dönüştürdüğü, cesaretle liderlik ettiği ve değişime ilham verdiği bir ekosistemin parçası olmaktan büyük onur duyuyoruz.'
+      ],
+      en: [
+        { h: 'Women\'s Leadership and Tech', id: 'women-leadership' },
+        'The role women undertake in production, technology, and entrepreneurship shapes not only today’s achievements but also the vision of tomorrow. Every new idea, every bold step, and every venture paves the way for meaningful social transformation.',
+        { h: 'Halkbank Award Ceremony', id: 'award-ceremony' },
+        'The 5th Halkbank Producing Women Competition Award Ceremony once again demonstrated how powerful and strategic women’s entrepreneurship truly is.',
+        'As Ecozyon Tech, we are truly honored to be part of an ecosystem where women transform their dreams into reality through technology, lead with courage, and inspire change.'
+      ],
+    },
+  },
+  {
+    slug: 'series-a',
+    date: '2026-05-20',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['series-a', 'funding', 'growth', 'sustainability'],
+    title: { tr: 'Ecozyon Tech, sürdürülebilirlik teknolojisini ölçeklemek için A serisi yatırım aldı', en: 'Ecozyon Tech raises Series A to scale sustainability technology' },
+    excerpt: {
+      tr: 'Yapay zekâ destekli iklim platformumuz için A serisi turunu tamamladık.',
+      en: 'We have closed our Series A round for our AI-powered climate platform.'
+    },
+    body: {
+      tr: [
+        { h: 'A Serisi Yatırım Turu Tamamlandı', id: 'series-a-closed' },
+        'Ecozyon Tech, yapay zeka ve yapay zekâ ile bireysel ve kurumsal karbon ayak izini ölçülebilir alışkanlıklara dönüştüren platformunu büyütmek için A serisi yatırım turunu tamamladı.',
+        'Yatırım; AI öneri motorunun derinleştirilmesi, yeni şehirlerde saha ortaklıkları ve ölçüm altyapısının genişletilmesi için kullanılacak.',
+      ],
+      en: [
+        { h: 'Series A Round Closed', id: 'series-a-closed' },
+        'Ecozyon Tech has closed a Series A round to grow its platform that turns individual and corporate carbon footprints into measurable habits through ai-engine technology and AI.',
+        'The funding will deepen the AI recommendation engine, expand field partnerships in new cities and scale the measurement infrastructure.',
+      ],
+    },
+  },
+  {
+    slug: 'impact-2026',
+    date: '2026-04-02',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['impact-report', '2026', 'carbon-savings', 'data'],
+    title: { tr: '2026 Etki Raporu: 59 şehirde ölçülen karbon tasarrufu', en: '2026 Impact Report: measured carbon savings across 59 cities' },
+    excerpt: {
+      tr: '2026 etki raporumuz yayınlandı. 59 şehirdeki karbon ayak izi tasarruf verileri.',
+      en: 'Our 2026 impact report is published. Carbon footprint saving data across 59 cities.'
+    },
+    body: {
+      tr: [
+        { h: '2026 Etki Raporu', id: 'impact-report' },
+        'Şirket, ağındaki 59 şehirde toplanan anonim verilere dayanan yıllık etki raporunu yayımladı. Rapor, yapay zeka modeli verisiyle desteklenen davranış değişikliğinin somut karbon tasarrufu sağladığını gösteriyor.',
+        'Tüm metodoloji ve şehir bazlı kırılımlar etki haritası üzerinden şeffaf biçimde paylaşılıyor.',
+      ],
+      en: [
+        { h: '2026 Impact Report', id: 'impact-report' },
+        'The company published its annual impact report based on anonymized data from 59 cities in its network, showing that ai-engine-informed behavior change produces tangible carbon savings.',
+        'The full methodology and per-city breakdowns are shared transparently through the impact map.',
+      ],
+    },
+  },
+  {
+    slug: 'ai-engine-launch',
+    date: '2026-02-11',
+    author: { name: 'Ecozyon Tech', role: { tr: 'Basın Odası', en: 'Newsroom' } },
+    tag: { tr: 'Basın Bülteni', en: 'Press Release' },
+    terms: ['ai-engine', 'software', 'launch', 'product'],
+    title: { tr: 'Yeni nesil Ecozyon yapay zeka modeliı tanıtıldı', en: 'Next-generation Ecozyon ai-engine unveiled' },
+    excerpt: {
+      tr: 'Daha düşük güç tüketimi ve yeni sensörlerle güncellenen Ecozyon yapay zeka modeliı.',
+      en: 'Ecozyon ai-engine updated with lower power consumption and new sensors.'
+    },
+    body: {
+      tr: [
+        { h: 'Yeni Nesil yapay zeka modeli', id: 'next-gen-ai-engine' },
+        'Daha düşük güç tüketimi ve gelişmiş sensör doğruluğuyla yeni nesil yapay zeka modeli tanıtıldı. Cihaz, günlük aktiviteyi gerçek zamanlı karbon içgörülerine dönüştürüyor.',
+        'Cihaz, mevcut panel ve mobil uygulamalarla tam uyumlu çalışıyor.',
+      ],
+      en: [
+        { h: 'Next-Gen ai-engine', id: 'next-gen-ai-engine' },
+        'The next-generation ai-engine launched with lower power draw and improved sensor accuracy, turning daily activity into real-time carbon insights.',
+        'The device works seamlessly with the existing dashboard and mobile apps.',
+      ],
+    },
+  },
   {
     slug: 'carbon-budget-basics',
     date: '2026-04-22',
@@ -46,14 +303,14 @@ export const POSTS = [
     },
   },
   {
-    slug: 'wearable-design-notes',
+    slug: 'ai-engine-design-notes',
     date: '2026-03-30',
-    author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
-    tag: { tr: 'Donanım', en: 'Hardware' },
-    terms: ['wearable', 'met', 'on-device', 'embodied-carbon', 'renewable', 'energy-efficiency'],
+    author: { name: 'Mert Koç', role: { tr: 'Yapay Zeka', en: 'software' } },
+    tag: { tr: 'Yapay Zeka', en: 'software' },
+    terms: ['ai-engine', 'met', 'on-device', 'embodied-carbon', 'renewable', 'energy-efficiency'],
     title: {
-      tr: 'Giyilebilir cihazı 0.4W altında tutmanın notları',
-      en: 'Notes on keeping the wearable under 0.4W',
+      tr: 'yapay zeka modeliı 0.4W altında tutmanın notları',
+      en: 'Notes on keeping the ai-engine under 0.4W',
     },
     excerpt: {
       tr: 'Güneş mikro-hücresi, geri dönüştürülmüş kasa ve 5nm AI çipi tasarım kararları.',
@@ -62,7 +319,7 @@ export const POSTS = [
     body: {
       tr: [
         { h: 'Düşük güç tasarımı', id: 'low-power' },
-        'Düşük güç, sürdürülebilir donanımın kalbidir. Sensör örnekleme hızını uyarlamalı yaparak ortalama tüketimi yarıya indirdik.',
+        'Düşük güç, sürdürülebilir yapay zekaın kalbidir. Sensör örnekleme hızını uyarlamalı yaparak ortalama tüketimi yarıya indirdik.',
         'Her miliwat önemlidir: daha düşük tüketim, daha küçük pil ve daha az gömülü emisyon demektir.',
         { h: 'Malzeme ve enerji', id: 'materials' },
         'Kasa %92 geri dönüştürülmüş alüminyum; güneş mikro-hücresi gün ışığında günlük tüketimin ~%38\'ini karşılıyor.',
@@ -75,7 +332,7 @@ export const POSTS = [
       ],
       en: [
         { h: 'Low-power design', id: 'low-power' },
-        'Low power is the heart of sustainable hardware. Adaptive sensor sampling halved average draw.',
+        'Low power is the heart of sustainable software. Adaptive sensor sampling halved average draw.',
         'Every milliwatt counts: lower draw means a smaller battery and less embodied carbon.',
         { h: 'Materials and energy', id: 'materials' },
         'The housing is 92% recycled aluminium; the solar micro-cell covers ~38% of daily consumption in daylight.',
@@ -203,7 +460,7 @@ export const POSTS = [
         { h: 'Why it is hard', id: 'why-hard' },
         'Scope 3 spans sources outside your direct control; the data is scattered and incomplete.',
         { h: 'Our approach', id: 'approach' },
-        'We combine activity data + sector averages + wearable signals into a transparent, auditable estimate.',
+        'We combine activity data + sector averages + ai-engine signals into a transparent, auditable estimate.',
         { h: 'Data sources', id: 'data-sources' },
         'Transport, purchases and energy are the three main signals. None is enough alone; the power is in the combination.',
         { h: 'The estimation method', id: 'estimation' },
@@ -216,9 +473,9 @@ export const POSTS = [
   {
     slug: 'on-device-privacy',
     date: '2026-04-08',
-    author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
+    author: { name: 'Mert Koç', role: { tr: 'Yapay Zeka', en: 'software' } },
     tag: { tr: 'Gizlilik', en: 'Privacy' },
-    terms: ['on-device', 'wearable', 'met', 'energy-efficiency'],
+    terms: ['on-device', 'ai-engine', 'met', 'energy-efficiency'],
     title: {
       tr: 'Cihaz-içi işleme neden gizlilik için kritik?',
       en: 'Why on-device processing is critical for privacy',
@@ -294,16 +551,16 @@ export const POSTS = [
   {
     slug: 'solar-charging-notes',
     date: '2026-01-08',
-    author: { name: 'Mert Koç', role: { tr: 'Donanım', en: 'Hardware' } },
-    tag: { tr: 'Donanım', en: 'Hardware' },
-    terms: ['renewable', 'energy-efficiency', 'embodied-carbon', 'wearable'],
+    author: { name: 'Mert Koç', role: { tr: 'Yapay Zeka', en: 'software' } },
+    tag: { tr: 'Yapay Zeka', en: 'software' },
+    terms: ['renewable', 'energy-efficiency', 'embodied-carbon', 'ai-engine'],
     title: {
       tr: 'Güneşle şarj: küçük bir hücre ne kadar fark yaratır',
       en: 'Solar charging: how much a tiny cell really helps',
     },
     excerpt: {
-      tr: 'Bir mikro güneş hücresi, giyilebilir cihazın enerji ayak izini nasıl değiştiriyor?',
-      en: "How a micro solar cell changes a wearable's energy footprint.",
+      tr: 'Bir mikro güneş hücresi, yapay zeka modeliın enerji ayak izini nasıl değiştiriyor?',
+      en: "How a micro solar cell changes a ai-engine's energy footprint.",
     },
     body: {
       tr: [
@@ -318,7 +575,7 @@ export const POSTS = [
       ],
       en: [
         { h: 'Why solar', id: 'why-solar' },
-        'A wearable sees light all day. Harvesting even a small part of it reduces how often you charge.',
+        'A ai-engine sees light all day. Harvesting even a small part of it reduces how often you charge.',
         { h: 'The real contribution', id: 'real-contribution' },
         'In daylight the micro-cell covers about a third of daily consumption, noticeably cutting yearly grid charging.',
         { h: 'Design trade-offs', id: 'tradeoffs' },

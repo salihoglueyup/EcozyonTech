@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, EmptyState, FilterPills, PageHeader, RelatedRoutes, ResultCount, SearchInput } from '@/shared/ui/primitives';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
+import { Reveal } from '@/shared/ui/useReveal';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
@@ -23,13 +24,15 @@ export default function CasesPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-6xl px-6">
-        <PageHeader
-          eyebrow={t.cases.eyebrow}
-          title={t.cases.title}
-          titleAccent={t.cases.titleAccent}
-          intro={t.cases.intro}
-          className="max-w-3xl mb-10"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={t.cases.eyebrow}
+            title={t.cases.title}
+            titleAccent={t.cases.titleAccent}
+            intro={t.cases.intro}
+            className="max-w-3xl mb-10"
+          />
+        </Reveal>
 
         <SearchInput
           className="mb-5 max-w-sm"
@@ -70,14 +73,14 @@ export default function CasesPage() {
           </EmptyState>
         ) : (
         <div className="grid gap-4 sm:grid-cols-2">
-          {visible.map((c) => {
+          {visible.map((c, i) => {
             const headline = c.results[0];
             return (
-              <Link
-                key={c.slug}
-                to={`/cases/${c.slug}`}
-                className="group flex flex-col rounded-2xl eco-card p-6 lg:p-7 hover:ring-cyan-500/30 transition"
-              >
+              <Reveal key={c.slug} delay={i * 50}>
+                <Link
+                  to={`/cases/${c.slug}`}
+                  className="group flex flex-col h-full rounded-2xl eco-card p-6 lg:p-7 hover:ring-cyan-500/30 transition hover:-translate-y-1 duration-300"
+                >
                 <div className="flex items-center gap-2 text-[11px]">
                   <span className="inline-flex items-center rounded-full px-2 py-0.5 font-semibold" style={{ backgroundColor: `${c.accent}1f`, color: c.accent }}>
                     {c.city}
@@ -99,7 +102,8 @@ export default function CasesPage() {
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </div>
-              </Link>
+                </Link>
+              </Reveal>
             );
           })}
         </div>

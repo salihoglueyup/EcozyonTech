@@ -1,3 +1,4 @@
+import { useApp } from '@/app/providers/AppProvider';
 import { GRADIENTS } from '@/core/tokens';
 import { ArrowRight } from '@/shared/ui/primitives';
 import { Link } from 'react-router-dom';
@@ -32,7 +33,8 @@ const TRENDS = {
 };
 
 // Stat band under the hero — animated network totals from CITIES.
-export function TrustBand({ t }) {
+export function TrustBand() {
+  const { t } = useApp();
   const [ref, seen] = useInView();
   const h = t.home;
   const tiles = [
@@ -79,7 +81,8 @@ const WHY_ICONS = [
   <g key="shield"><path d="M10 1.8 16 4v5c0 4-2.6 6.6-6 8.2C6.6 15.6 4 13 4 9V4z" strokeLinejoin="round" /><path d="m7.2 9.4 2 2 3.6-3.8" strokeLinecap="round" strokeLinejoin="round" /></g>,
 ];
 
-export function WhyEcozyon({ t }) {
+export function WhyEcozyon() {
+  const { t } = useApp();
   const h = t.home;
   return (
     <section className="relative py-20 lg:py-28">
@@ -111,7 +114,8 @@ export function WhyEcozyon({ t }) {
 }
 
 // Closing call-to-action band — gradient panel with primary/secondary links.
-export function CtaBand({ t }) {
+export function CtaBand() {
+  const { t } = useApp();
   const h = t.home;
   return (
     <section className="relative py-16 lg:py-24">
@@ -143,11 +147,13 @@ export function CtaBand({ t }) {
 }
 
 // Spotlight on the flagship case study, bridging home → /cases.
-export function FeaturedCase({ t, lang }) {
+export function FeaturedCase() {
+  const { t, lang } = useApp();
   const h = t.home;
   const c = FEATURED;
+  const [ref, seen] = useInView(0.2);
   return (
-    <section className="relative py-20 lg:py-28">
+    <section ref={ref} className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="rounded-3xl eco-card p-7 lg:p-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -177,10 +183,10 @@ export function FeaturedCase({ t, lang }) {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
-              {c.results.map((r) => (
+                {c.results.map((r) => (
                 <div key={r.label.en} className="rounded-2xl bg-white/60 dark:bg-white/[.04] ring-1 ring-slate-900/[.06] dark:ring-white/[.06] p-4 text-center">
                   <div className="font-display text-[clamp(1.3rem,3.5vw,1.9rem)] leading-none tracking-tight tabular-nums" style={{ color: c.accent }}>
-                    {r.value}
+                    <AnimatedNumber value={r.value} play={seen} />
                     {r.unit[lang] && <span className="ml-0.5 text-[10.5px] font-medium text-slate-400">{r.unit[lang]}</span>}
                   </div>
                   <div className="mt-1.5 text-[10.5px] text-slate-500 dark:text-slate-400 leading-tight">{r.label[lang]}</div>

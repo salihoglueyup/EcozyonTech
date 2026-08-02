@@ -1,4 +1,4 @@
-import { handleEvent } from './_lib/telemetry.js';
+import { handleEvent } from './_lib/handlers/telemetry.js';
 
 // Telemetry event beacon sink. Validates the event and forwards it to an
 // env-configured webhook (TELEMETRY_WEBHOOK_URL); demo mode acks cheaply when

@@ -3,6 +3,7 @@ import { PageHeader } from '@/shared/ui/primitives';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey, FOOTER_GROUPS, routesInGroup } from '@/core/config/site';
+import { SpotlightCard } from '@/shared/ui/SpotlightCard';
 import { POSTS } from '@/core/data/posts';
 import { CASES } from '@/core/data/cases';
 import { INTEGRATIONS } from '@/core/data/integrations';
@@ -11,11 +12,12 @@ const meta = routeByKey('sitemap');
 
 function LinkList({ items }) {
   return (
-    <ul className="space-y-1.5">
+    <ul className="space-y-3 mt-4">
       {items.map((it) => (
         <li key={it.to}>
-          <Link to={it.to} className="text-[13.5px] text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-            {it.label}
+          <Link to={it.to} className="group flex items-center justify-between text-[13.5px] text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+            <span>{it.label}</span>
+            <svg className="h-3 w-3 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 7.5 6 10l5-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </Link>
         </li>
       ))}
@@ -53,27 +55,27 @@ export default function SitemapPage() {
           className="mb-10"
         />
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {pageGroups.map((g) => (
-            <div key={g.id}>
-              <h2 className="mb-3 flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">
+            <SpotlightCard key={g.id} className="p-6">
+              <h2 className="flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 border-b border-slate-900/[.06] dark:border-white/[.06] pb-3 mb-3">
                 {g.title}
-                <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-1.5 py-0.5 text-[9.5px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
+                <span className="ml-auto rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-2 py-0.5 text-[9px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
               </h2>
               <LinkList items={g.items} />
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-3 border-t border-slate-900/[.06] dark:border-white/[.06] pt-10">
+        <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {dynamicGroups.map((g) => (
-            <div key={g.id}>
-              <h2 className="mb-3 flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400">
+            <SpotlightCard key={g.id} className="p-6">
+              <h2 className="flex items-center gap-2 text-[10.5px] uppercase tracking-[.14em] font-semibold text-slate-400 border-b border-slate-900/[.06] dark:border-white/[.06] pb-3 mb-3">
                 {g.title}
-                <span className="rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-1.5 py-0.5 text-[9.5px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
+                <span className="ml-auto rounded-full bg-slate-900/[.05] dark:bg-white/[.06] px-2 py-0.5 text-[9px] tabular-nums text-slate-500 dark:text-slate-400">{g.items.length}</span>
               </h2>
               <LinkList items={g.items} />
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

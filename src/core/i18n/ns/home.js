@@ -14,8 +14,8 @@ export default {
     "whyTitle": "Ölçülebilir, gönüllü, gizlilik öncelikli",
     "why": [
       {
-        "title": "Cihaz-üstü zekâ",
-        "desc": "Öneriler cihazında çalışır; kişisel veri merkeze taşınmaz."
+        "title": "Bulut ve Edge AI",
+        "desc": "Verileriniz güvenli bulut altyapısı ve yerel modellerle işlenir; tam gizlilik sağlanır."
       },
       {
         "title": "Oyunlaştırılmış alışkanlık",
@@ -44,8 +44,8 @@ export default {
     "whyTitle": "Measurable, voluntary, privacy-first",
     "why": [
       {
-        "title": "On-device intelligence",
-        "desc": "Suggestions run on your device; personal data never goes to a center."
+        "title": "Cloud & Edge AI",
+        "desc": "Your data is processed via secure cloud infrastructure and local models, ensuring full privacy."
       },
       {
         "title": "Gamified habit",

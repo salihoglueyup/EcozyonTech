@@ -12,7 +12,7 @@ export default {
         "title": "Sürdürülebilirlik Danışmanı"
       },
       {
-        "quote": "Cihaz o kadar hafif ki takmayı unutuyorsun. Ama veriler çok güçlü — ekip yarışmasında ilk 3'e girdik.",
+        "quote": "Sistem arka planda o kadar sessiz çalışıyor ki unutuyorsunuz. Ama veriler çok güçlü — ekip yarışmasında ilk 3'e girdik.",
         "initials": "KT",
         "name": "Kerem T.",
         "title": "Yazılım Mühendisi"
@@ -36,7 +36,7 @@ export default {
         "title": "Sustainability Consultant"
       },
       {
-        "quote": "The device is so light you forget you're wearing it. But the data is powerful — our team made the top 3 in the challenge.",
+        "quote": "The platform runs so seamlessly in the background you forget it's there. But the data is powerful — our team made the top 3 in the challenge.",
         "initials": "KT",
         "name": "Kerem T.",
         "title": "Software Engineer"

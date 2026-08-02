@@ -174,7 +174,24 @@
       "Bash(ls e2e/)",
       "Bash(npm i *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4173/)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4173/help)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4173/help)",
+      "Bash(echo '{\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\"C:\\\\\\\\proj\\\\\\\\src\\\\\\\\shared\\\\\\\\3d\\\\\\\\WorldGlobe.jsx\"}}')",
+      "Bash(echo \" [exit $?]\")",
+      "Bash(echo \"[exit $?]\")",
+      "Bash(rm -f t1.json t2.json t3.json)",
+      "Bash(rm -f src/core/i18n/ns/__hooktest.js)",
+      "Bash(rm -rf tmp-hooktest)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(git --no-pager log --oneline -1)",
+      "PowerShell(npx vitest run 2>&1 | Select-Object -Last 6)",
+      "PowerShell(npx vitest run src/test/routing.test.jsx 2>&1 | Select-Object -Last 5; \"=== 2nd ===\"; npx vitest run src/test/routing.test.jsx 2>&1 | Select-Object -Last 5)",
+      "PowerShell(npx vitest run src/test/routing.test.jsx 2>&1 | Select-Object -Last 4)",
+      "Bash(echo \"---EXIT $?---\")",
+      "Bash(grep -oE \"category: \\\\{ tr: '[^']*', en: '[^']*'\" src/core/data/glossary.js)"
     ]
+  },
+  "enabledPlugins": {
+    "ecc@ecc": true,
+    "github@claude-plugins-official": false
   }
 }

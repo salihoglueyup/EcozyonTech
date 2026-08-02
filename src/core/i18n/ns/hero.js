@@ -6,7 +6,7 @@ export default {
     "title1": "Yapay zeka ile",
     "title2": "karbon ayak izini",
     "title3": "yeniden şekillendir.",
-    "sub": "Ecozyon Tech, giyilebilir teknolojiler ve akıllı algoritmalar ile bireysel ve kurumsal sürdürülebilirliği ölçülebilir, pratik ve ölçeklenebilir alışkanlıklara dönüştürür.",
+    "sub": "Ecozyon Tech, yapay zeka, veri analitiği ve akıllı entegrasyonlar ile bireylerin ve kurumların karbon ayak izlerini azaltmalarını sağlayan, ölçülebilir ve kalıcı çevresel etki yaratan bir girişimdir.",
     "primary": "Çözümleri İncele",
     "secondary": "Vizyon Videosu",
     "live": "Canlı AI önerisi",
@@ -19,23 +19,35 @@ export default {
     "scroll": "Aşağı kaydır",
     "partnersTag": "Pilot ortakları & destek",
     "partners": [
-      "İklim Vakfı",
-      "Boğaziçi Üni.",
-      "EcoLab Berlin",
-      "GreenStack",
-      "Solar İstanbul",
-      "Climate-KIC"
+      "UNESCO",
+      "Nestlé",
+      "NASA",
+      "IBM",
+      "FLO Group",
+      "Kodluyoruz"
     ],
     "videoTitle": "60 saniyede Ecozyon",
     "videoSub": "Cihaz, AI ve toplulukla nasıl çalışır?",
-    "videoClose": "Kapat"
+    "videoClose": "Kapat",
+    "video": {
+      "intro": "Tanıtım",
+      "close": "Kapat",
+      "scene0Label": "Sisteme bağlan",
+      "scene0Sub": "API ile hızlı kurulum",
+      "scene1Label": "AI öğrenir",
+      "scene1Sub": "İlk haftada veri analizi",
+      "scene2Label": "Etki yarat",
+      "scene2Sub": "Topluluk + AI + sen",
+      "aiTip": "Bugün bisikletle gidersen 1.4 kg CO₂ tasarrufu.",
+      "applied": "Anında uygulanır"
+    }
   },
   "en": {
     "tag": "AI & Sustainability Ecosystem",
     "title1": "Reshape your",
     "title2": "carbon footprint",
     "title3": "with intelligence.",
-    "sub": "Ecozyon Tech turns individual and corporate sustainability into measurable, practical, and scalable habits through wearable hardware and adaptive AI.",
+    "sub": "Ecozyon Tech is an AI-driven startup specializing in smart eco-friendly solutions that enable individuals and organizations to reduce their carbon footprint through data analytics and community engagement.",
     "primary": "Explore solutions",
     "secondary": "Vision film",
     "live": "Live AI suggestion",
@@ -48,15 +60,27 @@ export default {
     "scroll": "Scroll",
     "partnersTag": "Pilot partners & backers",
     "partners": [
-      "Climate Foundation",
-      "Boğaziçi Univ.",
-      "EcoLab Berlin",
-      "GreenStack",
-      "Solar Istanbul",
-      "Climate-KIC"
+      "UNESCO",
+      "Nestlé",
+      "NASA",
+      "IBM",
+      "FLO Group",
+      "Kodluyoruz"
     ],
     "videoTitle": "Ecozyon in 60 seconds",
     "videoSub": "How device, AI and community work together.",
-    "videoClose": "Close"
+    "videoClose": "Close",
+    "video": {
+      "intro": "Intro",
+      "close": "Close",
+      "scene0Label": "Connect APIs",
+      "scene0Sub": "Quick setup",
+      "scene1Label": "AI learns",
+      "scene1Sub": "Data analysis in week one",
+      "scene2Label": "Create impact",
+      "scene2Sub": "Community + AI + you",
+      "aiTip": "Bike to work today → save 1.4 kg CO₂.",
+      "applied": "Applied instantly"
+    }
   }
 };

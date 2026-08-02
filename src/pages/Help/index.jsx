@@ -5,9 +5,11 @@ import { ArrowRight, EmptyState, FilterPills, PageHeader, ResultCount, SearchInp
 import { Disclosure } from '@/shared/ui/Collapse';
 import { useFilteredList } from '@/shared/ui/useFilteredList';
 import { useApp } from '@/app/providers/AppProvider';
-import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
 import { routeByKey } from '@/core/config/site';
 import { HELP, helpCategories, filterByCategory, searchHelp } from '@/core/data/help';
+import { Reveal } from '@/shared/ui/useReveal';
+import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
+
 
 const meta = routeByKey('help');
 const CATEGORIES = helpCategories(HELP);
@@ -34,13 +36,15 @@ export default function HelpPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <PageHeader
-          eyebrow={t.help.eyebrow}
-          title={t.help.title}
-          titleAccent={t.help.titleAccent}
-          intro={t.help.intro}
-          className="mb-10"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={t.help.eyebrow}
+            title={t.help.title}
+            titleAccent={t.help.titleAccent}
+            intro={t.help.intro}
+            className="mb-10"
+          />
+        </Reveal>
 
         <SearchInput
           className="mb-5"
@@ -81,22 +85,26 @@ export default function HelpPage() {
               {t.help.empty}
             </EmptyState>
           )}
-          {visible.map((entry) => (
-            <HelpItem key={entry.id} entry={entry} lang={lang} relatedLabel={t.related.related} defaultOpen={entry.id === hashId} />
+          {visible.map((entry, i) => (
+            <Reveal key={entry.id} delay={i * 50}>
+              <HelpItem entry={entry} lang={lang} relatedLabel={t.related.related} defaultOpen={entry.id === hashId} />
+            </Reveal>
           ))}
         </div>
 
-        <div className="mt-10 rounded-2xl eco-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <span className="text-[14px] text-slate-700 dark:text-slate-300">{t.help.more}</span>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-medium text-white shrink-0"
-            style={{ backgroundImage: GRADIENTS.cta }}
-          >
-            {t.help.contact}
-            <ArrowRight />
-          </Link>
-        </div>
+        <Reveal delay={200}>
+          <div className="mt-10 rounded-2xl eco-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span className="text-[14px] text-slate-700 dark:text-slate-300">{t.help.more}</span>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-medium text-white shrink-0 hover:opacity-90 transition"
+              style={{ backgroundImage: GRADIENTS.cta }}
+            >
+              {t.help.contact}
+              <ArrowRight />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

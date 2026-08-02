@@ -8,7 +8,7 @@ export default {
       {
         "value": "8.4K",
         "suffix": "+",
-        "label": "Aktif giyilebilir cihaz",
+        "label": "Aktif API entegrasyonu",
         "note": "12 şehir, 3 kıtada saha testi",
         "trend": [
           4,
@@ -82,7 +82,7 @@ export default {
       {
         "value": "8.4K",
         "suffix": "+",
-        "label": "Active wearables in field",
+        "label": "Active API integrations",
         "note": "12 cities across 3 continents",
         "trend": [
           4,

@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
 import { ROUTES, SITE, routeByKey } from '../src/core/config/site.js';
 import { POSTS, postTags, tagSlug } from '../src/core/data/posts.js';
-import { listPublished, dedupBySlug } from '../api/_lib/posts-db.js';
+import { listPublished, dedupBySlug } from '../api/_lib/db/posts.db.js';
 import { CASES } from '../src/core/data/cases.js';
 import { INTEGRATIONS } from '../src/core/data/integrations.js';
 import { HELP } from '../src/core/data/help.js';

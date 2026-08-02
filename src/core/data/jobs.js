@@ -7,110 +7,110 @@
 // postTags/filterByTag/searchPosts.
 export const JOBS = [
   {
-    id: 'senior-frontend',
-    team: { tr: 'Ürün', en: 'Product' },
+    id: 'senior-cloud-engineer',
+    team: { tr: 'Bulut Mimarisi', en: 'Cloud Architecture' },
     type: { tr: 'Tam zamanlı · Uzaktan', en: 'Full-time · Remote' },
     location: { tr: 'Uzaktan (TR/EU)', en: 'Remote (TR/EU)' },
     level: { tr: 'Kıdemli', en: 'Senior' },
-    title: { tr: 'Kıdemli Frontend Mühendisi', en: 'Senior Frontend Engineer' },
+    title: { tr: 'Kıdemli Cloud & Backend Mühendisi', en: 'Senior Cloud & Backend Engineer' },
     desc: {
-      tr: 'React/Vite ile ölçeklenebilir, erişilebilir arayüzler. Tasarım sistemine sahip çıkarsın.',
-      en: 'Scalable, accessible UIs with React/Vite. You own the design system.',
+      tr: 'Büyük veri boru hatlarını ve API entegrasyonlarını ölçeklersin.',
+      en: 'Scale massive data pipelines and enterprise API integrations.',
     },
     responsibilities: {
       tr: [
-        'Tasarım sistemini ve bileşen kütüphanesini büyüt',
-        'Erişilebilirlik (WCAG AA) ve performans bütçelerini koru',
-        'Ürün ekibiyle birlikte yeni akışları uçtan uca kur',
+        'Kurumsal sistemlerle (ERP, bankacılık) API entegrasyonlarını kur',
+        'Yüksek trafikli veri akışları için bulut mimarisini tasarla',
+        'Sistem güvenliğini ve performansını optimize et',
       ],
       en: [
-        'Grow the design system and component library',
-        'Uphold accessibility (WCAG AA) and performance budgets',
-        'Build new flows end-to-end with the product team',
+        'Build API integrations with enterprise systems (ERP, banking)',
+        'Design cloud architecture for high-traffic data streams',
+        'Optimize system security and performance',
       ],
     },
     requirements: {
       tr: [
-        '5+ yıl modern React deneyimi',
-        'Güçlü CSS/Tailwind ve animasyon sezgisi',
-        'Erişilebilirlik ve test kültürüne bağlılık',
+        '5+ yıl Node.js / Python ve Bulut (AWS/GCP) deneyimi',
+        'Mikroservisler ve veri tabanı optimizasyonunda uzmanlık',
+        'Sıfırdan ölçeklenebilir sistem kurma kültürü',
       ],
       en: [
-        '5+ years of modern React experience',
-        'Strong CSS/Tailwind and animation sensibility',
-        'Commitment to accessibility and a testing culture',
+        '5+ years Node.js / Python and Cloud (AWS/GCP) experience',
+        'Expertise in microservices and database optimization',
+        'Culture of building scalable systems from scratch',
       ],
     },
   },
   {
-    id: 'ml-engineer',
-    team: { tr: 'AI', en: 'AI' },
+    id: 'ml-ai-engineer',
+    team: { tr: 'Yapay Zeka', en: 'AI' },
     type: { tr: 'Tam zamanlı · İstanbul/Berlin', en: 'Full-time · Istanbul/Berlin' },
     location: { tr: 'İstanbul / Berlin', en: 'Istanbul / Berlin' },
     level: { tr: 'Orta–Kıdemli', en: 'Mid–Senior' },
-    title: { tr: 'Makine Öğrenmesi Mühendisi', en: 'Machine Learning Engineer' },
+    title: { tr: 'AI & Makine Öğrenmesi Mühendisi', en: 'AI & Machine Learning Engineer' },
     desc: {
-      tr: 'Kişisel baseline ve öneri modellerini cihaz-üstü çalışacak şekilde tasarlarsın.',
-      en: 'Design baseline & recommendation models to run on-device.',
+      tr: 'Karbon azaltma modellerini ve tahminsel analitik algoritmalarını kurarsın.',
+      en: 'Build carbon reduction models and predictive analytics algorithms.',
     },
     responsibilities: {
       tr: [
-        'Kişisel karbon baseline modellerini geliştir ve değerlendir',
-        'Modelleri cihaz-üstü çalışacak şekilde küçült ve hızlandır',
-        'Öneri kalitesini ölçen deney altyapısını kur',
+        'Kurumsal karbon ayak izini tahminleyen modeller geliştir',
+        'Veri entegrasyonlarından anlamlı içgörüler çıkaran AI akışları tasarla',
+        'LLM entegrasyonları ile otonom raporlama araçları oluştur',
       ],
       en: [
-        'Develop and evaluate personal carbon baseline models',
-        'Shrink and accelerate models to run on-device',
-        'Build the experiment harness that measures nudge quality',
+        'Develop models that predict enterprise carbon footprints',
+        'Design AI flows to extract insights from data integrations',
+        'Build autonomous reporting tools using LLM integrations',
       ],
     },
     requirements: {
       tr: [
-        'Python ve PyTorch/TF ile sağlam ML temeli',
-        'Edge/quantization veya zaman serisi deneyimi artı',
-        'Veriden ürün kararına köprü kurma yetisi',
+        'Python, PyTorch/TensorFlow ile sağlam ML temeli',
+        'Büyük dil modelleri (LLM) ve RAG mimarilerinde deneyim',
+        'Ham veriyi ürün kararına dönüştürme yetisi',
       ],
       en: [
-        'Solid ML foundation with Python and PyTorch/TF',
-        'Edge/quantization or time-series experience a plus',
-        'Ability to bridge from data to product decisions',
+        'Solid ML foundation with Python, PyTorch/TensorFlow',
+        'Experience with Large Language Models (LLM) and RAG architectures',
+        'Ability to turn raw data into product decisions',
       ],
     },
   },
   {
-    id: 'hardware-eng',
-    team: { tr: 'Donanım', en: 'Hardware' },
+    id: 'growth-ai-pm',
+    team: { tr: 'Ürün', en: 'Product' },
     type: { tr: 'Tam zamanlı · İstanbul', en: 'Full-time · Istanbul' },
     location: { tr: 'İstanbul', en: 'Istanbul' },
     level: { tr: 'Kıdemli', en: 'Senior' },
-    title: { tr: 'Gömülü Donanım Mühendisi', en: 'Embedded Hardware Engineer' },
+    title: { tr: 'Growth & AI Ürün Yöneticisi', en: 'Growth & AI Product Manager' },
     desc: {
-      tr: 'Düşük güçlü giyilebilir platform; güç bütçesi 0.4W altında.',
-      en: 'Low-power wearable platform; keep the power budget under 0.4W.',
+      tr: 'B2B kurumsal müşteriler için AI tabanlı sürdürülebilirlik ürünlerini yönetirsin.',
+      en: 'Manage AI-driven sustainability products for B2B enterprise clients.',
     },
     responsibilities: {
       tr: [
-        'Giyilebilir cihazın güç bütçesini 0.4W altında tut',
-        'Sensör füzyonu ve firmware mimarisini şekillendir',
-        'Üretim ve sertifikasyon süreçlerini yürüt',
+        'B2B kurumsal müşterilerin ürün entegrasyon süreçlerini yönet',
+        'AI özelliklerinin yol haritasını planla ve önceliklendir',
+        'Satış, pazarlama ve mühendislik ekipleri arasında köprü kur',
       ],
       en: [
-        'Keep the wearable power budget under 0.4W',
-        'Shape sensor fusion and firmware architecture',
-        'Drive manufacturing and certification processes',
+        'Manage product integration processes for B2B enterprise clients',
+        'Plan and prioritize the roadmap for AI features',
+        'Bridge the gap between sales, marketing, and engineering teams',
       ],
     },
     requirements: {
       tr: [
-        'Düşük güçlü gömülü sistemlerde C/C++ deneyimi',
-        'PCB tasarımı ve donanım bring-up tecrübesi',
-        'Pil/güç optimizasyonuna hâkimiyet',
+        'B2B SaaS veya veri/AI ürünlerinde ürün yönetimi deneyimi',
+        'Kurumsal satış döngülerine aşinalık',
+        'Teknik ekiplerle veriye dayalı strateji kurma becerisi',
       ],
       en: [
-        'C/C++ experience on low-power embedded systems',
-        'PCB design and hardware bring-up experience',
-        'Command of battery/power optimization',
+        'Product management experience in B2B SaaS or data/AI products',
+        'Familiarity with enterprise sales cycles',
+        'Ability to build data-driven strategies with technical teams',
       ],
     },
   },
@@ -221,3 +221,13 @@ export function searchJobs(jobs, query, lang = 'tr') {
 
 // Resolve a job by its id/slug (used by the ?job= deep link).
 export const jobById = (id, all = JOBS) => all.find((j) => j.id === id);
+
+export function mergeJobs(remote = [], statics = JOBS) {
+  const merged = [...remote];
+  const seen = new Set(merged.map((j) => j.id || j.slug));
+  for (const j of statics) {
+    if (!seen.has(j.id) && !seen.has(j.slug)) merged.push(j);
+  }
+  return merged;
+}
+

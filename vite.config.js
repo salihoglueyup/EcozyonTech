@@ -1,12 +1,15 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { handle } from './api/_lib/forms.js'
-import { handleVitals } from './api/_lib/vitals.js'
-import { handleEvent } from './api/_lib/telemetry.js'
-import { handlePosts } from './api/_lib/posts-db.js'
-import { handleLogin, handleCallback, handleMe, handleLogout } from './api/_lib/admin-auth.js'
-import { handleAdminPosts, handleAdminPost } from './api/_lib/admin-posts.js'
+import { handle } from './api/_lib/handlers/forms.js'
+import { handleVitals } from './api/_lib/handlers/vitals.js'
+import { handleEvent } from './api/_lib/handlers/telemetry.js'
+import { handlePosts } from './api/_lib/db/posts.db.js'
+import { handleLogin, handleCallback, handleMe, handleLogout } from './api/_lib/auth/admin.auth.js'
+import { handleAdminPosts, handleAdminPost } from './api/_lib/handlers/admin-posts.js'
+import { handleAdminContacts } from './api/_lib/handlers/admin-contacts.js'
+import { handleAdminCareers } from './api/_lib/handlers/admin-careers.js'
+import { handleAdminNewsletter } from './api/_lib/handlers/admin-newsletter.js'
 import { applyResult, originOf } from './api/admin/_send.js'
 
 // Shared /api middleware: runs the exact serverless logic locally so forms +
@@ -27,12 +30,18 @@ function apiMiddleware(req, res, next) {
       let result
       let body = {}
       try { body = raw ? JSON.parse(raw) : {} } catch { body = {} }
-      if (route === '/api/admin/login') result = handleLogin(process.env, origin)
+      if (route === '/api/admin/login') result = handleLogin(body, process.env, origin)
       else if (route === '/api/admin/callback') result = await handleCallback(query, cookie, process.env, origin)
       else if (route === '/api/admin/me') result = handleMe(cookie, process.env)
       else if (route === '/api/admin/logout') result = handleLogout()
       else if (route === '/api/admin/posts') result = await handleAdminPosts(req.method, body, cookie, process.env)
       else if (route.startsWith('/api/admin/posts/')) result = await handleAdminPost(req.method, route.slice('/api/admin/posts/'.length), body, cookie, process.env)
+      else if (route === '/api/admin/contacts') result = await handleAdminContacts(req.method, '', body, cookie, process.env)
+      else if (route.startsWith('/api/admin/contacts/')) result = await handleAdminContacts(req.method, route.slice('/api/admin/contacts/'.length), body, cookie, process.env)
+      else if (route === '/api/admin/careers') result = await handleAdminCareers(req.method, '', body, cookie, process.env)
+      else if (route.startsWith('/api/admin/careers/')) result = await handleAdminCareers(req.method, route.slice('/api/admin/careers/'.length), body, cookie, process.env)
+      else if (route === '/api/admin/newsletter') result = await handleAdminNewsletter(req.method, '', body, cookie, process.env)
+      else if (route.startsWith('/api/admin/newsletter/')) result = await handleAdminNewsletter(req.method, route.slice('/api/admin/newsletter/'.length), body, cookie, process.env)
       else return next()
       applyResult(res, result)
     })

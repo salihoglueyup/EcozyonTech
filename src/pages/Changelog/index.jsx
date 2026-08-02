@@ -23,19 +23,21 @@ export default function ChangelogPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-3xl px-6">
-        <PageHeader
-          eyebrow={c.eyebrow}
-          title={c.title}
-          titleAccent={c.titleAccent}
-          intro={c.intro}
-          className="mb-12"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={c.eyebrow}
+            title={c.title}
+            titleAccent={c.titleAccent}
+            intro={c.intro}
+            className="mb-12"
+          />
+        </Reveal>
 
         <ol className="relative border-l border-slate-900/[.1] dark:border-white/[.12] ml-2">
           {CHANGELOG.map((release, idx) => (
             <li key={release.version} id={`v${release.version}`} className="relative pl-8 pb-12 last:pb-0 scroll-mt-28">
               <span className="absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full ring-4 ring-white dark:ring-slate-900" style={{ backgroundColor: idx === 0 ? '#10B981' : '#94A3B8' }} aria-hidden="true" />
-              <Reveal>
+              <Reveal delay={idx * 50}>
                 <div className="flex flex-wrap items-center gap-2.5">
                   <a
                     href={`#v${release.version}`}

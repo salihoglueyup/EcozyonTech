@@ -1,4 +1,4 @@
-import { handleVitals } from './_lib/vitals.js';
+import { handleVitals } from './_lib/handlers/vitals.js';
 
 // Web Vitals beacon sink. Validates the metric and forwards it to an
 // env-configured webhook (VITALS_WEBHOOK_URL); demo mode acks cheaply when no

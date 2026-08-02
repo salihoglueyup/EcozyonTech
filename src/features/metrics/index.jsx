@@ -4,9 +4,12 @@ import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Reveal } from '@/shared/ui/useReveal';
 import { Sparkline } from '@/shared/ui/charts';
 import { useInView } from '@/shared/ui/useInView';
+import { useApp } from '@/app/providers/AppProvider';
+import { SpotlightCard } from '@/shared/ui/SpotlightCard';
 
 // ── Metrics ────────────────────────────────────────────────────────────────
-export function Metrics({ t }) {
+export function Metrics() {
+  const { t } = useApp();
   return (
     <section id="metrics" className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6">
@@ -37,12 +40,11 @@ function MetricCard({ m, idx }) {
   const accent = accentColors[idx % accentColors.length];
 
   return (
-    <div
-      ref={ref}
-      className="group relative overflow-hidden rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl p-6 ring-1 ring-slate-900/[.04] dark:ring-white/[.06] hover:ring-cyan-500/30 transition"
-      style={{ transitionDelay: `${idx * 60}ms` }}
-    >
-      <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition" style={{ background: `radial-gradient(circle, ${accent}60, transparent)` }} />
+    <div ref={ref} style={{ transitionDelay: `${idx * 60}ms` }} className={`transition-all duration-700 ${seen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <SpotlightCard
+        className="group relative h-full overflow-hidden rounded-2xl border border-white/70 dark:border-white/[.08] bg-white/60 dark:bg-white/[.04] backdrop-blur-xl p-6 ring-1 ring-slate-900/[.04] dark:ring-white/[.06] hover:ring-cyan-500/30 transition"
+        color={`${accent}25`}
+      >
 
       <div className="flex items-start justify-between">
         <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-semibold flex items-center gap-1.5">
@@ -72,6 +74,7 @@ function MetricCard({ m, idx }) {
           )}
         </div>
       )}
+      </SpotlightCard>
     </div>
   );
 }

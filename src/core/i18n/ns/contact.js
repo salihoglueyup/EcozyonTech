@@ -92,6 +92,23 @@ export default {
     },
     "social": {
       "title": "Bizi takip et"
+    },
+    "page": {
+      "growingImpact": "Dünya çapında büyüyen etki.",
+      "shortcuts": "Hızlı çözümler için kısa yollar."
+    },
+    "assistant": {
+      "greeting": "{greeting}! Ben Ecozyon Asistan. Lütfen ismini ve şirketini paylaşır mısın?",
+      "niceToMeet": "Tanıştığımıza çok memnun oldum {firstName}! Bugün sana nasıl yardımcı olabilirim?",
+      "leaveDetails": "Harika. Detayları ve e-posta adresini aşağıya bırakabilirsin.",
+      "invalidEmail": "Hmm, o e-posta adresi pek doğru görünmüyor {firstName}, tekrar dener misin?",
+      "success": "Teşekkürler {firstName}! Mesajını aldık. 24 saat içinde dönüş yapacağız. İyi günler dileriz! 🎉",
+      "error": "Eyvah, bir şeyler ters gitti. Lütfen daha sonra tekrar dener misin?",
+      "connError": "Bağlantı hatası oluştu. Lütfen bağlantını kontrol et.",
+      "nameP": "İsminiz",
+      "companyP": "Şirketiniz",
+      "newMsg": "Yeni bir mesaj başlat",
+      "userIntro": "{company} firmasından {name}."
     }
   },
   "en": {
@@ -185,6 +202,23 @@ export default {
     },
     "social": {
       "title": "Follow along"
+    },
+    "page": {
+      "growingImpact": "Growing global impact.",
+      "shortcuts": "Shortcuts for quick resolutions."
+    },
+    "assistant": {
+      "greeting": "{greeting}! I am the Ecozyon Assistant. Could you please share your name and company?",
+      "niceToMeet": "It's great to meet you {firstName}! How can I help you today?",
+      "leaveDetails": "Perfect. Please leave the details and your email below.",
+      "invalidEmail": "Hmm, that email doesn't look quite right {firstName}, mind checking it again?",
+      "success": "Thanks {firstName}! We received your message. We'll get back to you within 24 hours. Have a great day! 🎉",
+      "error": "Oops, something went wrong. Could you please try again later?",
+      "connError": "Connection error. Please check your connection.",
+      "nameP": "Your name",
+      "companyP": "Your company",
+      "newMsg": "Start a new conversation",
+      "userIntro": "I'm {name} from {company}."
     }
   }
 };

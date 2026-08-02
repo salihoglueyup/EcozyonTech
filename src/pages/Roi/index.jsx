@@ -5,6 +5,7 @@ import { ArrowRight, PageHeader, RelatedRoutes } from '@/shared/ui/primitives';
 import { AnimatedNumber } from '@/shared/ui/AnimatedNumber';
 import { Donut, BarMini } from '@/shared/ui/charts';
 import { useInView } from '@/shared/ui/useInView';
+import { Reveal } from '@/shared/ui/useReveal';
 import { useToast } from '@/shared/ui/Toast';
 import { useApp } from '@/app/providers/AppProvider';
 import { useDocumentMeta } from '@/core/hooks/useDocumentMeta';
@@ -55,15 +56,17 @@ export default function RoiPage() {
   return (
     <section className="relative py-20 lg:py-28 pt-32">
       <div className="mx-auto max-w-4xl px-6">
-        <PageHeader
-          eyebrow={r.eyebrow}
-          title={r.title}
-          titleAccent={r.titleAccent}
-          intro={r.intro}
-          className="max-w-3xl mb-10"
-        />
+        <Reveal>
+          <PageHeader
+            eyebrow={r.eyebrow}
+            title={r.title}
+            titleAccent={r.titleAccent}
+            intro={r.intro}
+            className="max-w-3xl mb-10"
+          />
+        </Reveal>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <Reveal delay={100} className="grid gap-6 lg:grid-cols-2">
           {/* Inputs */}
           <div className="rounded-2xl eco-card p-6">
             <label htmlFor="roi-team" className="flex items-center justify-between text-[13px] font-medium text-slate-700 dark:text-slate-300">
@@ -132,9 +135,10 @@ export default function RoiPage() {
               <BarMini data={projection} color="#10B981" width={240} height={44} play={seen} className="h-11 w-full" label={r.projectionLabel} />
             </div>
           </div>
-        </div>
+        </Reveal>
 
-        <p className="mt-4 text-[11.5px] text-slate-400 leading-relaxed">{r.note}</p>
+        <Reveal delay={200}>
+          <p className="mt-4 text-[11.5px] text-slate-400 leading-relaxed">{r.note}</p>
 
         {/* Plan recommendation */}
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl p-6 ring-1 ring-cyan-500/20" style={{ backgroundImage: GRADIENTS.panel }}>
@@ -152,7 +156,8 @@ export default function RoiPage() {
             <ArrowRight />
           </Link>
         </div>
-
+        </Reveal>
+        
         <RelatedRoutes title={t.related.nextStep} routeKeys={['assessment', 'compare']} lang={lang} />
       </div>
     </section>

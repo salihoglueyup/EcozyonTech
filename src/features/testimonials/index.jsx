@@ -1,73 +1,50 @@
-import { useState, useEffect, useCallback } from 'react';
 import { SectionHeader, QuoteMark, InitialsAvatar } from '@/shared/ui/primitives';
 import { Reveal } from '@/shared/ui/useReveal';
+import { Marquee } from '@/shared/ui/Marquee';
+import { useApp } from '@/app/providers/AppProvider';
 
 /**
- * Testimonials — auto-rotating social proof carousel.
+ * Testimonials — auto-rotating social proof carousel (Marquee).
  * Reads from t.testimonials dictionary.
  */
-export function Testimonials({ t }) {
+export function Testimonials() {
+  const { t } = useApp();
   const data = t.testimonials;
   const items = data?.items || [];
-  const [active, setActive] = useState(0);
-
-  const next = useCallback(() => setActive((i) => (i + 1) % (items.length || 1)), [items.length]);
-
-  // setTimeout keyed on `active` so the 5s countdown restarts after every
-  // change — including manual dot clicks, which otherwise got yanked forward
-  // by a still-running interval.
-  useEffect(() => {
-    if (items.length <= 1) return;
-    const timer = setTimeout(next, 5000);
-    return () => clearTimeout(timer);
-  }, [active, next, items.length]);
 
   if (!data || !items.length) return null;
 
-  // Clamp: guards against `active` pointing past a shorter list (e.g. a
-  // dictionary edit) which would make item undefined and crash on item.quote.
-  const idx = active % items.length;
-  const item = items[idx];
-
   return (
-    <section id="testimonials" className="relative py-20 lg:py-28">
-      <div className="mx-auto max-w-4xl px-6">
+    <section id="testimonials" className="relative py-20 lg:py-28 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6">
         <SectionHeader center color="emerald" eyebrow={data.eyebrow} title={data.title} className="mb-12" />
 
         <Reveal>
-          <div className="relative rounded-3xl eco-card p-8 lg:p-12 text-center">
-            <QuoteMark className="mx-auto h-7 w-7 text-cyan-500/40" />
-
-            <blockquote className="mt-5 font-display text-[clamp(1.2rem,2.2vw,1.7rem)] leading-snug tracking-tight text-slate-900 dark:text-slate-100 max-w-2xl mx-auto transition-opacity duration-500">
-              "{item.quote}"
-            </blockquote>
-
-            <div className="mt-6 flex items-center justify-center gap-3">
-              <InitialsAvatar
-                initials={item.initials}
-                background="linear-gradient(135deg,#0EA5E9,#10B981)"
-                className="h-10 w-10 font-display text-[13px] shadow-md"
-              />
-              <div className="text-left">
-                <div className="text-[14px] font-medium text-slate-900 dark:text-slate-100">{item.name}</div>
-                <div className="text-[12px] text-slate-500 dark:text-slate-400">{item.title}</div>
-              </div>
-            </div>
-
-            {/* Dots */}
-            <div className="mt-8 flex items-center justify-center gap-2">
-              {items.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  aria-label={`Testimonial ${i + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    i === idx ? 'w-6 bg-cyan-500' : 'w-2 bg-slate-300 dark:bg-slate-600 hover:bg-slate-400'
-                  }`}
-                />
+          {/* Fading edges for the marquee */}
+          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <Marquee speed="40s" pauseOnHover className="py-4">
+              {items.map((item, i) => (
+                <div key={i} className="eco-card eco-lift rounded-3xl p-6 lg:p-8 w-[350px] shrink-0 mx-2 flex flex-col justify-between">
+                  <div>
+                    <QuoteMark className="h-6 w-6 text-cyan-500/40 mb-4" />
+                    <blockquote className="font-display text-[15px] leading-relaxed text-slate-800 dark:text-slate-200">
+                      "{item.quote}"
+                    </blockquote>
+                  </div>
+                  <div className="mt-6 flex items-center gap-3">
+                    <InitialsAvatar
+                      initials={item.initials}
+                      background="linear-gradient(135deg,#0EA5E9,#10B981)"
+                      className="h-9 w-9 font-display text-[12px] shadow-sm shrink-0"
+                    />
+                    <div className="overflow-hidden">
+                      <div className="text-[13px] font-medium text-slate-900 dark:text-slate-100 truncate">{item.name}</div>
+                      <div className="text-[11.5px] text-slate-500 dark:text-slate-400 truncate">{item.title}</div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </div>
+            </Marquee>
           </div>
         </Reveal>
       </div>

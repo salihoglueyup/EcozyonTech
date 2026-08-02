@@ -1,4 +1,4 @@
-import { handleCallback } from '../_lib/admin-auth.js';
+import { handleCallback } from '../_lib/auth/admin.auth.js';
 import { applyResult, originOf } from './_send.js';
 
 // GET /api/admin/callback?code&state → exchange code, set the session cookie.
